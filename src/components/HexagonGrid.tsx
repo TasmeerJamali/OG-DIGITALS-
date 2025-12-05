@@ -17,7 +17,7 @@ export default function HexagonGrid() {
     const [hexagons, setHexagons] = useState<Hexagon[]>([]);
     const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
     const [isHovering, setIsHovering] = useState(false);
-    const animationRef = useRef<number>();
+    const animationRef = useRef<number | null>(null);
 
     // Generate hexagon grid
     useEffect(() => {
