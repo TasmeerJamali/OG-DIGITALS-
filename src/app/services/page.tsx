@@ -608,26 +608,108 @@ export default function ServicesPage() {
                             <span className="text-[#a8ffc4]">something great</span>
                         </h2>
 
-                        <Link
-                            href="/#contact"
-                            className="group inline-flex items-center gap-4 px-10 py-5 rounded-full text-lg font-medium transition-all duration-500 hover:scale-105"
-                            style={{
-                                background: "#a8ffc4",
-                                color: "#000",
-                                boxShadow: "0 20px 60px rgba(168,255,196,0.3)",
-                            }}
-                        >
-                            Start a Project
-                            <motion.svg
-                                className="w-5 h-5 group-hover:translate-x-1 transition-transform"
-                                fill="none"
-                                viewBox="0 0 24 24"
-                                stroke="currentColor"
-                                strokeWidth={2}
-                            >
-                                <path strokeLinecap="round" strokeLinejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
-                            </motion.svg>
-                        </Link>
+
+                        {/* Remarkable CTA Button */}
+                        <motion.div className="relative inline-block">
+                            {/* Outer glow ring */}
+                            <motion.div
+                                className="absolute -inset-2 rounded-full opacity-50"
+                                style={{
+                                    background: "linear-gradient(90deg, #a8ffc4, #60a5fa, #c084fc, #a8ffc4)",
+                                    backgroundSize: "300% 100%",
+                                    filter: "blur(12px)",
+                                }}
+                                animate={{
+                                    backgroundPosition: ["0% 50%", "100% 50%", "0% 50%"],
+                                }}
+                                transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
+                            />
+
+                            {/* Button container */}
+                            <Link href="/#contact" className="relative block">
+                                <motion.div
+                                    className="relative px-12 py-6 rounded-full overflow-hidden cursor-pointer"
+                                    style={{
+                                        background: "linear-gradient(135deg, #a8ffc4 0%, #7dd3a8 100%)",
+                                    }}
+                                    whileHover={{ scale: 1.05 }}
+                                    whileTap={{ scale: 0.98 }}
+                                    transition={{ type: "spring", stiffness: 400, damping: 17 }}
+                                >
+                                    {/* Shimmer effect */}
+                                    <motion.div
+                                        className="absolute inset-0"
+                                        style={{
+                                            background: "linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent)",
+                                        }}
+                                        animate={{ x: ["-100%", "100%"] }}
+                                        transition={{ duration: 2, repeat: Infinity, repeatDelay: 3 }}
+                                    />
+
+                                    {/* Inner glow */}
+                                    <motion.div
+                                        className="absolute inset-0 rounded-full"
+                                        animate={{
+                                            boxShadow: [
+                                                "inset 0 0 20px rgba(255,255,255,0.2)",
+                                                "inset 0 0 40px rgba(255,255,255,0.4)",
+                                                "inset 0 0 20px rgba(255,255,255,0.2)",
+                                            ],
+                                        }}
+                                        transition={{ duration: 2, repeat: Infinity }}
+                                    />
+
+                                    {/* Button content */}
+                                    <div className="relative flex items-center gap-4 text-black font-bold text-lg">
+                                        <span>Start a Project</span>
+
+                                        {/* Animated arrow */}
+                                        <motion.div
+                                            className="relative"
+                                            animate={{ x: [0, 5, 0] }}
+                                            transition={{ duration: 1.5, repeat: Infinity }}
+                                        >
+                                            <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+                                                <path strokeLinecap="round" strokeLinejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                                            </svg>
+                                        </motion.div>
+                                    </div>
+                                </motion.div>
+                            </Link>
+
+                            {/* Orbiting particles */}
+                            {[0, 1, 2, 3].map((i) => (
+                                <motion.div
+                                    key={i}
+                                    className="absolute w-2 h-2 rounded-full"
+                                    style={{
+                                        background: ["#a8ffc4", "#60a5fa", "#fbbf24", "#c084fc"][i],
+                                        boxShadow: `0 0 10px ${["#a8ffc4", "#60a5fa", "#fbbf24", "#c084fc"][i]}`,
+                                        top: "50%",
+                                        left: "50%",
+                                    }}
+                                    animate={{
+                                        x: [
+                                            Math.cos((i * Math.PI) / 2) * 100,
+                                            Math.cos((i * Math.PI) / 2 + Math.PI) * 100,
+                                            Math.cos((i * Math.PI) / 2) * 100,
+                                        ],
+                                        y: [
+                                            Math.sin((i * Math.PI) / 2) * 40,
+                                            Math.sin((i * Math.PI) / 2 + Math.PI) * 40,
+                                            Math.sin((i * Math.PI) / 2) * 40,
+                                        ],
+                                        opacity: [0.8, 0.4, 0.8],
+                                    }}
+                                    transition={{
+                                        duration: 4,
+                                        repeat: Infinity,
+                                        delay: i * 0.5,
+                                        ease: "easeInOut",
+                                    }}
+                                />
+                            ))}
+                        </motion.div>
                     </motion.div>
                 </div>
             </section>
