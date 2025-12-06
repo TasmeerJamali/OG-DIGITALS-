@@ -3,6 +3,7 @@
 import { useRef, useState, useEffect } from "react";
 import { motion, useScroll, useTransform, useSpring, useInView } from "framer-motion";
 import Link from "next/link";
+import ParticleNet from "@/components/ParticleNet";
 
 // Team members
 const team = [
@@ -264,6 +265,9 @@ export default function AboutPage() {
                     style={{ width: progressWidth }}
                 />
             </div>
+
+            {/* Interactive particle net background */}
+            <ParticleNet />
 
             {/* ===== HERO SECTION ===== */}
             <section
@@ -531,7 +535,7 @@ export default function AboutPage() {
                                 The minds<br />behind the magic
                             </h2>
                         </motion.div>
-                        
+
                         <motion.div
                             className="flex items-end"
                             initial={{ opacity: 0, y: 30 }}
@@ -540,7 +544,7 @@ export default function AboutPage() {
                             viewport={{ once: true }}
                         >
                             <p className="text-lg text-white/50 max-w-md">
-                                A diverse group of strategists, designers, and developers 
+                                A diverse group of strategists, designers, and developers
                                 who are passionate about creating exceptional digital experiences.
                             </p>
                         </motion.div>
@@ -558,7 +562,7 @@ export default function AboutPage() {
                                 viewport={{ once: true }}
                             >
                                 {/* Card */}
-                                <div 
+                                <div
                                     className="relative aspect-[3/4] rounded-xl overflow-hidden mb-6"
                                     style={{
                                         background: `linear-gradient(180deg, ${member.color}15 0%, ${member.color}05 100%)`,
@@ -571,24 +575,24 @@ export default function AboutPage() {
                                             background: `radial-gradient(circle at 50% 100%, ${member.color}30 0%, transparent 60%)`,
                                         }}
                                     />
-                                    
+
                                     {/* Initials placeholder */}
                                     <div className="absolute inset-0 flex items-center justify-center">
-                                        <span 
+                                        <span
                                             className="text-7xl font-bold opacity-10"
                                             style={{ color: member.color }}
                                         >
                                             {member.name.split(' ').map(n => n[0]).join('')}
                                         </span>
                                     </div>
-                                    
+
                                     {/* Bottom gradient */}
                                     <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-black/50 to-transparent" />
                                 </div>
-                                
+
                                 {/* Info */}
                                 <div>
-                                    <span 
+                                    <span
                                         className="text-xs uppercase tracking-wider block mb-2"
                                         style={{ color: member.color }}
                                     >
@@ -670,7 +674,7 @@ export default function AboutPage() {
                                         animate={{ x: ["-100%", "100%"] }}
                                         transition={{ duration: 2, repeat: Infinity, repeatDelay: 3 }}
                                     />
-                                    
+
                                     <div className="relative flex items-center gap-4 text-black font-bold text-lg">
                                         <span>Get in Touch</span>
                                         <svg className="w-6 h-6 group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
