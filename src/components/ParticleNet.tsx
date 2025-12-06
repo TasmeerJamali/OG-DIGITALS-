@@ -19,11 +19,11 @@ interface ParticleNetProps {
 }
 
 export default function ParticleNet({
-    particleCount = 80,
-    particleColor = "rgba(168, 255, 196, 0.6)",
-    lineColor = "rgba(168, 255, 196, 0.15)",
-    maxDistance = 150,
-    mouseRadius = 200,
+    particleCount = 40,
+    particleColor = "rgba(168, 255, 196, 0.5)",
+    lineColor = "rgba(168, 255, 196, 0.08)",
+    maxDistance = 200,
+    mouseRadius = 250,
 }: ParticleNetProps) {
     const canvasRef = useRef<HTMLCanvasElement>(null);
     const particlesRef = useRef<Particle[]>([]);
