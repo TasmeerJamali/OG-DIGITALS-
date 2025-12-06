@@ -14,7 +14,11 @@ export default function CustomCursor() {
     const cursorXSpring = useSpring(cursorX, springConfig);
     const cursorYSpring = useSpring(cursorY, springConfig);
 
-    // Only run on client
+    // Trail with slower spring
+    const trailConfig = { damping: 50, stiffness: 200 };
+    const trailXSpring = useSpring(cursorX, trailConfig);
+    const trailYSpring = useSpring(cursorY, trailConfig);
+
     useEffect(() => {
         setMounted(true);
     }, []);
@@ -30,14 +34,13 @@ export default function CustomCursor() {
         const handlePointerCheck = (e: MouseEvent) => {
             const target = e.target as HTMLElement;
             if (target) {
-                const computedStyle = window.getComputedStyle(target);
-                setIsPointer(
-                    computedStyle.cursor === "pointer" ||
+                const isClickable =
                     target.tagName === "A" ||
                     target.tagName === "BUTTON" ||
                     target.closest("a") !== null ||
-                    target.closest("button") !== null
-                );
+                    target.closest("button") !== null ||
+                    target.getAttribute("role") === "button";
+                setIsPointer(isClickable);
             }
         };
 
@@ -50,7 +53,7 @@ export default function CustomCursor() {
         };
     }, [mounted, cursorX, cursorY]);
 
-    // Don't render anything on server or before mount
+    // Don't render on server
     if (!mounted) return null;
 
     return (
@@ -67,15 +70,15 @@ export default function CustomCursor() {
             >
                 {/* Outer ring */}
                 <motion.div
-                    className="absolute rounded-full border-2"
-                    style={{ borderColor: "#a8ffc4" }}
+                    className="absolute rounded-full"
+                    style={{ border: "1px solid #a8ffc4" }}
                     animate={{
                         width: isPointer ? 50 : 40,
                         height: isPointer ? 50 : 40,
                         borderWidth: isPointer ? 2 : 1,
                         opacity: isPointer ? 1 : 0.5,
                     }}
-                    transition={{ duration: 0.2, ease: "easeOut" }}
+                    transition={{ duration: 0.2 }}
                 />
 
                 {/* Inner dot */}
@@ -85,32 +88,24 @@ export default function CustomCursor() {
                     animate={{
                         width: isPointer ? 8 : 6,
                         height: isPointer ? 8 : 6,
-                        scale: isPointer ? 1.2 : 1,
                     }}
                     transition={{ duration: 0.15 }}
                 />
             </motion.div>
 
-            {/* Trail effect */}
+            {/* Trail */}
             <motion.div
-                className="fixed top-0 left-0 pointer-events-none z-[9998] hidden lg:block"
+                className="fixed top-0 left-0 pointer-events-none z-[9998] hidden lg:block rounded-full"
                 style={{
-                    x: useSpring(cursorX, { damping: 50, stiffness: 200 }),
-                    y: useSpring(cursorY, { damping: 50, stiffness: 200 }),
+                    x: trailXSpring,
+                    y: trailYSpring,
                     translateX: "-50%",
                     translateY: "-50%",
+                    backgroundColor: "rgba(168, 255, 196, 0.08)",
+                    width: 60,
+                    height: 60,
                 }}
-            >
-                <motion.div
-                    className="rounded-full"
-                    style={{ backgroundColor: "rgba(168, 255, 196, 0.1)" }}
-                    animate={{
-                        width: isPointer ? 80 : 60,
-                        height: isPointer ? 80 : 60,
-                    }}
-                    transition={{ duration: 0.3 }}
-                />
-            </motion.div>
+            />
         </>
     );
 }
