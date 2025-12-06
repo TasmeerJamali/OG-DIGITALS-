@@ -1,261 +1,219 @@
 "use client";
 
-import { useRef } from "react";
-import { motion, useScroll, useTransform, useSpring } from "framer-motion";
+import { useRef, useState } from "react";
+import { motion, useScroll, useTransform, useInView } from "framer-motion";
 import Link from "next/link";
 
-// Services as planets
-const planets = [
+// Services data with unique visual identity
+const services = [
     {
         id: 1,
-        title: "Web Development",
-        subtitle: "Digital Experiences",
-        description: "We craft immersive digital experiences that captivate users and drive conversions.",
-        features: ["Custom Web Apps", "E-Commerce", "CMS Development", "API Integration"],
-        color: "#4ADE80",
-        gradient: "radial-gradient(circle, #4ADE80 0%, #166534 50%, #052e16 100%)",
-        glow: "0 0 100px 20px rgba(74,222,128,0.4)",
-        orbitColor: "rgba(74,222,128,0.3)",
+        number: "01",
+        title: "Web\nDevelopment",
+        description: "We build lightning-fast, scalable web applications that drive business growth. From complex e-commerce platforms to custom SaaS solutions.",
+        capabilities: ["React & Next.js", "E-Commerce Platforms", "Custom CMS", "API Development", "Performance Optimization"],
+        accent: "#a8ffc4",
     },
     {
         id: 2,
-        title: "Brand Identity",
-        subtitle: "Visual Storytelling",
-        description: "We create memorable brand identities that resonate with your audience.",
-        features: ["Logo Design", "Brand Guidelines", "Visual Identity", "Packaging"],
-        color: "#F59E0B",
-        gradient: "radial-gradient(circle, #FBBF24 0%, #B45309 50%, #451a03 100%)",
-        glow: "0 0 100px 20px rgba(245,158,11,0.4)",
-        orbitColor: "rgba(245,158,11,0.3)",
+        number: "02",
+        title: "Brand\nIdentity",
+        description: "We create distinctive brand identities that capture your essence and resonate with your audience. Every touchpoint, considered.",
+        capabilities: ["Logo Systems", "Visual Identity", "Brand Guidelines", "Packaging Design", "Brand Strategy"],
+        accent: "#fbbf24",
     },
     {
         id: 3,
-        title: "UI/UX Design",
-        subtitle: "Human-Centered",
-        description: "We design intuitive interfaces that users love. Research-driven design.",
-        features: ["User Research", "Wireframing", "Prototyping", "Design Systems"],
-        color: "#3B82F6",
-        gradient: "radial-gradient(circle, #60A5FA 0%, #1D4ED8 50%, #1e1b4b 100%)",
-        glow: "0 0 100px 20px rgba(59,130,246,0.4)",
-        orbitColor: "rgba(59,130,246,0.3)",
+        number: "03",
+        title: "UI/UX\nDesign",
+        description: "We design intuitive digital experiences that users love. Research-driven, pixel-perfect interfaces that convert.",
+        capabilities: ["User Research", "Interaction Design", "Design Systems", "Prototyping", "Usability Testing"],
+        accent: "#60a5fa",
     },
     {
         id: 4,
-        title: "SEO & Marketing",
-        subtitle: "Growth Engine",
-        description: "We optimize your digital presence for maximum visibility and growth.",
-        features: ["Technical SEO", "Content Strategy", "Analytics", "Performance"],
-        color: "#8B5CF6",
-        gradient: "radial-gradient(circle, #A78BFA 0%, #6D28D9 50%, #2e1065 100%)",
-        glow: "0 0 100px 20px rgba(139,92,246,0.4)",
-        orbitColor: "rgba(139,92,246,0.3)",
+        number: "04",
+        title: "Digital\nMarketing",
+        description: "We amplify your digital presence with data-driven strategies. From SEO to social, we make sure you're found.",
+        capabilities: ["SEO Optimization", "Content Strategy", "Social Media", "Analytics & Insights", "Performance Marketing"],
+        accent: "#c084fc",
     },
 ];
 
-// Starfield background
-function Starfield() {
-    return (
-        <div className="fixed inset-0 overflow-hidden pointer-events-none">
-            {/* Static stars */}
-            {[...Array(150)].map((_, i) => (
-                <div
-                    key={i}
-                    className="absolute rounded-full bg-white"
-                    style={{
-                        width: Math.random() * 2 + 1,
-                        height: Math.random() * 2 + 1,
-                        left: `${Math.random() * 100}%`,
-                        top: `${Math.random() * 100}%`,
-                        opacity: Math.random() * 0.8 + 0.2,
-                    }}
-                />
-            ))}
+// Animated text reveal
+function TextReveal({ children, delay = 0 }: { children: string; delay?: number }) {
+    const ref = useRef<HTMLSpanElement>(null);
+    const isInView = useInView(ref, { once: true, margin: "-100px" });
 
-            {/* Twinkling stars */}
-            {[...Array(30)].map((_, i) => (
-                <motion.div
-                    key={`twinkle-${i}`}
-                    className="absolute rounded-full bg-white"
-                    style={{
-                        width: Math.random() * 3 + 2,
-                        height: Math.random() * 3 + 2,
-                        left: `${Math.random() * 100}%`,
-                        top: `${Math.random() * 100}%`,
-                    }}
-                    animate={{
-                        opacity: [0.2, 1, 0.2],
-                        scale: [1, 1.2, 1],
-                    }}
-                    transition={{
-                        duration: Math.random() * 3 + 2,
-                        repeat: Infinity,
-                        delay: Math.random() * 2,
-                    }}
-                />
-            ))}
-        </div>
+    return (
+        <span ref={ref} className="overflow-hidden inline-block">
+            <motion.span
+                className="inline-block"
+                initial={{ y: "100%" }}
+                animate={isInView ? { y: 0 } : { y: "100%" }}
+                transition={{ duration: 0.8, delay, ease: [0.25, 1, 0.5, 1] }}
+            >
+                {children}
+            </motion.span>
+        </span>
     );
 }
 
-// Planet component
-function Planet({
-    planet,
-    index,
-    scrollProgress,
-}: {
-    planet: typeof planets[0];
-    index: number;
-    scrollProgress: ReturnType<typeof useTransform<number, number>>;
-}) {
-    // Each planet occupies a segment of the scroll
-    const segmentSize = 1 / (planets.length + 1);
-    const planetStart = (index + 0.5) * segmentSize;
-    const planetPeak = (index + 1) * segmentSize;
-    const planetEnd = (index + 1.5) * segmentSize;
-
-    // Planet zoom - starts small, grows huge as we approach, shrinks as we pass
-    const scale = useTransform(
-        scrollProgress,
-        [planetStart - 0.1, planetPeak - 0.05, planetPeak, planetPeak + 0.05, planetEnd],
-        [0.1, 0.5, 15, 30, 50]
-    );
-
-    // Opacity - fade in, stay, fade out as we zoom through
-    const opacity = useTransform(
-        scrollProgress,
-        [planetStart - 0.1, planetStart, planetPeak - 0.1, planetPeak, planetPeak + 0.05],
-        [0, 1, 1, 0.3, 0]
-    );
-
-    // Content opacity - only visible when we're "on" the planet
-    const contentOpacity = useTransform(
-        scrollProgress,
-        [planetPeak - 0.08, planetPeak - 0.03, planetPeak + 0.02, planetPeak + 0.05],
-        [0, 1, 1, 0]
-    );
-
-    // Y position for initial approach
-    const y = useTransform(
-        scrollProgress,
-        [planetStart - 0.1, planetPeak],
-        [200, 0]
-    );
-
-    const springScale = useSpring(scale, { damping: 30, stiffness: 100 });
-    const springY = useSpring(y, { damping: 30, stiffness: 100 });
+// Service card with reveal animation
+function ServiceCard({ service, index }: { service: typeof services[0]; index: number }) {
+    const cardRef = useRef<HTMLDivElement>(null);
+    const isInView = useInView(cardRef, { once: true, margin: "-150px" });
+    const [isHovered, setIsHovered] = useState(false);
 
     return (
         <motion.div
-            className="fixed inset-0 flex items-center justify-center pointer-events-none"
-            style={{ opacity, zIndex: 10 + index }}
+            ref={cardRef}
+            className="relative min-h-[90vh] flex items-center"
+            initial={{ opacity: 0 }}
+            animate={isInView ? { opacity: 1 } : { opacity: 0 }}
+            transition={{ duration: 0.8, delay: 0.2 }}
         >
-            {/* Planet sphere */}
+            {/* Background accent line */}
             <motion.div
-                className="relative rounded-full"
-                style={{
-                    scale: springScale,
-                    y: springY,
-                    width: 200,
-                    height: 200,
-                    background: planet.gradient,
-                    boxShadow: planet.glow,
-                }}
-            >
-                {/* Planet surface texture */}
-                <div
-                    className="absolute inset-0 rounded-full opacity-30"
-                    style={{
-                        background: `radial-gradient(ellipse at 30% 30%, rgba(255,255,255,0.4) 0%, transparent 60%)`,
-                    }}
-                />
+                className="absolute left-0 top-0 bottom-0 w-[1px]"
+                style={{ background: `linear-gradient(to bottom, transparent, ${service.accent}40, transparent)` }}
+                initial={{ scaleY: 0 }}
+                animate={isInView ? { scaleY: 1 } : { scaleY: 0 }}
+                transition={{ duration: 1, delay: 0.3 }}
+            />
 
-                {/* Orbit ring */}
-                <motion.div
-                    className="absolute rounded-full border"
-                    style={{
-                        width: 280,
-                        height: 280,
-                        left: -40,
-                        top: -40,
-                        borderColor: planet.orbitColor,
-                        transform: "rotateX(75deg)",
-                    }}
-                    animate={{ rotate: 360 }}
-                    transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
-                />
-            </motion.div>
-
-            {/* Planet content - appears when zoomed in */}
-            <motion.div
-                className="fixed inset-0 flex items-center justify-center pointer-events-auto"
-                style={{ opacity: contentOpacity }}
-            >
-                <div className="max-w-4xl mx-auto px-6 text-center">
-                    {/* Planet number */}
-                    <motion.div
-                        className="text-[120px] md:text-[180px] font-bold leading-none mb-[-30px] md:mb-[-50px]"
-                        style={{
-                            color: "transparent",
-                            WebkitTextStroke: `2px ${planet.color}50`,
-                        }}
-                    >
-                        0{index + 1}
-                    </motion.div>
-
-                    {/* Subtitle */}
-                    <motion.span
-                        className="text-xs uppercase tracking-[0.3em] mb-4 block"
-                        style={{ color: planet.color }}
-                    >
-                        {planet.subtitle}
-                    </motion.span>
-
-                    {/* Title */}
-                    <motion.h2
-                        className="text-5xl md:text-7xl lg:text-8xl font-bold text-white mb-6"
-                    >
-                        {planet.title}
-                    </motion.h2>
-
-                    {/* Description */}
-                    <motion.p className="text-lg md:text-xl text-white/60 mb-8 max-w-2xl mx-auto">
-                        {planet.description}
-                    </motion.p>
-
-                    {/* Features */}
-                    <motion.div className="flex flex-wrap justify-center gap-3 mb-8">
-                        {planet.features.map((feature, i) => (
+            <div className="w-full max-w-7xl mx-auto px-6 md:px-16 lg:px-24">
+                <div className="grid lg:grid-cols-12 gap-12 lg:gap-24 items-start">
+                    {/* Left - Number and Title */}
+                    <div className="lg:col-span-5">
+                        {/* Number */}
+                        <motion.div
+                            className="flex items-center gap-6 mb-8"
+                            initial={{ opacity: 0, x: -30 }}
+                            animate={isInView ? { opacity: 1, x: 0 } : {}}
+                            transition={{ duration: 0.8, delay: 0.2 }}
+                        >
                             <span
-                                key={feature}
-                                className="px-4 py-2 rounded-full text-sm"
-                                style={{
-                                    background: `${planet.color}15`,
-                                    border: `1px solid ${planet.color}30`,
-                                    color: planet.color,
-                                }}
+                                className="text-sm font-medium tracking-wider"
+                                style={{ color: service.accent }}
                             >
-                                {feature}
+                                {service.number}
                             </span>
-                        ))}
-                    </motion.div>
+                            <motion.div
+                                className="h-[1px] flex-grow"
+                                style={{ background: service.accent }}
+                                initial={{ scaleX: 0 }}
+                                animate={isInView ? { scaleX: 1 } : {}}
+                                transition={{ duration: 0.8, delay: 0.4 }}
+                            />
+                        </motion.div>
 
-                    {/* CTA */}
-                    <Link
-                        href="/#contact"
-                        className="inline-flex items-center gap-3 px-8 py-4 rounded-full font-medium transition-all duration-300 hover:scale-105"
-                        style={{
-                            background: planet.color,
-                            color: "#000",
-                            boxShadow: `0 10px 40px ${planet.color}40`,
-                        }}
-                    >
-                        Explore This Service
-                        <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                            <path strokeLinecap="round" strokeLinejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
-                        </svg>
-                    </Link>
+                        {/* Title */}
+                        <h2 className="text-5xl md:text-6xl lg:text-7xl font-bold text-white leading-[0.9] tracking-tight mb-8">
+                            {service.title.split('\n').map((line, i) => (
+                                <span key={i} className="block overflow-hidden">
+                                    <motion.span
+                                        className="block"
+                                        initial={{ y: "100%" }}
+                                        animate={isInView ? { y: 0 } : {}}
+                                        transition={{ duration: 0.8, delay: 0.3 + i * 0.1, ease: [0.25, 1, 0.5, 1] }}
+                                    >
+                                        {line}
+                                    </motion.span>
+                                </span>
+                            ))}
+                        </h2>
+
+                        {/* Description */}
+                        <motion.p
+                            className="text-lg text-white/50 leading-relaxed mb-8 max-w-md"
+                            initial={{ opacity: 0, y: 20 }}
+                            animate={isInView ? { opacity: 1, y: 0 } : {}}
+                            transition={{ duration: 0.8, delay: 0.5 }}
+                        >
+                            {service.description}
+                        </motion.p>
+
+                        {/* CTA */}
+                        <motion.div
+                            initial={{ opacity: 0, y: 20 }}
+                            animate={isInView ? { opacity: 1, y: 0 } : {}}
+                            transition={{ duration: 0.8, delay: 0.6 }}
+                        >
+                            <Link
+                                href="/#contact"
+                                className="group inline-flex items-center gap-4"
+                                onMouseEnter={() => setIsHovered(true)}
+                                onMouseLeave={() => setIsHovered(false)}
+                            >
+                                <span
+                                    className="text-sm font-medium tracking-wider uppercase"
+                                    style={{ color: service.accent }}
+                                >
+                                    Let&apos;s Talk
+                                </span>
+                                <motion.div
+                                    className="w-12 h-12 rounded-full border-2 flex items-center justify-center"
+                                    style={{ borderColor: service.accent }}
+                                    animate={{
+                                        scale: isHovered ? 1.1 : 1,
+                                        backgroundColor: isHovered ? service.accent : "transparent",
+                                    }}
+                                    transition={{ duration: 0.3 }}
+                                >
+                                    <motion.svg
+                                        className="w-5 h-5"
+                                        fill="none"
+                                        viewBox="0 0 24 24"
+                                        stroke={isHovered ? "#000" : service.accent}
+                                        strokeWidth={2}
+                                        animate={{ x: isHovered ? 3 : 0 }}
+                                        transition={{ duration: 0.3 }}
+                                    >
+                                        <path strokeLinecap="round" strokeLinejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                                    </motion.svg>
+                                </motion.div>
+                            </Link>
+                        </motion.div>
+                    </div>
+
+                    {/* Right - Capabilities */}
+                    <div className="lg:col-span-7">
+                        <motion.div
+                            className="space-y-4"
+                            initial={{ opacity: 0 }}
+                            animate={isInView ? { opacity: 1 } : {}}
+                            transition={{ duration: 0.8, delay: 0.4 }}
+                        >
+                            <span className="text-xs uppercase tracking-[0.3em] text-white/30 block mb-8">
+                                Capabilities
+                            </span>
+
+                            {service.capabilities.map((capability, i) => (
+                                <motion.div
+                                    key={capability}
+                                    className="group flex items-center justify-between py-5 border-b border-white/10 cursor-default"
+                                    initial={{ opacity: 0, x: 30 }}
+                                    animate={isInView ? { opacity: 1, x: 0 } : {}}
+                                    transition={{ duration: 0.6, delay: 0.5 + i * 0.1 }}
+                                    whileHover={{ x: 10 }}
+                                >
+                                    <span className="text-xl md:text-2xl text-white/70 group-hover:text-white transition-colors duration-300">
+                                        {capability}
+                                    </span>
+                                    <motion.div
+                                        className="w-2 h-2 rounded-full"
+                                        style={{ background: service.accent }}
+                                        initial={{ scale: 0 }}
+                                        animate={isInView ? { scale: 1 } : {}}
+                                        transition={{ duration: 0.3, delay: 0.7 + i * 0.1 }}
+                                    />
+                                </motion.div>
+                            ))}
+                        </motion.div>
+                    </div>
                 </div>
-            </motion.div>
+            </div>
         </motion.div>
     );
 }
@@ -267,226 +225,187 @@ export default function ServicesPage() {
         offset: ["start start", "end end"],
     });
 
-    // Smooth spring for scroll
-    const smoothProgress = useSpring(scrollYProgress, { damping: 50, stiffness: 100 });
-
-    // Hero transforms
-    const heroOpacity = useTransform(scrollYProgress, [0, 0.1], [1, 0]);
-    const heroScale = useTransform(scrollYProgress, [0, 0.15], [1, 0.8]);
-
-    // Final CTA transforms
-    const ctaOpacity = useTransform(scrollYProgress, [0.85, 0.95], [0, 1]);
-    const ctaScale = useTransform(scrollYProgress, [0.85, 1], [0.8, 1]);
-
-    // All planets converging for finale
-    const convergeProgress = useTransform(scrollYProgress, [0.9, 1], [0, 1]);
+    const progressWidth = useTransform(scrollYProgress, [0, 1], ["0%", "100%"]);
 
     return (
-        <main
-            ref={containerRef}
-            className="relative bg-black"
-            style={{ height: "600vh" }}
-        >
-            {/* Starfield background */}
-            <Starfield />
-
-            {/* Progress indicator - orbital path */}
-            <div className="fixed right-8 top-1/2 -translate-y-1/2 z-50 hidden lg:block">
-                <div className="flex flex-col items-center gap-3">
-                    {planets.map((planet, i) => {
-                        const progress = (i + 1) / (planets.length + 1);
-                        return (
-                            <motion.div
-                                key={planet.id}
-                                className="w-3 h-3 rounded-full border-2 transition-all duration-300"
-                                style={{
-                                    borderColor: planet.color,
-                                    background: useTransform(
-                                        scrollYProgress,
-                                        [progress - 0.1, progress, progress + 0.1],
-                                        ["transparent", planet.color, planet.color]
-                                    ),
-                                }}
-                            />
-                        );
-                    })}
-                </div>
+        <main ref={containerRef} className="relative bg-black">
+            {/* Progress bar */}
+            <div className="fixed top-0 left-0 right-0 h-[2px] z-50 bg-white/5">
+                <motion.div
+                    className="h-full bg-gradient-to-r from-[#a8ffc4] via-[#60a5fa] to-[#c084fc]"
+                    style={{ width: progressWidth }}
+                />
             </div>
 
-            {/* Hero - Starting point in space */}
-            <motion.section
-                className="fixed inset-0 flex items-center justify-center z-20"
-                style={{ opacity: heroOpacity, scale: heroScale }}
-            >
-                <div className="text-center px-6">
-                    {/* Breadcrumb */}
-                    <motion.div
-                        className="flex items-center justify-center gap-4 mb-8"
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ delay: 0.3 }}
-                    >
-                        <Link href="/" className="text-sm text-white/40 hover:text-white transition-colors">
-                            Home
-                        </Link>
-                        <span className="text-white/20">/</span>
-                        <span className="text-sm" style={{ color: "#a8ffc4" }}>Services</span>
-                    </motion.div>
+            {/* Hero */}
+            <section className="min-h-screen flex items-center justify-center relative overflow-hidden pt-32">
+                {/* Subtle grid background */}
+                <div
+                    className="absolute inset-0 opacity-[0.02]"
+                    style={{
+                        backgroundImage: `linear-gradient(rgba(255,255,255,0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.1) 1px, transparent 1px)`,
+                        backgroundSize: "60px 60px",
+                    }}
+                />
 
-                    {/* Mini planets preview */}
-                    <motion.div
-                        className="flex justify-center gap-8 mb-12"
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        transition={{ delay: 0.4 }}
-                    >
-                        {planets.map((planet, i) => (
+                <div className="relative z-10 max-w-7xl mx-auto px-6 md:px-16 lg:px-24 w-full">
+                    <div className="grid lg:grid-cols-12 gap-12 items-end">
+                        {/* Left */}
+                        <div className="lg:col-span-8">
+                            {/* Breadcrumb */}
                             <motion.div
-                                key={planet.id}
-                                className="w-12 h-12 rounded-full"
-                                style={{
-                                    background: planet.gradient,
-                                    boxShadow: `0 0 20px ${planet.color}40`,
-                                }}
-                                animate={{
-                                    y: [0, -10, 0],
-                                }}
-                                transition={{
-                                    duration: 3,
-                                    repeat: Infinity,
-                                    delay: i * 0.3,
-                                }}
-                            />
-                        ))}
-                    </motion.div>
+                                className="flex items-center gap-4 mb-12"
+                                initial={{ opacity: 0, y: 20 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                transition={{ duration: 0.6 }}
+                            >
+                                <Link href="/" className="text-sm text-white/40 hover:text-white transition-colors">
+                                    Home
+                                </Link>
+                                <span className="text-white/20">/</span>
+                                <span className="text-sm text-[#a8ffc4]">Services</span>
+                            </motion.div>
 
-                    {/* Title */}
-                    <motion.h1
-                        className="text-6xl md:text-8xl lg:text-9xl font-bold text-white mb-6"
-                        initial={{ opacity: 0, y: 40 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ delay: 0.5 }}
-                    >
-                        Explore Our
-                        <span
-                            className="block"
-                            style={{
-                                background: "linear-gradient(135deg, #4ADE80, #F59E0B, #3B82F6, #8B5CF6)",
-                                WebkitBackgroundClip: "text",
-                                WebkitTextFillColor: "transparent",
-                            }}
-                        >
-                            Universe
-                        </span>
-                    </motion.h1>
+                            {/* Title */}
+                            <h1 className="text-6xl md:text-8xl lg:text-[140px] font-bold text-white leading-[0.85] tracking-tight mb-12">
+                                <span className="block overflow-hidden">
+                                    <motion.span
+                                        className="block"
+                                        initial={{ y: "100%" }}
+                                        animate={{ y: 0 }}
+                                        transition={{ duration: 1, delay: 0.2, ease: [0.25, 1, 0.5, 1] }}
+                                    >
+                                        What
+                                    </motion.span>
+                                </span>
+                                <span className="block overflow-hidden">
+                                    <motion.span
+                                        className="block"
+                                        initial={{ y: "100%" }}
+                                        animate={{ y: 0 }}
+                                        transition={{ duration: 1, delay: 0.3, ease: [0.25, 1, 0.5, 1] }}
+                                    >
+                                        We <span className="text-[#a8ffc4]">Do</span>
+                                    </motion.span>
+                                </span>
+                            </h1>
+                        </div>
 
-                    <motion.p
-                        className="text-xl text-white/50 max-w-xl mx-auto mb-12"
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        transition={{ delay: 0.7 }}
-                    >
-                        Scroll to journey through our services
-                    </motion.p>
+                        {/* Right */}
+                        <div className="lg:col-span-4 pb-8">
+                            <motion.p
+                                className="text-lg text-white/50 leading-relaxed mb-8"
+                                initial={{ opacity: 0, y: 30 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                transition={{ duration: 0.8, delay: 0.5 }}
+                            >
+                                We partner with ambitious brands to create digital experiences that drive growth and build lasting connections.
+                            </motion.p>
+
+                            <motion.div
+                                className="flex items-center gap-4"
+                                initial={{ opacity: 0, y: 20 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                transition={{ duration: 0.8, delay: 0.6 }}
+                            >
+                                <span className="text-4xl font-bold text-[#a8ffc4]">04</span>
+                                <span className="text-sm uppercase tracking-widest text-white/30">Core Services</span>
+                            </motion.div>
+                        </div>
+                    </div>
 
                     {/* Scroll indicator */}
                     <motion.div
-                        className="flex flex-col items-center gap-3"
+                        className="absolute bottom-12 left-1/2 -translate-x-1/2"
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         transition={{ delay: 1 }}
                     >
                         <motion.div
-                            animate={{ y: [0, 15, 0] }}
+                            className="flex flex-col items-center gap-3"
+                            animate={{ y: [0, 8, 0] }}
                             transition={{ duration: 2, repeat: Infinity }}
                         >
-                            <svg
-                                className="w-8 h-8 text-white/40"
-                                fill="none"
-                                viewBox="0 0 24 24"
-                                stroke="currentColor"
-                            >
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M19 14l-7 7m0 0l-7-7m7 7V3" />
-                            </svg>
+                            <div className="w-6 h-10 rounded-full border border-white/20 flex items-start justify-center p-2">
+                                <motion.div
+                                    className="w-1 h-2 rounded-full bg-white/40"
+                                    animate={{ y: [0, 12, 0] }}
+                                    transition={{ duration: 1.5, repeat: Infinity }}
+                                />
+                            </div>
                         </motion.div>
-                        <span className="text-xs uppercase tracking-widest text-white/30">
-                            Begin Journey
-                        </span>
                     </motion.div>
                 </div>
-            </motion.section>
+            </section>
 
-            {/* Planets */}
-            {planets.map((planet, index) => (
-                <Planet
-                    key={planet.id}
-                    planet={planet}
-                    index={index}
-                    scrollProgress={smoothProgress}
-                />
-            ))}
+            {/* Services */}
+            <section className="py-32">
+                {services.map((service, index) => (
+                    <ServiceCard key={service.id} service={service} index={index} />
+                ))}
+            </section>
 
-            {/* Final CTA - All planets converge */}
-            <motion.section
-                className="fixed inset-0 flex items-center justify-center z-30"
-                style={{ opacity: ctaOpacity, scale: ctaScale }}
-            >
-                {/* Converging planets */}
-                <div className="absolute inset-0 flex items-center justify-center">
-                    {planets.map((planet, i) => {
-                        const angle = (i / planets.length) * Math.PI * 2;
-                        return (
-                            <motion.div
-                                key={planet.id}
-                                className="absolute w-16 h-16 rounded-full"
-                                style={{
-                                    background: planet.gradient,
-                                    boxShadow: `0 0 30px ${planet.color}60`,
-                                    x: useTransform(convergeProgress, [0, 1], [Math.cos(angle) * 300, Math.cos(angle) * 100]),
-                                    y: useTransform(convergeProgress, [0, 1], [Math.sin(angle) * 300, Math.sin(angle) * 100]),
-                                }}
-                            />
-                        );
-                    })}
+            {/* CTA Section */}
+            <section className="min-h-screen flex items-center justify-center relative overflow-hidden">
+                {/* Background glow */}
+                <div className="absolute inset-0">
+                    <motion.div
+                        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] rounded-full opacity-20"
+                        style={{
+                            background: "radial-gradient(circle, #a8ffc4 0%, transparent 70%)",
+                            filter: "blur(100px)",
+                        }}
+                        animate={{ scale: [1, 1.1, 1] }}
+                        transition={{ duration: 8, repeat: Infinity }}
+                    />
                 </div>
 
                 <div className="relative z-10 text-center px-6">
-                    <motion.h2
-                        className="text-5xl md:text-7xl lg:text-8xl font-bold text-white mb-6"
+                    <motion.div
+                        initial={{ opacity: 0, y: 40 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.8 }}
+                        viewport={{ once: true }}
                     >
-                        Ready to
-                        <span
-                            className="block"
-                            style={{
-                                background: "linear-gradient(135deg, #a8ffc4 0%, #4ADE80 100%)",
-                                WebkitBackgroundClip: "text",
-                                WebkitTextFillColor: "transparent",
-                            }}
-                        >
-                            Launch?
+                        <span className="text-sm uppercase tracking-[0.3em] text-white/30 block mb-8">
+                            Ready to Start?
                         </span>
-                    </motion.h2>
 
-                    <motion.p className="text-xl text-white/50 max-w-xl mx-auto mb-12">
-                        Let&apos;s create something extraordinary together.
-                    </motion.p>
+                        <h2 className="text-5xl md:text-7xl lg:text-8xl font-bold text-white mb-8 tracking-tight">
+                            Let&apos;s build<br />
+                            <span className="text-[#a8ffc4]">something great</span>
+                        </h2>
 
-                    <Link
-                        href="/#contact"
-                        className="inline-flex items-center gap-4 px-12 py-6 rounded-full font-medium text-xl transition-all duration-500 hover:scale-105"
-                        style={{
-                            background: "linear-gradient(135deg, #a8ffc4 0%, #4ADE80 100%)",
-                            color: "#000",
-                            boxShadow: "0 20px 60px rgba(168,255,196,0.4)",
-                        }}
-                    >
-                        Start Your Mission
-                        <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                            <path strokeLinecap="round" strokeLinejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
-                        </svg>
-                    </Link>
+                        <motion.div
+                            initial={{ opacity: 0, y: 20 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 0.8, delay: 0.2 }}
+                            viewport={{ once: true }}
+                        >
+                            <Link
+                                href="/#contact"
+                                className="group inline-flex items-center gap-4 px-10 py-5 rounded-full text-lg font-medium transition-all duration-500 hover:scale-105"
+                                style={{
+                                    background: "#a8ffc4",
+                                    color: "#000",
+                                    boxShadow: "0 20px 60px rgba(168,255,196,0.3)",
+                                }}
+                            >
+                                Start a Project
+                                <motion.svg
+                                    className="w-5 h-5"
+                                    fill="none"
+                                    viewBox="0 0 24 24"
+                                    stroke="currentColor"
+                                    strokeWidth={2}
+                                >
+                                    <path strokeLinecap="round" strokeLinejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                                </motion.svg>
+                            </Link>
+                        </motion.div>
+                    </motion.div>
                 </div>
-            </motion.section>
+            </section>
         </main>
     );
 }
