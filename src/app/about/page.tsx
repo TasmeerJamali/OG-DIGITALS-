@@ -215,18 +215,18 @@ function SplitText({ children, className = "" }: { children: string; className?:
     return (
         <div ref={ref} className={className}>
             {words.map((word, i) => (
-                <span key={i} className="inline-block overflow-hidden mr-[0.3em]">
+                <span key={i} className="inline-block overflow-hidden">
                     <motion.span
                         className="inline-block"
                         initial={{ y: "100%" }}
                         animate={isInView ? { y: 0 } : {}}
                         transition={{
                             duration: 0.8,
-                            delay: i * 0.05,
+                            delay: i * 0.03,
                             ease: [0.25, 1, 0.5, 1],
                         }}
                     >
-                        {word}
+                        {word}{i < words.length - 1 ? "\u00A0" : ""}
                     </motion.span>
                 </span>
             ))}
@@ -464,55 +464,46 @@ export default function AboutPage() {
             </section>
 
             {/* ===== VALUES SECTION ===== */}
-            <section className="py-32 relative">
-                <div className="max-w-6xl mx-auto px-6">
-                    {/* Section header */}
+            <section className="py-40 relative">
+                <div className="w-full px-6 md:px-12 lg:px-24">
+                    {/* Section header - left aligned */}
                     <motion.div
-                        className="text-center mb-20"
+                        className="mb-24 max-w-3xl"
                         initial={{ opacity: 0, y: 30 }}
                         whileInView={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.8 }}
                         viewport={{ once: true }}
                     >
-                        <span className="text-xs uppercase tracking-[0.3em] text-[#a8ffc4] block mb-4">
+                        <span className="text-xs uppercase tracking-[0.3em] text-[#a8ffc4] block mb-6">
                             Our Values
                         </span>
-                        <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white">
-                            What drives us
+                        <h2 className="text-5xl md:text-6xl lg:text-7xl font-bold text-white leading-tight">
+                            What drives<br />everything we do
                         </h2>
                     </motion.div>
 
-                    {/* Values grid */}
-                    <div className="grid md:grid-cols-2 gap-8">
+                    {/* Values - horizontal list */}
+                    <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-12 lg:gap-8">
                         {values.map((value, i) => (
                             <motion.div
                                 key={value.title}
-                                className="group relative p-8 rounded-2xl border border-white/5 hover:border-[#a8ffc4]/30 transition-all duration-500"
-                                initial={{ opacity: 0, y: 30 }}
+                                className="group relative"
+                                initial={{ opacity: 0, y: 40 }}
                                 whileInView={{ opacity: 1, y: 0 }}
                                 transition={{ duration: 0.6, delay: i * 0.1 }}
                                 viewport={{ once: true }}
-                                whileHover={{ y: -5 }}
                             >
-                                {/* Background glow on hover */}
-                                <motion.div
-                                    className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"
-                                    style={{
-                                        background: "radial-gradient(circle at center, rgba(168,255,196,0.05) 0%, transparent 70%)",
-                                    }}
-                                />
-
                                 {/* Number */}
-                                <span className="text-6xl font-bold text-[#a8ffc4]/10 absolute top-4 right-8">
+                                <span className="text-8xl font-bold text-[#a8ffc4]/5 absolute -top-8 -left-4">
                                     {value.number}
                                 </span>
 
                                 {/* Content */}
-                                <div className="relative">
-                                    <h3 className="text-2xl font-bold text-white mb-4 group-hover:text-[#a8ffc4] transition-colors">
+                                <div className="relative pt-8 border-t border-white/10">
+                                    <h3 className="text-2xl font-bold text-white mb-4 group-hover:text-[#a8ffc4] transition-colors duration-300">
                                         {value.title}
                                     </h3>
-                                    <p className="text-white/50 leading-relaxed">
+                                    <p className="text-white/40 leading-relaxed">
                                         {value.description}
                                     </p>
                                 </div>
@@ -523,128 +514,173 @@ export default function AboutPage() {
             </section>
 
             {/* ===== TEAM SECTION ===== */}
-            <section className="py-32 relative overflow-hidden">
-                {/* Background elements */}
-                <div className="absolute inset-0 pointer-events-none">
-                    <motion.div
-                        className="absolute top-1/2 left-0 w-[400px] h-[400px] rounded-full"
-                        style={{
-                            background: "radial-gradient(circle, rgba(168,255,196,0.1) 0%, transparent 70%)",
-                            filter: "blur(80px)",
-                        }}
-                        animate={{ y: [-50, 50, -50] }}
-                        transition={{ duration: 10, repeat: Infinity }}
-                    />
-                </div>
+            <section className="py-40 relative overflow-hidden">
+                <div className="w-full px-6 md:px-12 lg:px-24">
+                    {/* Section header - split layout */}
+                    <div className="grid lg:grid-cols-2 gap-12 mb-24">
+                        <motion.div
+                            initial={{ opacity: 0, y: 30 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 0.8 }}
+                            viewport={{ once: true }}
+                        >
+                            <span className="text-xs uppercase tracking-[0.3em] text-[#a8ffc4] block mb-6">
+                                The Team
+                            </span>
+                            <h2 className="text-5xl md:text-6xl lg:text-7xl font-bold text-white leading-tight">
+                                The minds<br />behind the magic
+                            </h2>
+                        </motion.div>
+                        
+                        <motion.div
+                            className="flex items-end"
+                            initial={{ opacity: 0, y: 30 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 0.8, delay: 0.2 }}
+                            viewport={{ once: true }}
+                        >
+                            <p className="text-lg text-white/50 max-w-md">
+                                A diverse group of strategists, designers, and developers 
+                                who are passionate about creating exceptional digital experiences.
+                            </p>
+                        </motion.div>
+                    </div>
 
-                <div className="max-w-6xl mx-auto px-6 relative z-10">
-                    {/* Section header */}
-                    <motion.div
-                        className="text-center mb-20"
-                        initial={{ opacity: 0, y: 30 }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.8 }}
-                        viewport={{ once: true }}
-                    >
-                        <span className="text-xs uppercase tracking-[0.3em] text-[#a8ffc4] block mb-4">
-                            The Team
-                        </span>
-                        <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white">
-                            Meet the minds behind
-                        </h2>
-                    </motion.div>
-
-                    {/* Team grid */}
-                    <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+                    {/* Team grid - larger cards */}
+                    <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
                         {team.map((member, i) => (
-                            <TeamCard key={member.name} member={member} index={i} />
+                            <motion.div
+                                key={member.name}
+                                className="group"
+                                initial={{ opacity: 0, y: 50 }}
+                                whileInView={{ opacity: 1, y: 0 }}
+                                transition={{ duration: 0.8, delay: i * 0.1 }}
+                                viewport={{ once: true }}
+                            >
+                                {/* Card */}
+                                <div 
+                                    className="relative aspect-[3/4] rounded-xl overflow-hidden mb-6"
+                                    style={{
+                                        background: `linear-gradient(180deg, ${member.color}15 0%, ${member.color}05 100%)`,
+                                    }}
+                                >
+                                    {/* Hover glow */}
+                                    <motion.div
+                                        className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+                                        style={{
+                                            background: `radial-gradient(circle at 50% 100%, ${member.color}30 0%, transparent 60%)`,
+                                        }}
+                                    />
+                                    
+                                    {/* Initials placeholder */}
+                                    <div className="absolute inset-0 flex items-center justify-center">
+                                        <span 
+                                            className="text-7xl font-bold opacity-10"
+                                            style={{ color: member.color }}
+                                        >
+                                            {member.name.split(' ').map(n => n[0]).join('')}
+                                        </span>
+                                    </div>
+                                    
+                                    {/* Bottom gradient */}
+                                    <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-black/50 to-transparent" />
+                                </div>
+                                
+                                {/* Info */}
+                                <div>
+                                    <span 
+                                        className="text-xs uppercase tracking-wider block mb-2"
+                                        style={{ color: member.color }}
+                                    >
+                                        {member.role}
+                                    </span>
+                                    <h3 className="text-xl font-bold text-white group-hover:text-[#a8ffc4] transition-colors">
+                                        {member.name}
+                                    </h3>
+                                </div>
+                            </motion.div>
                         ))}
                     </div>
                 </div>
             </section>
 
             {/* ===== CTA SECTION ===== */}
-            <section className="py-32 relative overflow-hidden">
-                {/* Animated gradient background */}
-                <motion.div
-                    className="absolute inset-0"
-                    style={{
-                        background: "linear-gradient(135deg, rgba(168,255,196,0.05) 0%, transparent 50%, rgba(96,165,250,0.05) 100%)",
-                    }}
-                />
-
-                <div className="max-w-4xl mx-auto px-6 text-center relative z-10">
+            <section className="min-h-[80vh] flex items-center relative overflow-hidden">
+                {/* Background */}
+                <div className="absolute inset-0">
                     <motion.div
-                        initial={{ opacity: 0, y: 40 }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.8 }}
-                        viewport={{ once: true }}
-                    >
-                        <span className="text-xs uppercase tracking-[0.3em] text-white/30 block mb-6">
-                            Ready to Create?
-                        </span>
+                        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] rounded-full"
+                        style={{
+                            background: "radial-gradient(circle, rgba(168,255,196,0.1) 0%, transparent 60%)",
+                            filter: "blur(100px)",
+                        }}
+                        animate={{ scale: [1, 1.2, 1] }}
+                        transition={{ duration: 10, repeat: Infinity }}
+                    />
+                </div>
 
-                        <h2 className="text-5xl md:text-6xl lg:text-7xl font-bold text-white mb-8">
-                            Let&apos;s build something<br />
-                            <span className="text-[#a8ffc4]">extraordinary</span>
-                        </h2>
+                <div className="w-full px-6 md:px-12 lg:px-24 relative z-10">
+                    <div className="grid lg:grid-cols-2 gap-16 items-center">
+                        {/* Left - Headline */}
+                        <motion.div
+                            initial={{ opacity: 0, x: -50 }}
+                            whileInView={{ opacity: 1, x: 0 }}
+                            transition={{ duration: 0.8 }}
+                            viewport={{ once: true }}
+                        >
+                            <span className="text-xs uppercase tracking-[0.3em] text-white/30 block mb-8">
+                                Ready to Create?
+                            </span>
+                            <h2 className="text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-bold text-white leading-[0.95]">
+                                Let&apos;s build<br />
+                                something<br />
+                                <span className="text-[#a8ffc4]">extraordinary</span>
+                            </h2>
+                        </motion.div>
 
-                        <p className="text-xl text-white/50 mb-12 max-w-xl mx-auto">
-                            Have a project in mind? We&apos;d love to hear about it.
-                            Let&apos;s discuss how we can help you achieve your goals.
-                        </p>
+                        {/* Right - CTA */}
+                        <motion.div
+                            className="lg:pl-16"
+                            initial={{ opacity: 0, x: 50 }}
+                            whileInView={{ opacity: 1, x: 0 }}
+                            transition={{ duration: 0.8, delay: 0.2 }}
+                            viewport={{ once: true }}
+                        >
+                            <p className="text-xl text-white/50 mb-12 leading-relaxed">
+                                Have a project in mind? We&apos;d love to hear about it.
+                                Let&apos;s discuss how we can help you achieve your goals.
+                            </p>
 
-                        {/* Animated CTA button */}
-                        <motion.div className="relative inline-block">
-                            <motion.div
-                                className="absolute -inset-2 rounded-full opacity-50"
-                                style={{
-                                    background: "linear-gradient(90deg, #a8ffc4, #60a5fa, #c084fc, #a8ffc4)",
-                                    backgroundSize: "300% 100%",
-                                    filter: "blur(12px)",
-                                }}
-                                animate={{
-                                    backgroundPosition: ["0% 50%", "100% 50%", "0% 50%"],
-                                }}
-                                transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
-                            />
-
-                            <Link href="/#contact" className="relative block">
+                            {/* Button */}
+                            <Link href="/#contact" className="group inline-block">
                                 <motion.div
-                                    className="relative px-12 py-6 rounded-full overflow-hidden cursor-pointer"
+                                    className="relative px-12 py-6 rounded-full overflow-hidden"
                                     style={{
                                         background: "linear-gradient(135deg, #a8ffc4 0%, #7dd3a8 100%)",
                                     }}
-                                    whileHover={{ scale: 1.05 }}
+                                    whileHover={{ scale: 1.02 }}
                                     whileTap={{ scale: 0.98 }}
                                 >
+                                    {/* Shimmer */}
                                     <motion.div
                                         className="absolute inset-0"
                                         style={{
-                                            background: "linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent)",
+                                            background: "linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent)",
                                         }}
                                         animate={{ x: ["-100%", "100%"] }}
                                         transition={{ duration: 2, repeat: Infinity, repeatDelay: 3 }}
                                     />
-
+                                    
                                     <div className="relative flex items-center gap-4 text-black font-bold text-lg">
                                         <span>Get in Touch</span>
-                                        <motion.svg
-                                            className="w-6 h-6"
-                                            fill="none"
-                                            viewBox="0 0 24 24"
-                                            stroke="currentColor"
-                                            strokeWidth={2.5}
-                                            animate={{ x: [0, 5, 0] }}
-                                            transition={{ duration: 1.5, repeat: Infinity }}
-                                        >
+                                        <svg className="w-6 h-6 group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
                                             <path strokeLinecap="round" strokeLinejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
-                                        </motion.svg>
+                                        </svg>
                                     </div>
                                 </motion.div>
                             </Link>
                         </motion.div>
-                    </motion.div>
+                    </div>
                 </div>
             </section>
         </main>
