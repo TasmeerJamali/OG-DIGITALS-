@@ -316,12 +316,12 @@ export default function AboutPage() {
 
                 {/* Hero content */}
                 <motion.div
-                    className="relative z-10 max-w-6xl mx-auto px-6 text-center"
+                    className="relative z-10 w-full px-6 md:px-12 lg:px-24"
                     style={{ y: heroY, opacity: heroOpacity }}
                 >
-                    {/* Breadcrumb */}
+                    {/* Breadcrumb - left aligned */}
                     <motion.div
-                        className="flex items-center justify-center gap-4 mb-12"
+                        className="flex items-center gap-4 mb-12"
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ delay: 0.2 }}
@@ -333,48 +333,74 @@ export default function AboutPage() {
                         <span className="text-sm text-[#a8ffc4]">About</span>
                     </motion.div>
 
-                    {/* Main headline */}
-                    <h1 className="text-5xl md:text-7xl lg:text-8xl font-bold text-white mb-8 leading-[0.9]">
-                        <SplitText className="block">We are The OG</SplitText>
-                        <span className="block overflow-hidden mt-2">
-                            <motion.span
-                                className="block text-[#a8ffc4]"
-                                initial={{ y: "100%" }}
-                                animate={{ y: 0 }}
-                                transition={{ duration: 1, delay: 0.5, ease: [0.25, 1, 0.5, 1] }}
+                    {/* Main content grid - spread across */}
+                    <div className="grid lg:grid-cols-12 gap-8 lg:gap-16 items-end">
+                        {/* Left - Main headline */}
+                        <div className="lg:col-span-8">
+                            <h1 className="text-6xl md:text-8xl lg:text-9xl xl:text-[12rem] font-bold text-white leading-[0.85] tracking-tight">
+                                <span className="block overflow-hidden">
+                                    <motion.span
+                                        className="block"
+                                        initial={{ y: "100%" }}
+                                        animate={{ y: 0 }}
+                                        transition={{ duration: 1, delay: 0.2, ease: [0.25, 1, 0.5, 1] }}
+                                    >
+                                        We are
+                                    </motion.span>
+                                </span>
+                                <span className="block overflow-hidden">
+                                    <motion.span
+                                        className="block"
+                                        initial={{ y: "100%" }}
+                                        animate={{ y: 0 }}
+                                        transition={{ duration: 1, delay: 0.3, ease: [0.25, 1, 0.5, 1] }}
+                                    >
+                                        The <span className="text-[#a8ffc4]">OG</span>
+                                    </motion.span>
+                                </span>
+                                <span className="block overflow-hidden">
+                                    <motion.span
+                                        className="block text-[#a8ffc4]"
+                                        initial={{ y: "100%" }}
+                                        animate={{ y: 0 }}
+                                        transition={{ duration: 1, delay: 0.4, ease: [0.25, 1, 0.5, 1] }}
+                                    >
+                                        Digitals
+                                    </motion.span>
+                                </span>
+                            </h1>
+                        </div>
+
+                        {/* Right - Tagline */}
+                        <div className="lg:col-span-4 pb-4 lg:pb-8">
+                            <motion.p
+                                className="text-lg md:text-xl text-white/50 leading-relaxed mb-8"
+                                initial={{ opacity: 0, y: 30 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                transition={{ delay: 0.8 }}
                             >
-                                Digitals
-                            </motion.span>
-                        </span>
-                    </h1>
+                                A creative digital agency crafting extraordinary experiences that captivate, engage, and convert.
+                            </motion.p>
 
-                    {/* Tagline */}
-                    <motion.p
-                        className="text-xl md:text-2xl text-white/50 max-w-2xl mx-auto mb-12"
-                        initial={{ opacity: 0, y: 30 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ delay: 0.8 }}
-                    >
-                        A creative digital agency crafting extraordinary experiences that captivate, engage, and convert.
-                    </motion.p>
-
-                    {/* Scroll indicator */}
-                    <motion.div
-                        className="flex flex-col items-center gap-4"
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        transition={{ delay: 1.2 }}
-                    >
-                        <motion.div
-                            animate={{ y: [0, 10, 0] }}
-                            transition={{ duration: 2, repeat: Infinity }}
-                        >
-                            <svg className="w-6 h-6 text-[#a8ffc4]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M19 14l-7 7m0 0l-7-7m7 7V3" />
-                            </svg>
-                        </motion.div>
-                        <span className="text-xs uppercase tracking-widest text-white/30">Scroll to explore</span>
-                    </motion.div>
+                            {/* Scroll indicator */}
+                            <motion.div
+                                className="flex items-center gap-4"
+                                initial={{ opacity: 0 }}
+                                animate={{ opacity: 1 }}
+                                transition={{ delay: 1.2 }}
+                            >
+                                <motion.div
+                                    animate={{ y: [0, 8, 0] }}
+                                    transition={{ duration: 2, repeat: Infinity }}
+                                >
+                                    <svg className="w-5 h-5 text-[#a8ffc4]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M19 14l-7 7m0 0l-7-7m7 7V3" />
+                                    </svg>
+                                </motion.div>
+                                <span className="text-xs uppercase tracking-widest text-white/30">Scroll to explore</span>
+                            </motion.div>
+                        </div>
+                    </div>
                 </motion.div>
             </section>
 
