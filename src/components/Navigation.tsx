@@ -8,7 +8,7 @@ const navLinks = [
     { name: "Work", href: "/work" },
     { name: "Services", href: "/services" },
     { name: "About", href: "/about" },
-    { name: "Contact Us", href: "#contact" },
+    { name: "Contact Us", href: "/contact" },
 ];
 
 // Rolling text animation component
