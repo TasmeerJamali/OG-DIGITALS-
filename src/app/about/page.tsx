@@ -8,15 +8,15 @@ import ParticleNet from "@/components/ParticleNet";
 // Team members
 const team = [
     {
-        name: "Tasmeer Jamali",
-        role: "Founder & Creative Director",
-        image: "/team/tasmeer.jpg",
+        name: "Founder",
+        role: "Creative Director",
+        image: "/team/founder.jpg",
         color: "#a8ffc4",
     },
     {
-        name: "Creative Lead",
+        name: "Design Lead",
         role: "Head of Design",
-        image: "/team/lead.jpg",
+        image: "/team/design.jpg",
         color: "#60a5fa",
     },
     {
@@ -439,33 +439,7 @@ export default function AboutPage() {
                 </div>
             </section>
 
-            {/* ===== STATS SECTION ===== */}
-            <section className="py-24 relative overflow-hidden">
-                {/* Background line */}
-                <div className="absolute left-1/2 top-0 bottom-0 w-[1px] bg-white/5" />
 
-                <div className="max-w-6xl mx-auto px-6">
-                    <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
-                        {stats.map((stat, i) => (
-                            <motion.div
-                                key={stat.label}
-                                className="text-center"
-                                initial={{ opacity: 0, y: 30 }}
-                                whileInView={{ opacity: 1, y: 0 }}
-                                transition={{ duration: 0.6, delay: i * 0.1 }}
-                                viewport={{ once: true }}
-                            >
-                                <div className="text-5xl md:text-6xl lg:text-7xl font-bold text-[#a8ffc4] mb-2">
-                                    <Counter target={stat.number} suffix={stat.suffix} />
-                                </div>
-                                <div className="text-sm uppercase tracking-widest text-white/40">
-                                    {stat.label}
-                                </div>
-                            </motion.div>
-                        ))}
-                    </div>
-                </div>
-            </section>
 
             {/* ===== VALUES SECTION ===== */}
             <section className="py-40 relative">
