@@ -56,8 +56,8 @@ function FloatingElement({
 }) {
     const randomX = Math.random() * 100;
     const randomY = Math.random() * 100;
-    const randomDuration = 15 + Math.random() * 20;
-    const randomSize = 12 + Math.random() * 16;
+    const randomDuration = 8 + Math.random() * 12;
+    const randomSize = 16 + Math.random() * 24;
 
     return (
         <motion.span
@@ -66,13 +66,13 @@ function FloatingElement({
                 left: `${randomX}%`,
                 top: `${randomY}%`,
                 fontSize: randomSize,
-                color: `${color}15`,
+                color: color,
             }}
             initial={{ opacity: 0 }}
             animate={{
-                opacity: [0, 0.4, 0],
-                y: [0, -50, 0],
-                x: [0, Math.random() * 30 - 15, 0],
+                opacity: [0, 0.15, 0.25, 0.15, 0],
+                y: [0, -30, -60],
+                x: [0, Math.random() * 20 - 10, 0],
             }}
             transition={{
                 duration: randomDuration,
@@ -99,7 +99,7 @@ function ServiceBackground({ service, isInView }: { service: typeof services[0];
             <div
                 className="absolute inset-0"
                 style={{
-                    background: `radial-gradient(ellipse at 70% 50%, ${service.accent}08 0%, transparent 60%)`,
+                    background: `radial-gradient(ellipse at 70% 50%, ${service.accent}20 0%, transparent 60%)`,
                 }}
             />
 
@@ -118,7 +118,7 @@ function ServiceBackground({ service, isInView }: { service: typeof services[0];
                 className="absolute right-0 top-1/2 -translate-y-1/2 font-bold pointer-events-none select-none"
                 style={{
                     fontSize: "clamp(200px, 30vw, 400px)",
-                    color: `${service.accent}05`,
+                    color: `${service.accent}10`,
                     lineHeight: 0.8,
                     whiteSpace: "nowrap",
                 }}
