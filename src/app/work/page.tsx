@@ -1,7 +1,7 @@
 "use client";
 
 import { useRef, useState, useCallback, useEffect } from "react";
-import { motion, useMotionValue, useSpring, AnimatePresence } from "framer-motion";
+import { motion, useSpring, AnimatePresence } from "framer-motion";
 import Link from "next/link";
 import Image from "next/image";
 
@@ -44,55 +44,6 @@ const projects = [
         image: "/assets/projects/dha.png",
     },
 ];
-
-// Custom cursor that follows mouse
-function CustomCursor({ isHovering, color }: { isHovering: boolean; color: string }) {
-    const cursorX = useMotionValue(-100);
-    const cursorY = useMotionValue(-100);
-
-    const springConfig = { damping: 25, stiffness: 300 };
-    const cursorXSpring = useSpring(cursorX, springConfig);
-    const cursorYSpring = useSpring(cursorY, springConfig);
-
-    useEffect(() => {
-        const moveCursor = (e: MouseEvent) => {
-            cursorX.set(e.clientX);
-            cursorY.set(e.clientY);
-        };
-        window.addEventListener("mousemove", moveCursor);
-        return () => window.removeEventListener("mousemove", moveCursor);
-    }, [cursorX, cursorY]);
-
-    return (
-        <motion.div
-            className="fixed top-0 left-0 pointer-events-none z-50 mix-blend-difference hidden lg:flex items-center justify-center"
-            style={{
-                x: cursorXSpring,
-                y: cursorYSpring,
-                translateX: "-50%",
-                translateY: "-50%",
-            }}
-        >
-            <motion.div
-                className="rounded-full flex items-center justify-center"
-                animate={{
-                    width: isHovering ? 120 : 20,
-                    height: isHovering ? 120 : 20,
-                    backgroundColor: isHovering ? color : "#ffffff",
-                }}
-                transition={{ duration: 0.3, ease: [0.25, 1, 0.5, 1] }}
-            >
-                <motion.span
-                    className="text-black text-sm font-medium uppercase tracking-wider"
-                    animate={{ opacity: isHovering ? 1 : 0 }}
-                    transition={{ duration: 0.2 }}
-                >
-                    View
-                </motion.span>
-            </motion.div>
-        </motion.div>
-    );
-}
 
 // Project item with dramatic hover
 function ProjectItem({
@@ -278,29 +229,6 @@ function ImagePreview({
                                     background: `linear-gradient(135deg, ${project.color}40 0%, #0a0a0a 60%)`,
                                 }}
                             >
-                                {/* Scan line effect */}
-                                <motion.div
-                                    className="absolute inset-0 pointer-events-none"
-                                    style={{
-                                        background: `repeating-linear-gradient(0deg, transparent, transparent 2px, ${project.color}10 2px, ${project.color}10 4px)`,
-                                    }}
-                                    animate={{ y: [0, 10, 0] }}
-                                    transition={{ duration: 2, repeat: Infinity }}
-                                />
-
-                                {/* Animated glow */}
-                                <motion.div
-                                    className="absolute inset-0"
-                                    animate={{
-                                        background: [
-                                            `radial-gradient(circle at 30% 30%, ${project.color}30 0%, transparent 50%)`,
-                                            `radial-gradient(circle at 70% 70%, ${project.color}30 0%, transparent 50%)`,
-                                            `radial-gradient(circle at 30% 30%, ${project.color}30 0%, transparent 50%)`,
-                                        ],
-                                    }}
-                                    transition={{ duration: 4, repeat: Infinity }}
-                                />
-
                                 {/* Project initial */}
                                 <div className="absolute inset-0 flex items-center justify-center">
                                     <motion.span
@@ -318,34 +246,18 @@ function ImagePreview({
                                         {project.title.charAt(0)}
                                     </motion.span>
                                 </div>
-
-                                {/* URL text */}
-                                <div className="absolute bottom-4 left-4 right-4">
-                                    <div
-                                        className="text-xs font-mono truncate"
-                                        style={{ color: `${project.color}80` }}
-                                    >
-                                        {project.link.replace('https://', '')}
-                                    </div>
-                                </div>
                             </div>
                         )}
 
-                        {/* Overlay with project info */}
-                        <div
-                            className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"
-                        />
+                        {/* Overlay gradient */}
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
 
                         {/* Glare effect */}
                         <motion.div
                             className="absolute inset-0 pointer-events-none"
                             style={{
-                                background: "linear-gradient(135deg, rgba(255,255,255,0.1) 0%, transparent 50%, transparent 100%)",
+                                background: "linear-gradient(135deg, rgba(255,255,255,0.15) 0%, transparent 50%, transparent 100%)",
                             }}
-                            animate={{
-                                opacity: [0.3, 0.5, 0.3],
-                            }}
-                            transition={{ duration: 2, repeat: Infinity }}
                         />
 
                         {/* Bottom info bar */}
@@ -389,15 +301,9 @@ export default function WorkPage() {
     return (
         <main
             ref={containerRef}
-            className="relative min-h-screen bg-black cursor-none lg:cursor-none"
+            className="relative min-h-screen bg-black"
             onMouseMove={handleMouseMove}
         >
-            {/* Custom cursor */}
-            <CustomCursor
-                isHovering={hoveredIndex !== null}
-                color={hoveredProject?.color || "#a8ffc4"}
-            />
-
             {/* Floating image preview */}
             <ImagePreview
                 project={hoveredProject}
@@ -420,7 +326,7 @@ export default function WorkPage() {
 
             {/* Content */}
             <div className="relative z-10 px-6 md:px-16 lg:px-24">
-                {/* Header */}
+                {/* Header - with space for navbar */}
                 <header className="pt-40 pb-20">
                     <motion.div
                         initial={{ opacity: 0, y: 30 }}
@@ -483,7 +389,7 @@ export default function WorkPage() {
                             { value: "100%", label: "Satisfaction" },
                             { value: "2024", label: "Year" },
                             { value: "∞", label: "Possibilities" },
-                        ].map((stat, i) => (
+                        ].map((stat) => (
                             <div key={stat.label} className="text-center">
                                 <div
                                     className="text-4xl md:text-6xl font-bold mb-2"

@@ -4,7 +4,6 @@ import { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import Preloader from "@/components/Preloader";
 import Hero from "@/components/Hero";
-import Navigation from "@/components/Navigation";
 import Services from "@/components/Services";
 import About from "@/components/About";
 import Footer from "@/components/Footer";
@@ -26,7 +25,6 @@ export default function Home() {
         transition={{ duration: 0.5 }}
         className={isLoading ? "pointer-events-none" : ""}
       >
-        <Navigation />
         <Hero />
         <Services />
         <About />
