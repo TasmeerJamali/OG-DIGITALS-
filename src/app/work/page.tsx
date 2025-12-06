@@ -3,6 +3,7 @@
 import { useRef, useState, useCallback, useEffect } from "react";
 import { motion, useMotionValue, useSpring, AnimatePresence } from "framer-motion";
 import Link from "next/link";
+import Image from "next/image";
 
 // Project data
 const projects = [
@@ -13,6 +14,7 @@ const projects = [
         year: "2024",
         link: "https://organimo.com",
         color: "#4ADE80",
+        image: "/assets/projects/organimo.png",
     },
     {
         id: 2,
@@ -21,6 +23,7 @@ const projects = [
         year: "2024",
         link: "https://paksoortydates.com",
         color: "#F59E0B",
+        image: "/assets/projects/paksoorty.png",
     },
     {
         id: 3,
@@ -29,6 +32,7 @@ const projects = [
         year: "2024",
         link: "https://universalbookstore.pk",
         color: "#3B82F6",
+        image: "/assets/projects/bookstore.png",
     },
     {
         id: 4,
@@ -37,6 +41,7 @@ const projects = [
         year: "2024",
         link: "https://indushills.dhacitykarachi.org.pk",
         color: "#8B5CF6",
+        image: "/assets/projects/dha.png",
     },
 ];
 
@@ -201,7 +206,7 @@ function ProjectItem({
     );
 }
 
-// Floating image preview that follows cursor
+// Floating image preview that follows cursor with perspective effect
 function ImagePreview({
     project,
     isVisible,
@@ -213,11 +218,17 @@ function ImagePreview({
 }) {
     const x = useSpring(mousePos.x, { damping: 20, stiffness: 200 });
     const y = useSpring(mousePos.y, { damping: 20, stiffness: 200 });
+    const [imageError, setImageError] = useState(false);
 
     useEffect(() => {
         x.set(mousePos.x);
         y.set(mousePos.y);
     }, [mousePos, x, y]);
+
+    // Reset image error when project changes
+    useEffect(() => {
+        setImageError(false);
+    }, [project]);
 
     return (
         <AnimatePresence>
@@ -230,41 +241,134 @@ function ImagePreview({
                         translateX: "-50%",
                         translateY: "-50%",
                     }}
-                    initial={{ opacity: 0, scale: 0.8, rotate: -5 }}
-                    animate={{ opacity: 1, scale: 1, rotate: 0 }}
-                    exit={{ opacity: 0, scale: 0.8, rotate: 5 }}
-                    transition={{ duration: 0.4, ease: [0.25, 1, 0.5, 1] }}
+                    initial={{ opacity: 0, scale: 0.8, rotateY: -15, rotateX: 10 }}
+                    animate={{ opacity: 1, scale: 1, rotateY: 0, rotateX: 0 }}
+                    exit={{ opacity: 0, scale: 0.8, rotateY: 15, rotateX: -10 }}
+                    transition={{ duration: 0.5, ease: [0.25, 1, 0.5, 1] }}
                 >
-                    <div
-                        className="w-[400px] h-[280px] rounded-2xl overflow-hidden shadow-2xl"
+                    <motion.div
+                        className="relative w-[420px] h-[280px] rounded-2xl overflow-hidden"
                         style={{
-                            background: `linear-gradient(135deg, ${project.color}30 0%, #000 100%)`,
-                            border: `1px solid ${project.color}40`,
-                            boxShadow: `0 25px 80px ${project.color}30`,
+                            boxShadow: `0 30px 100px ${project.color}40, 0 10px 40px rgba(0,0,0,0.5)`,
+                            border: `1px solid ${project.color}30`,
+                            transformStyle: "preserve-3d",
+                            perspective: 1000,
                         }}
+                        animate={{
+                            rotateY: [(mousePos.x % 20) - 10, (mousePos.x % 20) - 5, (mousePos.x % 20) - 10],
+                            rotateX: [(mousePos.y % 10) - 5, (mousePos.y % 10) - 2, (mousePos.y % 10) - 5],
+                        }}
+                        transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
                     >
-                        {/* Placeholder with animated gradient */}
-                        <motion.div
-                            className="w-full h-full flex items-center justify-center"
-                            animate={{
-                                background: [
-                                    `linear-gradient(45deg, ${project.color}20 0%, transparent 50%)`,
-                                    `linear-gradient(225deg, ${project.color}20 0%, transparent 50%)`,
-                                    `linear-gradient(45deg, ${project.color}20 0%, transparent 50%)`,
-                                ],
-                            }}
-                            transition={{ duration: 4, repeat: Infinity }}
-                        >
-                            <motion.span
-                                className="text-6xl font-bold"
-                                style={{ color: project.color }}
-                                animate={{ opacity: [0.3, 0.6, 0.3] }}
-                                transition={{ duration: 2, repeat: Infinity }}
+                        {/* Image or placeholder */}
+                        {!imageError ? (
+                            <Image
+                                src={project.image}
+                                alt={project.title}
+                                fill
+                                className="object-cover"
+                                onError={() => setImageError(true)}
+                                priority
+                            />
+                        ) : (
+                            // Creative placeholder with effects
+                            <div
+                                className="absolute inset-0"
+                                style={{
+                                    background: `linear-gradient(135deg, ${project.color}40 0%, #0a0a0a 60%)`,
+                                }}
                             >
-                                {project.title.charAt(0)}
-                            </motion.span>
-                        </motion.div>
-                    </div>
+                                {/* Scan line effect */}
+                                <motion.div
+                                    className="absolute inset-0 pointer-events-none"
+                                    style={{
+                                        background: `repeating-linear-gradient(0deg, transparent, transparent 2px, ${project.color}10 2px, ${project.color}10 4px)`,
+                                    }}
+                                    animate={{ y: [0, 10, 0] }}
+                                    transition={{ duration: 2, repeat: Infinity }}
+                                />
+
+                                {/* Animated glow */}
+                                <motion.div
+                                    className="absolute inset-0"
+                                    animate={{
+                                        background: [
+                                            `radial-gradient(circle at 30% 30%, ${project.color}30 0%, transparent 50%)`,
+                                            `radial-gradient(circle at 70% 70%, ${project.color}30 0%, transparent 50%)`,
+                                            `radial-gradient(circle at 30% 30%, ${project.color}30 0%, transparent 50%)`,
+                                        ],
+                                    }}
+                                    transition={{ duration: 4, repeat: Infinity }}
+                                />
+
+                                {/* Project initial */}
+                                <div className="absolute inset-0 flex items-center justify-center">
+                                    <motion.span
+                                        className="text-8xl font-bold"
+                                        style={{
+                                            color: project.color,
+                                            textShadow: `0 0 60px ${project.color}80`,
+                                        }}
+                                        animate={{
+                                            opacity: [0.4, 0.8, 0.4],
+                                            scale: [1, 1.05, 1],
+                                        }}
+                                        transition={{ duration: 3, repeat: Infinity }}
+                                    >
+                                        {project.title.charAt(0)}
+                                    </motion.span>
+                                </div>
+
+                                {/* URL text */}
+                                <div className="absolute bottom-4 left-4 right-4">
+                                    <div
+                                        className="text-xs font-mono truncate"
+                                        style={{ color: `${project.color}80` }}
+                                    >
+                                        {project.link.replace('https://', '')}
+                                    </div>
+                                </div>
+                            </div>
+                        )}
+
+                        {/* Overlay with project info */}
+                        <div
+                            className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"
+                        />
+
+                        {/* Glare effect */}
+                        <motion.div
+                            className="absolute inset-0 pointer-events-none"
+                            style={{
+                                background: "linear-gradient(135deg, rgba(255,255,255,0.1) 0%, transparent 50%, transparent 100%)",
+                            }}
+                            animate={{
+                                opacity: [0.3, 0.5, 0.3],
+                            }}
+                            transition={{ duration: 2, repeat: Infinity }}
+                        />
+
+                        {/* Bottom info bar */}
+                        <div className="absolute bottom-0 left-0 right-0 p-4 flex items-center justify-between">
+                            <span
+                                className="text-sm font-medium"
+                                style={{ color: project.color }}
+                            >
+                                {project.title}
+                            </span>
+                            <span className="text-xs text-white/50">
+                                {project.category}
+                            </span>
+                        </div>
+
+                        {/* Corner accent */}
+                        <div
+                            className="absolute top-0 right-0 w-16 h-16"
+                            style={{
+                                background: `linear-gradient(135deg, ${project.color}40 0%, transparent 50%)`,
+                            }}
+                        />
+                    </motion.div>
                 </motion.div>
             )}
         </AnimatePresence>
@@ -303,14 +407,14 @@ export default function WorkPage() {
 
             {/* Background gradient */}
             <div className="fixed inset-0 pointer-events-none">
-                <div
-                    className="absolute top-0 right-0 w-1/2 h-full opacity-20"
-                    style={{
+                <motion.div
+                    className="absolute top-0 right-0 w-1/2 h-full"
+                    animate={{
                         background: hoveredProject
-                            ? `radial-gradient(ellipse at 80% 50%, ${hoveredProject.color}20 0%, transparent 60%)`
-                            : "radial-gradient(ellipse at 80% 50%, rgba(168,255,196,0.1) 0%, transparent 60%)",
-                        transition: "background 0.5s ease",
+                            ? `radial-gradient(ellipse at 80% 50%, ${hoveredProject.color}15 0%, transparent 60%)`
+                            : "radial-gradient(ellipse at 80% 50%, rgba(168,255,196,0.08) 0%, transparent 60%)",
                     }}
+                    transition={{ duration: 0.5 }}
                 />
             </div>
 
