@@ -330,39 +330,68 @@ export default function ServicesPage() {
 
             {/* Hero */}
             <section className="min-h-screen flex items-center justify-center relative overflow-hidden pt-32">
-                {/* Subtle grid */}
-                <div
-                    className="absolute inset-0 opacity-[0.02]"
-                    style={{
-                        backgroundImage: `linear-gradient(rgba(255,255,255,0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.1) 1px, transparent 1px)`,
-                        backgroundSize: "80px 80px",
-                    }}
-                />
-
-                {/* Floating code elements for hero */}
+                {/* Animated Hexagon Grid Background */}
                 <div className="absolute inset-0 overflow-hidden pointer-events-none">
-                    {["</>", "{}", "( )", "[ ]", "**", "//", "##", "=>", "::"].map((el, i) => (
-                        <motion.span
+                    {/* Hexagon pattern */}
+                    <svg className="absolute inset-0 w-full h-full opacity-[0.08]" xmlns="http://www.w3.org/2000/svg">
+                        <defs>
+                            <pattern id="hexagons" width="50" height="43.4" patternUnits="userSpaceOnUse" patternTransform="scale(2)">
+                                <polygon
+                                    points="25,0 50,14.4 50,38.6 25,53 0,38.6 0,14.4"
+                                    fill="none"
+                                    stroke="#a8ffc4"
+                                    strokeWidth="0.5"
+                                />
+                            </pattern>
+                        </defs>
+                        <rect width="100%" height="100%" fill="url(#hexagons)" />
+                    </svg>
+
+                    {/* Glowing hexagons */}
+                    {[...Array(6)].map((_, i) => (
+                        <motion.div
                             key={i}
-                            className="absolute font-mono text-white/5"
+                            className="absolute"
                             style={{
-                                left: `${10 + i * 10}%`,
+                                left: `${15 + i * 15}%`,
                                 top: `${20 + (i % 3) * 25}%`,
-                                fontSize: 40 + i * 10,
                             }}
                             animate={{
-                                y: [0, -20, 0],
-                                opacity: [0.02, 0.05, 0.02],
+                                opacity: [0.1, 0.3, 0.1],
+                                scale: [1, 1.2, 1],
                             }}
                             transition={{
-                                duration: 5 + i,
+                                duration: 4 + i,
                                 repeat: Infinity,
                                 delay: i * 0.5,
                             }}
                         >
-                            {el}
-                        </motion.span>
+                            <svg width="80" height="92" viewBox="0 0 80 92">
+                                <polygon
+                                    points="40,2 78,24 78,68 40,90 2,68 2,24"
+                                    fill="none"
+                                    stroke="#a8ffc4"
+                                    strokeWidth="1"
+                                    style={{ filter: "drop-shadow(0 0 10px #a8ffc4)" }}
+                                />
+                            </svg>
+                        </motion.div>
                     ))}
+
+                    {/* Large "OG" watermark */}
+                    <motion.div
+                        className="absolute right-10 top-1/2 -translate-y-1/2 font-bold pointer-events-none select-none"
+                        style={{
+                            fontSize: "clamp(200px, 25vw, 350px)",
+                            color: "transparent",
+                            WebkitTextStroke: "1px rgba(168,255,196,0.1)",
+                            lineHeight: 0.9,
+                        }}
+                        animate={{ opacity: [0.3, 0.5, 0.3] }}
+                        transition={{ duration: 5, repeat: Infinity }}
+                    >
+                        OG
+                    </motion.div>
                 </div>
 
                 <div className="relative z-10 max-w-7xl mx-auto px-6 md:px-16 lg:px-24 w-full">
@@ -464,16 +493,104 @@ export default function ServicesPage() {
 
             {/* CTA Section */}
             <section className="min-h-[80vh] flex items-center justify-center relative overflow-hidden">
-                {/* Background glow */}
-                <motion.div
-                    className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full"
-                    style={{
-                        background: "radial-gradient(circle, rgba(168,255,196,0.15) 0%, transparent 70%)",
-                        filter: "blur(80px)",
-                    }}
-                    animate={{ scale: [1, 1.2, 1] }}
-                    transition={{ duration: 8, repeat: Infinity }}
-                />
+                {/* Animated orbit rings */}
+                <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+                    {/* Outer orbit */}
+                    <motion.div
+                        className="absolute w-[500px] h-[500px] md:w-[700px] md:h-[700px] rounded-full border border-white/5"
+                        animate={{ rotate: 360 }}
+                        transition={{ duration: 60, repeat: Infinity, ease: "linear" }}
+                    >
+                        {/* Orbiting dots */}
+                        {services.map((service, i) => (
+                            <motion.div
+                                key={service.id}
+                                className="absolute w-4 h-4 rounded-full"
+                                style={{
+                                    background: service.accent,
+                                    boxShadow: `0 0 20px ${service.accent}`,
+                                    top: "50%",
+                                    left: "50%",
+                                    transform: `rotate(${i * 90}deg) translateX(250px) md:translateX(350px)`,
+                                }}
+                            />
+                        ))}
+                    </motion.div>
+
+                    {/* Inner orbit */}
+                    <motion.div
+                        className="absolute w-[300px] h-[300px] md:w-[400px] md:h-[400px] rounded-full border border-[#a8ffc4]/10"
+                        animate={{ rotate: -360 }}
+                        transition={{ duration: 40, repeat: Infinity, ease: "linear" }}
+                    />
+
+                    {/* Center glow */}
+                    <motion.div
+                        className="absolute w-[200px] h-[200px] rounded-full"
+                        style={{
+                            background: "radial-gradient(circle, rgba(168,255,196,0.2) 0%, transparent 70%)",
+                            filter: "blur(40px)",
+                        }}
+                        animate={{ scale: [1, 1.3, 1], opacity: [0.5, 0.8, 0.5] }}
+                        transition={{ duration: 4, repeat: Infinity }}
+                    />
+                </div>
+
+                {/* Constellation lines */}
+                <svg className="absolute inset-0 w-full h-full pointer-events-none opacity-20">
+                    <motion.line
+                        x1="20%" y1="30%" x2="40%" y2="50%"
+                        stroke="#a8ffc4" strokeWidth="0.5"
+                        initial={{ pathLength: 0 }}
+                        animate={{ pathLength: [0, 1, 0] }}
+                        transition={{ duration: 4, repeat: Infinity }}
+                    />
+                    <motion.line
+                        x1="60%" y1="70%" x2="80%" y2="40%"
+                        stroke="#60a5fa" strokeWidth="0.5"
+                        initial={{ pathLength: 0 }}
+                        animate={{ pathLength: [0, 1, 0] }}
+                        transition={{ duration: 5, repeat: Infinity, delay: 1 }}
+                    />
+                    <motion.line
+                        x1="75%" y1="25%" x2="90%" y2="60%"
+                        stroke="#c084fc" strokeWidth="0.5"
+                        initial={{ pathLength: 0 }}
+                        animate={{ pathLength: [0, 1, 0] }}
+                        transition={{ duration: 4.5, repeat: Infinity, delay: 2 }}
+                    />
+                    {/* Dots at line endpoints */}
+                    {[["20%", "30%"], ["40%", "50%"], ["60%", "70%"], ["80%", "40%"], ["75%", "25%"], ["90%", "60%"]].map(([x, y], i) => (
+                        <motion.circle
+                            key={i}
+                            cx={x} cy={y} r="3"
+                            fill="#a8ffc4"
+                            animate={{ opacity: [0.2, 0.6, 0.2], r: [2, 4, 2] }}
+                            transition={{ duration: 3, repeat: Infinity, delay: i * 0.3 }}
+                        />
+                    ))}
+                </svg>
+
+                {/* Floating particles */}
+                {[...Array(15)].map((_, i) => (
+                    <motion.div
+                        key={i}
+                        className="absolute w-1 h-1 rounded-full bg-[#a8ffc4]"
+                        style={{
+                            left: `${Math.random() * 100}%`,
+                            top: `${Math.random() * 100}%`,
+                        }}
+                        animate={{
+                            y: [0, -50, 0],
+                            opacity: [0, 0.6, 0],
+                        }}
+                        transition={{
+                            duration: 5 + Math.random() * 5,
+                            repeat: Infinity,
+                            delay: Math.random() * 3,
+                        }}
+                    />
+                ))}
 
                 <div className="relative z-10 text-center px-6">
                     <motion.div
