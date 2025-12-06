@@ -9,28 +9,28 @@ const services = [
         title: "Web Development",
         subtitle: "UX/UI Design · Development",
         description: "Architecting digital organisms that live and breathe in the modern web ecosystem.",
-        video: "/assets/videos/web-dev.mp4",
+        video: "/assets/web-dev.mp4",
     },
     {
         id: "02",
         title: "SEO Strategy",
         subtitle: "Analytics · Optimization",
         description: "Dominating the neural pathways of search engines with data-driven precision.",
-        video: "/assets/videos/seo.mp4",
+        video: "/assets/seo.mp4",
     },
     {
         id: "03",
         title: "Brand Identity",
         subtitle: "Visual Design · Strategy",
         description: "Forging visual legacies that burn into the collective consciousness.",
-        video: "/assets/videos/brand.mp4",
+        video: "/assets/brand-identity.mp4",
     },
     {
         id: "04",
         title: "UI/UX Design",
         subtitle: "Research · Prototyping",
         description: "Crafting intuitive interfaces for seamless human-digital interaction.",
-        video: "/assets/videos/uiux.mp4",
+        video: "/assets/uiux-design.mp4",
     },
 ];
 
