@@ -379,31 +379,30 @@ export default function AboutPage() {
             </section>
 
             {/* ===== INTRO SECTION ===== */}
-            <section className="py-32 relative">
-                <div className="max-w-6xl mx-auto px-6">
-                    <div className="grid lg:grid-cols-2 gap-16 items-center">
-                        {/* Left - Large text */}
-                        <div>
-                            <SplitText className="text-4xl md:text-5xl lg:text-6xl font-bold text-white leading-tight">
-                                We believe in the power of digital to transform businesses
-                            </SplitText>
-                        </div>
+            <section className="min-h-screen flex flex-col justify-center relative py-32">
+                <div className="w-full px-6 md:px-12 lg:px-24">
+                    {/* Full-width statement */}
+                    <SplitText className="text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold text-white leading-[1.1] max-w-none mb-24">
+                        To put it simply: We are a design-driven digital agency. We do Product and Brand work that lives online and that people choose to use every day.
+                    </SplitText>
 
-                        {/* Right - Description */}
+                    {/* Right-aligned paragraphs */}
+                    <div className="flex justify-end">
                         <motion.div
-                            initial={{ opacity: 0, x: 50 }}
-                            whileInView={{ opacity: 1, x: 0 }}
-                            transition={{ duration: 0.8 }}
+                            className="max-w-xl"
+                            initial={{ opacity: 0, y: 40 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 0.8, delay: 0.3 }}
                             viewport={{ once: true }}
                         >
-                            <p className="text-lg text-white/50 leading-relaxed mb-6">
-                                Founded with a vision to bridge the gap between creativity and technology,
-                                The OG Digitals has evolved into a full-service digital agency that partners
-                                with ambitious brands to create digital experiences that drive real results.
+                            <p className="text-sm text-white/40 mb-4 uppercase tracking-wider">
+                                ++The OG Digitals
                             </p>
-                            <p className="text-lg text-white/50 leading-relaxed">
-                                We&apos;re not just designers and developers—we&apos;re strategists, storytellers,
-                                and problem-solvers obsessed with pushing the boundaries of what&apos;s possible.
+                            <p className="text-lg text-white/60 leading-relaxed mb-6">
+                                The OG Digitals was born with the belief that beauty is essential in creating meaningful experiences, valuing details to craft attractive, enduring products.
+                            </p>
+                            <p className="text-lg text-white/60 leading-relaxed">
+                                We integrate technology into people&apos;s lives aesthetically while forming meaningful relationships with our clients who share our vision and values.
                             </p>
                         </motion.div>
                     </div>
