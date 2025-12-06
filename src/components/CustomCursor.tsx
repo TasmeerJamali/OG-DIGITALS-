@@ -3,13 +3,10 @@
 import { useEffect, useState } from "react";
 import { motion, useMotionValue, useSpring } from "framer-motion";
 
-interface CustomCursorProps {
-    variant?: "default" | "hover" | "click";
-}
-
-export default function CustomCursor({ variant = "default" }: CustomCursorProps) {
+export default function CustomCursor() {
+    const [mounted, setMounted] = useState(false);
     const [isPointer, setIsPointer] = useState(false);
-    const [isHidden, setIsHidden] = useState(false);
+
     const cursorX = useMotionValue(-100);
     const cursorY = useMotionValue(-100);
 
@@ -17,47 +14,48 @@ export default function CustomCursor({ variant = "default" }: CustomCursorProps)
     const cursorXSpring = useSpring(cursorX, springConfig);
     const cursorYSpring = useSpring(cursorY, springConfig);
 
+    // Only run on client
     useEffect(() => {
+        setMounted(true);
+    }, []);
+
+    useEffect(() => {
+        if (!mounted) return;
+
         const moveCursor = (e: MouseEvent) => {
             cursorX.set(e.clientX);
             cursorY.set(e.clientY);
         };
 
-        const handlePointerCheck = () => {
-            const hoveredEl = document.elementFromPoint(cursorX.get(), cursorY.get());
-            if (hoveredEl) {
-                const computedStyle = window.getComputedStyle(hoveredEl);
+        const handlePointerCheck = (e: MouseEvent) => {
+            const target = e.target as HTMLElement;
+            if (target) {
+                const computedStyle = window.getComputedStyle(target);
                 setIsPointer(
                     computedStyle.cursor === "pointer" ||
-                    hoveredEl.tagName === "A" ||
-                    hoveredEl.tagName === "BUTTON" ||
-                    hoveredEl.closest("a") !== null ||
-                    hoveredEl.closest("button") !== null
+                    target.tagName === "A" ||
+                    target.tagName === "BUTTON" ||
+                    target.closest("a") !== null ||
+                    target.closest("button") !== null
                 );
             }
         };
 
-        const handleMouseLeave = () => setIsHidden(true);
-        const handleMouseEnter = () => setIsHidden(false);
-
         window.addEventListener("mousemove", moveCursor);
         window.addEventListener("mouseover", handlePointerCheck);
-        document.body.addEventListener("mouseleave", handleMouseLeave);
-        document.body.addEventListener("mouseenter", handleMouseEnter);
 
         return () => {
             window.removeEventListener("mousemove", moveCursor);
             window.removeEventListener("mouseover", handlePointerCheck);
-            document.body.removeEventListener("mouseleave", handleMouseLeave);
-            document.body.removeEventListener("mouseenter", handleMouseEnter);
         };
-    }, [cursorX, cursorY]);
+    }, [mounted, cursorX, cursorY]);
 
-    if (isHidden) return null;
+    // Don't render anything on server or before mount
+    if (!mounted) return null;
 
     return (
         <>
-            {/* Main cursor - OG styled */}
+            {/* Main cursor */}
             <motion.div
                 className="fixed top-0 left-0 pointer-events-none z-[9999] hidden lg:flex items-center justify-center"
                 style={{
@@ -80,12 +78,10 @@ export default function CustomCursor({ variant = "default" }: CustomCursorProps)
                     transition={{ duration: 0.2, ease: "easeOut" }}
                 />
 
-                {/* Inner dot with "OG" text on hover */}
+                {/* Inner dot */}
                 <motion.div
-                    className="rounded-full flex items-center justify-center overflow-hidden"
-                    style={{
-                        backgroundColor: "#a8ffc4",
-                    }}
+                    className="rounded-full"
+                    style={{ backgroundColor: "#a8ffc4" }}
                     animate={{
                         width: isPointer ? 8 : 6,
                         height: isPointer ? 8 : 6,
@@ -107,9 +103,7 @@ export default function CustomCursor({ variant = "default" }: CustomCursorProps)
             >
                 <motion.div
                     className="rounded-full"
-                    style={{
-                        backgroundColor: "rgba(168, 255, 196, 0.1)",
-                    }}
+                    style={{ backgroundColor: "rgba(168, 255, 196, 0.1)" }}
                     animate={{
                         width: isPointer ? 80 : 60,
                         height: isPointer ? 80 : 60,
