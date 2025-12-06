@@ -13,6 +13,7 @@ const services = [
         description: "We build lightning-fast, scalable web applications that drive business growth. From complex e-commerce platforms to custom SaaS solutions.",
         capabilities: ["React & Next.js", "E-Commerce Platforms", "Custom CMS", "API Development", "Performance Optimization"],
         accent: "#a8ffc4",
+        bgElements: ["<div>", "</div>", "const", "function", "=>", "import", "export", "async", "await", "return", "{}", "[]", "npm", "git", "API", "fetch", "useState", "useEffect", "props", "component"],
     },
     {
         id: 2,
@@ -21,6 +22,7 @@ const services = [
         description: "We create distinctive brand identities that capture your essence and resonate with your audience. Every touchpoint, considered.",
         capabilities: ["Logo Systems", "Visual Identity", "Brand Guidelines", "Packaging Design", "Brand Strategy"],
         accent: "#fbbf24",
+        bgElements: ["✦", "◆", "○", "□", "△", "Aa", "Bb", "RGB", "CMYK", "#HEX", "Font", "Type", "Grid", "Logo", "Color", "Vision", "Brand", "Style", "Identity", "Design"],
     },
     {
         id: 3,
@@ -29,6 +31,7 @@ const services = [
         description: "We design intuitive digital experiences that users love. Research-driven, pixel-perfect interfaces that convert.",
         capabilities: ["User Research", "Interaction Design", "Design Systems", "Prototyping", "Usability Testing"],
         accent: "#60a5fa",
+        bgElements: ["◻", "▣", "⊞", "≡", "⊟", "↗", "↖", "↙", "↘", "Figma", "Sketch", "Proto", "Wire", "Flow", "User", "Click", "Hover", "Touch", "Scroll", "Modal"],
     },
     {
         id: 4,
@@ -37,52 +40,125 @@ const services = [
         description: "We amplify your digital presence with data-driven strategies. From SEO to social, we make sure you're found.",
         capabilities: ["SEO Optimization", "Content Strategy", "Social Media", "Analytics & Insights", "Performance Marketing"],
         accent: "#c084fc",
+        bgElements: ["SEO", "CTR", "ROI", "KPI", "CPC", "↑", "↗", "📈", "★", "#1", "Top", "Rank", "Lead", "Click", "View", "Share", "Like", "Post", "Trend", "Viral"],
     },
 ];
 
-// Animated text reveal
-function TextReveal({ children, delay = 0 }: { children: string; delay?: number }) {
-    const ref = useRef<HTMLSpanElement>(null);
-    const isInView = useInView(ref, { once: true, margin: "-100px" });
+// Floating background element
+function FloatingElement({
+    text,
+    color,
+    delay
+}: {
+    text: string;
+    color: string;
+    delay: number;
+}) {
+    const randomX = Math.random() * 100;
+    const randomY = Math.random() * 100;
+    const randomDuration = 15 + Math.random() * 20;
+    const randomSize = 12 + Math.random() * 16;
 
     return (
-        <span ref={ref} className="overflow-hidden inline-block">
-            <motion.span
-                className="inline-block"
-                initial={{ y: "100%" }}
-                animate={isInView ? { y: 0 } : { y: "100%" }}
-                transition={{ duration: 0.8, delay, ease: [0.25, 1, 0.5, 1] }}
+        <motion.span
+            className="absolute font-mono pointer-events-none select-none"
+            style={{
+                left: `${randomX}%`,
+                top: `${randomY}%`,
+                fontSize: randomSize,
+                color: `${color}15`,
+            }}
+            initial={{ opacity: 0 }}
+            animate={{
+                opacity: [0, 0.4, 0],
+                y: [0, -50, 0],
+                x: [0, Math.random() * 30 - 15, 0],
+            }}
+            transition={{
+                duration: randomDuration,
+                delay: delay,
+                repeat: Infinity,
+                ease: "easeInOut",
+            }}
+        >
+            {text}
+        </motion.span>
+    );
+}
+
+// Background pattern for each service
+function ServiceBackground({ service, isInView }: { service: typeof services[0]; isInView: boolean }) {
+    return (
+        <motion.div
+            className="absolute inset-0 overflow-hidden pointer-events-none"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: isInView ? 1 : 0 }}
+            transition={{ duration: 1 }}
+        >
+            {/* Radial gradient */}
+            <div
+                className="absolute inset-0"
+                style={{
+                    background: `radial-gradient(ellipse at 70% 50%, ${service.accent}08 0%, transparent 60%)`,
+                }}
+            />
+
+            {/* Floating elements */}
+            {service.bgElements.map((element, i) => (
+                <FloatingElement
+                    key={`${service.id}-${i}`}
+                    text={element}
+                    color={service.accent}
+                    delay={i * 0.5}
+                />
+            ))}
+
+            {/* Large faded text in background */}
+            <motion.div
+                className="absolute right-0 top-1/2 -translate-y-1/2 font-bold pointer-events-none select-none"
+                style={{
+                    fontSize: "clamp(200px, 30vw, 400px)",
+                    color: `${service.accent}05`,
+                    lineHeight: 0.8,
+                    whiteSpace: "nowrap",
+                }}
+                initial={{ x: 100, opacity: 0 }}
+                animate={{ x: isInView ? 0 : 100, opacity: isInView ? 1 : 0 }}
+                transition={{ duration: 1, delay: 0.3 }}
             >
-                {children}
-            </motion.span>
-        </span>
+                {service.number}
+            </motion.div>
+        </motion.div>
     );
 }
 
 // Service card with reveal animation
 function ServiceCard({ service, index }: { service: typeof services[0]; index: number }) {
     const cardRef = useRef<HTMLDivElement>(null);
-    const isInView = useInView(cardRef, { once: true, margin: "-150px" });
+    const isInView = useInView(cardRef, { once: false, margin: "-40%" });
     const [isHovered, setIsHovered] = useState(false);
 
     return (
         <motion.div
             ref={cardRef}
-            className="relative min-h-[90vh] flex items-center"
+            className="relative min-h-[100vh] flex items-center"
             initial={{ opacity: 0 }}
-            animate={isInView ? { opacity: 1 } : { opacity: 0 }}
-            transition={{ duration: 0.8, delay: 0.2 }}
+            animate={isInView ? { opacity: 1 } : { opacity: 0.3 }}
+            transition={{ duration: 0.8 }}
         >
-            {/* Background accent line */}
+            {/* Contextual background */}
+            <ServiceBackground service={service} isInView={isInView} />
+
+            {/* Accent line on left */}
             <motion.div
-                className="absolute left-0 top-0 bottom-0 w-[1px]"
-                style={{ background: `linear-gradient(to bottom, transparent, ${service.accent}40, transparent)` }}
-                initial={{ scaleY: 0 }}
-                animate={isInView ? { scaleY: 1 } : { scaleY: 0 }}
-                transition={{ duration: 1, delay: 0.3 }}
+                className="absolute left-0 top-0 bottom-0 w-[2px]"
+                style={{ background: service.accent }}
+                initial={{ scaleY: 0, opacity: 0 }}
+                animate={isInView ? { scaleY: 1, opacity: 0.5 } : { scaleY: 0, opacity: 0 }}
+                transition={{ duration: 1, delay: 0.2 }}
             />
 
-            <div className="w-full max-w-7xl mx-auto px-6 md:px-16 lg:px-24">
+            <div className="relative z-10 w-full max-w-7xl mx-auto px-6 md:px-16 lg:px-24">
                 <div className="grid lg:grid-cols-12 gap-12 lg:gap-24 items-start">
                     {/* Left - Number and Title */}
                     <div className="lg:col-span-5">
@@ -100,12 +176,15 @@ function ServiceCard({ service, index }: { service: typeof services[0]; index: n
                                 {service.number}
                             </span>
                             <motion.div
-                                className="h-[1px] flex-grow"
+                                className="h-[1px] w-16"
                                 style={{ background: service.accent }}
                                 initial={{ scaleX: 0 }}
                                 animate={isInView ? { scaleX: 1 } : {}}
                                 transition={{ duration: 0.8, delay: 0.4 }}
                             />
+                            <span className="text-xs uppercase tracking-widest text-white/30">
+                                Service
+                            </span>
                         </motion.div>
 
                         {/* Title */}
@@ -115,7 +194,7 @@ function ServiceCard({ service, index }: { service: typeof services[0]; index: n
                                     <motion.span
                                         className="block"
                                         initial={{ y: "100%" }}
-                                        animate={isInView ? { y: 0 } : {}}
+                                        animate={isInView ? { y: 0 } : { y: "100%" }}
                                         transition={{ duration: 0.8, delay: 0.3 + i * 0.1, ease: [0.25, 1, 0.5, 1] }}
                                     >
                                         {line}
@@ -146,14 +225,8 @@ function ServiceCard({ service, index }: { service: typeof services[0]; index: n
                                 onMouseEnter={() => setIsHovered(true)}
                                 onMouseLeave={() => setIsHovered(false)}
                             >
-                                <span
-                                    className="text-sm font-medium tracking-wider uppercase"
-                                    style={{ color: service.accent }}
-                                >
-                                    Let&apos;s Talk
-                                </span>
                                 <motion.div
-                                    className="w-12 h-12 rounded-full border-2 flex items-center justify-center"
+                                    className="w-14 h-14 rounded-full border-2 flex items-center justify-center"
                                     style={{ borderColor: service.accent }}
                                     animate={{
                                         scale: isHovered ? 1.1 : 1,
@@ -173,6 +246,12 @@ function ServiceCard({ service, index }: { service: typeof services[0]; index: n
                                         <path strokeLinecap="round" strokeLinejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
                                     </motion.svg>
                                 </motion.div>
+                                <span
+                                    className="text-sm font-medium tracking-wider uppercase"
+                                    style={{ color: service.accent }}
+                                >
+                                    Let&apos;s Talk
+                                </span>
                             </Link>
                         </motion.div>
                     </div>
@@ -180,34 +259,46 @@ function ServiceCard({ service, index }: { service: typeof services[0]; index: n
                     {/* Right - Capabilities */}
                     <div className="lg:col-span-7">
                         <motion.div
-                            className="space-y-4"
+                            className="space-y-1"
                             initial={{ opacity: 0 }}
                             animate={isInView ? { opacity: 1 } : {}}
                             transition={{ duration: 0.8, delay: 0.4 }}
                         >
                             <span className="text-xs uppercase tracking-[0.3em] text-white/30 block mb-8">
-                                Capabilities
+                                What we deliver
                             </span>
 
                             {service.capabilities.map((capability, i) => (
                                 <motion.div
                                     key={capability}
-                                    className="group flex items-center justify-between py-5 border-b border-white/10 cursor-default"
+                                    className="group flex items-center justify-between py-5 border-b border-white/5 cursor-default"
                                     initial={{ opacity: 0, x: 30 }}
                                     animate={isInView ? { opacity: 1, x: 0 } : {}}
                                     transition={{ duration: 0.6, delay: 0.5 + i * 0.1 }}
-                                    whileHover={{ x: 10 }}
+                                    whileHover={{
+                                        x: 12,
+                                        borderColor: `${service.accent}30`,
+                                    }}
                                 >
-                                    <span className="text-xl md:text-2xl text-white/70 group-hover:text-white transition-colors duration-300">
-                                        {capability}
-                                    </span>
-                                    <motion.div
-                                        className="w-2 h-2 rounded-full"
-                                        style={{ background: service.accent }}
-                                        initial={{ scale: 0 }}
-                                        animate={isInView ? { scale: 1 } : {}}
-                                        transition={{ duration: 0.3, delay: 0.7 + i * 0.1 }}
-                                    />
+                                    <div className="flex items-center gap-4">
+                                        <motion.div
+                                            className="w-1.5 h-1.5 rounded-full"
+                                            style={{ background: service.accent }}
+                                            whileHover={{ scale: 1.5 }}
+                                        />
+                                        <span className="text-xl md:text-2xl text-white/60 group-hover:text-white transition-colors duration-300">
+                                            {capability}
+                                        </span>
+                                    </div>
+                                    <motion.svg
+                                        className="w-5 h-5 opacity-0 group-hover:opacity-100 transition-opacity"
+                                        fill="none"
+                                        viewBox="0 0 24 24"
+                                        stroke={service.accent}
+                                        strokeWidth={1.5}
+                                    >
+                                        <path strokeLinecap="round" strokeLinejoin="round" d="M7 17L17 7M17 7H7M17 7V17" />
+                                    </motion.svg>
                                 </motion.div>
                             ))}
                         </motion.div>
@@ -239,14 +330,40 @@ export default function ServicesPage() {
 
             {/* Hero */}
             <section className="min-h-screen flex items-center justify-center relative overflow-hidden pt-32">
-                {/* Subtle grid background */}
+                {/* Subtle grid */}
                 <div
                     className="absolute inset-0 opacity-[0.02]"
                     style={{
                         backgroundImage: `linear-gradient(rgba(255,255,255,0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.1) 1px, transparent 1px)`,
-                        backgroundSize: "60px 60px",
+                        backgroundSize: "80px 80px",
                     }}
                 />
+
+                {/* Floating code elements for hero */}
+                <div className="absolute inset-0 overflow-hidden pointer-events-none">
+                    {["</>", "{}", "( )", "[ ]", "**", "//", "##", "=>", "::"].map((el, i) => (
+                        <motion.span
+                            key={i}
+                            className="absolute font-mono text-white/5"
+                            style={{
+                                left: `${10 + i * 10}%`,
+                                top: `${20 + (i % 3) * 25}%`,
+                                fontSize: 40 + i * 10,
+                            }}
+                            animate={{
+                                y: [0, -20, 0],
+                                opacity: [0.02, 0.05, 0.02],
+                            }}
+                            transition={{
+                                duration: 5 + i,
+                                repeat: Infinity,
+                                delay: i * 0.5,
+                            }}
+                        >
+                            {el}
+                        </motion.span>
+                    ))}
+                </div>
 
                 <div className="relative z-10 max-w-7xl mx-auto px-6 md:px-16 lg:px-24 w-full">
                     <div className="grid lg:grid-cols-12 gap-12 items-end">
@@ -299,7 +416,7 @@ export default function ServicesPage() {
                                 animate={{ opacity: 1, y: 0 }}
                                 transition={{ duration: 0.8, delay: 0.5 }}
                             >
-                                We partner with ambitious brands to create digital experiences that drive growth and build lasting connections.
+                                We partner with ambitious brands to create digital experiences that drive growth.
                             </motion.p>
 
                             <motion.div
@@ -328,7 +445,7 @@ export default function ServicesPage() {
                         >
                             <div className="w-6 h-10 rounded-full border border-white/20 flex items-start justify-center p-2">
                                 <motion.div
-                                    className="w-1 h-2 rounded-full bg-white/40"
+                                    className="w-1 h-2 rounded-full bg-[#a8ffc4]"
                                     animate={{ y: [0, 12, 0] }}
                                     transition={{ duration: 1.5, repeat: Infinity }}
                                 />
@@ -339,26 +456,24 @@ export default function ServicesPage() {
             </section>
 
             {/* Services */}
-            <section className="py-32">
+            <section className="py-16">
                 {services.map((service, index) => (
                     <ServiceCard key={service.id} service={service} index={index} />
                 ))}
             </section>
 
             {/* CTA Section */}
-            <section className="min-h-screen flex items-center justify-center relative overflow-hidden">
+            <section className="min-h-[80vh] flex items-center justify-center relative overflow-hidden">
                 {/* Background glow */}
-                <div className="absolute inset-0">
-                    <motion.div
-                        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] rounded-full opacity-20"
-                        style={{
-                            background: "radial-gradient(circle, #a8ffc4 0%, transparent 70%)",
-                            filter: "blur(100px)",
-                        }}
-                        animate={{ scale: [1, 1.1, 1] }}
-                        transition={{ duration: 8, repeat: Infinity }}
-                    />
-                </div>
+                <motion.div
+                    className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full"
+                    style={{
+                        background: "radial-gradient(circle, rgba(168,255,196,0.15) 0%, transparent 70%)",
+                        filter: "blur(80px)",
+                    }}
+                    animate={{ scale: [1, 1.2, 1] }}
+                    transition={{ duration: 8, repeat: Infinity }}
+                />
 
                 <div className="relative z-10 text-center px-6">
                     <motion.div
@@ -367,7 +482,7 @@ export default function ServicesPage() {
                         transition={{ duration: 0.8 }}
                         viewport={{ once: true }}
                     >
-                        <span className="text-sm uppercase tracking-[0.3em] text-white/30 block mb-8">
+                        <span className="text-xs uppercase tracking-[0.3em] text-white/30 block mb-6">
                             Ready to Start?
                         </span>
 
@@ -376,33 +491,26 @@ export default function ServicesPage() {
                             <span className="text-[#a8ffc4]">something great</span>
                         </h2>
 
-                        <motion.div
-                            initial={{ opacity: 0, y: 20 }}
-                            whileInView={{ opacity: 1, y: 0 }}
-                            transition={{ duration: 0.8, delay: 0.2 }}
-                            viewport={{ once: true }}
+                        <Link
+                            href="/#contact"
+                            className="group inline-flex items-center gap-4 px-10 py-5 rounded-full text-lg font-medium transition-all duration-500 hover:scale-105"
+                            style={{
+                                background: "#a8ffc4",
+                                color: "#000",
+                                boxShadow: "0 20px 60px rgba(168,255,196,0.3)",
+                            }}
                         >
-                            <Link
-                                href="/#contact"
-                                className="group inline-flex items-center gap-4 px-10 py-5 rounded-full text-lg font-medium transition-all duration-500 hover:scale-105"
-                                style={{
-                                    background: "#a8ffc4",
-                                    color: "#000",
-                                    boxShadow: "0 20px 60px rgba(168,255,196,0.3)",
-                                }}
+                            Start a Project
+                            <motion.svg
+                                className="w-5 h-5 group-hover:translate-x-1 transition-transform"
+                                fill="none"
+                                viewBox="0 0 24 24"
+                                stroke="currentColor"
+                                strokeWidth={2}
                             >
-                                Start a Project
-                                <motion.svg
-                                    className="w-5 h-5"
-                                    fill="none"
-                                    viewBox="0 0 24 24"
-                                    stroke="currentColor"
-                                    strokeWidth={2}
-                                >
-                                    <path strokeLinecap="round" strokeLinejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
-                                </motion.svg>
-                            </Link>
-                        </motion.div>
+                                <path strokeLinecap="round" strokeLinejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                            </motion.svg>
+                        </Link>
                     </motion.div>
                 </div>
             </section>
