@@ -9,8 +9,7 @@ import {
     useMotionValue,
     useVelocity,
     useAnimationFrame,
-    MotionValue,
-    useInView
+    AnimatePresence
 } from "framer-motion";
 import Book3D from "@/components/Book3D";
 
@@ -20,7 +19,6 @@ function CustomCursor() {
     const mouseX = useMotionValue(0);
     const mouseY = useMotionValue(0);
 
-    // Smooth spring physics for the cursor
     const springConfig = { damping: 25, stiffness: 300 };
     const cursorX = useSpring(mouseX, springConfig);
     const cursorY = useSpring(mouseY, springConfig);
@@ -43,14 +41,25 @@ function CustomCursor() {
     );
 }
 
-// --- VELOCITY TEXT MARQUEE ---
-function VelocityMarquee({ baseVelocity = 5, children }: { baseVelocity: number; children: React.ReactNode }) {
+// --- FLEXIBLE MARQUEE (BELT) ---
+function MarqueeBelt({
+    children,
+    baseVelocity = 5,
+    className = "",
+    style = {}
+}: {
+    children: React.ReactNode;
+    baseVelocity: number;
+    className?: string;
+    style?: any;
+}) {
     const baseX = useMotionValue(0);
     const { scrollY } = useScroll();
     const scrollVelocity = useVelocity(scrollY);
     const smoothVelocity = useSpring(scrollVelocity, { damping: 50, stiffness: 400 });
     const velocityFactor = useTransform(smoothVelocity, [0, 1000], [0, 5], { clamp: false });
 
+    // Wrap the content to prevent gaps
     const x = useTransform(baseX, (v) => `${(v % 100).toFixed(3)}%`);
     const directionFactor = useRef<number>(1);
 
@@ -69,9 +78,9 @@ function VelocityMarquee({ baseVelocity = 5, children }: { baseVelocity: number;
     });
 
     return (
-        <div className="overflow-hidden whitespace-nowrap flex flex-nowrap">
-            <motion.div className="flex flex-nowrap text-9xl font-bold uppercase tracking-tighter opacity-10" style={{ x }}>
-                {Array.from({ length: 4 }).map((_, i) => (
+        <div className={`overflow-hidden whitespace-nowrap flex flex-nowrap ${className}`} style={style}>
+            <motion.div className="flex flex-nowrap items-center" style={{ x }}>
+                {Array.from({ length: 8 }).map((_, i) => (
                     <span key={i} className="block mr-12">{children}</span>
                 ))}
             </motion.div>
@@ -85,7 +94,6 @@ function MagneticButton({ children, className }: { children: React.ReactNode; cl
     const x = useMotionValue(0);
     const y = useMotionValue(0);
 
-    // Smooth return to center
     const xSpring = useSpring(x, { stiffness: 150, damping: 15 });
     const ySpring = useSpring(y, { stiffness: 150, damping: 15 });
 
@@ -94,7 +102,7 @@ function MagneticButton({ children, className }: { children: React.ReactNode; cl
         const { height, width, left, top } = ref.current!.getBoundingClientRect();
         const centerX = left + width / 2;
         const centerY = top + height / 2;
-        x.set((clientX - centerX) * 0.35); // Magnetic strength
+        x.set((clientX - centerX) * 0.35);
         y.set((clientY - centerY) * 0.35);
     };
 
@@ -112,70 +120,53 @@ function MagneticButton({ children, className }: { children: React.ReactNode; cl
             className={`group relative overflow-hidden ${className}`}
             whileTap={{ scale: 0.9 }}
         >
-            {/* Hover ripple effect */}
             <span className="absolute inset-0 translate-y-[100%] bg-black group-hover:translate-y-0 transition-transform duration-300 ease-in-out z-0" />
             <span className="relative z-10 group-hover:text-[#a8ffc4] transition-colors duration-300">{children}</span>
         </motion.button>
     );
 }
 
-// --- STICKY CARD COMPONENT ---
-function StickyCard({ index, title, description, color, total }: { index: number; title: string; description: string; color: string; total: number }) {
+// --- CHAPTER LIST ITEM ---
+function ChapterListItem({ index, title, description, color, setActiveChapter }: any) {
     return (
-        <div className="sticky top-24 mb-12 last:mb-0">
-            <motion.div
-                initial={{ filter: "blur(20px)", scale: 0.9, y: 100, opacity: 0 }}
-                whileInView={{ filter: "blur(0px)", scale: 1, y: 0, opacity: 1 }}
-                viewport={{ once: true, margin: "-100px" }}
-                transition={{ duration: 0.8, ease: "circOut" }}
-                className="relative h-[400px] md:h-[500px] rounded-[3rem] p-10 md:p-14 border border-white/5 backdrop-blur-xl overflow-hidden shadow-2xl origin-top"
-                style={{
-                    backgroundColor: "#0a0a0a",
-                    top: `calc(100px + ${index * 40}px)`,
-                    zIndex: index
-                }}
-            >
-                {/* Dynamic Gradient Background */}
-                <div
-                    className={`absolute inset-0 opacity-10 bg-gradient-to-br ${color} to-transparent`}
-                />
-
-                {/* Content */}
-                <div className="relative z-10 h-full flex flex-col justify-between">
-                    <div className="flex justify-between items-start">
-                        <span className="text-8xl md:text-9xl font-bold text-white/5 tracking-tighter">0{index + 1}</span>
-                        <div className="w-16 h-16 rounded-full border border-white/10 flex items-center justify-center text-white/20">
-                            <svg className="w-6 h-6 rotate-45" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0L14 10L24 12L14 14L12 24L10 14L0 12L10 10z" /></svg>
-                        </div>
-                    </div>
-
-                    <div>
-                        <h3 className="text-4xl md:text-6xl font-bold text-white mb-6 uppercase tracking-tight leading-[0.9]">
-                            {title}
-                        </h3>
-                        <p className="text-xl text-white/60 max-w-lg leading-relaxed">
-                            {description}
-                        </p>
-                    </div>
+        <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ delay: index * 0.1 }}
+            viewport={{ once: true }}
+            onMouseEnter={() => setActiveChapter(index)}
+            className="group relative border-b border-white/10 py-12 md:py-16 hover:bg-white/[0.02] transition-colors cursor-pointer"
+        >
+            <div className="container mx-auto px-6 relative z-10 flex flex-col md:flex-row items-baseline gap-8 md:gap-16">
+                <span className="text-[#a8ffc4] font-mono text-lg tracking-widest">0{index + 1}</span>
+                <div className="flex-1">
+                    <h3 className="text-4xl md:text-6xl font-bold text-white mb-4 group-hover:text-[#a8ffc4] transition-colors tracking-tight">
+                        {title}
+                    </h3>
+                    <p className="text-white/40 text-lg max-w-xl group-hover:text-white/60 transition-colors">
+                        {description}
+                    </p>
                 </div>
-
-                {/* Noise texture overlay */}
-                <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20 pointer-events-none mix-blend-overlay" />
-            </motion.div>
-        </div>
+                <div className="w-12 h-12 rounded-full border border-white/10 flex items-center justify-center text-white/20 group-hover:bg-[#a8ffc4] group-hover:text-black group-hover:border-transparent transition-all transform group-hover:-rotate-45">
+                    <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                    </svg>
+                </div>
+            </div>
+        </motion.div>
     );
 }
 
 // --- MAIN PAGE COMPONENT ---
 export default function EbookPage() {
     const containerRef = useRef(null);
-    const { scrollYProgress } = useScroll({ target: containerRef });
+    const [activeChapter, setActiveChapter] = useState(0);
 
     const chapters = [
-        { title: "Digital Gravity", desc: "How to build a brand presence that pulls customers in with irresistible force.", color: "from-[#a8ffc4]" },
-        { title: "Visual Alchemy", desc: "Transforming boring corporate identities into gold-standard design systems.", color: "from-blue-500" },
-        { title: "Growth Physics", desc: "Applying the laws of momentum to scale your revenue exponentially.", color: "from-purple-500" },
-        { title: "Audience Mind Reading", desc: "Psychological frameworks to understand what your customers want before they do.", color: "from-orange-500" },
+        { title: "Digital Gravity", desc: "How to build a brand presence that pulls customers in with irresistible force.", belt: "ATTRACTION • PULL • FORCE •" },
+        { title: "Visual Alchemy", desc: "Transforming boring corporate identities into gold-standard design systems.", belt: "GOLD • TRANSFORM • MAGIC •" },
+        { title: "Growth Physics", desc: "Applying the laws of momentum to scale your revenue exponentially.", belt: "SCALE • VELOCITY • SPEED •" },
+        { title: "Mind Reading", desc: "Psychological frameworks to understand what your customers want before they do.", belt: "PSYCHOLOGY • DESIRE • WANT •" },
     ];
 
     return (
@@ -184,10 +175,7 @@ export default function EbookPage() {
 
             {/* --- CINEMA HERO --- */}
             <section className="relative h-screen flex items-center justify-center overflow-hidden perspective-1000">
-                {/* Content Layer */}
                 <div className="relative z-20 flex flex-col md:flex-row items-center w-full max-w-[90vw] mx-auto gap-12 md:gap-32">
-
-                    {/* Left: Huge Text */}
                     <div className="flex-1 text-center md:text-left">
                         <motion.div
                             initial={{ y: 100, opacity: 0 }}
@@ -213,7 +201,6 @@ export default function EbookPage() {
                         </motion.div>
                     </div>
 
-                    {/* Right: Floating 3D Object */}
                     <div className="flex-1 flex justify-center items-center relative z-30">
                         <motion.div
                             style={{ rotate: -15, scale: 1.2 }}
@@ -232,70 +219,93 @@ export default function EbookPage() {
                 <div className="absolute inset-0 z-0">
                     <div className="absolute top-[-20%] left-[-10%] w-[50vw] h-[50vw] bg-white/5 blur-[120px] rounded-full mix-blend-soft-light" />
                     <div className="absolute bottom-[-20%] right-[-10%] w-[50vw] h-[50vw] bg-[#a8ffc4]/10 blur-[150px] rounded-full mix-blend-overlay" />
-                    {/* Grid */}
                     <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.03)_1px,transparent_1px)] bg-[size:100px_100px] [mask-image:radial-gradient(ellipse_at_center,black_40%,transparent_100%)]" />
                 </div>
             </section>
 
-            {/* --- VELOCITY STRIP --- */}
-            <section className="py-24 border-y border-white/5 bg-[#050505] overflow-hidden">
-                <div className="-rotate-2 scale-110">
-                    <VelocityMarquee baseVelocity={2}>
-                        STRATEGY • DESIGN • GROWTH • IMPACT •
-                    </VelocityMarquee>
-                </div>
-            </section>
-
-            {/* --- STICKY CHAPTERS --- */}
-            <section className="relative px-6 py-32 max-w-5xl mx-auto">
-                <div className="mb-32 text-center">
-                    <h2 className="text-4xl md:text-6xl font-bold text-white mb-6">Inside the Black Box.</h2>
-                    <p className="text-white/40 text-xl">Six chapters. Zero fluff.</p>
-                </div>
-
-                {chapters.map((chapter, i) => (
-                    <StickyCard
-                        key={i}
-                        index={i}
-                        title={chapter.title}
-                        description={chapter.desc}
-                        color={chapter.color}
-                        total={chapters.length}
-                    />
-                ))}
-            </section>
-
-            {/* --- DISTORTION CTA --- */}
-            <section className="relative h-[80vh] flex flex-col items-center justify-center text-center px-6 overflow-hidden">
-                {/* Background "Hole" */}
-                <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-                    <div className="w-[60vw] h-[60vw] bg-gradient-to-tr from-[#a8ffc4]/10 to-blue-500/10 rounded-full blur-[150px] animate-spin-slow opacity-50" />
-                </div>
-
-                <div className="relative z-10 max-w-4xl">
-                    <motion.div
-                        initial={{ scale: 0.9, opacity: 0 }}
-                        whileInView={{ scale: 1, opacity: 1 }}
-                        transition={{ duration: 0.8 }}
-                    >
-                        <h2 className="text-[10vw] md:text-[6vw] font-black text-white leading-none tracking-tighter mb-12 mix-blend-overlay">
-                            READ THE <br /> FUTURE.
-                        </h2>
-
-                        <div className="flex flex-col items-center gap-6">
-                            <MagneticButton className="px-12 py-6 bg-white text-black text-xl font-bold rounded-full hover:bg-[#a8ffc4] transition-colors shadow-[0_0_50px_rgba(255,255,255,0.2)]">
-                                Download Playbook (Free)
-                            </MagneticButton>
-                            <span className="text-white/30 text-sm font-mono tracking-widest uppercase">
-                                Limited Time Offer • PDF Format
+            {/* --- CROSSING BELTS SECTION --- */}
+            <section className="relative py-32 bg-[#050505] overflow-hidden">
+                <div className="absolute inset-0 flex items-center justify-center">
+                    {/* Belt 1 - Angled Down */}
+                    <div className="absolute w-[120%] rotate-6 bg-[#a8ffc4] text-black py-4 z-10 border-y-4 border-black">
+                        <MarqueeBelt baseVelocity={3}>
+                            <span className="text-4xl font-black italic uppercase tracking-tighter mx-8">
+                                LIMITED TIME FREE ACCESS • DOWNLOAD NOW •
                             </span>
-                        </div>
-                    </motion.div>
+                        </MarqueeBelt>
+                    </div>
+                    {/* Belt 2 - Angled Up */}
+                    <div className="absolute w-[120%] -rotate-3 bg-white text-black py-6 z-0 border-y-4 border-black box-content opacity-50 blur-[1px]">
+                        <MarqueeBelt baseVelocity={-3}>
+                            <span className="text-6xl font-black outline-text uppercase tracking-tighter mx-8 opacity-20">
+                                STRATEGY • DESIGN • GROWTH • IMPACT •
+                            </span>
+                        </MarqueeBelt>
+                    </div>
+                </div>
+                <div className="h-[40vh]" /> {/* Spacer for belts */}
+            </section>
+
+            {/* --- THE INDEX (CHAPTERS) --- */}
+            <section className="relative py-32 min-h-screen flex items-center" onMouseLeave={() => setActiveChapter(-1)}>
+                {/* Background Dynamic Marquee */}
+                <div className="absolute inset-0 overflow-hidden pointer-events-none opacity-20">
+                    <AnimatePresence mode="wait">
+                        <motion.div
+                            key={activeChapter}
+                            initial={{ opacity: 0, scale: 1.1 }}
+                            animate={{ opacity: 1, scale: 1 }}
+                            exit={{ opacity: 0 }}
+                            transition={{ duration: 0.5 }}
+                            className="absolute inset-0 flex flex-col justify-center gap-12"
+                        >
+                            {[...Array(5)].map((_, i) => (
+                                <MarqueeBelt key={i} baseVelocity={i % 2 === 0 ? 1 : -1} className="opacity-30">
+                                    <span className="text-8xl md:text-9xl font-black text-transparent stroke-white stroke-2 uppercase tracking-tighter">
+                                        {activeChapter !== -1 ? chapters[activeChapter].belt : "THE PLAYBOOK •"}
+                                    </span>
+                                </MarqueeBelt>
+                            ))}
+                        </motion.div>
+                    </AnimatePresence>
+                </div>
+
+                <div className="w-full relative z-10">
+                    <div className="container mx-auto px-6 mb-20 text-center">
+                        <h2 className="text-4xl md:text-7xl font-bold text-white mb-6">Inside the Black Box.</h2>
+                        <div className="w-24 h-1 bg-[#a8ffc4] mx-auto" />
+                    </div>
+
+                    <div>
+                        {chapters.map((chapter, i) => (
+                            <ChapterListItem
+                                key={i}
+                                index={i}
+                                title={chapter.title}
+                                description={chapter.desc}
+                                setActiveChapter={setActiveChapter}
+                            />
+                        ))}
+                    </div>
                 </div>
             </section>
 
-            {/* --- FOOTER --- */}
-            <footer className="py-12 border-t border-white/5 text-center">
+            {/* --- FINAL BELT + CTA --- */}
+            <section className="relative py-20 bg-[#a8ffc4] overflow-hidden">
+                <MarqueeBelt baseVelocity={2} className="text-black mb-12">
+                    <span className="text-[10vw] font-black leading-none uppercase tracking-tighter mx-8">
+                        GET THE UNFAIR ADVANTAGE •
+                    </span>
+                </MarqueeBelt>
+
+                <div className="container mx-auto px-6 text-center">
+                    <MagneticButton className="px-16 py-8 bg-black text-[#a8ffc4] text-2xl font-bold rounded-full hover:bg-white hover:text-black transition-all shadow-2xl">
+                        Download Playbook Now
+                    </MagneticButton>
+                </div>
+            </section>
+
+            <footer className="py-12 bg-black text-center border-t border-white/5">
                 <p className="text-white/20 text-sm font-mono">
                     THE OG DIGITALS © 2024
                 </p>
