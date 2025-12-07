@@ -9,98 +9,50 @@ import {
     useMotionValue,
     useVelocity,
     useAnimationFrame,
-    AnimatePresence
+    AnimatePresence,
+    useInView
 } from "framer-motion";
 import Book3D from "@/components/Book3D";
 
-// --- CUSTOM CURSOR ---
-function CustomCursor() {
-    const cursorRef = useRef<HTMLDivElement>(null);
-    const mouseX = useMotionValue(0);
-    const mouseY = useMotionValue(0);
+// --- SHARED COMPONENTS ---
 
-    const springConfig = { damping: 25, stiffness: 300 };
-    const cursorX = useSpring(mouseX, springConfig);
-    const cursorY = useSpring(mouseY, springConfig);
-
-    useEffect(() => {
-        const moveCursor = (e: MouseEvent) => {
-            mouseX.set(e.clientX - 16);
-            mouseY.set(e.clientY - 16);
-        };
-        window.addEventListener("mousemove", moveCursor);
-        return () => window.removeEventListener("mousemove", moveCursor);
-    }, [mouseX, mouseY]);
-
+function SectionHeader({ title, subtitle, align = "center" }: { title: string, subtitle?: string, align?: "center" | "left" }) {
     return (
-        <motion.div
-            ref={cursorRef}
-            className="fixed top-0 left-0 w-8 h-8 bg-[#a8ffc4] rounded-full mix-blend-difference pointer-events-none z-[9999] hidden md:block"
-            style={{ x: cursorX, y: cursorY }}
-        />
-    );
-}
-
-// --- FLEXIBLE MARQUEE (BELT) ---
-// --- FLEXIBLE MARQUEE (BELT) ---
-function MarqueeBelt({
-    children,
-    baseVelocity = 5,
-    className = "",
-    style = {}
-}: {
-    children: React.ReactNode;
-    baseVelocity: number;
-    className?: string;
-    style?: any;
-}) {
-    const baseX = useMotionValue(0);
-    const { scrollY } = useScroll();
-    const scrollVelocity = useVelocity(scrollY);
-    const smoothVelocity = useSpring(scrollVelocity, { damping: 50, stiffness: 400 });
-    const velocityFactor = useTransform(smoothVelocity, [0, 1000], [0, 5], { clamp: false });
-
-    // Loop logic: We have 2 copies of the content. We scroll from 0% to -50% (or 0 to 50%).
-    // When we reach 50%, we snap back to 0. 50% represents exactly one full copy of the content.
-    const x = useTransform(baseX, (v) => `${(v % 50).toFixed(3)}%`);
-    const directionFactor = useRef<number>(1);
-
-    useAnimationFrame((t, delta) => {
-        let moveBy = directionFactor.current * baseVelocity * (delta / 1000);
-
-        // Velocity effect
-        if (velocityFactor.get() < 0) {
-            directionFactor.current = -1;
-        } else if (velocityFactor.get() > 0) {
-            directionFactor.current = 1;
-        }
-
-        moveBy += directionFactor.current * moveBy * velocityFactor.get();
-        baseX.set(baseX.get() + moveBy);
-    });
-
-    return (
-        <div className={`overflow-hidden whitespace-nowrap flex flex-nowrap ${className}`} style={style}>
-            <motion.div className="flex flex-nowrap items-center w-max" style={{ x }}>
-                {/* Render two identical sets of content for the loop */}
-                {[0, 1].map((i) => (
-                    <div key={i} className="flex flex-nowrap items-center shrink-0">
-                        {Array.from({ length: 4 }).map((_, j) => (
-                            <span key={j} className="block mr-12">{children}</span>
-                        ))}
-                    </div>
-                ))}
-            </motion.div>
+        <div className={`mb-20 ${align === "center" ? "text-center" : "text-left"}`}>
+            <motion.h2
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                className="text-4xl md:text-7xl font-bold text-white mb-6 tracking-tight leading-tight"
+            >
+                {title}
+            </motion.h2>
+            {subtitle && (
+                <motion.div
+                    initial={{ opacity: 0, width: 0 }}
+                    whileInView={{ opacity: 1, width: "100px" }}
+                    viewport={{ once: true }}
+                    className={`h-1 bg-[#a8ffc4] mb-8 ${align === "center" ? "mx-auto" : ""}`}
+                />
+            )}
+            {subtitle && (
+                <motion.p
+                    initial={{ opacity: 0 }}
+                    whileInView={{ opacity: 0.6 }}
+                    viewport={{ once: true }}
+                    className={`text-xl text-white/60 max-w-2xl font-light leading-relaxed ${align === "center" ? "mx-auto" : ""}`}
+                >
+                    {subtitle}
+                </motion.p>
+            )}
         </div>
     );
 }
 
-// --- MAGNETIC BUTTON ---
-function MagneticButton({ children, className }: { children: React.ReactNode; className?: string }) {
+function MagneticButton({ children, className, variant = "primary" }: { children: React.ReactNode; className?: string, variant?: "primary" | "secondary" }) {
     const ref = useRef<HTMLButtonElement>(null);
     const x = useMotionValue(0);
     const y = useMotionValue(0);
-
     const xSpring = useSpring(x, { stiffness: 150, damping: 15 });
     const ySpring = useSpring(y, { stiffness: 150, damping: 15 });
 
@@ -113,9 +65,12 @@ function MagneticButton({ children, className }: { children: React.ReactNode; cl
         y.set((clientY - centerY) * 0.35);
     };
 
-    const handleMouseLeave = () => {
-        x.set(0);
-        y.set(0);
+    const handleMouseLeave = () => { x.set(0); y.set(0); };
+
+    const baseStyles = "relative overflow-hidden rounded-full font-bold transition-all duration-300 active:scale-95";
+    const variants = {
+        primary: "bg-[#a8ffc4] text-black hover:bg-white hover:shadow-[0_0_40px_rgba(168,255,196,0.4)]",
+        secondary: "bg-transparent border border-white/20 text-white hover:bg-white/10 hover:border-white/50"
     };
 
     return (
@@ -124,192 +79,353 @@ function MagneticButton({ children, className }: { children: React.ReactNode; cl
             onMouseMove={handleMouseMove}
             onMouseLeave={handleMouseLeave}
             style={{ x: xSpring, y: ySpring }}
-            className={`group relative overflow-hidden ${className}`}
-            whileTap={{ scale: 0.9 }}
+            className={`${baseStyles} ${variants[variant]} ${className}`}
         >
-            <span className="absolute inset-0 translate-y-[100%] bg-black group-hover:translate-y-0 transition-transform duration-300 ease-in-out z-0" />
-            <span className="relative z-10 group-hover:text-[#a8ffc4] transition-colors duration-300">{children}</span>
+            <span className="relative z-10">{children}</span>
         </motion.button>
     );
 }
 
-// --- CHAPTER LIST ITEM ---
-function ChapterListItem({ index, title, description, color, setActiveChapter }: any) {
+function GlassCard({ children, className, delay = 0 }: { children: React.ReactNode, className?: string, delay?: number }) {
     return (
         <motion.div
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 50 }}
             whileInView={{ opacity: 1, y: 0 }}
-            transition={{ delay: index * 0.1 }}
-            viewport={{ once: true }}
-            onMouseEnter={() => setActiveChapter(index)}
-            className="group relative border-b border-white/10 py-12 md:py-16 hover:bg-white/[0.02] transition-colors cursor-pointer"
+            viewport={{ once: true, margin: "-50px" }}
+            transition={{ duration: 0.7, delay, ease: "easeOut" }}
+            className={`group relative p-8 md:p-10 rounded-3xl border border-white/5 bg-white/[0.02] backdrop-blur-sm overflow-hidden hover:bg-white/[0.05] transition-colors duration-500 ${className}`}
         >
-            <div className="container mx-auto px-6 relative z-10 flex flex-col md:flex-row items-baseline gap-8 md:gap-16">
-                <span className="text-[#a8ffc4] font-mono text-lg tracking-widest">0{index + 1}</span>
-                <div className="flex-1">
-                    <h3 className="text-4xl md:text-6xl font-bold text-white mb-4 group-hover:text-[#a8ffc4] transition-colors tracking-tight">
-                        {title}
-                    </h3>
-                    <p className="text-white/40 text-lg max-w-xl group-hover:text-white/60 transition-colors">
-                        {description}
-                    </p>
-                </div>
-                <div className="w-12 h-12 rounded-full border border-white/10 flex items-center justify-center text-white/20 group-hover:bg-[#a8ffc4] group-hover:text-black group-hover:border-transparent transition-all transform group-hover:-rotate-45">
-                    <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                        <path strokeLinecap="round" strokeLinejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3" />
-                    </svg>
-                </div>
-            </div>
+            <div className="absolute inset-0 bg-gradient-to-br from-[#a8ffc4]/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none" />
+            <div className="relative z-10 h-full">{children}</div>
         </motion.div>
     );
 }
 
-// --- MAIN PAGE COMPONENT ---
-export default function EbookPage() {
-    const containerRef = useRef(null);
-    const [activeChapter, setActiveChapter] = useState(0);
-
-    const chapters = [
-        { title: "Digital Gravity", desc: "How to build a brand presence that pulls customers in with irresistible force.", belt: "ATTRACTION • PULL • FORCE •" },
-        { title: "Visual Alchemy", desc: "Transforming boring corporate identities into gold-standard design systems.", belt: "GOLD • TRANSFORM • MAGIC •" },
-        { title: "Growth Physics", desc: "Applying the laws of momentum to scale your revenue exponentially.", belt: "SCALE • VELOCITY • SPEED •" },
-        { title: "Mind Reading", desc: "Psychological frameworks to understand what your customers want before they do.", belt: "PSYCHOLOGY • DESIRE • WANT •" },
-    ];
-
+function CheckList({ items }: { items: string[] }) {
     return (
-        <main ref={containerRef} className="bg-black min-h-screen selection:bg-[#a8ffc4] selection:text-black overflow-x-hidden cursor-none">
-            <CustomCursor />
+        <ul className="space-y-4">
+            {items.map((item, i) => (
+                <li key={i} className="flex items-start gap-3 text-white/70">
+                    <span className="text-[#a8ffc4] mt-1">✔</span>
+                    <span>{item}</span>
+                </li>
+            ))}
+        </ul>
+    );
+}
 
-            {/* --- CINEMA HERO --- */}
-            <section className="relative h-screen flex items-center justify-center overflow-hidden perspective-1000">
-                <div className="relative z-20 flex flex-col md:flex-row items-center w-full max-w-[90vw] mx-auto gap-12 md:gap-32">
-                    <div className="flex-1 text-center md:text-left">
+// --- SECTIONS ---
+
+// 1. HERO
+function Hero() {
+    return (
+        <section className="relative min-h-screen flex items-center pt-32 pb-20 overflow-hidden">
+            <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(168,255,196,0.05),transparent_40%)]" />
+            <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-[0.03]" />
+
+            <div className="container mx-auto px-6 relative z-10">
+                <div className="flex flex-col lg:flex-row items-center gap-16 lg:gap-24">
+                    <div className="flex-1 text-center lg:text-left">
                         <motion.div
-                            initial={{ y: 100, opacity: 0 }}
-                            animate={{ y: 0, opacity: 1 }}
-                            transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
+                            initial={{ opacity: 0, y: 20 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ delay: 0.2 }}
+                            className="inline-block px-4 py-2 rounded-full border border-[#a8ffc4]/30 bg-[#a8ffc4]/5 text-[#a8ffc4] text-xs font-mono uppercase tracking-widest mb-8"
                         >
-                            <span className="block text-[#a8ffc4] text-xs font-mono uppercase tracking-[0.5em] mb-8">
-                                • The 2024 Playbook
-                            </span>
-                            <h1 className="text-[14vw] md:text-[8vw] font-black text-white leading-[0.8] tracking-tighter mb-8 mix-blend-exclusion">
-                                DIGITAL <br />
-                                <span className="text-transparent bg-clip-text bg-gradient-to-b from-white to-white/20">
-                                    IMPACT.
-                                </span>
-                            </h1>
-                            <p className="text-xl md:text-2xl text-white/50 max-w-md leading-relaxed mb-12">
-                                Stop competing. Start dominating. The definitive guide to modern agency growth.
-                            </p>
-
-                            <MagneticButton className="px-10 py-5 bg-[#a8ffc4] text-black text-lg font-bold rounded-full uppercase tracking-widest inline-flex items-center gap-4">
-                                Get The Guide <span className="text-xl">↓</span>
-                            </MagneticButton>
+                            • Premium Ebook Services
                         </motion.div>
+                        <h1 className="text-5xl md:text-7xl lg:text-8xl font-black text-white leading-[0.9] tracking-tight mb-8">
+                            Professional <br />
+                            <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#a8ffc4] to-white/50">
+                                eBook Creation
+                            </span> <br />
+                            & Design.
+                        </h1>
+                        <p className="text-xl text-white/50 max-w-xl leading-relaxed mb-10 mx-auto lg:mx-0">
+                            Turn your ideas into stunning, ready-to-sell eBooks with our world-class writing, design, and publishing solutions.
+                        </p>
+                        <div className="flex flex-col sm:flex-row gap-6 justify-center lg:justify-start">
+                            <MagneticButton className="px-10 py-5 text-lg">Get a Free Quote</MagneticButton>
+                            <MagneticButton variant="secondary" className="px-10 py-5 text-lg">View Samples</MagneticButton>
+                        </div>
                     </div>
 
-                    <div className="flex-1 flex justify-center items-center relative z-30">
+                    <div className="flex-1 w-full flex justify-center perspective-1000">
+                        {/* Placeholder for 3D Book - reusing existing component */}
                         <motion.div
-                            style={{ rotate: -15, scale: 1.2 }}
-                            initial={{ scale: 0.8, opacity: 0 }}
-                            animate={{ scale: 1.2, opacity: 1, rotate: -15 }}
-                            transition={{ duration: 1.5, ease: "circOut" }}
+                            initial={{ opacity: 0, rotateY: 30, scale: 0.8 }}
+                            animate={{ opacity: 1, rotateY: -15, scale: 1 }}
+                            transition={{ duration: 1.5, ease: "easeOut" }}
                             className="relative"
                         >
-                            <div className="absolute inset-0 bg-[#a8ffc4] blur-[100px] opacity-20 animate-pulse" />
+                            <div className="absolute inset-0 bg-[#a8ffc4] blur-[150px] opacity-20" />
                             <Book3D />
                         </motion.div>
                     </div>
                 </div>
+            </div>
 
-                {/* Ambient Background */}
-                <div className="absolute inset-0 z-0">
-                    <div className="absolute top-[-20%] left-[-10%] w-[50vw] h-[50vw] bg-white/5 blur-[120px] rounded-full mix-blend-soft-light" />
-                    <div className="absolute bottom-[-20%] right-[-10%] w-[50vw] h-[50vw] bg-[#a8ffc4]/10 blur-[150px] rounded-full mix-blend-overlay" />
-                    <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.03)_1px,transparent_1px)] bg-[size:100px_100px] [mask-image:radial-gradient(ellipse_at_center,black_40%,transparent_100%)]" />
+            {/* Scrolling Mouse Icon */}
+            <motion.div
+                animate={{ y: [0, 10, 0] }}
+                transition={{ duration: 2, repeat: Infinity }}
+                className="absolute bottom-10 left-1/2 -translate-x-1/2 text-white/20"
+            >
+                <div className="w-6 h-10 border-2 border-current rounded-full flex justify-center pt-2">
+                    <div className="w-1 h-2 bg-current rounded-full" />
                 </div>
-            </section>
+            </motion.div>
+        </section>
+    );
+}
 
-            {/* --- CROSSING BELTS SECTION --- */}
-            <section className="relative py-32 bg-[#050505] overflow-hidden">
-                <div className="absolute inset-0 flex items-center justify-center">
-                    {/* Belt 1 - Angled Down */}
-                    <div className="absolute w-[120%] rotate-6 bg-[#a8ffc4] text-black py-4 z-10 border-y-4 border-black">
-                        <MarqueeBelt baseVelocity={3}>
-                            <span className="text-4xl font-black italic uppercase tracking-tighter mx-8">
-                                LIMITED TIME FREE ACCESS • DOWNLOAD NOW •
-                            </span>
-                        </MarqueeBelt>
-                    </div>
-                    {/* Belt 2 - Angled Up */}
-                    <div className="absolute w-[120%] -rotate-3 bg-white text-black py-6 z-0 border-y-4 border-black box-content opacity-50 blur-[1px]">
-                        <MarqueeBelt baseVelocity={-3}>
-                            <span className="text-6xl font-black outline-text uppercase tracking-tighter mx-8 opacity-20">
-                                STRATEGY • DESIGN • GROWTH • IMPACT •
-                            </span>
-                        </MarqueeBelt>
-                    </div>
+// 2. WHY CHOOSE US
+function WhyChooseComponents() {
+    const features = [
+        { title: "High-Quality Content", desc: "Deeply researched, authority-building writing.", icon: "✍️" },
+        { title: "Premium Design", desc: "Award-winning layouts and cover art.", icon: "🎨" },
+        { title: "Fast Delivery", desc: "Rapid turnarounds with unlimited revisions.", icon: "⚡" },
+        { title: "Multi-Platform", desc: "Optimized for Amazon KDP, PDF, EPUB.", icon: "📱" },
+        { title: "Full Ownership", desc: "You keep 100% of the copyright & profits.", icon: "🔐" },
+        { title: "Marketing Ready", desc: "Includes social assets to launch big.", icon: "🚀" }
+    ];
+
+    return (
+        <section className="py-32 bg-[#0a0a0a] relative overflow-hidden">
+            <div className="container mx-auto px-6">
+                <SectionHeader
+                    title="Why Choose Our Ebook Services?"
+                    subtitle="We don't just write books. We craft digital assets that build authority."
+                />
+
+                <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    {features.map((f, i) => (
+                        <GlassCard key={i} delay={i * 0.1} className="h-full flex flex-col items-start gap-4 hover:border-[#a8ffc4]/30">
+                            <span className="text-4xl mb-2 grayscale group-hover:grayscale-0 transition-all">{f.icon}</span>
+                            <h3 className="text-2xl font-bold text-white mb-2">{f.title}</h3>
+                            <p className="text-white/50 leading-relaxed">{f.desc}</p>
+                        </GlassCard>
+                    ))}
                 </div>
-                <div className="h-[40vh]" /> {/* Spacer for belts */}
-            </section>
+            </div>
+        </section>
+    );
+}
 
-            {/* --- THE INDEX (CHAPTERS) --- */}
-            <section className="relative py-32 min-h-screen flex items-center" onMouseLeave={() => setActiveChapter(-1)}>
-                {/* Background Dynamic Marquee */}
-                <div className="absolute inset-0 overflow-hidden pointer-events-none opacity-20">
-                    <AnimatePresence mode="wait">
+// 3. SERVICES PACKAGES
+function ServicePackages() {
+    const packages = [
+        {
+            title: "Ghostwriting Grade A",
+            items: ["Research-based writing", "SEO-friendly structure", "Brand voice alignment", "100% Original Content"],
+            color: "from-blue-500"
+        },
+        {
+            title: "Design & Layout",
+            items: ["Custom Cover Design", "Aesthetic Formatting", "Brand Colors & Fonts", "Professional Typography"],
+            color: "from-purple-500"
+        },
+        {
+            title: "Marketing Kit",
+            items: ["Promotional Social Posts", "Ad Creatives", "Landing Page Banners", "Email Swipe Copy"],
+            color: "from-pink-500"
+        }
+    ];
+
+    const { scrollYProgress } = useScroll();
+    const x = useTransform(scrollYProgress, [0.2, 0.45], ["0%", "-50%"]); // Subtle horizontal shift effect
+
+    return (
+        <section className="py-32 relative border-y border-white/5 bg-black">
+            <div className="container mx-auto px-6">
+                <SectionHeader title="Our Complete Packages" subtitle="Everything you need to go from concept to bestseller." />
+
+                <div className="grid lg:grid-cols-3 gap-8">
+                    {packages.map((pkg, i) => (
                         <motion.div
-                            key={activeChapter}
-                            initial={{ opacity: 0, scale: 1.1 }}
-                            animate={{ opacity: 1, scale: 1 }}
-                            exit={{ opacity: 0 }}
-                            transition={{ duration: 0.5 }}
-                            className="absolute inset-0 flex flex-col justify-center gap-12"
+                            key={i}
+                            initial={{ opacity: 0, y: 50 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            transition={{ delay: i * 0.2 }}
+                            viewport={{ once: true }}
+                            className="relative group h-full"
                         >
-                            {[...Array(5)].map((_, i) => (
-                                <MarqueeBelt key={i} baseVelocity={i % 2 === 0 ? 1 : -1} className="opacity-30">
-                                    <span className="text-8xl md:text-9xl font-black text-transparent stroke-white stroke-2 uppercase tracking-tighter">
-                                        {activeChapter !== -1 ? chapters[activeChapter].belt : "THE PLAYBOOK •"}
-                                    </span>
-                                </MarqueeBelt>
-                            ))}
+                            <div className={`absolute inset-0 bg-gradient-to-b ${pkg.color} to-transparent opacity-5 group-hover:opacity-20 transition-opacity duration-500 rounded-[2.5rem]`} />
+
+                            <div className="relative h-full p-10 rounded-[2.5rem] border border-white/10 bg-black/50 backdrop-blur-md flex flex-col">
+                                <h3 className="text-3xl font-bold text-white mb-8">{pkg.title}</h3>
+                                <div className="flex-1">
+                                    <CheckList items={pkg.items} />
+                                </div>
+                                <div className="mt-10 pt-10 border-t border-white/10">
+                                    <button className="w-full py-4 rounded-xl border border-white/20 text-white font-medium hover:bg-white hover:text-black transition-all">
+                                        Learn More
+                                    </button>
+                                </div>
+                            </div>
                         </motion.div>
-                    </AnimatePresence>
+                    ))}
                 </div>
+            </div>
+        </section>
+    );
+}
 
-                <div className="w-full relative z-10">
-                    <div className="container mx-auto px-6 mb-20 text-center">
-                        <h2 className="text-4xl md:text-7xl font-bold text-white mb-6">Inside the Black Box.</h2>
-                        <div className="w-24 h-1 bg-[#a8ffc4] mx-auto" />
-                    </div>
+// 4. PROCESS
+function ProcessTimeline() {
+    return (
+        <section className="py-32 bg-[#050505] relative">
+            <div className="container mx-auto px-6">
+                <SectionHeader title="How It Works" subtitle="A simple, streamlined process to get your book published." />
 
-                    <div>
-                        {chapters.map((chapter, i) => (
-                            <ChapterListItem
-                                key={i}
-                                index={i}
-                                title={chapter.title}
-                                description={chapter.desc}
-                                setActiveChapter={setActiveChapter}
-                            />
-                        ))}
-                    </div>
+                <div className="relative max-w-4xl mx-auto">
+                    {/* Vertical Line */}
+                    <div className="absolute left-[28px] md:left-1/2 top-0 bottom-0 w-[2px] bg-gradient-to-b from-[#a8ffc4] to-transparent opacity-20 md:-translate-x-1/2" />
+
+                    {[
+                        { step: "01", title: "Share Your Idea", desc: "Tell us your topic and goals." },
+                        { step: "02", title: "We Write & Design", desc: "Our experts craft your content and visuals." },
+                        { step: "03", title: "Review & Revisions", desc: "We refine until it's perfect." },
+                        { step: "04", title: "Final Delivery", desc: "Receive ready-to-publish files (PDF, EPUB, KDP)." }
+                    ].map((item, i) => (
+                        <motion.div
+                            key={i}
+                            initial={{ opacity: 0, x: i % 2 === 0 ? -50 : 50 }}
+                            whileInView={{ opacity: 1, x: 0 }}
+                            viewport={{ once: true, margin: "-100px" }}
+                            transition={{ duration: 0.6, delay: i * 0.1 }}
+                            className={`flex flex-col md:flex-row items-center gap-8 mb-20 last:mb-0 ${i % 2 !== 0 ? "md:flex-row-reverse" : ""}`}
+                        >
+                            {/* Number Bubble */}
+                            <div className="flex-shrink-0 w-14 h-14 rounded-full bg-[#0a0a0a] border border-[#a8ffc4] text-[#a8ffc4] flex items-center justify-center font-bold text-xl relative z-10 shadow-[0_0_20px_rgba(168,255,196,0.2)]">
+                                {item.step}
+                            </div>
+
+                            {/* Content Card */}
+                            <div className={`flex-1 w-full md:w-auto p-8 rounded-2xl border border-white/5 bg-white/[0.02] backdrop-blur-sm hover:border-[#a8ffc4]/20 transition-colors ${i % 2 === 0 ? "md:text-right" : "md:text-left"}`}>
+                                <h3 className="text-2xl font-bold text-white mb-2">{item.title}</h3>
+                                <p className="text-white/50">{item.desc}</p>
+                            </div>
+
+                            <div className="hidden md:block flex-1" />
+                        </motion.div>
+                    ))}
                 </div>
-            </section>
+            </div>
+        </section>
+    );
+}
 
-            {/* --- FINAL BELT + CTA --- */}
-            {/* --- FINAL BELT + CTA --- */}
-            <section className="relative py-32 md:py-48 bg-[#a8ffc4] overflow-hidden flex flex-col items-center justify-center">
-                <MarqueeBelt baseVelocity={-2} className="text-black mb-20 pointer-events-none">
-                    <span className="text-[12vw] font-black leading-none uppercase tracking-tighter mx-8">
-                        GET THE UNFAIR ADVANTAGE •
-                    </span>
-                </MarqueeBelt>
+// 5. PRICING (Optional per user, but looks good)
+function Pricing() {
+    return (
+        <section className="py-32">
+            <div className="container mx-auto px-6">
+                <SectionHeader title="Investment Plans" align="center" />
+                <div className="grid md:grid-cols-3 gap-6 max-w-6xl mx-auto">
+                    {[
+                        { name: "Basic", price: "Design Only", desc: "Perfect if you have the text ready.", feat: ["Custom Cover", "Internal Formatting", "PDF & EPUB Delivery"] },
+                        { name: "Standard", price: "Writing + Design", desc: "Full service for busy founders.", feat: ["10,000 Words Ghostwriting", "Premium Design", "2 Rounds Revisions", "Proofreading"], highlight: true },
+                        { name: "Premium", price: "Full Launch Kit", desc: "The ultimate authority package.", feat: ["25,000 Words Ghostwriting", "Deluxe Design", "Marketing Assets", "Landing Page", "Unlimted Revisions"] }
+                    ].map((plan, i) => (
+                        <div key={i} className={`relative p-8 rounded-3xl border ${plan.highlight ? "border-[#a8ffc4] bg-[#a8ffc4]/5" : "border-white/10 bg-black"} flex flex-col gap-6`}>
+                            {plan.highlight && (
+                                <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 px-4 py-1 bg-[#a8ffc4] text-black text-xs font-bold uppercase tracking-widest rounded-full">
+                                    Most Popular
+                                </div>
+                            )}
+                            <div>
+                                <h3 className="text-xl font-bold text-white">{plan.name}</h3>
+                                <div className="text-3xl font-black text-white mt-2 mb-1">{plan.price}</div>
+                                <p className="text-white/40 text-sm">{plan.desc}</p>
+                            </div>
+                            <div className="h-[1px] w-full bg-white/10" />
+                            <div className="flex-1">
+                                <CheckList items={plan.feat} />
+                            </div>
+                            <button className={`w-full py-4 rounded-xl font-bold transition-all ${plan.highlight ? "bg-[#a8ffc4] text-black hover:bg-white" : "bg-white/10 text-white hover:bg-white/20"}`}>
+                                Get Started
+                            </button>
+                        </div>
+                    ))}
+                </div>
+            </div>
+        </section>
+    );
+}
 
-                <div className="container mx-auto px-6 text-center relative z-10 pb-10">
-                    <MagneticButton className="inline-block px-12 sm:px-20 py-8 sm:py-10 bg-black text-[#a8ffc4] text-xl sm:text-3xl font-bold rounded-full hover:bg-white hover:text-black transition-all shadow-[0_20px_50px_rgba(0,0,0,0.3)]">
-                        Download Playbook Now
-                    </MagneticButton>
+// 6. FAQ
+function FAQ() {
+    const [openIndex, setOpenIndex] = useState<number | null>(0);
+    const items = [
+        { q: "How long does an eBook take?", a: "Typically 2-4 weeks depending on length and complexity." },
+        { q: "Do I get full copyright?", a: "Yes. You own 100% of the work once delivered." },
+        { q: "What formats do you deliver?", a: "We provide print-ready PDF, EPUB for Kindle/Apple, and editable source files." },
+        { q: "Do you provide cover designs?", a: "Absolutely. We create stunning 3D and 2D covers that pop." },
+    ];
+
+    return (
+        <section className="py-24 max-w-3xl mx-auto px-6">
+            <h2 className="text-4xl font-bold text-white mb-12 text-center">Frequently Asked Questions</h2>
+            <div className="space-y-4">
+                {items.map((item, i) => (
+                    <div key={i} className="border border-white/10 rounded-2xl overflow-hidden bg-white/[0.02]">
+                        <button
+                            onClick={() => setOpenIndex(openIndex === i ? null : i)}
+                            className="w-full px-8 py-6 text-left flex justify-between items-center hover:bg-white/5 transition-colors"
+                        >
+                            <span className="text-lg font-medium text-white">{item.q}</span>
+                            <span className={`text-[#a8ffc4] transition-transform duration-300 ${openIndex === i ? "rotate-45" : ""}`}>+</span>
+                        </button>
+                        <AnimatePresence>
+                            {openIndex === i && (
+                                <motion.div
+                                    initial={{ height: 0 }}
+                                    animate={{ height: "auto" }}
+                                    exit={{ height: 0 }}
+                                    className="overflow-hidden"
+                                >
+                                    <div className="px-8 pb-6 text-white/50 leading-relaxed">
+                                        {item.a}
+                                    </div>
+                                </motion.div>
+                            )}
+                        </AnimatePresence>
+                    </div>
+                ))}
+            </div>
+        </section>
+    );
+}
+
+// --- MAIN PAGE ---
+export default function EbookServicesPage() {
+    return (
+        <main className="bg-black min-h-screen selection:bg-[#a8ffc4] selection:text-black">
+            <Hero />
+            <WhyChooseComponents />
+            <ServicePackages />
+            <ProcessTimeline />
+            <Pricing />
+            <FAQ />
+
+            {/* BOTTOM CTA */}
+            <section className="py-32 bg-[#a8ffc4] text-center px-6">
+                <div className="max-w-4xl mx-auto">
+                    <h2 className="text-5xl md:text-7xl font-black text-black mb-8 tracking-tighter uppercase leading-[0.9]">
+                        Ready to Launch <br /> Your Authority?
+                    </h2>
+                    <p className="text-xl text-black/60 mb-12 max-w-2xl mx-auto font-medium">
+                        Don't let your ideas gather dust. Turn them into a revenue-generating asset today.
+                    </p>
+                    <div className="flex flex-col sm:flex-row gap-6 justify-center">
+                        <MagneticButton className="px-12 py-6 bg-black text-white hover:bg-white hover:text-black shadow-2xl text-xl">
+                            Start Your Project
+                        </MagneticButton>
+                        <MagneticButton variant="secondary" className="px-12 py-6 border-black text-black hover:bg-black hover:text-[#a8ffc4] text-xl border-2">
+                            Get Free Sample
+                        </MagneticButton>
+                    </div>
                 </div>
             </section>
 
