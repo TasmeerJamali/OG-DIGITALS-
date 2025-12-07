@@ -293,7 +293,7 @@ export default function EbookPage() {
             {/* --- FINAL BELT + CTA --- */}
             {/* --- FINAL BELT + CTA --- */}
             <section className="relative py-32 md:py-48 bg-[#a8ffc4] overflow-hidden flex flex-col items-center justify-center">
-                <MarqueeBelt baseVelocity={2} className="text-black mb-20 pointer-events-none">
+                <MarqueeBelt baseVelocity={-2} className="text-black mb-20 pointer-events-none">
                     <span className="text-[12vw] font-black leading-none uppercase tracking-tighter mx-8">
                         GET THE UNFAIR ADVANTAGE •
                     </span>
