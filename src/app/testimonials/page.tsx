@@ -280,8 +280,8 @@ export default function TestimonialsPage() {
             </section>
 
             {/* ===== MARQUEE TESTIMONIALS ===== */}
-            <section className="pt-56 pb-64 overflow-hidden">
-                <div className="mb-32 px-6 md:px-12 lg:px-24">
+            <section className="overflow-hidden" style={{ paddingTop: '300px', paddingBottom: '350px' }}>
+                <div className="mb-40 px-6 md:px-12 lg:px-24">
                     <motion.div
                         initial={{ opacity: 0, y: 30 }}
                         whileInView={{ opacity: 1, y: 0 }}
@@ -317,11 +317,11 @@ export default function TestimonialsPage() {
             </section>
 
             {/* ===== VIDEO TESTIMONIALS ===== */}
-            <section className="pt-56 pb-64 border-t border-white/5">
+            <section className="border-t border-white/5" style={{ paddingTop: '300px', paddingBottom: '350px' }}>
                 <div className="w-full px-6 md:px-12 lg:px-24">
                     {/* Section header */}
                     <motion.div
-                        className="text-center mb-32"
+                        className="text-center mb-40"
                         initial={{ opacity: 0, y: 30 }}
                         whileInView={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.6 }}
@@ -348,7 +348,7 @@ export default function TestimonialsPage() {
             </section>
 
             {/* ===== STATS ===== */}
-            <section className="pt-48 pb-56 border-t border-white/5 bg-gradient-to-b from-transparent to-[#a8ffc4]/5">
+            <section className="border-t border-white/5 bg-gradient-to-b from-transparent to-[#a8ffc4]/5" style={{ paddingTop: '250px', paddingBottom: '300px' }}>
                 <div className="w-full px-6 md:px-12 lg:px-24">
                     <div className="grid grid-cols-2 md:grid-cols-4 gap-12 text-center">
                         {[
@@ -380,7 +380,7 @@ export default function TestimonialsPage() {
             </section>
 
             {/* ===== CTA ===== */}
-            <section className="pt-56 pb-64 border-t border-white/5">
+            <section className="border-t border-white/5" style={{ paddingTop: '300px', paddingBottom: '350px' }}>
                 <div className="w-full px-6 md:px-12 lg:px-24">
                     <motion.div
                         className="text-center max-w-4xl mx-auto"
