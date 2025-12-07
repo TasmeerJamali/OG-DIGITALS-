@@ -117,7 +117,7 @@ function CheckList({ items }: { items: string[] }) {
 // 1. HERO (Refined)
 function Hero() {
     return (
-        <section className="relative min-h-screen flex flex-col justify-center pt-48 pb-20 overflow-hidden bg-[#a8ffc4]">
+        <section className="relative min-h-screen flex flex-col justify-center pt-48 pb-20 overflow-hidden bg-[#050505]">
             {/* Background Image */}
             <div className="absolute inset-0 z-0">
                 <img
@@ -125,45 +125,46 @@ function Hero() {
                     alt="Ebook Background"
                     className="w-full h-full object-cover opacity-100"
                 />
-                {/* Darker Gradient Overlay for text readability */}
-                <div className="absolute inset-0 bg-black/40" />
+                {/* Darker Gradient Overlay for text readability - Increased to 60% based on feedback */}
+                <div className="absolute inset-0 bg-black/60" />
             </div>
 
-            <div className="container mx-auto px-6 relative z-10 text-center mt-10">
+            <div className="container mx-auto px-4 relative z-10 text-center mt-10">
                 <motion.div
                     initial={{ opacity: 0, y: 30 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.8 }}
+                    className="flex flex-col items-center"
                 >
-                    <span className="inline-block py-1.5 px-5 rounded-full border border-white/30 bg-black/40 backdrop-blur-md text-white/90 text-sm font-semibold uppercase tracking-wider mb-8 shadow-lg">
+                    <span className="inline-block py-2 px-6 rounded-full border border-white/30 bg-black/40 backdrop-blur-md text-white/90 text-sm font-bold uppercase tracking-[0.2em] mb-8 shadow-2xl">
                         Publish. Print. Prosper.
                     </span>
-                    <h1 className="text-5xl md:text-7xl lg:text-8xl font-serif font-black text-white mb-8 leading-[1.1] tracking-tight drop-shadow-2xl max-w-5xl mx-auto">
+
+                    {/* Headline - Tuned to fit in one line on large screens */}
+                    <h1 className="text-4xl md:text-6xl lg:text-[5.5rem] xl:text-[6.5rem] font-serif font-black text-white mb-8 leading-none tracking-tight drop-shadow-2xl w-full max-w-[95vw] mx-auto">
                         Professional eBook Creation & Design Services
                     </h1>
-                    <p className="text-xl md:text-2xl text-white/90 max-w-3xl mx-auto leading-relaxed mb-12 font-medium drop-shadow-lg drop-shadow-black">
+
+                    <p className="text-xl md:text-3xl text-white/90 max-w-4xl mx-auto leading-relaxed mb-16 font-medium drop-shadow-lg drop-shadow-black">
                         Turn your ideas into stunning, ready-to-sell eBooks with our writing, design, and publishing solutions.
                     </p>
 
-                    <div className="flex flex-col sm:flex-row gap-8 justify-center items-center mb-16">
-                        {/* Shimmer/Pulse Button */}
-                        <div className="relative group">
-                            <div className="absolute -inset-1 bg-gradient-to-r from-[#a8ffc4] to-[#00ffff] rounded-full blur opacity-75 group-hover:opacity-100 transition duration-1000 group-hover:duration-200 animate-tilt"></div>
-                            <button className="relative px-12 py-5 bg-black rounded-full leading-none flex items-center divide-x divide-gray-600">
-                                <span className="flex items-center space-x-5">
-                                    <span className="pr-6 text-white text-xl font-bold group-hover:text-[#a8ffc4] transition-colors">Get a Free Quote</span>
-                                </span>
-                                <span className="pl-6 text-[#a8ffc4] group-hover:text-white transition-colors duration-200">
-                                    &rarr;
+                    <div className="flex flex-col md:flex-row gap-10 justify-center items-center mb-16 w-full">
+                        {/* Primary Button - BIG & Animated */}
+                        <div className="relative group cursor-pointer">
+                            <div className="absolute -inset-1 bg-gradient-to-r from-[#a8ffc4] via-emerald-400 to-[#00ffff] rounded-full blur opacity-60 group-hover:opacity-100 transition duration-500 group-hover:duration-200 animate-pulse-slow"></div>
+                            <button className="relative px-12 py-6 bg-black rounded-full leading-none flex items-center justify-center border border-white/10 group-active:scale-95 transition-transform duration-100">
+                                <span className="text-white text-2xl font-bold group-hover:text-[#a8ffc4] transition-colors whitespace-nowrap">
+                                    Get a Free Quote &rarr;
                                 </span>
                             </button>
                         </div>
 
-                        {/* Secondary Styled Button */}
+                        {/* Secondary Button - BIG & Clean */}
                         <motion.button
                             whileHover={{ scale: 1.05 }}
                             whileTap={{ scale: 0.95 }}
-                            className="px-12 py-5 text-xl font-bold text-white border-2 border-white rounded-full hover:bg-white hover:text-black transition-all duration-300 shadow-[0_0_20px_rgba(255,255,255,0.2)]"
+                            className="px-12 py-6 text-2xl font-bold text-white border-2 border-white rounded-full hover:bg-white hover:text-black transition-all duration-300 shadow-[0_0_20px_rgba(255,255,255,0.2)] whitespace-nowrap"
                         >
                             View Samples
                         </motion.button>
@@ -172,16 +173,20 @@ function Hero() {
             </div>
 
             {/* Bottom Curve/Wave integration with next section */}
-            <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-[#0a0a0a] to-transparent pointer-events-none" />
+            <div className="absolute bottom-0 left-0 right-0 h-40 bg-gradient-to-t from-[#0a0a0a] to-transparent pointer-events-none" />
 
             <style jsx>{`
-                .animate-tilt {
-                    animation: tilt 10s infinite linear;
+                .animate-pulse-slow {
+                    animation: pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite;
                 }
                 @keyframes tilt {
                     0%, 50%, 100% { transform: rotate(0deg); }
                     25% { transform: rotate(1deg); }
                     75% { transform: rotate(-1deg); }
+                }
+                @keyframes pulse {
+                    0%, 100% { opacity: 0.6; transform: scale(1); }
+                    50% { opacity: 0.8; transform: scale(1.02); }
                 }
             `}</style>
         </section>
