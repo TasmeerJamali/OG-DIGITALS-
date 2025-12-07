@@ -42,6 +42,7 @@ function CustomCursor() {
 }
 
 // --- FLEXIBLE MARQUEE (BELT) ---
+// --- FLEXIBLE MARQUEE (BELT) ---
 function MarqueeBelt({
     children,
     baseVelocity = 5,
@@ -59,8 +60,9 @@ function MarqueeBelt({
     const smoothVelocity = useSpring(scrollVelocity, { damping: 50, stiffness: 400 });
     const velocityFactor = useTransform(smoothVelocity, [0, 1000], [0, 5], { clamp: false });
 
-    // Wrap the content to prevent gaps
-    const x = useTransform(baseX, (v) => `${(v % 100).toFixed(3)}%`);
+    // Loop logic: We have 2 copies of the content. We scroll from 0% to -50% (or 0 to 50%).
+    // When we reach 50%, we snap back to 0. 50% represents exactly one full copy of the content.
+    const x = useTransform(baseX, (v) => `${(v % 50).toFixed(3)}%`);
     const directionFactor = useRef<number>(1);
 
     useAnimationFrame((t, delta) => {
@@ -79,9 +81,14 @@ function MarqueeBelt({
 
     return (
         <div className={`overflow-hidden whitespace-nowrap flex flex-nowrap ${className}`} style={style}>
-            <motion.div className="flex flex-nowrap items-center" style={{ x }}>
-                {Array.from({ length: 8 }).map((_, i) => (
-                    <span key={i} className="block mr-12">{children}</span>
+            <motion.div className="flex flex-nowrap items-center w-max" style={{ x }}>
+                {/* Render two identical sets of content for the loop */}
+                {[0, 1].map((i) => (
+                    <div key={i} className="flex flex-nowrap items-center shrink-0">
+                        {Array.from({ length: 4 }).map((_, j) => (
+                            <span key={j} className="block mr-12">{children}</span>
+                        ))}
+                    </div>
                 ))}
             </motion.div>
         </div>
