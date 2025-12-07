@@ -291,15 +291,16 @@ export default function EbookPage() {
             </section>
 
             {/* --- FINAL BELT + CTA --- */}
-            <section className="relative py-20 bg-[#a8ffc4] overflow-hidden">
-                <MarqueeBelt baseVelocity={2} className="text-black mb-12">
-                    <span className="text-[10vw] font-black leading-none uppercase tracking-tighter mx-8">
+            {/* --- FINAL BELT + CTA --- */}
+            <section className="relative py-32 md:py-48 bg-[#a8ffc4] overflow-hidden flex flex-col items-center justify-center">
+                <MarqueeBelt baseVelocity={2} className="text-black mb-20 pointer-events-none">
+                    <span className="text-[12vw] font-black leading-none uppercase tracking-tighter mx-8">
                         GET THE UNFAIR ADVANTAGE •
                     </span>
                 </MarqueeBelt>
 
-                <div className="container mx-auto px-6 text-center">
-                    <MagneticButton className="px-16 py-8 bg-black text-[#a8ffc4] text-2xl font-bold rounded-full hover:bg-white hover:text-black transition-all shadow-2xl">
+                <div className="container mx-auto px-6 text-center relative z-10 pb-10">
+                    <MagneticButton className="inline-block px-12 sm:px-20 py-8 sm:py-10 bg-black text-[#a8ffc4] text-xl sm:text-3xl font-bold rounded-full hover:bg-white hover:text-black transition-all shadow-[0_20px_50px_rgba(0,0,0,0.3)]">
                         Download Playbook Now
                     </MagneticButton>
                 </div>
