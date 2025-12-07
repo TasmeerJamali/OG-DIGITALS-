@@ -280,15 +280,15 @@ export default function TestimonialsPage() {
             </section>
 
             {/* ===== MARQUEE TESTIMONIALS ===== */}
-            <section className="py-40 overflow-hidden">
-                <div className="mb-20 px-6 md:px-12 lg:px-24">
+            <section className="pt-56 pb-64 overflow-hidden">
+                <div className="mb-32 px-6 md:px-12 lg:px-24">
                     <motion.div
                         initial={{ opacity: 0, y: 30 }}
                         whileInView={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.6 }}
                         viewport={{ once: true }}
                     >
-                        <span className="text-xs uppercase tracking-[0.3em] text-[#a8ffc4] block mb-4">
+                        <span className="text-xs uppercase tracking-[0.3em] text-[#a8ffc4] block mb-6">
                             Client Feedback
                         </span>
                         <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white">
@@ -317,11 +317,11 @@ export default function TestimonialsPage() {
             </section>
 
             {/* ===== VIDEO TESTIMONIALS ===== */}
-            <section className="py-40 border-t border-white/5">
+            <section className="pt-56 pb-64 border-t border-white/5">
                 <div className="w-full px-6 md:px-12 lg:px-24">
                     {/* Section header */}
                     <motion.div
-                        className="text-center mb-24"
+                        className="text-center mb-32"
                         initial={{ opacity: 0, y: 30 }}
                         whileInView={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.6 }}
@@ -330,7 +330,7 @@ export default function TestimonialsPage() {
                         <span className="text-xs uppercase tracking-[0.3em] text-[#a8ffc4] block mb-6">
                             Video Stories
                         </span>
-                        <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6">
+                        <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-8">
                             Watch their journey
                         </h2>
                         <p className="text-xl text-white/40 max-w-2xl mx-auto">
@@ -348,7 +348,7 @@ export default function TestimonialsPage() {
             </section>
 
             {/* ===== STATS ===== */}
-            <section className="py-32 border-t border-white/5 bg-gradient-to-b from-transparent to-[#a8ffc4]/5">
+            <section className="pt-48 pb-56 border-t border-white/5 bg-gradient-to-b from-transparent to-[#a8ffc4]/5">
                 <div className="w-full px-6 md:px-12 lg:px-24">
                     <div className="grid grid-cols-2 md:grid-cols-4 gap-12 text-center">
                         {[
@@ -380,7 +380,7 @@ export default function TestimonialsPage() {
             </section>
 
             {/* ===== CTA ===== */}
-            <section className="py-40 border-t border-white/5">
+            <section className="pt-56 pb-64 border-t border-white/5">
                 <div className="w-full px-6 md:px-12 lg:px-24">
                     <motion.div
                         className="text-center max-w-4xl mx-auto"
