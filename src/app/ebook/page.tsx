@@ -114,81 +114,19 @@ function CheckList({ items }: { items: string[] }) {
     );
 }
 
-// --- MARQUEE COMPONENT ---
-function MarqueeBelt({ children, baseVelocity = 100, className }: { children: React.ReactNode, baseVelocity?: number, className?: string }) {
-    const baseX = useMotionValue(0);
-    const { scrollY } = useScroll();
-    const scrollVelocity = useVelocity(scrollY);
-    const smoothVelocity = useSpring(scrollVelocity, { damping: 50, stiffness: 400 });
-    const velocityFactor = useTransform(smoothVelocity, [0, 1000], [0, 5], { clamp: false });
-
-    const x = useTransform(baseX, (v) => `${(v % 50).toFixed(3)}%`);
-
-    const directionFactor = useRef<number>(1);
-    useAnimationFrame((t, delta) => {
-        let moveBy = directionFactor.current * baseVelocity * (delta / 1000);
-        if (velocityFactor.get() < 0) directionFactor.current = -1;
-        else if (velocityFactor.get() > 0) directionFactor.current = 1;
-        moveBy += directionFactor.current * moveBy * velocityFactor.get();
-        baseX.set(baseX.get() + moveBy);
-    });
-
-    return (
-        <div className={`overflow-hidden whitespace-nowrap flex flex-nowrap ${className}`}>
-            <motion.div className="flex flex-nowrap gap-10" style={{ x }}>
-                {children}
-                {children}
-            </motion.div>
-        </div>
-    );
-}
-
-// --- BOOK ROW COMPONENT ---
-function BookRow() {
-    const books = [
-        { title: "The Art of Scale", color: "from-blue-600 to-indigo-900" },
-        { title: "Digital Empire", color: "from-emerald-500 to-teal-900" },
-        { title: "Modern Marketing", color: "from-purple-600 to-fuchsia-900" },
-        { title: "Growth & Profit", color: "from-orange-500 to-red-900" },
-        { title: "Zero to One", color: "from-gray-800 to-black" },
-        { title: "Mindset Shift", color: "from-pink-600 to-rose-900" },
-    ];
-
-    return (
-        <div className="w-full relative z-20 mt-24">
-            <MarqueeBelt baseVelocity={-2} className="py-10">
-                {books.map((book, i) => (
-                    <div key={i} className="mx-6 group perspective-1000 relative">
-                        <div className={`w-[200px] h-[300px] rounded-r-lg shadow-[20px_20px_40px_rgba(0,0,0,0.6)] bg-gradient-to-br ${book.color} flex flex-col justify-between p-6 transform transition-transform duration-500 group-hover:-translate-y-6 group-hover:rotate-y-[-10deg] border-l-4 border-white/10`}>
-                            {/* Spine Highlight */}
-                            <div className="absolute left-0 top-0 bottom-0 w-4 bg-gradient-to-r from-white/30 to-transparent z-10" />
-
-                            <div className="text-white/80 text-[10px] font-bold tracking-[0.2em] uppercase">BESTSELLER</div>
-                            <h3 className="text-white font-serif text-2xl font-bold leading-none">{book.title}</h3>
-                            <div className="w-10 h-10 rounded-full bg-white/10 border border-white/10 flex items-center justify-center">
-                                <span className="text-white text-xs">OG</span>
-                            </div>
-                        </div>
-                    </div>
-                ))}
-            </MarqueeBelt>
-        </div>
-    );
-}
-
-// 1. HERO (Redesigned with ebookbg.png)
+// 1. HERO (Refined)
 function Hero() {
     return (
-        <section className="relative min-h-screen flex flex-col justify-center pt-32 overflow-hidden bg-[#a8ffc4]">
+        <section className="relative min-h-screen flex flex-col justify-center pt-48 pb-20 overflow-hidden bg-[#a8ffc4]">
             {/* Background Image */}
             <div className="absolute inset-0 z-0">
                 <img
                     src="/assets/ebookbg.png"
                     alt="Ebook Background"
-                    className="w-full h-full object-cover opacity-100" // Opacity handled in image itself or here
+                    className="w-full h-full object-cover opacity-100"
                 />
-                {/* Gradient Overlay for text readability if needed */}
-                <div className="absolute inset-0 bg-gradient-to-b from-black/10 via-transparent to-black/20 mix-blend-multiply" />
+                {/* Darker Gradient Overlay for text readability */}
+                <div className="absolute inset-0 bg-black/40" />
             </div>
 
             <div className="container mx-auto px-6 relative z-10 text-center mt-10">
@@ -197,39 +135,55 @@ function Hero() {
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.8 }}
                 >
-                    <span className="inline-block py-1 px-4 rounded-full border border-white/20 bg-black/20 backdrop-blur-md text-white/90 text-sm font-semibold uppercase tracking-wider mb-6">
+                    <span className="inline-block py-1.5 px-5 rounded-full border border-white/30 bg-black/40 backdrop-blur-md text-white/90 text-sm font-semibold uppercase tracking-wider mb-8 shadow-lg">
                         Publish. Print. Prosper.
                     </span>
-                    <h1 className="text-6xl md:text-8xl lg:text-9xl font-serif font-black text-white mb-8 leading-[0.9] tracking-tight drop-shadow-2xl">
-                        Professional <br />
-                        eBook Creation.
+                    <h1 className="text-5xl md:text-7xl lg:text-8xl font-serif font-black text-white mb-8 leading-[1.1] tracking-tight drop-shadow-2xl max-w-5xl mx-auto">
+                        Professional eBook Creation & Design Services
                     </h1>
-                    <p className="text-xl md:text-2xl text-white/90 max-w-3xl mx-auto leading-relaxed mb-10 font-medium drop-shadow-lg">
-                        Turn your ideas into stunning, ready-to-sell eBooks with our world-class writing, design, and publishing solutions.
+                    <p className="text-xl md:text-2xl text-white/90 max-w-3xl mx-auto leading-relaxed mb-12 font-medium drop-shadow-lg drop-shadow-black">
+                        Turn your ideas into stunning, ready-to-sell eBooks with our writing, design, and publishing solutions.
                     </p>
-                    <div className="flex flex-col sm:flex-row gap-6 justify-center mb-16">
-                        <MagneticButton className="px-12 py-5 text-xl bg-white text-black hover:bg-[#a8ffc4] hover:text-black shadow-2xl">
-                            Get a Free Quote
-                        </MagneticButton>
-                        <MagneticButton variant="secondary" className="px-12 py-5 text-xl border-white text-white hover:bg-white hover:text-black">
+
+                    <div className="flex flex-col sm:flex-row gap-8 justify-center items-center mb-16">
+                        {/* Shimmer/Pulse Button */}
+                        <div className="relative group">
+                            <div className="absolute -inset-1 bg-gradient-to-r from-[#a8ffc4] to-[#00ffff] rounded-full blur opacity-75 group-hover:opacity-100 transition duration-1000 group-hover:duration-200 animate-tilt"></div>
+                            <button className="relative px-12 py-5 bg-black rounded-full leading-none flex items-center divide-x divide-gray-600">
+                                <span className="flex items-center space-x-5">
+                                    <span className="pr-6 text-white text-xl font-bold group-hover:text-[#a8ffc4] transition-colors">Get a Free Quote</span>
+                                </span>
+                                <span className="pl-6 text-[#a8ffc4] group-hover:text-white transition-colors duration-200">
+                                    &rarr;
+                                </span>
+                            </button>
+                        </div>
+
+                        {/* Secondary Styled Button */}
+                        <motion.button
+                            whileHover={{ scale: 1.05 }}
+                            whileTap={{ scale: 0.95 }}
+                            className="px-12 py-5 text-xl font-bold text-white border-2 border-white rounded-full hover:bg-white hover:text-black transition-all duration-300 shadow-[0_0_20px_rgba(255,255,255,0.2)]"
+                        >
                             View Samples
-                        </MagneticButton>
+                        </motion.button>
                     </div>
                 </motion.div>
             </div>
 
-            {/* Book Showcase Row */}
-            <motion.div
-                initial={{ opacity: 0, y: 100 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.5, duration: 1 }}
-                className="relative z-10"
-            >
-                <BookRow />
-            </motion.div>
-
             {/* Bottom Curve/Wave integration with next section */}
             <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-[#0a0a0a] to-transparent pointer-events-none" />
+
+            <style jsx>{`
+                .animate-tilt {
+                    animation: tilt 10s infinite linear;
+                }
+                @keyframes tilt {
+                    0%, 50%, 100% { transform: rotate(0deg); }
+                    25% { transform: rotate(1deg); }
+                    75% { transform: rotate(-1deg); }
+                }
+            `}</style>
         </section>
     );
 }
