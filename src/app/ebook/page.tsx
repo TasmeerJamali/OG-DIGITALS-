@@ -114,185 +114,122 @@ function CheckList({ items }: { items: string[] }) {
     );
 }
 
-// --- FIRE TEXT COMPONENT ---
-function FireText({ text, className }: { text: React.ReactNode; className?: string }) {
-    return (
-        <span className={`relative inline-block ${className}`}>
-            <span className="absolute inset-0 bg-gradient-to-r from-orange-500 via-yellow-500 to-red-500 bg-[length:200%_auto] bg-clip-text text-transparent animate-text-shimmer select-none blur-[2px] opacity-50">
-                {text}
-            </span>
-            <span className="relative bg-gradient-to-r from-orange-400 via-yellow-300 to-red-500 bg-[length:200%_auto] bg-clip-text text-transparent animate-text-shimmer">
-                {text}
-            </span>
-            <style jsx global>{`
-                @keyframes text-shimmer {
-                    0% { background-position: 0% 50%; }
-                    50% { background-position: 100% 50%; }
-                    100% { background-position: 0% 50%; }
-                }
-                .animate-text-shimmer {
-                    animation: text-shimmer 3s linear infinite;
-                }
-            `}</style>
-        </span>
-    );
-}
+// --- MARQUEE COMPONENT ---
+function MarqueeBelt({ children, baseVelocity = 100, className }: { children: React.ReactNode, baseVelocity?: number, className?: string }) {
+    const baseX = useMotionValue(0);
+    const { scrollY } = useScroll();
+    const scrollVelocity = useVelocity(scrollY);
+    const smoothVelocity = useSpring(scrollVelocity, { damping: 50, stiffness: 400 });
+    const velocityFactor = useTransform(smoothVelocity, [0, 1000], [0, 5], { clamp: false });
 
-function Typewriter({ text }: { text: string }) {
-    const [display, setDisplay] = useState("");
-    
-    useEffect(() => {
-        let i = 0;
-        const timer = setInterval(() => {
-            if (i < text.length) {
-                setDisplay(text.substring(0, i + 1));
-                i++;
-            } else {
-                clearInterval(timer);
-            }
-        }, 50); // Speed
-        return () => clearInterval(timer);
-    }, [text]);
+    const x = useTransform(baseX, (v) => `${(v % 50).toFixed(3)}%`);
+
+    const directionFactor = useRef<number>(1);
+    useAnimationFrame((t, delta) => {
+        let moveBy = directionFactor.current * baseVelocity * (delta / 1000);
+        if (velocityFactor.get() < 0) directionFactor.current = -1;
+        else if (velocityFactor.get() > 0) directionFactor.current = 1;
+        moveBy += directionFactor.current * moveBy * velocityFactor.get();
+        baseX.set(baseX.get() + moveBy);
+    });
 
     return (
-        <span>
-            {display}
-            <span className="animate-pulse">_</span>
-        </span>
-    );
-}
-
-// --- AI AGENT COMPONENT ---
-function AiAgent3D() {
-    return (
-        <div className="relative w-full h-[500px] flex items-center justify-center perspective-1000">
-             {/* Speech Interface - Floating above */}
-            <motion.div 
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 1, duration: 0.8 }}
-                className="absolute top-10 md:-top-10 left-1/2 -translate-x-1/2 z-50 w-64 md:w-80"
-            >
-                <div className="bg-black/80 backdrop-blur-xl border border-[#a8ffc4]/30 rounded-2xl p-4 shadow-[0_0_30px_rgba(168,255,196,0.1)] relative">
-                    {/* Chat Tail */}
-                    <div className="absolute bottom-0 left-1/2 -translate-x-1/2 translate-y-1/2 rotate-45 w-4 h-4 bg-black border-b border-r border-[#a8ffc4]/30" />
-                    
-                    <div className="flex items-center gap-3 mb-2">
-                        <div className="w-2 h-2 rounded-full bg-[#a8ffc4] animate-pulse" />
-                        <span className="text-white/40 text-[10px] uppercase tracking-widest font-mono">OG INTELLIGENCE</span>
-                    </div>
-                    <div className="text-lg md:text-xl font-medium text-white leading-tight font-mono">
-                         <Typewriter text="We build the world's best books." />
-                    </div>
-                </div>
-            </motion.div>
-
-            {/* Core Assembly */}
-            <motion.div
-                animate={{ rotateY: 360 }}
-                transition={{ duration: 20, ease: "linear", repeat: Infinity }}
-                className="relative w-64 h-64 transform-style-3d"
-            >
-                {/* Central Core */}
-                <div className="absolute inset-0 m-auto w-32 h-32 bg-[#a8ffc4] rounded-full blur-[40px] opacity-40 animate-pulse" />
-                <div className="absolute inset-0 m-auto w-24 h-24 bg-gradient-to-br from-white to-[#a8ffc4] rounded-full shadow-[0_0_50px_#a8ffc4] z-10" />
-
-                {/* Ring 1 - Horizontal */}
-                <motion.div 
-                    animate={{ rotateX: 360, rotateY: 180 }}
-                    transition={{ duration: 8, ease: "linear", repeat: Infinity }}
-                    className="absolute inset-[-40px] rounded-full border border-[#a8ffc4]/40 border-dashed"
-                />
-                
-                {/* Ring 2 - Vertical */}
-                <motion.div 
-                    animate={{ rotateY: 360, rotateZ: 90 }}
-                    transition={{ duration: 12, ease: "linear", repeat: Infinity }}
-                    className="absolute inset-[-80px] rounded-full border-[2px] border-white/10"
-                >
-                     <div className="absolute top-0 left-1/2 w-4 h-4 bg-white rounded-full shadow-[0_0_20px_white]" />
-                </motion.div>
-
-                 {/* Ring 3 - Tilted */}
-                 <motion.div 
-                    animate={{ rotateX: 360, rotateZ: 45 }}
-                    transition={{ duration: 15, ease: "linear", repeat: Infinity }}
-                    className="absolute inset-[-20px] rounded-full border border-[#a8ffc4]/20"
-                />
-
-                {/* Floating Particles */}
-                {[...Array(6)].map((_, i) => (
-                    <motion.div
-                        key={i}
-                        className="absolute w-2 h-2 bg-[#a8ffc4] rounded-full"
-                        animate={{
-                            x: [Math.random() * 200 - 100, Math.random() * 200 - 100],
-                            y: [Math.random() * 200 - 100, Math.random() * 200 - 100],
-                            scale: [0, 1, 0],
-                            opacity: [0, 0.8, 0]
-                        }}
-                        transition={{
-                            duration: 2 + Math.random() * 2,
-                            repeat: Infinity,
-                            delay: Math.random() * 2,
-                            ease: "easeInOut"
-                        }}
-                    />
-                ))}
+        <div className={`overflow-hidden whitespace-nowrap flex flex-nowrap ${className}`}>
+            <motion.div className="flex flex-nowrap gap-10" style={{ x }}>
+                {children}
+                {children}
             </motion.div>
         </div>
     );
 }
 
-// 1. HERO
-function Hero() {
+// --- BOOK ROW COMPONENT ---
+function BookRow() {
+    const books = [
+        { title: "The Art of Scale", color: "from-blue-600 to-indigo-900" },
+        { title: "Digital Empire", color: "from-emerald-500 to-teal-900" },
+        { title: "Modern Marketing", color: "from-purple-600 to-fuchsia-900" },
+        { title: "Growth & Profit", color: "from-orange-500 to-red-900" },
+        { title: "Zero to One", color: "from-gray-800 to-black" },
+        { title: "Mindset Shift", color: "from-pink-600 to-rose-900" },
+    ];
+
     return (
-         <section className="relative min-h-screen flex items-center pt-32 pb-20 overflow-hidden">
-            <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(168,255,196,0.05),transparent_40%)]" />
-            <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-[0.03]" />
-            
-            <div className="container mx-auto px-6 relative z-10">
-                <div className="flex flex-col lg:flex-row items-center gap-16 lg:gap-24">
-                    <div className="flex-1 text-center lg:text-left">
-                        <motion.div
-                            initial={{ opacity: 0, y: 20 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ delay: 0.2 }}
-                            className="inline-block px-4 py-2 rounded-full border border-[#a8ffc4]/30 bg-[#a8ffc4]/5 text-[#a8ffc4] text-xs font-mono uppercase tracking-widest mb-8"
-                        >
-                            • Premium Ebook Services
-                        </motion.div>
-                        <h1 className="text-5xl md:text-7xl lg:text-8xl font-black text-white leading-[0.9] tracking-tight mb-8">
-                            Professional <br />
-                            <FireText text="eBook Creation" className="py-2" /> <br />
-                            & Design.
-                        </h1>
-                        <p className="text-xl text-white/50 max-w-xl leading-relaxed mb-10 mx-auto lg:mx-0">
-                            Turn your ideas into stunning, ready-to-sell eBooks with our world-class writing, design, and publishing solutions.
-                        </p>
-                        <div className="flex flex-col sm:flex-row gap-6 justify-center lg:justify-start">
-                            <MagneticButton className="px-10 py-5 text-lg">Get a Free Quote</MagneticButton>
-                            <MagneticButton variant="secondary" className="px-10 py-5 text-lg">View Samples</MagneticButton>
+        <div className="w-full relative z-20 mt-24">
+            <MarqueeBelt baseVelocity={-2} className="py-10">
+                {books.map((book, i) => (
+                    <div key={i} className="mx-6 group perspective-1000 relative">
+                        <div className={`w-[200px] h-[300px] rounded-r-lg shadow-[20px_20px_40px_rgba(0,0,0,0.6)] bg-gradient-to-br ${book.color} flex flex-col justify-between p-6 transform transition-transform duration-500 group-hover:-translate-y-6 group-hover:rotate-y-[-10deg] border-l-4 border-white/10`}>
+                            {/* Spine Highlight */}
+                            <div className="absolute left-0 top-0 bottom-0 w-4 bg-gradient-to-r from-white/30 to-transparent z-10" />
+
+                            <div className="text-white/80 text-[10px] font-bold tracking-[0.2em] uppercase">BESTSELLER</div>
+                            <h3 className="text-white font-serif text-2xl font-bold leading-none">{book.title}</h3>
+                            <div className="w-10 h-10 rounded-full bg-white/10 border border-white/10 flex items-center justify-center">
+                                <span className="text-white text-xs">OG</span>
+                            </div>
                         </div>
                     </div>
-                    
-                    <div className="flex-1 w-full flex justify-center perspective-1000">
-                        {/* 3D Agent Replacement */}
-                        <AiAgent3D />
-                    </div>
-                </div>
+                ))}
+            </MarqueeBelt>
+        </div>
+    );
+}
+
+// 1. HERO (Redesigned with ebookbg.png)
+function Hero() {
+    return (
+        <section className="relative min-h-screen flex flex-col justify-center pt-32 overflow-hidden bg-[#a8ffc4]">
+            {/* Background Image */}
+            <div className="absolute inset-0 z-0">
+                <img
+                    src="/assets/ebookbg.png"
+                    alt="Ebook Background"
+                    className="w-full h-full object-cover opacity-100" // Opacity handled in image itself or here
+                />
+                {/* Gradient Overlay for text readability if needed */}
+                <div className="absolute inset-0 bg-gradient-to-b from-black/10 via-transparent to-black/20 mix-blend-multiply" />
             </div>
-            
-             {/* Scrolling Mouse Icon */}
-            <motion.div 
-                animate={{ y: [0, 10, 0] }} 
-                transition={{ duration: 2, repeat: Infinity }}
-                className="absolute bottom-10 left-1/2 -translate-x-1/2 text-white/20"
+
+            <div className="container mx-auto px-6 relative z-10 text-center mt-10">
+                <motion.div
+                    initial={{ opacity: 0, y: 30 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.8 }}
+                >
+                    <span className="inline-block py-1 px-4 rounded-full border border-white/20 bg-black/20 backdrop-blur-md text-white/90 text-sm font-semibold uppercase tracking-wider mb-6">
+                        Publish. Print. Prosper.
+                    </span>
+                    <h1 className="text-6xl md:text-8xl lg:text-9xl font-serif font-black text-white mb-8 leading-[0.9] tracking-tight drop-shadow-2xl">
+                        Professional <br />
+                        eBook Creation.
+                    </h1>
+                    <p className="text-xl md:text-2xl text-white/90 max-w-3xl mx-auto leading-relaxed mb-10 font-medium drop-shadow-lg">
+                        Turn your ideas into stunning, ready-to-sell eBooks with our world-class writing, design, and publishing solutions.
+                    </p>
+                    <div className="flex flex-col sm:flex-row gap-6 justify-center mb-16">
+                        <MagneticButton className="px-12 py-5 text-xl bg-white text-black hover:bg-[#a8ffc4] hover:text-black shadow-2xl">
+                            Get a Free Quote
+                        </MagneticButton>
+                        <MagneticButton variant="secondary" className="px-12 py-5 text-xl border-white text-white hover:bg-white hover:text-black">
+                            View Samples
+                        </MagneticButton>
+                    </div>
+                </motion.div>
+            </div>
+
+            {/* Book Showcase Row */}
+            <motion.div
+                initial={{ opacity: 0, y: 100 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.5, duration: 1 }}
+                className="relative z-10"
             >
-                <div className="w-6 h-10 border-2 border-current rounded-full flex justify-center pt-2">
-                    <div className="w-1 h-2 bg-current rounded-full" />
-                </div>
+                <BookRow />
             </motion.div>
+
+            {/* Bottom Curve/Wave integration with next section */}
+            <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-[#0a0a0a] to-transparent pointer-events-none" />
         </section>
     );
 }
