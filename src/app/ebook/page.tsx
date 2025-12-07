@@ -114,15 +114,143 @@ function CheckList({ items }: { items: string[] }) {
     );
 }
 
-// --- SECTIONS ---
+// --- FIRE TEXT COMPONENT ---
+function FireText({ text, className }: { text: React.ReactNode; className?: string }) {
+    return (
+        <span className={`relative inline-block ${className}`}>
+            <span className="absolute inset-0 bg-gradient-to-r from-orange-500 via-yellow-500 to-red-500 bg-[length:200%_auto] bg-clip-text text-transparent animate-text-shimmer select-none blur-[2px] opacity-50">
+                {text}
+            </span>
+            <span className="relative bg-gradient-to-r from-orange-400 via-yellow-300 to-red-500 bg-[length:200%_auto] bg-clip-text text-transparent animate-text-shimmer">
+                {text}
+            </span>
+            <style jsx global>{`
+                @keyframes text-shimmer {
+                    0% { background-position: 0% 50%; }
+                    50% { background-position: 100% 50%; }
+                    100% { background-position: 0% 50%; }
+                }
+                .animate-text-shimmer {
+                    animation: text-shimmer 3s linear infinite;
+                }
+            `}</style>
+        </span>
+    );
+}
+
+function Typewriter({ text }: { text: string }) {
+    const [display, setDisplay] = useState("");
+    
+    useEffect(() => {
+        let i = 0;
+        const timer = setInterval(() => {
+            if (i < text.length) {
+                setDisplay(text.substring(0, i + 1));
+                i++;
+            } else {
+                clearInterval(timer);
+            }
+        }, 50); // Speed
+        return () => clearInterval(timer);
+    }, [text]);
+
+    return (
+        <span>
+            {display}
+            <span className="animate-pulse">_</span>
+        </span>
+    );
+}
+
+// --- AI AGENT COMPONENT ---
+function AiAgent3D() {
+    return (
+        <div className="relative w-full h-[500px] flex items-center justify-center perspective-1000">
+             {/* Speech Interface - Floating above */}
+            <motion.div 
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 1, duration: 0.8 }}
+                className="absolute top-10 md:-top-10 left-1/2 -translate-x-1/2 z-50 w-64 md:w-80"
+            >
+                <div className="bg-black/80 backdrop-blur-xl border border-[#a8ffc4]/30 rounded-2xl p-4 shadow-[0_0_30px_rgba(168,255,196,0.1)] relative">
+                    {/* Chat Tail */}
+                    <div className="absolute bottom-0 left-1/2 -translate-x-1/2 translate-y-1/2 rotate-45 w-4 h-4 bg-black border-b border-r border-[#a8ffc4]/30" />
+                    
+                    <div className="flex items-center gap-3 mb-2">
+                        <div className="w-2 h-2 rounded-full bg-[#a8ffc4] animate-pulse" />
+                        <span className="text-white/40 text-[10px] uppercase tracking-widest font-mono">OG INTELLIGENCE</span>
+                    </div>
+                    <div className="text-lg md:text-xl font-medium text-white leading-tight font-mono">
+                         <Typewriter text="We build the world's best books." />
+                    </div>
+                </div>
+            </motion.div>
+
+            {/* Core Assembly */}
+            <motion.div
+                animate={{ rotateY: 360 }}
+                transition={{ duration: 20, ease: "linear", repeat: Infinity }}
+                className="relative w-64 h-64 transform-style-3d"
+            >
+                {/* Central Core */}
+                <div className="absolute inset-0 m-auto w-32 h-32 bg-[#a8ffc4] rounded-full blur-[40px] opacity-40 animate-pulse" />
+                <div className="absolute inset-0 m-auto w-24 h-24 bg-gradient-to-br from-white to-[#a8ffc4] rounded-full shadow-[0_0_50px_#a8ffc4] z-10" />
+
+                {/* Ring 1 - Horizontal */}
+                <motion.div 
+                    animate={{ rotateX: 360, rotateY: 180 }}
+                    transition={{ duration: 8, ease: "linear", repeat: Infinity }}
+                    className="absolute inset-[-40px] rounded-full border border-[#a8ffc4]/40 border-dashed"
+                />
+                
+                {/* Ring 2 - Vertical */}
+                <motion.div 
+                    animate={{ rotateY: 360, rotateZ: 90 }}
+                    transition={{ duration: 12, ease: "linear", repeat: Infinity }}
+                    className="absolute inset-[-80px] rounded-full border-[2px] border-white/10"
+                >
+                     <div className="absolute top-0 left-1/2 w-4 h-4 bg-white rounded-full shadow-[0_0_20px_white]" />
+                </motion.div>
+
+                 {/* Ring 3 - Tilted */}
+                 <motion.div 
+                    animate={{ rotateX: 360, rotateZ: 45 }}
+                    transition={{ duration: 15, ease: "linear", repeat: Infinity }}
+                    className="absolute inset-[-20px] rounded-full border border-[#a8ffc4]/20"
+                />
+
+                {/* Floating Particles */}
+                {[...Array(6)].map((_, i) => (
+                    <motion.div
+                        key={i}
+                        className="absolute w-2 h-2 bg-[#a8ffc4] rounded-full"
+                        animate={{
+                            x: [Math.random() * 200 - 100, Math.random() * 200 - 100],
+                            y: [Math.random() * 200 - 100, Math.random() * 200 - 100],
+                            scale: [0, 1, 0],
+                            opacity: [0, 0.8, 0]
+                        }}
+                        transition={{
+                            duration: 2 + Math.random() * 2,
+                            repeat: Infinity,
+                            delay: Math.random() * 2,
+                            ease: "easeInOut"
+                        }}
+                    />
+                ))}
+            </motion.div>
+        </div>
+    );
+}
 
 // 1. HERO
 function Hero() {
     return (
-        <section className="relative min-h-screen flex items-center pt-32 pb-20 overflow-hidden">
+         <section className="relative min-h-screen flex items-center pt-32 pb-20 overflow-hidden">
             <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(168,255,196,0.05),transparent_40%)]" />
             <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-[0.03]" />
-
+            
             <div className="container mx-auto px-6 relative z-10">
                 <div className="flex flex-col lg:flex-row items-center gap-16 lg:gap-24">
                     <div className="flex-1 text-center lg:text-left">
@@ -136,9 +264,7 @@ function Hero() {
                         </motion.div>
                         <h1 className="text-5xl md:text-7xl lg:text-8xl font-black text-white leading-[0.9] tracking-tight mb-8">
                             Professional <br />
-                            <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#a8ffc4] to-white/50">
-                                eBook Creation
-                            </span> <br />
+                            <FireText text="eBook Creation" className="py-2" /> <br />
                             & Design.
                         </h1>
                         <p className="text-xl text-white/50 max-w-xl leading-relaxed mb-10 mx-auto lg:mx-0">
@@ -149,25 +275,17 @@ function Hero() {
                             <MagneticButton variant="secondary" className="px-10 py-5 text-lg">View Samples</MagneticButton>
                         </div>
                     </div>
-
+                    
                     <div className="flex-1 w-full flex justify-center perspective-1000">
-                        {/* Placeholder for 3D Book - reusing existing component */}
-                        <motion.div
-                            initial={{ opacity: 0, rotateY: 30, scale: 0.8 }}
-                            animate={{ opacity: 1, rotateY: -15, scale: 1 }}
-                            transition={{ duration: 1.5, ease: "easeOut" }}
-                            className="relative"
-                        >
-                            <div className="absolute inset-0 bg-[#a8ffc4] blur-[150px] opacity-20" />
-                            <Book3D />
-                        </motion.div>
+                        {/* 3D Agent Replacement */}
+                        <AiAgent3D />
                     </div>
                 </div>
             </div>
-
-            {/* Scrolling Mouse Icon */}
-            <motion.div
-                animate={{ y: [0, 10, 0] }}
+            
+             {/* Scrolling Mouse Icon */}
+            <motion.div 
+                animate={{ y: [0, 10, 0] }} 
                 transition={{ duration: 2, repeat: Infinity }}
                 className="absolute bottom-10 left-1/2 -translate-x-1/2 text-white/20"
             >
