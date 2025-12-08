@@ -382,55 +382,140 @@ function InfiniteMarquee() {
     );
 }
 
-// 3. SERVICES PACKAGES
+// 3. SERVICES PACKAGES - Premium Holographic 3D Cards
+import { Sparkles, BookOpen, Paintbrush, Megaphone, ArrowRight } from "lucide-react";
+
 function ServicePackages() {
     const packages = [
         {
-            title: "Ghostwriting Grade A",
+            number: "01",
+            title: "Ghostwriting",
+            subtitle: "Grade A Content",
             items: ["Research-based writing", "SEO-friendly structure", "Brand voice alignment", "100% Original Content"],
-            color: "from-blue-500"
+            icon: <BookOpen className="w-8 h-8" />,
+            gradient: "from-blue-500 via-cyan-400 to-teal-400",
+            glowColor: "rgba(59,130,246,0.5)"
         },
         {
+            number: "02",
             title: "Design & Layout",
+            subtitle: "Visual Excellence",
             items: ["Custom Cover Design", "Aesthetic Formatting", "Brand Colors & Fonts", "Professional Typography"],
-            color: "from-purple-500"
+            icon: <Paintbrush className="w-8 h-8" />,
+            gradient: "from-purple-500 via-pink-400 to-rose-400",
+            glowColor: "rgba(168,85,247,0.5)",
+            featured: true
         },
         {
+            number: "03",
             title: "Marketing Kit",
+            subtitle: "Launch Assets",
             items: ["Promotional Social Posts", "Ad Creatives", "Landing Page Banners", "Email Swipe Copy"],
-            color: "from-pink-500"
+            icon: <Megaphone className="w-8 h-8" />,
+            gradient: "from-orange-500 via-amber-400 to-yellow-400",
+            glowColor: "rgba(249,115,22,0.5)"
         }
     ];
 
-    const { scrollYProgress } = useScroll();
-    const x = useTransform(scrollYProgress, [0.2, 0.45], ["0%", "-50%"]); // Subtle horizontal shift effect
-
     return (
-        <section className="py-32 relative border-y border-white/5 bg-black">
-            <div className="container mx-auto px-6">
-                <SectionHeader title="Our Complete Packages" subtitle="Everything you need to go from concept to bestseller." />
+        <section className="py-40 relative bg-[#050505] overflow-hidden">
+            {/* Animated Background */}
+            <div className="absolute inset-0 pointer-events-none">
+                <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(168,255,196,0.05)_0%,transparent_70%)]" />
+                <motion.div animate={{ rotate: 360 }} transition={{ duration: 60, repeat: Infinity, ease: "linear" }} className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[1200px] h-[1200px] border border-white/[0.02] rounded-full" />
+                <motion.div animate={{ rotate: -360 }} transition={{ duration: 90, repeat: Infinity, ease: "linear" }} className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] border border-white/[0.03] rounded-full" />
+            </div>
 
-                <div className="grid lg:grid-cols-3 gap-8">
+            <div className="container mx-auto px-6 relative z-10">
+                {/* Section Header */}
+                <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.6 }} className="text-center mb-24">
+                    <div className="inline-flex items-center gap-2 px-4 py-2 mb-6 text-sm font-mono text-[#a8ffc4] bg-[#a8ffc4]/10 rounded-full border border-[#a8ffc4]/20">
+                        <Sparkles className="w-4 h-4" />
+                        COMPLETE PACKAGES
+                    </div>
+                    <h2 className="text-5xl md:text-7xl font-black text-white mb-6 tracking-tight">
+                        Everything You <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#a8ffc4] via-emerald-400 to-cyan-400">Need</span>
+                    </h2>
+                    <p className="text-xl text-white/50 max-w-2xl mx-auto">From concept to bestseller, our packages cover every step of your publishing journey.</p>
+                </motion.div>
+
+                {/* Cards Grid */}
+                <div className="grid lg:grid-cols-3 gap-8 perspective-1000">
                     {packages.map((pkg, i) => (
                         <motion.div
                             key={i}
-                            initial={{ opacity: 0, y: 50 }}
-                            whileInView={{ opacity: 1, y: 0 }}
-                            transition={{ delay: i * 0.2 }}
-                            viewport={{ once: true }}
-                            className="relative group h-full"
+                            initial={{ opacity: 0, y: 60, rotateX: -10 }}
+                            whileInView={{ opacity: 1, y: 0, rotateX: 0 }}
+                            viewport={{ once: true, margin: "-100px" }}
+                            transition={{ duration: 0.7, delay: i * 0.15, ease: "easeOut" }}
+                            whileHover={{ y: -12, rotateY: 5, rotateX: 5, transition: { duration: 0.4 } }}
+                            className={`group relative h-full ${pkg.featured ? "lg:-translate-y-6" : ""}`}
+                            style={{ transformStyle: "preserve-3d" }}
                         >
-                            <div className={`absolute inset-0 bg-gradient-to-b ${pkg.color} to-transparent opacity-5 group-hover:opacity-20 transition-opacity duration-500 rounded-[2.5rem]`} />
+                            {/* Animated Border */}
+                            <div className="absolute -inset-[1px] rounded-[2rem] bg-gradient-to-r opacity-0 group-hover:opacity-100 transition-opacity duration-500 blur-sm" style={{ background: `linear-gradient(90deg, ${pkg.glowColor}, transparent, ${pkg.glowColor})` }} />
+                            <div className={`absolute -inset-[1px] rounded-[2rem] bg-gradient-to-r ${pkg.gradient} opacity-20 group-hover:opacity-40 transition-opacity duration-500`} />
 
-                            <div className="relative h-full p-10 rounded-[2.5rem] border border-white/10 bg-black/50 backdrop-blur-md flex flex-col">
-                                <h3 className="text-3xl font-bold text-white mb-8">{pkg.title}</h3>
-                                <div className="flex-1">
-                                    <CheckList items={pkg.items} />
+                            {/* Card Content */}
+                            <div className="relative h-full p-10 rounded-[2rem] bg-gradient-to-br from-white/[0.08] to-white/[0.02] backdrop-blur-xl border border-white/10 flex flex-col overflow-hidden">
+                                {/* Spotlight Effect */}
+                                <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none">
+                                    <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[200%] h-32 bg-gradient-to-b from-white/10 to-transparent blur-2xl" />
                                 </div>
-                                <div className="mt-10 pt-10 border-t border-white/10">
-                                    <button className="w-full py-4 rounded-xl border border-white/20 text-white font-medium hover:bg-white hover:text-black transition-all">
-                                        Learn More
-                                    </button>
+
+                                {/* Featured Badge */}
+                                {pkg.featured && (
+                                    <div className="absolute top-6 right-6 px-3 py-1 text-xs font-bold uppercase tracking-widest bg-gradient-to-r from-[#a8ffc4] to-emerald-400 text-black rounded-full">
+                                        Popular
+                                    </div>
+                                )}
+
+                                {/* Number Badge */}
+                                <div className={`absolute top-8 left-8 text-8xl font-black text-transparent bg-clip-text bg-gradient-to-b ${pkg.gradient} opacity-10 select-none`}>
+                                    {pkg.number}
+                                </div>
+
+                                {/* Icon */}
+                                <div className={`relative z-10 w-16 h-16 mb-6 rounded-2xl bg-gradient-to-br ${pkg.gradient} flex items-center justify-center text-white shadow-lg`} style={{ boxShadow: `0 10px 40px ${pkg.glowColor}` }}>
+                                    {pkg.icon}
+                                </div>
+
+                                {/* Title */}
+                                <div className="relative z-10 mb-8">
+                                    <h3 className="text-3xl font-black text-white mb-2">{pkg.title}</h3>
+                                    <p className={`text-lg font-medium text-transparent bg-clip-text bg-gradient-to-r ${pkg.gradient}`}>{pkg.subtitle}</p>
+                                </div>
+
+                                {/* Items */}
+                                <ul className="relative z-10 space-y-4 flex-1">
+                                    {pkg.items.map((item, itemIndex) => (
+                                        <motion.li
+                                            key={itemIndex}
+                                            initial={{ opacity: 0, x: -20 }}
+                                            whileInView={{ opacity: 1, x: 0 }}
+                                            viewport={{ once: true }}
+                                            transition={{ delay: i * 0.1 + itemIndex * 0.05 }}
+                                            className="flex items-center gap-3 text-white/70 group-hover:text-white/90 transition-colors"
+                                        >
+                                            <div className={`w-6 h-6 rounded-full bg-gradient-to-br ${pkg.gradient} flex items-center justify-center flex-shrink-0`}>
+                                                <CheckCircle2 className="w-4 h-4 text-white" />
+                                            </div>
+                                            <span className="font-medium">{item}</span>
+                                        </motion.li>
+                                    ))}
+                                </ul>
+
+                                {/* CTA Button */}
+                                <div className="relative z-10 mt-10 pt-8 border-t border-white/10">
+                                    <motion.button
+                                        whileHover={{ scale: 1.02 }}
+                                        whileTap={{ scale: 0.98 }}
+                                        className={`w-full py-4 px-6 rounded-xl bg-gradient-to-r ${pkg.gradient} text-white font-bold flex items-center justify-center gap-2 shadow-lg transition-all duration-300 group/btn`}
+                                        style={{ boxShadow: `0 8px 30px ${pkg.glowColor}` }}
+                                    >
+                                        Get Started
+                                        <ArrowRight className="w-5 h-5 group-hover/btn:translate-x-1 transition-transform" />
+                                    </motion.button>
                                 </div>
                             </div>
                         </motion.div>
