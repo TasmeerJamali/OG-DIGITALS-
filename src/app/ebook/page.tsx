@@ -284,6 +284,104 @@ function WhyChooseComponents() {
     );
 }
 
+// WORLD-CLASS INFINITE MARQUEE - Multi-layer velocity-based cross-crossing
+function InfiniteMarquee() {
+    const containerRef = useRef<HTMLDivElement>(null);
+    const { scrollYProgress } = useScroll({ target: containerRef, offset: ["start end", "end start"] });
+
+    // Velocity transforms - create parallax movement based on scroll
+    const x1 = useTransform(scrollYProgress, [0, 1], ["0%", "-25%"]);
+    const x2 = useTransform(scrollYProgress, [0, 1], ["-25%", "0%"]);
+    const x3 = useTransform(scrollYProgress, [0, 1], ["0%", "-15%"]);
+
+    const words = ["PUBLISH", "DESIGN", "WRITE", "CREATE", "LAUNCH", "INSPIRE", "BUILD", "TRANSFORM"];
+
+    return (
+        <section ref={containerRef} className="py-20 bg-black relative overflow-hidden">
+            {/* Background Glow */}
+            <div className="absolute inset-0 pointer-events-none">
+                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[400px] bg-[#a8ffc4] rounded-full blur-[200px] opacity-[0.07]" />
+            </div>
+
+            {/* Layer 1 - Large text, moves right on scroll */}
+            <motion.div style={{ x: x1 }} className="flex items-center gap-8 mb-8 whitespace-nowrap">
+                {[...Array(3)].map((_, setIndex) => (
+                    <div key={setIndex} className="flex items-center gap-8 animate-marquee-slow">
+                        {words.map((word, i) => (
+                            <div key={i} className="flex items-center gap-8">
+                                <span className="text-[8rem] md:text-[12rem] font-black tracking-tighter text-transparent bg-clip-text bg-gradient-to-r from-white via-white/80 to-white/40 opacity-20 select-none" style={{ WebkitTextStroke: "1px rgba(255,255,255,0.1)" }}>
+                                    {word}
+                                </span>
+                                <span className="text-[#a8ffc4] text-4xl opacity-30">✦</span>
+                            </div>
+                        ))}
+                    </div>
+                ))}
+            </motion.div>
+
+            {/* Layer 2 - Medium text, moves left on scroll (CROSS-CROSSING) */}
+            <motion.div style={{ x: x2 }} className="flex items-center gap-6 mb-8 whitespace-nowrap -mt-16">
+                {[...Array(3)].map((_, setIndex) => (
+                    <div key={setIndex} className="flex items-center gap-6 animate-marquee-fast">
+                        {words.reverse().map((word, i) => (
+                            <div key={i} className="flex items-center gap-6">
+                                <span className="text-6xl md:text-8xl font-black tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-[#a8ffc4] via-emerald-400 to-[#00ffff] drop-shadow-[0_0_30px_rgba(168,255,196,0.5)] select-none">
+                                    {word}
+                                </span>
+                                <span className="text-white/20 text-2xl">◆</span>
+                            </div>
+                        ))}
+                    </div>
+                ))}
+            </motion.div>
+
+            {/* Layer 3 - Small text with outline, moves right */}
+            <motion.div style={{ x: x3 }} className="flex items-center gap-4 whitespace-nowrap -mt-8">
+                {[...Array(4)].map((_, setIndex) => (
+                    <div key={setIndex} className="flex items-center gap-4 animate-marquee-medium">
+                        {["BESTSELLER", "AUTHORITY", "IMPACT", "SUCCESS", "LEGACY", "VISION"].map((word, i) => (
+                            <div key={i} className="flex items-center gap-4">
+                                <span className="text-4xl md:text-6xl font-bold tracking-widest text-transparent select-none" style={{ WebkitTextStroke: "2px rgba(168,255,196,0.3)" }}>
+                                    {word}
+                                </span>
+                                <span className="text-[#a8ffc4]/40 text-xl">★</span>
+                            </div>
+                        ))}
+                    </div>
+                ))}
+            </motion.div>
+
+            {/* Gradient overlays for fade effect */}
+            <div className="absolute inset-y-0 left-0 w-32 bg-gradient-to-r from-black to-transparent pointer-events-none z-10" />
+            <div className="absolute inset-y-0 right-0 w-32 bg-gradient-to-l from-black to-transparent pointer-events-none z-10" />
+
+            <style jsx>{`
+                @keyframes marquee-slow {
+                    from { transform: translateX(0); }
+                    to { transform: translateX(-33.33%); }
+                }
+                @keyframes marquee-fast {
+                    from { transform: translateX(-33.33%); }
+                    to { transform: translateX(0); }
+                }
+                @keyframes marquee-medium {
+                    from { transform: translateX(0); }
+                    to { transform: translateX(-25%); }
+                }
+                .animate-marquee-slow {
+                    animation: marquee-slow 40s linear infinite;
+                }
+                .animate-marquee-fast {
+                    animation: marquee-fast 25s linear infinite;
+                }
+                .animate-marquee-medium {
+                    animation: marquee-medium 35s linear infinite;
+                }
+            `}</style>
+        </section>
+    );
+}
+
 // 3. SERVICES PACKAGES
 function ServicePackages() {
     const packages = [
@@ -476,6 +574,7 @@ export default function EbookServicesPage() {
         <main className="bg-black min-h-screen selection:bg-[#a8ffc4] selection:text-black">
             <Hero />
             <WhyChooseComponents />
+            <InfiniteMarquee />
             <ServicePackages />
             <ProcessTimeline />
             <Pricing />
