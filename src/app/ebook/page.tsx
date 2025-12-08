@@ -526,45 +526,204 @@ function ServicePackages() {
     );
 }
 
-// 4. PROCESS
+// 4. PROCESS - KINETIC TYPOGRAPHY MADNESS
 function ProcessTimeline() {
+    const steps = [
+        { step: "01", title: "Share Your Idea", highlight: "Idea", desc: "Tell us your topic, vision, and goals." },
+        { step: "02", title: "We Write & Design", highlight: "Design", desc: "Our experts craft your content and visuals." },
+        { step: "03", title: "Review & Revisions", highlight: "Revisions", desc: "We refine until it's absolutely perfect." },
+        { step: "04", title: "Final Delivery", highlight: "Delivery", desc: "Receive ready-to-publish files (PDF, EPUB, KDP)." }
+    ];
+
+    // Kinetic Text Component - letter by letter animation
+    const KineticText = ({ text, delay = 0, className = "" }: { text: string; delay?: number; className?: string }) => {
+        return (
+            <span className={className}>
+                {text.split("").map((char, i) => (
+                    <motion.span
+                        key={i}
+                        initial={{ opacity: 0, y: 50, rotateX: -90 }}
+                        whileInView={{ opacity: 1, y: 0, rotateX: 0 }}
+                        viewport={{ once: true }}
+                        transition={{
+                            duration: 0.5,
+                            delay: delay + i * 0.03,
+                            type: "spring",
+                            stiffness: 200,
+                            damping: 20
+                        }}
+                        className="inline-block"
+                        style={{ transformOrigin: "bottom" }}
+                    >
+                        {char === " " ? "\u00A0" : char}
+                    </motion.span>
+                ))}
+            </span>
+        );
+    };
+
+    // Scramble Text Effect
+    const ScrambleText = ({ text, delay = 0 }: { text: string; delay?: number }) => {
+        const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ!@#$%^&*";
+        const [displayText, setDisplayText] = useState(text.split("").map(() => chars[Math.floor(Math.random() * chars.length)]).join(""));
+        const [isVisible, setIsVisible] = useState(false);
+
+        useEffect(() => {
+            if (!isVisible) return;
+            let iteration = 0;
+            const interval = setInterval(() => {
+                setDisplayText(text.split("").map((char, i) => {
+                    if (i < iteration) return char;
+                    return chars[Math.floor(Math.random() * chars.length)];
+                }).join(""));
+                iteration += 0.5;
+                if (iteration >= text.length) clearInterval(interval);
+            }, 30);
+            return () => clearInterval(interval);
+        }, [isVisible, text]);
+
+        return (
+            <motion.span
+                onViewportEnter={() => setTimeout(() => setIsVisible(true), delay * 1000)}
+                viewport={{ once: true }}
+                className="font-mono"
+            >
+                {displayText}
+            </motion.span>
+        );
+    };
+
     return (
-        <section className="py-32 bg-[#050505] relative">
-            <div className="container mx-auto px-6">
-                <SectionHeader title="How It Works" subtitle="A simple, streamlined process to get your book published." />
+        <section className="py-48 bg-black relative overflow-hidden">
+            {/* Animated Grid Background */}
+            <div className="absolute inset-0 pointer-events-none">
+                <div className="absolute inset-0 bg-[linear-gradient(rgba(168,255,196,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(168,255,196,0.02)_1px,transparent_1px)] bg-[size:100px_100px]" />
+                <motion.div animate={{ opacity: [0.05, 0.15, 0.05] }} transition={{ duration: 5, repeat: Infinity }} className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[1000px] h-[1000px] bg-[#a8ffc4] rounded-full blur-[300px] opacity-[0.05]" />
+            </div>
 
-                <div className="relative max-w-4xl mx-auto">
-                    {/* Vertical Line */}
-                    <div className="absolute left-[28px] md:left-1/2 top-0 bottom-0 w-[2px] bg-gradient-to-b from-[#a8ffc4] to-transparent opacity-20 md:-translate-x-1/2" />
+            <div className="container mx-auto px-6 relative z-10">
+                {/* Kinetic Section Header */}
+                <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} className="text-center mb-32">
+                    <motion.div initial={{ scale: 0, rotate: -180 }} whileInView={{ scale: 1, rotate: 0 }} viewport={{ once: true }} transition={{ type: "spring", stiffness: 200, damping: 15 }} className="inline-block px-6 py-3 mb-8 text-sm font-mono text-[#a8ffc4] bg-[#a8ffc4]/10 rounded-full border border-[#a8ffc4]/20">
+                        <ScrambleText text="THE PROCESS" delay={0.3} />
+                    </motion.div>
+                    <h2 className="text-6xl md:text-8xl font-black text-white mb-6 tracking-tighter">
+                        <KineticText text="How It " delay={0.2} />
+                        <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#a8ffc4] via-emerald-400 to-cyan-400">
+                            <KineticText text="Works" delay={0.5} />
+                        </span>
+                    </h2>
+                    <motion.p initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 1 }} className="text-xl text-white/50 max-w-2xl mx-auto">
+                        Four simple steps to publishing excellence.
+                    </motion.p>
+                </motion.div>
 
-                    {[
-                        { step: "01", title: "Share Your Idea", desc: "Tell us your topic and goals." },
-                        { step: "02", title: "We Write & Design", desc: "Our experts craft your content and visuals." },
-                        { step: "03", title: "Review & Revisions", desc: "We refine until it's perfect." },
-                        { step: "04", title: "Final Delivery", desc: "Receive ready-to-publish files (PDF, EPUB, KDP)." }
-                    ].map((item, i) => (
+                {/* Kinetic Steps */}
+                <div className="relative max-w-5xl mx-auto">
+                    {steps.map((item, i) => (
                         <motion.div
                             key={i}
-                            initial={{ opacity: 0, x: i % 2 === 0 ? -50 : 50 }}
-                            whileInView={{ opacity: 1, x: 0 }}
+                            initial={{ opacity: 0 }}
+                            whileInView={{ opacity: 1 }}
                             viewport={{ once: true, margin: "-100px" }}
-                            transition={{ duration: 0.6, delay: i * 0.1 }}
-                            className={`flex flex-col md:flex-row items-center gap-8 mb-20 last:mb-0 ${i % 2 !== 0 ? "md:flex-row-reverse" : ""}`}
+                            className={`flex flex-col lg:flex-row items-center gap-12 mb-32 last:mb-0 ${i % 2 !== 0 ? "lg:flex-row-reverse" : ""}`}
                         >
-                            {/* Number Bubble */}
-                            <div className="flex-shrink-0 w-14 h-14 rounded-full bg-[#0a0a0a] border border-[#a8ffc4] text-[#a8ffc4] flex items-center justify-center font-bold text-xl relative z-10 shadow-[0_0_20px_rgba(168,255,196,0.2)]">
-                                {item.step}
-                            </div>
+                            {/* Giant Kinetic Number */}
+                            <motion.div
+                                initial={{ scale: 0, rotate: -45, opacity: 0 }}
+                                whileInView={{ scale: 1, rotate: 0, opacity: 1 }}
+                                viewport={{ once: true }}
+                                transition={{ type: "spring", stiffness: 150, damping: 20, delay: i * 0.1 }}
+                                className="relative flex-shrink-0"
+                            >
+                                {/* Background Glow */}
+                                <div className="absolute inset-0 bg-[#a8ffc4] rounded-full blur-3xl opacity-20 scale-150" />
 
-                            {/* Content Card */}
-                            <div className={`flex-1 w-full md:w-auto p-8 rounded-2xl border border-white/5 bg-white/[0.02] backdrop-blur-sm hover:border-[#a8ffc4]/20 transition-colors ${i % 2 === 0 ? "md:text-right" : "md:text-left"}`}>
-                                <h3 className="text-2xl font-bold text-white mb-2">{item.title}</h3>
-                                <p className="text-white/50">{item.desc}</p>
-                            </div>
+                                {/* Main Number */}
+                                <div className="relative w-32 h-32 lg:w-40 lg:h-40 rounded-full bg-gradient-to-br from-[#a8ffc4] to-emerald-600 flex items-center justify-center shadow-[0_0_60px_rgba(168,255,196,0.4)]">
+                                    <motion.span
+                                        initial={{ scale: 1.5, opacity: 0 }}
+                                        whileInView={{ scale: 1, opacity: 1 }}
+                                        viewport={{ once: true }}
+                                        transition={{ delay: 0.3 + i * 0.1, type: "spring" }}
+                                        className="text-5xl lg:text-6xl font-black text-black"
+                                    >
+                                        {item.step}
+                                    </motion.span>
+                                </div>
 
-                            <div className="hidden md:block flex-1" />
+                                {/* Orbiting Ring */}
+                                <motion.div
+                                    animate={{ rotate: 360 }}
+                                    transition={{ duration: 10, repeat: Infinity, ease: "linear" }}
+                                    className="absolute inset-0 border-2 border-dashed border-[#a8ffc4]/30 rounded-full scale-[1.3]"
+                                />
+                            </motion.div>
+
+                            {/* Content Card with Kinetic Text */}
+                            <div className={`flex-1 w-full lg:w-auto ${i % 2 === 0 ? "lg:text-left" : "lg:text-right"}`}>
+                                {/* Kinetic Title */}
+                                <div className="mb-4 overflow-hidden">
+                                    <motion.h3
+                                        initial={{ y: 100 }}
+                                        whileInView={{ y: 0 }}
+                                        viewport={{ once: true }}
+                                        transition={{ type: "spring", stiffness: 100, damping: 20, delay: i * 0.1 }}
+                                        className="text-4xl lg:text-5xl font-black text-white"
+                                    >
+                                        {item.title.split(item.highlight).map((part, pi) => (
+                                            <span key={pi}>
+                                                {part}
+                                                {pi === 0 && (
+                                                    <motion.span
+                                                        initial={{ backgroundPosition: "200% 0" }}
+                                                        whileInView={{ backgroundPosition: "0% 0" }}
+                                                        viewport={{ once: true }}
+                                                        transition={{ duration: 1, delay: 0.5 + i * 0.1 }}
+                                                        className="text-transparent bg-clip-text bg-[length:200%_100%] bg-gradient-to-r from-[#a8ffc4] via-cyan-400 to-[#a8ffc4]"
+                                                    >
+                                                        {item.highlight}
+                                                    </motion.span>
+                                                )}
+                                            </span>
+                                        ))}
+                                    </motion.h3>
+                                </div>
+
+                                {/* Typing Description Effect */}
+                                <motion.p
+                                    initial={{ opacity: 0, x: i % 2 === 0 ? -30 : 30 }}
+                                    whileInView={{ opacity: 1, x: 0 }}
+                                    viewport={{ once: true }}
+                                    transition={{ delay: 0.3 + i * 0.1 }}
+                                    className="text-xl text-white/60 leading-relaxed"
+                                >
+                                    {item.desc}
+                                </motion.p>
+
+                                {/* Animated Underline */}
+                                <motion.div
+                                    initial={{ scaleX: 0 }}
+                                    whileInView={{ scaleX: 1 }}
+                                    viewport={{ once: true }}
+                                    transition={{ duration: 0.8, delay: 0.5 + i * 0.1 }}
+                                    className={`mt-6 h-1 bg-gradient-to-r from-[#a8ffc4] to-transparent ${i % 2 === 0 ? "origin-left" : "origin-right"}`}
+                                    style={{ maxWidth: "200px", marginLeft: i % 2 !== 0 ? "auto" : 0 }}
+                                />
+                            </div>
                         </motion.div>
                     ))}
+                </div>
+
+                {/* Connecting Line Animation */}
+                <div className="absolute left-1/2 top-[300px] bottom-[200px] w-[2px] -translate-x-1/2 overflow-hidden hidden lg:block">
+                    <motion.div
+                        initial={{ height: "0%" }}
+                        whileInView={{ height: "100%" }}
+                        viewport={{ once: true }}
+                        transition={{ duration: 2, ease: "easeOut" }}
+                        className="w-full bg-gradient-to-b from-[#a8ffc4] via-[#a8ffc4]/50 to-transparent"
+                    />
                 </div>
             </div>
         </section>
