@@ -136,9 +136,26 @@ function Hero() {
                     transition={{ duration: 0.8 }}
                     className="flex flex-col items-center"
                 >
-                    <span className="inline-block py-2 px-6 rounded-full border border-white/30 bg-black/40 backdrop-blur-md text-white/90 text-sm font-bold uppercase tracking-[0.2em] mb-8 shadow-2xl">
-                        Publish. Print. Prosper.
-                    </span>
+                    <div className="relative mb-10 group inline-block">
+                        <div className="absolute inset-0 bg-[#a8ffc4]/20 blur-xl rounded-full opacity-50"></div>
+                        <span className="relative inline-flex items-center py-3 px-10 rounded-full border border-[#a8ffc4] bg-black/80 backdrop-blur-md text-[#a8ffc4] text-sm font-mono font-bold uppercase tracking-[0.35em] shadow-[0_0_20px_rgba(168,255,196,0.2),inset_0_0_10px_rgba(168,255,196,0.1)] overflow-hidden">
+                            {/* Tech/Circuit Grid Pattern Overlay */}
+                            <div
+                                className="absolute inset-0 opacity-[0.15] pointer-events-none"
+                                style={{
+                                    backgroundImage: "radial-gradient(#a8ffc4 1px, transparent 1px)",
+                                    backgroundSize: "6px 6px"
+                                }}
+                            />
+
+                            {/* Circuit Dots */}
+                            <span className="w-1.5 h-1.5 rounded-full bg-[#a8ffc4] mr-4 shadow-[0_0_10px_#a8ffc4] animate-pulse"></span>
+                            <span className="relative z-10 drop-shadow-[0_0_8px_rgba(168,255,196,0.8)]">
+                                Publish. Print. Prosper.
+                            </span>
+                            <span className="w-1.5 h-1.5 rounded-full bg-[#a8ffc4] ml-4 shadow-[0_0_10px_#a8ffc4] animate-pulse"></span>
+                        </span>
+                    </div>
 
                     {/* Headline - Tuned to fit in one line on large screens */}
                     <h1 className="text-4xl md:text-6xl lg:text-[5.5rem] xl:text-[6.5rem] font-serif font-black text-white mb-8 leading-none tracking-tight drop-shadow-2xl w-full max-w-[95vw] mx-auto">
