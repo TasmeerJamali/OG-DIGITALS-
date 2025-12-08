@@ -594,7 +594,7 @@ function ProcessTimeline() {
     };
 
     return (
-        <section className="py-48 bg-black relative overflow-hidden">
+        <section className="pt-48 pb-80 bg-black relative overflow-hidden">
             {/* Animated Grid Background */}
             <div className="absolute inset-0 pointer-events-none">
                 <div className="absolute inset-0 bg-[linear-gradient(rgba(168,255,196,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(168,255,196,0.02)_1px,transparent_1px)] bg-[size:100px_100px]" />
