@@ -175,7 +175,11 @@ function Hero() {
                     </div>
 
                     {/* Headline - Tuned to fit in one line on large screens */}
-                    <h1 className="text-4xl md:text-6xl lg:text-[5.5rem] xl:text-[6.5rem] font-serif font-black text-white mb-8 leading-none tracking-tight drop-shadow-2xl w-full max-w-[95vw] mx-auto">
+                    {/* Headline - 3D Metallic Gradient & Depth */}
+                    <h1
+                        className="text-4xl md:text-6xl lg:text-[5.5rem] xl:text-[6.5rem] font-serif font-black mb-8 leading-none tracking-tight w-full max-w-[95vw] mx-auto bg-clip-text text-transparent bg-gradient-to-b from-white via-gray-100 to-gray-400 drop-shadow-[0_5px_5px_rgba(0,0,0,0.8)]"
+                        style={{ textShadow: "0px 4px 10px rgba(255,255,255,0.1), 0px 10px 20px rgba(0,0,0,0.5)" }}
+                    >
                         Professional eBook Creation & Design Services
                     </h1>
 
