@@ -136,25 +136,42 @@ function Hero() {
                     transition={{ duration: 0.8 }}
                     className="flex flex-col items-center"
                 >
-                    <div className="relative mb-10 group inline-block">
-                        <div className="absolute inset-0 bg-[#a8ffc4]/20 blur-xl rounded-full opacity-50"></div>
-                        <span className="relative inline-flex items-center py-3 px-10 rounded-full border border-[#a8ffc4] bg-black/80 backdrop-blur-md text-[#a8ffc4] text-sm font-mono font-bold uppercase tracking-[0.35em] shadow-[0_0_20px_rgba(168,255,196,0.2),inset_0_0_10px_rgba(168,255,196,0.1)] overflow-hidden">
-                            {/* Tech/Circuit Grid Pattern Overlay */}
-                            <div
-                                className="absolute inset-0 opacity-[0.15] pointer-events-none"
-                                style={{
-                                    backgroundImage: "radial-gradient(#a8ffc4 1px, transparent 1px)",
-                                    backgroundSize: "6px 6px"
-                                }}
-                            />
+                    {/* HIGH-TECH BADGE COMPONENT */}
+                    <div className="relative mb-12 group inline-block cursor-default">
+                        {/* Outer Glow/Pulse Layer */}
+                        <div className="absolute inset-0 bg-[#00FF41] rounded-full blur-[20px] opacity-20 group-hover:opacity-40 transition-opacity duration-500 animate-pulse-slow"></div>
 
-                            {/* Circuit Dots */}
-                            <span className="w-1.5 h-1.5 rounded-full bg-[#a8ffc4] mr-4 shadow-[0_0_10px_#a8ffc4] animate-pulse"></span>
-                            <span className="relative z-10 drop-shadow-[0_0_8px_rgba(168,255,196,0.8)]">
-                                Publish. Print. Prosper.
-                            </span>
-                            <span className="w-1.5 h-1.5 rounded-full bg-[#a8ffc4] ml-4 shadow-[0_0_10px_#a8ffc4] animate-pulse"></span>
-                        </span>
+                        {/* Main Container */}
+                        <div className="relative overflow-hidden rounded-full border border-[#00FF41]/80 bg-black/90 backdrop-blur-md shadow-[0_0_15px_rgba(0,255,65,0.4),inset_0_0_20px_rgba(0,255,65,0.1)]">
+
+                            {/* Animated Background Grid & Scanlines */}
+                            <div className="absolute inset-0 opacity-20 pointer-events-none z-0 mix-blend-screen">
+                                <div
+                                    className="absolute inset-0"
+                                    style={{
+                                        backgroundImage: "linear-gradient(rgba(0, 255, 65, 0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(0, 255, 65, 0.1) 1px, transparent 1px)",
+                                        backgroundSize: "20px 20px"
+                                    }}
+                                />
+                                <div className="absolute inset-0 animate-scanline bg-gradient-to-b from-transparent via-[#00FF41]/10 to-transparent h-[200%] w-full" />
+                            </div>
+
+                            {/* Content Wrapper */}
+                            <div className="relative z-10 py-3 px-10 flex items-center gap-4">
+                                {/* Left Tech Indicator */}
+                                <div className="w-1.5 h-1.5 bg-[#00FF41] rounded-full shadow-[0_0_10px_#00FF41] animate-ping" />
+
+                                <span className="text-[#00FF41] font-mono font-bold text-sm tracking-[0.3em] uppercase drop-shadow-[0_0_5px_rgba(0,255,65,1)] group-hover:tracking-[0.4em] transition-all duration-300">
+                                    Publish. Print. Prosper.
+                                </span>
+
+                                {/* Right Tech Indicator */}
+                                <div className="w-1.5 h-1.5 bg-[#00FF41] rounded-full shadow-[0_0_10px_#00FF41] animate-ping delay-75" />
+                            </div>
+
+                            {/* Glitch Overlay Effect on Hover */}
+                            <div className="absolute inset-0 bg-[#00FF41] opacity-0 group-hover:opacity-10 transition-opacity duration-100 mix-blend-overlay" />
+                        </div>
                     </div>
 
                     {/* Headline - Tuned to fit in one line on large screens */}
@@ -206,7 +223,7 @@ function Hero() {
                     50% { opacity: 0.8; transform: scale(1.02); }
                 }
             `}</style>
-        </section>
+        </section >
     );
 }
 
