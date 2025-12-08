@@ -235,30 +235,51 @@ function Hero() {
 }
 
 // 2. WHY CHOOSE US
+// 2. WHY CHOOSE US
+import { PenTool, Palette, Zap, TabletSmartphone, Lock, Rocket } from "lucide-react";
+
 function WhyChooseComponents() {
     const features = [
-        { title: "High-Quality Content", desc: "Deeply researched, authority-building writing.", icon: "✍️" },
-        { title: "Premium Design", desc: "Award-winning layouts and cover art.", icon: "🎨" },
-        { title: "Fast Delivery", desc: "Rapid turnarounds with unlimited revisions.", icon: "⚡" },
-        { title: "Multi-Platform", desc: "Optimized for Amazon KDP, PDF, EPUB.", icon: "📱" },
-        { title: "Full Ownership", desc: "You keep 100% of the copyright & profits.", icon: "🔐" },
-        { title: "Marketing Ready", desc: "Includes social assets to launch big.", icon: "🚀" }
+        { title: "High-Quality Content", desc: "Deeply researched, authority-building writing.", icon: <PenTool className="w-8 h-8" /> },
+        { title: "Premium Design", desc: "Award-winning layouts and cover art.", icon: <Palette className="w-8 h-8" /> },
+        { title: "Fast Delivery", desc: "Rapid turnarounds with unlimited revisions.", icon: <Zap className="w-8 h-8" /> },
+        { title: "Multi-Platform", desc: "Optimized for Amazon KDP, PDF, EPUB.", icon: <TabletSmartphone className="w-8 h-8" /> },
+        { title: "Full Ownership", desc: "You keep 100% of the copyright & profits.", icon: <Lock className="w-8 h-8" /> },
+        { title: "Marketing Ready", desc: "Includes social assets to launch big.", icon: <Rocket className="w-8 h-8" /> }
     ];
 
     return (
-        <section className="py-32 bg-[#0a0a0a] relative overflow-hidden">
-            <div className="container mx-auto px-6">
+        <section className="py-48 bg-[#0a0a0a] relative overflow-hidden">
+            {/* Background Animated Blobs */}
+            <div className="absolute inset-0 overflow-hidden pointer-events-none">
+                <motion.div
+                    animate={{ x: [0, 100, 0], y: [0, -50, 0], opacity: [0.1, 0.3, 0.1] }}
+                    transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
+                    className="absolute top-0 right-0 w-[500px] h-[500px] bg-[#a8ffc4] rounded-full blur-[120px] opacity-10"
+                />
+                <motion.div
+                    animate={{ x: [0, -100, 0], y: [0, 50, 0], opacity: [0.1, 0.2, 0.1] }}
+                    transition={{ duration: 15, repeat: Infinity, ease: "easeInOut", delay: 2 }}
+                    className="absolute bottom-0 left-0 w-[600px] h-[600px] bg-emerald-900 rounded-full blur-[150px] opacity-10"
+                />
+            </div>
+
+            <div className="container mx-auto px-6 relative z-10">
                 <SectionHeader
                     title="Why Choose Our Ebook Services?"
                     subtitle="We don't just write books. We craft digital assets that build authority."
                 />
 
-                <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
                     {features.map((f, i) => (
-                        <GlassCard key={i} delay={i * 0.1} className="h-full flex flex-col items-start gap-4 hover:border-[#a8ffc4]/30">
-                            <span className="text-4xl mb-2 grayscale group-hover:grayscale-0 transition-all">{f.icon}</span>
-                            <h3 className="text-2xl font-bold text-white mb-2">{f.title}</h3>
-                            <p className="text-white/50 leading-relaxed">{f.desc}</p>
+                        <GlassCard key={i} delay={i * 0.1} className="h-full flex flex-col items-start gap-6 hover:bg-white/[0.03] hover:border-[#a8ffc4]/40 transition-all duration-300 group">
+                            <div className="p-4 rounded-xl bg-white/5 border border-white/10 text-[#a8ffc4] group-hover:bg-[#a8ffc4] group-hover:text-black transition-colors duration-300 shadow-[0_0_15px_rgba(168,255,196,0.1)] group-hover:shadow-[0_0_25px_rgba(168,255,196,0.4)]">
+                                {f.icon}
+                            </div>
+                            <div>
+                                <h3 className="text-2xl font-bold text-white mb-3 tracking-tight group-hover:text-[#a8ffc4] transition-colors">{f.title}</h3>
+                                <p className="text-white/60 leading-relaxed font-light">{f.desc}</p>
+                            </div>
                         </GlassCard>
                     ))}
                 </div>
