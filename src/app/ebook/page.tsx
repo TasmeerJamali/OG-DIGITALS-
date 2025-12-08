@@ -733,7 +733,7 @@ function ProcessTimeline() {
 // 5. PRICING (Optional per user, but looks good)
 function Pricing() {
     return (
-        <section className="py-32">
+        <section className="py-48 mt-20 bg-[#050505] relative">
             <div className="container mx-auto px-6">
                 <SectionHeader title="Investment Plans" align="center" />
                 <div className="grid md:grid-cols-3 gap-6 max-w-6xl mx-auto">
