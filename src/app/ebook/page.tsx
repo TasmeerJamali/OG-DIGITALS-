@@ -187,22 +187,25 @@ function Hero() {
                         Turn your ideas into stunning, ready-to-sell eBooks with our writing, design, and publishing solutions.
                     </p>
 
-                    <div className="flex flex-col md:flex-row gap-10 justify-center items-center mb-16 w-full">
-                        {/* Primary Button - BIG & Animated */}
-                        <div className="relative group cursor-pointer">
-                            <div className="absolute -inset-1 bg-gradient-to-r from-[#a8ffc4] via-emerald-400 to-[#00ffff] rounded-full blur opacity-60 group-hover:opacity-100 transition duration-500 group-hover:duration-200 animate-pulse-slow"></div>
-                            <button className="relative px-12 py-6 bg-black rounded-full leading-none flex items-center justify-center border border-white/10 group-active:scale-95 transition-transform duration-100">
-                                <span className="text-white text-2xl font-bold group-hover:text-[#a8ffc4] transition-colors whitespace-nowrap">
-                                    Get a Free Quote &rarr;
-                                </span>
-                            </button>
-                        </div>
-
-                        {/* Secondary Button - BIG & Clean */}
+                    <div className="flex flex-col md:flex-row gap-8 justify-center items-center mb-16 w-full">
+                        {/* Primary Button - 3D Green Gloss */}
                         <motion.button
-                            whileHover={{ scale: 1.05 }}
+                            whileHover={{ scale: 1.02 }}
                             whileTap={{ scale: 0.95 }}
-                            className="px-12 py-6 text-2xl font-bold text-white border-2 border-white rounded-full hover:bg-white hover:text-black transition-all duration-300 shadow-[0_0_20px_rgba(255,255,255,0.2)] whitespace-nowrap"
+                            className="relative group px-12 py-5 bg-gradient-to-b from-[#a8ffc4] to-[#00b359] rounded-full text-black text-2xl font-bold tracking-tight shadow-[0_6px_0_#008f47,0_15px_20px_rgba(0,255,100,0.3)] hover:shadow-[0_8px_0_#008f47,0_20px_30px_rgba(0,255,100,0.4)] active:translate-y-[6px] active:shadow-none transition-all duration-150 border-t border-white/50"
+                        >
+                            <div className="absolute inset-0 rounded-full bg-gradient-to-r from-transparent via-white/40 to-transparent translate-x-[-150%] group-hover:translate-x-[150%] transition-transform duration-700 ease-in-out"></div>
+                            <span className="relative z-10 flex items-center gap-3">
+                                Get a Free Quote
+                                <span className="text-3xl leading-[0] mb-1">→</span>
+                            </span>
+                        </motion.button>
+
+                        {/* Secondary Button - 3D Frost Glass */}
+                        <motion.button
+                            whileHover={{ scale: 1.02, backgroundColor: "rgba(255,255,255,0.1)" }}
+                            whileTap={{ scale: 0.95 }}
+                            className="px-12 py-5 text-2xl font-bold text-white rounded-full bg-white/5 backdrop-blur-md border border-white/20 shadow-[0_6px_0_rgba(255,255,255,0.2),0_15px_20px_rgba(0,0,0,0.3)] hover:shadow-[0_8px_0_rgba(255,255,255,0.3),0_20px_30px_rgba(255,255,255,0.1)] active:translate-y-[6px] active:shadow-none transition-all duration-150"
                         >
                             View Samples
                         </motion.button>
