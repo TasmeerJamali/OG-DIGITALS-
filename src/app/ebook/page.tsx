@@ -591,6 +591,154 @@ function ServicePackages() {
     );
 }
 
+// 4. HOW IT WORKS - Cinematic Timeline
+function HowItWorks() {
+    const containerRef = useRef<HTMLDivElement>(null);
+    const { scrollYProgress } = useScroll({
+        target: containerRef,
+        offset: ["start start", "end end"]
+    });
+
+    // Progress for the journey bar
+    const progressHeight = useTransform(scrollYProgress, [0, 1], ["0%", "100%"]);
+
+    // Active step based on scroll
+    const steps = [
+        {
+            number: "01",
+            title: "Share Your Vision",
+            description: "Tell us about your book idea, target audience, and goals. We'll create a tailored plan that brings your vision to life.",
+            accent: "#a8ffc4"
+        },
+        {
+            number: "02",
+            title: "We Craft & Design",
+            description: "Our expert writers and designers work their magic, creating compelling content and stunning visuals that captivate readers.",
+            accent: "#8b5cf6"
+        },
+        {
+            number: "03",
+            title: "Review & Refine",
+            description: "You review every detail. We refine until it's perfect. Unlimited revisions ensure you're 100% satisfied.",
+            accent: "#f59e0b"
+        },
+        {
+            number: "04",
+            title: "Launch & Prosper",
+            description: "Receive your polished eBook in all formats—PDF, EPUB, KDP-ready. You're set to publish and start earning.",
+            accent: "#10b981"
+        }
+    ];
+
+    return (
+        <section ref={containerRef} className="relative h-[300vh] bg-[#0a0a0a]">
+            <div className="sticky top-0 h-screen overflow-hidden flex">
+                {/* Left side - Progress bar and step numbers */}
+                <div className="hidden md:flex flex-col items-center justify-center w-32 relative">
+                    {/* Vertical progress line */}
+                    <div className="absolute top-1/2 -translate-y-1/2 h-[60%] w-[2px] bg-white/10 rounded-full overflow-hidden">
+                        <motion.div
+                            style={{ height: progressHeight }}
+                            className="w-full bg-gradient-to-b from-[#a8ffc4] via-violet-500 to-emerald-500 rounded-full"
+                        />
+                    </div>
+
+                    {/* Step dots */}
+                    {steps.map((step, i) => {
+                        const stepProgress = useTransform(
+                            scrollYProgress,
+                            [(i) / steps.length, (i + 0.5) / steps.length],
+                            [0, 1]
+                        );
+                        return (
+                            <motion.div
+                                key={i}
+                                style={{
+                                    scale: useTransform(stepProgress, [0, 1], [1, 1.3]),
+                                    opacity: useTransform(stepProgress, [0, 0.5, 1], [0.3, 1, 0.3])
+                                }}
+                                className="w-4 h-4 rounded-full border-2 border-[#a8ffc4] bg-black my-8 z-10 transition-colors"
+                            />
+                        );
+                    })}
+                </div>
+
+                {/* Right side - Content */}
+                <div className="flex-1 flex items-center justify-center px-8 md:px-20">
+                    <div className="max-w-4xl">
+                        {/* Header */}
+                        <motion.div
+                            initial={{ opacity: 0, y: 30 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            className="mb-16"
+                        >
+                            <span className="inline-block px-4 py-2 mb-4 text-sm font-mono text-[#a8ffc4] bg-[#a8ffc4]/10 rounded-full border border-[#a8ffc4]/20">
+                                HOW IT WORKS
+                            </span>
+                            <h2 className="text-4xl md:text-6xl font-bold text-white tracking-tight">
+                                Your Journey to <span className="text-[#a8ffc4]">Publishing</span>
+                            </h2>
+                        </motion.div>
+
+                        {/* Steps - Animated based on scroll */}
+                        <div className="space-y-32">
+                            {steps.map((step, i) => {
+                                const stepStart = i / steps.length;
+                                const stepEnd = (i + 1) / steps.length;
+                                const stepOpacity = useTransform(
+                                    scrollYProgress,
+                                    [stepStart, stepStart + 0.05, stepEnd - 0.05, stepEnd],
+                                    [0, 1, 1, 0]
+                                );
+                                const stepY = useTransform(
+                                    scrollYProgress,
+                                    [stepStart, stepStart + 0.1, stepEnd - 0.1, stepEnd],
+                                    [50, 0, 0, -50]
+                                );
+
+                                return (
+                                    <motion.div
+                                        key={i}
+                                        style={{ opacity: stepOpacity, y: stepY }}
+                                        className="relative"
+                                    >
+                                        {/* Large step number */}
+                                        <div
+                                            className="absolute -left-4 md:-left-16 top-0 text-[120px] md:text-[200px] font-black leading-none opacity-10 select-none pointer-events-none"
+                                            style={{ color: step.accent }}
+                                        >
+                                            {step.number}
+                                        </div>
+
+                                        <div className="relative z-10">
+                                            <div
+                                                className="inline-block px-4 py-1 mb-4 text-sm font-mono rounded-full"
+                                                style={{
+                                                    background: `${step.accent}20`,
+                                                    color: step.accent,
+                                                    border: `1px solid ${step.accent}40`
+                                                }}
+                                            >
+                                                STEP {step.number}
+                                            </div>
+                                            <h3 className="text-3xl md:text-5xl font-bold text-white mb-6">
+                                                {step.title}
+                                            </h3>
+                                            <p className="text-xl text-white/60 max-w-2xl leading-relaxed">
+                                                {step.description}
+                                            </p>
+                                        </div>
+                                    </motion.div>
+                                );
+                            })}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    );
+}
+
 // --- PLACEHOLDER: More sections to be added ---
 
 
@@ -602,6 +750,7 @@ export default function EbookServicesPage() {
             <WhyChooseComponents />
             <InfiniteMarquee />
             <ServicePackages />
+            <HowItWorks />
 
             {/* More sections to be added */}
 
