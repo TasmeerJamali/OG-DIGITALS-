@@ -6,8 +6,8 @@ export default function HexDomeLogo() {
     // Generate hexagons positioned on a hemisphere surface
     const hexagons: { x: number; y: number; z: number; rotateX: number; rotateY: number }[] = [];
 
-    const numRings = 4;
-    const radius = 80;
+    const numRings = 6;
+    const radius = 60;
 
     // Create concentric rings of hexagons on hemisphere (phi from 0 to PI/2)
     for (let ring = 0; ring < numRings; ring++) {
@@ -16,7 +16,7 @@ export default function HexDomeLogo() {
         const y = Math.cos(phi) * radius;
 
         // Number of hexagons in this ring (more at equator, fewer at pole)
-        const numInRing = Math.max(3, Math.round(8 * ringRadius));
+        const numInRing = Math.max(4, Math.round(12 * ringRadius));
 
         for (let i = 0; i < numInRing; i++) {
             const theta = (i / numInRing) * Math.PI * 2;
@@ -43,10 +43,11 @@ export default function HexDomeLogo() {
                 className="w-full h-full relative"
                 style={{
                     transformStyle: "preserve-3d",
-                    transformOrigin: "center center"
+                    transformOrigin: "center center",
+                    transform: "rotateX(-25deg) rotateZ(15deg)" // Tilt to the right like logo
                 }}
                 animate={{ rotateY: 360 }}
-                transition={{ duration: 4, repeat: Infinity, ease: "linear" }}
+                transition={{ duration: 6, repeat: Infinity, ease: "linear" }}
             >
                 {/* Hexagons */}
                 {hexagons.map((hex, i) => (
@@ -58,7 +59,7 @@ export default function HexDomeLogo() {
                             transformStyle: "preserve-3d",
                         }}
                     >
-                        <svg width="24" height="24" viewBox="0 0 100 100">
+                        <svg width="18" height="18" viewBox="0 0 100 100">
                             <polygon
                                 points="50 0 93 25 93 75 50 100 7 75 7 25"
                                 fill="rgba(0, 255, 65, 0.3)"
