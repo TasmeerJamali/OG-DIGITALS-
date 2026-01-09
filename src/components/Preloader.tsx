@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import HexDomeLogo from "@/components/HexDomeLogo";
+import GeodesicSphere from "@/components/GeodesicSphere";
 
 export default function Preloader({ onComplete }: { onComplete: () => void }) {
     const [phase, setPhase] = useState<"loading" | "reveal" | "done">("loading");
@@ -53,14 +53,14 @@ export default function Preloader({ onComplete }: { onComplete: () => void }) {
                         animate={phase === "reveal" ? { opacity: 0 } : { opacity: 1 }}
                         transition={{ duration: 0.5 }}
                     >
-                        {/* 3D Hex Dome Logo */}
+                        {/* 3D Geodesic Sphere Logo */}
                         <motion.div
                             className="relative mb-8"
-                            initial={{ scale: 0 }}
-                            animate={{ scale: 1 }}
-                            transition={{ duration: 0.8, ease: "easeOut" }}
+                            initial={{ scale: 0, opacity: 0 }}
+                            animate={{ scale: 1, opacity: 1 }}
+                            transition={{ duration: 1, ease: "easeOut" }}
                         >
-                            <HexDomeLogo />
+                            <GeodesicSphere />
                         </motion.div>
 
                         {/* Text */}
