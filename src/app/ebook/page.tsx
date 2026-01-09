@@ -768,21 +768,50 @@ function HowItWorks() {
                                     style={{ x: numberX }}
                                     className="relative"
                                 >
-                                    {/* Massive step number */}
-                                    <span
-                                        className="text-[35vw] font-black leading-[0.8] tracking-tighter select-none relative z-10"
+                                    {/* 3D Ice Block Number Container */}
+                                    <motion.div
+                                        className="relative z-10"
                                         style={{
-                                            color: 'transparent',
-                                            WebkitTextStroke: '1px rgba(168, 255, 196, 0.2)',
+                                            rotateX: useTransform(scrollYProgress, [stepStart, stepEnd], [20, -20]),
+                                            rotateY: useTransform(scrollYProgress, [stepStart, stepEnd], [-15, 15]),
+                                            transformStyle: "preserve-3d",
+                                            perspective: "1000px"
                                         }}
                                     >
-                                        {step.number}
-                                    </span>
+                                        {/* The "Ice" Body - Glassy & Glossy */}
+                                        <span
+                                            className="block text-[35vw] font-black leading-[0.8] tracking-tighter select-none"
+                                            style={{
+                                                color: 'rgba(255, 255, 255, 0.03)', // Very faint frosty fill
+                                                WebkitTextStroke: '3px rgba(255, 255, 255, 0.5)', // Icy edge
+                                                filter: `drop-shadow(0 0 40px ${step.gradient.split(' ')[1].replace('to-[', '').replace(']', '')}60)`, // The "Shine" of color
+                                                textShadow: `
+                                                    0 1px 0 rgba(255,255,255,0.4),
+                                                    0 2px 0 rgba(255,255,255,0.3),
+                                                    0 5px 10px rgba(0,0,0,0.2),
+                                                    0 0 20px rgba(255,255,255,0.2)
+                                                ` // Bevel/Depth effect
+                                            }}
+                                        >
+                                            {step.number}
+                                        </span>
 
-                                    {/* "Sprinkle of Paint" Effect - Colorful Blur Behind */}
-                                    <div
-                                        className={`absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[25vw] h-[25vw] rounded-full blur-[80px] opacity-40 bg-gradient-to-br ${step.gradient}`}
-                                    />
+                                        {/* Glossy Reflection Overlay (The "Shine") */}
+                                        <span
+                                            className="absolute inset-0 block text-[35vw] font-black leading-[0.8] tracking-tighter select-none pointer-events-none mix-blend-overlay"
+                                            aria-hidden="true"
+                                            style={{
+                                                color: 'transparent',
+                                                WebkitTextStroke: '1px rgba(255, 255, 255, 0.8)',
+                                                background: `linear-gradient(135deg, transparent 0%, rgba(255,255,255,0.4) 45%, transparent 55%)`,
+                                                backgroundClip: 'text',
+                                                WebkitBackgroundClip: 'text',
+                                                transform: 'translateZ(20px)' // Push forward for 3D depth
+                                            }}
+                                        >
+                                            {step.number}
+                                        </span>
+                                    </motion.div>
 
                                     {/* Animated geometric shape behind number */}
                                     <motion.div
