@@ -499,29 +499,90 @@ function ServicePackages() {
                             {/* Card Container */}
                             <div className="relative w-full h-full rounded-[32px] bg-[#111111] border border-white/5 overflow-hidden transition-all duration-700 group-hover:border-[#a8ffc4]/40 group-hover:shadow-[0_0_60px_rgba(168,255,196,0.15)]">
 
-                                {/* Animated Background on Hover - Floating orbs */}
+                                {/* Unique Animated Background per Card */}
                                 <div className="absolute inset-0 pointer-events-none overflow-hidden">
-                                    <div className="absolute top-1/4 left-1/4 w-32 h-32 bg-[#a8ffc4]/10 rounded-full blur-3xl opacity-0 group-hover:opacity-100 transition-all duration-1000 group-hover:translate-x-10 group-hover:translate-y-5" />
-                                    <div className="absolute bottom-1/3 right-1/4 w-40 h-40 bg-[#a8ffc4]/8 rounded-full blur-3xl opacity-0 group-hover:opacity-100 transition-all duration-1000 delay-100 group-hover:-translate-x-5" />
+                                    {/* Pattern 1: Circuit Board (eBook Writing) */}
+                                    {i === 0 && (
+                                        <>
+                                            <div className="absolute bottom-0 right-0 w-[300px] h-[300px] opacity-0 group-hover:opacity-100 transition-all duration-700">
+                                                {/* Circuit lines from corner */}
+                                                <svg className="w-full h-full" viewBox="0 0 200 200">
+                                                    <g className="opacity-0 group-hover:opacity-60 transition-opacity duration-500">
+                                                        <path d="M200 200 L200 100 L150 100 L150 50 L100 50" stroke="#a8ffc4" strokeWidth="1" fill="none" className="opacity-0 group-hover:opacity-100 transition-all duration-500" style={{ strokeDasharray: 400, strokeDashoffset: 400 }} />
+                                                        <path d="M200 150 L120 150 L120 80" stroke="#a8ffc4" strokeWidth="1" fill="none" />
+                                                        <circle cx="150" cy="100" r="4" fill="#a8ffc4" className="opacity-0 group-hover:opacity-100 transition-opacity delay-200" />
+                                                        <circle cx="120" cy="150" r="3" fill="#a8ffc4" className="opacity-0 group-hover:opacity-100 transition-opacity delay-300" />
+                                                        <circle cx="100" cy="50" r="5" fill="#a8ffc4" className="opacity-0 group-hover:opacity-100 transition-opacity delay-400" />
+                                                        <rect x="90" y="120" width="20" height="15" rx="2" stroke="#a8ffc4" fill="none" strokeWidth="1" className="opacity-0 group-hover:opacity-100 transition-opacity delay-200" />
+                                                        <rect x="160" y="60" width="25" height="20" rx="2" stroke="#a8ffc4" fill="none" strokeWidth="1" className="opacity-0 group-hover:opacity-100 transition-opacity delay-300" />
+                                                    </g>
+                                                </svg>
+                                            </div>
+                                            <div className="absolute bottom-10 right-10 w-8 h-8 rotate-45 border border-[#a8ffc4]/40 opacity-0 group-hover:opacity-100 transition-all duration-500 delay-300" />
+                                        </>
+                                    )}
 
-                                    {/* Orbiting elements */}
-                                    <div className="absolute inset-0 flex items-center justify-center">
-                                        <div className="relative w-64 h-64 opacity-0 group-hover:opacity-100 transition-all duration-700 group-hover:scale-100 scale-50">
-                                            {[0, 60, 120, 180, 240, 300].map((deg, idx) => (
-                                                <div
-                                                    key={idx}
-                                                    className="absolute top-1/2 left-1/2 w-8 h-8 -translate-x-1/2 -translate-y-1/2 transition-all duration-700 group-hover:opacity-60 opacity-0"
-                                                    style={{
-                                                        transform: `rotate(${deg}deg) translateY(-80px) rotate(-${deg}deg)`,
-                                                        transitionDelay: `${idx * 50}ms`
-                                                    }}
-                                                >
-                                                    <div className="w-full h-full rounded-lg bg-[#a8ffc4]/20 border border-[#a8ffc4]/30" />
+                                    {/* Pattern 2: Floating Hexagons (Design & Layout) */}
+                                    {i === 1 && (
+                                        <>
+                                            {[
+                                                { x: '70%', y: '20%', size: 40, delay: 0 },
+                                                { x: '80%', y: '50%', size: 30, delay: 100 },
+                                                { x: '60%', y: '70%', size: 50, delay: 200 },
+                                                { x: '85%', y: '75%', size: 25, delay: 300 },
+                                            ].map((hex, hi) => (
+                                                <div key={hi} className="absolute opacity-0 group-hover:opacity-60 transition-all duration-700" style={{ left: hex.x, top: hex.y, transitionDelay: `${hex.delay}ms` }}>
+                                                    <svg width={hex.size} height={hex.size} viewBox="0 0 24 24">
+                                                        <polygon points="12,2 22,8.5 22,15.5 12,22 2,15.5 2,8.5" fill="none" stroke="#a8ffc4" strokeWidth="1" />
+                                                    </svg>
                                                 </div>
                                             ))}
-                                            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-24 h-24 rounded-full bg-[#a8ffc4]/10 blur-2xl group-hover:scale-150 transition-transform duration-700" />
+                                        </>
+                                    )}
+
+                                    {/* Pattern 3: Crosshatch Lines (Editing) */}
+                                    {i === 2 && (
+                                        <div className="absolute inset-0 opacity-0 group-hover:opacity-30 transition-opacity duration-700">
+                                            {[...Array(8)].map((_, li) => (
+                                                <div key={li} className="absolute w-full h-[1px] bg-gradient-to-r from-transparent via-[#a8ffc4] to-transparent"
+                                                    style={{ top: `${20 + li * 10}%`, transform: `rotate(${li % 2 === 0 ? 15 : -15}deg)`, opacity: 0, animation: `fadeIn 0.5s forwards ${li * 0.1}s` }} />
+                                            ))}
                                         </div>
-                                    </div>
+                                    )}
+
+                                    {/* Pattern 4: Stacked Layers (Multi-Platform) */}
+                                    {i === 3 && (
+                                        <div className="absolute bottom-20 right-10">
+                                            {[0, 1, 2].map((layer) => (
+                                                <div key={layer} className="absolute w-16 h-20 rounded-lg border border-[#a8ffc4]/40 bg-[#a8ffc4]/5 opacity-0 group-hover:opacity-100 transition-all duration-500"
+                                                    style={{
+                                                        transform: `translateX(${layer * -8}px) translateY(${layer * -8}px)`,
+                                                        transitionDelay: `${layer * 100}ms`
+                                                    }} />
+                                            ))}
+                                        </div>
+                                    )}
+
+                                    {/* Pattern 5: Sparkle Diamonds (Marketing Kit) */}
+                                    {i === 4 && (
+                                        <>
+                                            {[
+                                                { x: '75%', y: '25%', size: 20 },
+                                                { x: '85%', y: '60%', size: 16 },
+                                                { x: '65%', y: '80%', size: 24 },
+                                                { x: '90%', y: '40%', size: 12 },
+                                            ].map((spark, si) => (
+                                                <div key={si} className="absolute opacity-0 group-hover:opacity-100 transition-all duration-500 group-hover:scale-100 scale-0"
+                                                    style={{ left: spark.x, top: spark.y, transitionDelay: `${si * 100}ms` }}>
+                                                    <div className="rotate-45 border border-[#a8ffc4] bg-[#a8ffc4]/10"
+                                                        style={{ width: spark.size, height: spark.size }} />
+                                                </div>
+                                            ))}
+                                        </>
+                                    )}
+
+                                    {/* Ambient glow for all */}
+                                    <div className="absolute top-1/3 right-1/4 w-40 h-40 bg-[#a8ffc4]/8 rounded-full blur-3xl opacity-0 group-hover:opacity-100 transition-all duration-1000" />
                                 </div>
 
                                 {/* Main Icon - Top left */}
