@@ -770,14 +770,23 @@ function HowItWorks() {
                                 >
                                     {/* Massive step number */}
                                     <span
-                                        className={`text-[35vw] font-black leading-[0.8] tracking-tighter select-none bg-gradient-to-b ${step.gradient} bg-clip-text text-transparent opacity-20`}
+                                        className="text-[35vw] font-black leading-[0.8] tracking-tighter select-none relative z-10"
+                                        style={{
+                                            color: 'transparent',
+                                            WebkitTextStroke: '1px rgba(168, 255, 196, 0.2)',
+                                        }}
                                     >
                                         {step.number}
                                     </span>
 
+                                    {/* "Sprinkle of Paint" Effect - Colorful Blur Behind */}
+                                    <div
+                                        className={`absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[25vw] h-[25vw] rounded-full blur-[80px] opacity-40 bg-gradient-to-br ${step.gradient}`}
+                                    />
+
                                     {/* Animated geometric shape behind number */}
                                     <motion.div
-                                        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[20vw] h-[20vw]"
+                                        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[20vw] h-[20vw] opacity-30"
                                         animate={{ rotate: 360 }}
                                         transition={{ duration: 30, repeat: Infinity, ease: "linear" }}
                                     >
