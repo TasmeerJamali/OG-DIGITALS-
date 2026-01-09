@@ -549,35 +549,68 @@ function ServicePackages() {
                                 {/* Subtle gradient overlay on hover */}
                                 <div className="absolute inset-0 bg-gradient-to-t from-[#a8ffc4]/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
 
-                                {/* Content */}
-                                <div className="relative z-10 p-8 h-full flex flex-col">
-                                    {/* Icon - Always green */}
-                                    <div className="w-16 h-16 rounded-2xl flex items-center justify-center mb-6 transition-all duration-300 group-hover:scale-110 bg-[#a8ffc4]/10 border border-[#a8ffc4]/20 text-[#a8ffc4] group-hover:bg-[#a8ffc4]/20 group-hover:border-[#a8ffc4]/40 group-hover:shadow-[0_0_30px_rgba(168,255,196,0.2)]">
+                                {/* Content - Centered Premium Layout */}
+                                <div className="relative z-10 p-10 h-full flex flex-col items-center text-center">
+                                    {/* Icon - Animated entrance */}
+                                    <motion.div
+                                        initial={{ scale: 0, opacity: 0 }}
+                                        whileInView={{ scale: 1, opacity: 1 }}
+                                        viewport={{ once: true }}
+                                        transition={{ delay: 0.1, type: "spring", stiffness: 200 }}
+                                        className="w-20 h-20 rounded-2xl flex items-center justify-center mb-8 transition-all duration-300 group-hover:scale-110 bg-[#a8ffc4]/10 border border-[#a8ffc4]/20 text-[#a8ffc4] group-hover:bg-[#a8ffc4]/20 group-hover:border-[#a8ffc4]/40 group-hover:shadow-[0_0_40px_rgba(168,255,196,0.3)]"
+                                    >
                                         {service.icon}
-                                    </div>
+                                    </motion.div>
 
-                                    {/* Title */}
-                                    <h3 className="text-2xl font-bold text-white mb-2 group-hover:text-[#a8ffc4] transition-colors">
+                                    {/* Title - Larger & Bolder */}
+                                    <motion.h3
+                                        initial={{ y: 20, opacity: 0 }}
+                                        whileInView={{ y: 0, opacity: 1 }}
+                                        viewport={{ once: true }}
+                                        transition={{ delay: 0.15 }}
+                                        className="text-[28px] font-extrabold text-white mb-3 group-hover:text-[#a8ffc4] transition-colors leading-tight"
+                                    >
                                         {service.title}
-                                    </h3>
-                                    <p className="text-white/40 text-sm mb-6 font-medium uppercase tracking-wider">
-                                        {service.subtitle}
-                                    </p>
+                                    </motion.h3>
 
-                                    {/* Features */}
-                                    <ul className="space-y-3 flex-grow">
+                                    {/* Subtitle - Better styling */}
+                                    <motion.p
+                                        initial={{ y: 20, opacity: 0 }}
+                                        whileInView={{ y: 0, opacity: 1 }}
+                                        viewport={{ once: true }}
+                                        transition={{ delay: 0.2 }}
+                                        className="text-[#a8ffc4]/60 text-xs mb-8 font-semibold uppercase tracking-[0.2em]"
+                                    >
+                                        {service.subtitle}
+                                    </motion.p>
+
+                                    {/* Features - Larger text, staggered reveal */}
+                                    <ul className="space-y-4 flex-grow w-full">
                                         {service.features.map((feature, fi) => (
-                                            <li key={fi} className="flex items-center gap-3 text-white/50 group-hover:text-white/70 transition-colors">
-                                                <span className="w-1.5 h-1.5 rounded-full bg-[#a8ffc4]" />
-                                                {feature}
-                                            </li>
+                                            <motion.li
+                                                key={fi}
+                                                initial={{ x: -20, opacity: 0 }}
+                                                whileInView={{ x: 0, opacity: 1 }}
+                                                viewport={{ once: true }}
+                                                transition={{ delay: 0.25 + fi * 0.08 }}
+                                                className="flex items-center gap-4 text-white/70 group-hover:text-white/90 transition-colors text-[15px]"
+                                            >
+                                                <span className="w-2 h-2 rounded-full bg-[#a8ffc4] flex-shrink-0" />
+                                                <span className="text-left">{feature}</span>
+                                            </motion.li>
                                         ))}
                                     </ul>
 
-                                    {/* CTA - Simple outline that fills on hover */}
-                                    <button className="mt-6 py-3 px-6 rounded-full font-semibold text-sm transition-all duration-300 border border-[#a8ffc4]/50 text-[#a8ffc4] group-hover:bg-[#a8ffc4] group-hover:text-black group-hover:shadow-[0_0_20px_rgba(168,255,196,0.3)]">
+                                    {/* CTA - Larger & more prominent */}
+                                    <motion.button
+                                        initial={{ y: 20, opacity: 0 }}
+                                        whileInView={{ y: 0, opacity: 1 }}
+                                        viewport={{ once: true }}
+                                        transition={{ delay: 0.5 }}
+                                        className="mt-8 py-4 px-8 rounded-full font-bold text-base transition-all duration-300 border-2 border-[#a8ffc4]/50 text-[#a8ffc4] group-hover:bg-[#a8ffc4] group-hover:text-black group-hover:border-[#a8ffc4] group-hover:shadow-[0_0_30px_rgba(168,255,196,0.4)]"
+                                    >
                                         Learn More →
-                                    </button>
+                                    </motion.button>
                                 </div>
                             </div>
                         </motion.div>
