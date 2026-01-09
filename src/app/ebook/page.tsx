@@ -646,7 +646,7 @@ function ServicePackages() {
 }
 
 
-// 4. HOW IT WORKS - Cinematic Timeline
+// 4. HOW IT WORKS - Award-Winning Cinematic Timeline
 function HowItWorks() {
     const containerRef = useRef<HTMLDivElement>(null);
     const { scrollYProgress } = useScroll({
@@ -656,6 +656,7 @@ function HowItWorks() {
 
     // Progress for the journey bar
     const progressHeight = useTransform(scrollYProgress, [0, 1], ["0%", "100%"]);
+    const progressGlow = useTransform(scrollYProgress, [0, 0.5, 1], [0, 1, 0.5]);
 
     // Active step based on scroll
     const steps = [
@@ -663,125 +664,289 @@ function HowItWorks() {
             number: "01",
             title: "Share Your Vision",
             description: "Tell us about your book idea, target audience, and goals. We'll create a tailored plan that brings your vision to life.",
+            icon: "💡",
             accent: "#a8ffc4"
         },
         {
             number: "02",
             title: "We Craft & Design",
             description: "Our expert writers and designers work their magic, creating compelling content and stunning visuals that captivate readers.",
+            icon: "✨",
             accent: "#8b5cf6"
         },
         {
             number: "03",
             title: "Review & Refine",
             description: "You review every detail. We refine until it's perfect. Unlimited revisions ensure you're 100% satisfied.",
+            icon: "🎯",
             accent: "#f59e0b"
         },
         {
             number: "04",
             title: "Launch & Prosper",
             description: "Receive your polished eBook in all formats—PDF, EPUB, KDP-ready. You're set to publish and start earning.",
+            icon: "🚀",
             accent: "#10b981"
         }
     ];
 
     return (
-        <section ref={containerRef} className="relative h-[300vh] bg-[#0a0a0a]">
+        <section ref={containerRef} className="relative h-[400vh] bg-[#050505]">
+            {/* Animated background grid */}
+            <div className="fixed inset-0 pointer-events-none opacity-10">
+                <div className="absolute inset-0" style={{
+                    backgroundImage: `radial-gradient(circle at 1px 1px, rgba(168,255,196,0.15) 1px, transparent 0)`,
+                    backgroundSize: '60px 60px'
+                }} />
+            </div>
+
             <div className="sticky top-0 h-screen overflow-hidden flex">
-                {/* Left side - Progress bar and step numbers */}
-                <div className="hidden md:flex flex-col items-center justify-center w-32 relative">
-                    {/* Vertical progress line */}
-                    <div className="absolute top-1/2 -translate-y-1/2 h-[60%] w-[2px] bg-white/10 rounded-full overflow-hidden">
+                {/* Left side - Epic Progress System */}
+                <div className="hidden md:flex flex-col items-center justify-center w-40 relative">
+                    {/* DNA Helix Progress Bar */}
+                    <div className="absolute top-1/2 -translate-y-1/2 h-[70%] w-1 rounded-full overflow-visible">
+                        {/* Main track */}
+                        <div className="absolute inset-0 bg-white/5 rounded-full" />
+
+                        {/* Animated fill with glow */}
                         <motion.div
                             style={{ height: progressHeight }}
-                            className="w-full bg-gradient-to-b from-[#a8ffc4] via-violet-500 to-emerald-500 rounded-full"
+                            className="absolute top-0 left-0 right-0 rounded-full"
+                        >
+                            <div className="w-full h-full bg-gradient-to-b from-[#a8ffc4] via-violet-500 to-emerald-400 rounded-full shadow-[0_0_30px_rgba(168,255,196,0.5)]" />
+                        </motion.div>
+
+                        {/* Traveling particle */}
+                        <motion.div
+                            style={{ top: progressHeight }}
+                            className="absolute left-1/2 -translate-x-1/2 -translate-y-1/2 w-4 h-4 rounded-full bg-white shadow-[0_0_20px_#a8ffc4,0_0_40px_#a8ffc4] z-20"
                         />
                     </div>
 
-                    {/* Step dots */}
+                    {/* Step nodes with connecting lines */}
                     {steps.map((step, i) => {
-                        const stepProgress = useTransform(
+                        const nodeProgress = useTransform(
                             scrollYProgress,
-                            [(i) / steps.length, (i + 0.5) / steps.length],
+                            [(i) / steps.length, (i + 0.3) / steps.length],
                             [0, 1]
                         );
+                        const isActive = useTransform(
+                            scrollYProgress,
+                            [(i) / steps.length, (i + 0.5) / steps.length, (i + 1) / steps.length],
+                            [0, 1, 0.3]
+                        );
+
                         return (
                             <motion.div
                                 key={i}
                                 style={{
-                                    scale: useTransform(stepProgress, [0, 1], [1, 1.3]),
-                                    opacity: useTransform(stepProgress, [0, 0.5, 1], [0.3, 1, 0.3])
+                                    scale: useTransform(nodeProgress, [0, 1], [0.8, 1.4]),
+                                    opacity: isActive
                                 }}
-                                className="w-4 h-4 rounded-full border-2 border-[#a8ffc4] bg-black my-8 z-10 transition-colors"
-                            />
+                                className="relative my-10 z-10"
+                            >
+                                {/* Outer glow ring */}
+                                <motion.div
+                                    style={{
+                                        scale: useTransform(nodeProgress, [0, 1], [0.5, 1.5]),
+                                        opacity: useTransform(nodeProgress, [0, 0.5, 1], [0, 0.5, 0])
+                                    }}
+                                    className="absolute inset-0 rounded-full"
+                                    animate={{ rotate: 360 }}
+                                    transition={{ duration: 10, repeat: Infinity, ease: "linear" }}
+                                >
+                                    <div className="w-12 h-12 rounded-full border-2 border-dashed" style={{ borderColor: step.accent }} />
+                                </motion.div>
+
+                                {/* Node */}
+                                <motion.div
+                                    className="w-6 h-6 rounded-full border-2 flex items-center justify-center text-xs font-bold"
+                                    style={{
+                                        borderColor: step.accent,
+                                        backgroundColor: useTransform(nodeProgress, [0, 1], ['transparent', step.accent]),
+                                        boxShadow: useTransform(nodeProgress, [0, 1], ['none', `0 0 25px ${step.accent}`])
+                                    }}
+                                >
+                                    <motion.span style={{ opacity: useTransform(nodeProgress, [0.5, 1], [0, 1]) }} className="text-black">
+                                        {step.number.replace('0', '')}
+                                    </motion.span>
+                                </motion.div>
+                            </motion.div>
                         );
                     })}
                 </div>
 
-                {/* Right side - Content */}
-                <div className="flex-1 flex items-center justify-center px-8 md:px-20">
-                    <div className="max-w-4xl">
-                        {/* Header */}
+                {/* Right side - Epic Content */}
+                <div className="flex-1 flex items-center justify-center px-8 md:px-16">
+                    <div className="max-w-5xl w-full">
+                        {/* Header with kinetic text */}
                         <motion.div
-                            initial={{ opacity: 0, y: 30 }}
-                            whileInView={{ opacity: 1, y: 0 }}
-                            className="mb-16"
+                            initial={{ opacity: 0 }}
+                            whileInView={{ opacity: 1 }}
+                            className="mb-20"
                         >
-                            <span className="inline-block px-4 py-2 mb-4 text-sm font-mono text-[#a8ffc4] bg-[#a8ffc4]/10 rounded-full border border-[#a8ffc4]/20">
-                                HOW IT WORKS
-                            </span>
-                            <h2 className="text-4xl md:text-6xl font-bold text-white tracking-tight">
-                                Your Journey to <span className="text-[#a8ffc4]">Publishing</span>
+                            <motion.span
+                                initial={{ scaleX: 0 }}
+                                whileInView={{ scaleX: 1 }}
+                                className="inline-block px-6 py-2 mb-6 text-sm font-mono text-[#a8ffc4] bg-[#a8ffc4]/10 rounded-full border border-[#a8ffc4]/20 origin-left"
+                            >
+                                THE PROCESS
+                            </motion.span>
+                            <h2 className="text-5xl md:text-7xl font-black text-white tracking-tight leading-[1.1]">
+                                Your Journey to{' '}
+                                <span className="relative inline-block">
+                                    <span className="text-[#a8ffc4]">Publishing</span>
+                                    <motion.span
+                                        className="absolute -bottom-2 left-0 h-1 bg-[#a8ffc4] rounded-full"
+                                        initial={{ width: 0 }}
+                                        whileInView={{ width: '100%' }}
+                                        transition={{ delay: 0.5, duration: 0.8 }}
+                                    />
+                                </span>
                             </h2>
                         </motion.div>
 
-                        {/* Steps - Animated based on scroll */}
-                        <div className="space-y-32">
+                        {/* Steps - 3D Animated Cards */}
+                        <div className="relative">
                             {steps.map((step, i) => {
                                 const stepStart = i / steps.length;
                                 const stepEnd = (i + 1) / steps.length;
                                 const stepOpacity = useTransform(
                                     scrollYProgress,
-                                    [stepStart, stepStart + 0.05, stepEnd - 0.05, stepEnd],
+                                    [stepStart, stepStart + 0.08, stepEnd - 0.08, stepEnd],
                                     [0, 1, 1, 0]
                                 );
-                                const stepY = useTransform(
+                                const stepX = useTransform(
+                                    scrollYProgress,
+                                    [stepStart, stepStart + 0.1],
+                                    [100, 0]
+                                );
+                                const stepRotate = useTransform(
+                                    scrollYProgress,
+                                    [stepStart, stepStart + 0.15],
+                                    [15, 0]
+                                );
+                                const cardScale = useTransform(
                                     scrollYProgress,
                                     [stepStart, stepStart + 0.1, stepEnd - 0.1, stepEnd],
-                                    [50, 0, 0, -50]
+                                    [0.9, 1, 1, 0.95]
                                 );
 
                                 return (
                                     <motion.div
                                         key={i}
-                                        style={{ opacity: stepOpacity, y: stepY }}
-                                        className="relative"
+                                        style={{
+                                            opacity: stepOpacity,
+                                            x: stepX,
+                                            rotateY: stepRotate,
+                                            scale: cardScale
+                                        }}
+                                        className="absolute inset-0"
                                     >
-                                        {/* Large step number */}
+                                        {/* Card */}
                                         <div
-                                            className="absolute -left-4 md:-left-16 top-0 text-[120px] md:text-[200px] font-black leading-none opacity-10 select-none pointer-events-none"
-                                            style={{ color: step.accent }}
+                                            className="relative p-10 md:p-14 rounded-[40px] border overflow-hidden"
+                                            style={{
+                                                backgroundColor: '#0a0a0a',
+                                                borderColor: `${step.accent}30`
+                                            }}
                                         >
-                                            {step.number}
-                                        </div>
-
-                                        <div className="relative z-10">
+                                            {/* Animated corner accent */}
                                             <div
-                                                className="inline-block px-4 py-1 mb-4 text-sm font-mono rounded-full"
+                                                className="absolute top-0 right-0 w-40 h-40 opacity-20"
                                                 style={{
-                                                    background: `${step.accent}20`,
-                                                    color: step.accent,
-                                                    border: `1px solid ${step.accent}40`
+                                                    background: `radial-gradient(circle at top right, ${step.accent}, transparent 70%)`
+                                                }}
+                                            />
+
+                                            {/* Floating icon */}
+                                            <motion.div
+                                                className="absolute top-8 right-8 text-6xl"
+                                                animate={{
+                                                    y: [0, -10, 0],
+                                                    rotate: [0, 5, -5, 0]
+                                                }}
+                                                transition={{
+                                                    duration: 4,
+                                                    repeat: Infinity,
+                                                    ease: "easeInOut"
                                                 }}
                                             >
-                                                STEP {step.number}
+                                                {step.icon}
+                                            </motion.div>
+
+                                            {/* Giant step number */}
+                                            <motion.div
+                                                className="absolute -bottom-20 -right-10 text-[300px] font-black leading-none pointer-events-none select-none"
+                                                style={{
+                                                    color: 'transparent',
+                                                    WebkitTextStroke: `2px ${step.accent}20`
+                                                }}
+                                                animate={{ opacity: [0.3, 0.5, 0.3] }}
+                                                transition={{ duration: 3, repeat: Infinity }}
+                                            >
+                                                {step.number}
+                                            </motion.div>
+
+                                            <div className="relative z-10">
+                                                {/* Step badge */}
+                                                <motion.div
+                                                    initial={{ scaleX: 0 }}
+                                                    whileInView={{ scaleX: 1 }}
+                                                    className="inline-flex items-center gap-3 px-5 py-2 mb-8 rounded-full origin-left"
+                                                    style={{
+                                                        background: `${step.accent}15`,
+                                                        border: `1px solid ${step.accent}40`
+                                                    }}
+                                                >
+                                                    <div className="w-2 h-2 rounded-full animate-pulse" style={{ backgroundColor: step.accent }} />
+                                                    <span className="text-sm font-bold tracking-widest" style={{ color: step.accent }}>
+                                                        STEP {step.number}
+                                                    </span>
+                                                </motion.div>
+
+                                                {/* Title with animated underline */}
+                                                <h3 className="text-4xl md:text-6xl font-black text-white mb-8 leading-tight">
+                                                    {step.title.split(' ').map((word, wi) => (
+                                                        <motion.span
+                                                            key={wi}
+                                                            initial={{ opacity: 0, y: 20 }}
+                                                            whileInView={{ opacity: 1, y: 0 }}
+                                                            transition={{ delay: wi * 0.1 }}
+                                                            className="inline-block mr-4"
+                                                        >
+                                                            {word}
+                                                        </motion.span>
+                                                    ))}
+                                                </h3>
+
+                                                {/* Description */}
+                                                <motion.p
+                                                    initial={{ opacity: 0 }}
+                                                    whileInView={{ opacity: 1 }}
+                                                    transition={{ delay: 0.3 }}
+                                                    className="text-xl md:text-2xl text-white/60 leading-relaxed max-w-2xl"
+                                                >
+                                                    {step.description}
+                                                </motion.p>
+
+                                                {/* Action hint */}
+                                                <motion.div
+                                                    initial={{ opacity: 0, y: 20 }}
+                                                    whileInView={{ opacity: 1, y: 0 }}
+                                                    transition={{ delay: 0.5 }}
+                                                    className="flex items-center gap-3 mt-10"
+                                                    style={{ color: step.accent }}
+                                                >
+                                                    <span className="font-semibold">Continue scrolling</span>
+                                                    <motion.div
+                                                        animate={{ y: [0, 5, 0] }}
+                                                        transition={{ duration: 1.5, repeat: Infinity }}
+                                                    >
+                                                        ↓
+                                                    </motion.div>
+                                                </motion.div>
                                             </div>
-                                            <h3 className="text-3xl md:text-5xl font-bold text-white mb-6">
-                                                {step.title}
-                                            </h3>
-                                            <p className="text-xl text-white/60 max-w-2xl leading-relaxed">
-                                                {step.description}
-                                            </p>
                                         </div>
                                     </motion.div>
                                 );
