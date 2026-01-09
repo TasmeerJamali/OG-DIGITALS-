@@ -659,21 +659,25 @@ function HowItWorks() {
             number: "01",
             title: "Share Your Vision",
             description: "Tell us about your book idea, target audience, and goals. We create a tailored plan that brings your vision to life.",
+            gradient: "from-[#a8ffc4] to-[#10b981]"
         },
         {
             number: "02",
             title: "We Craft & Design",
             description: "Our expert writers and designers create compelling content and stunning visuals that captivate readers.",
+            gradient: "from-[#c4b5fd] to-[#7c3aed]"
         },
         {
             number: "03",
             title: "Review & Refine",
             description: "You review every detail. We refine until perfect. Unlimited revisions ensure complete satisfaction.",
+            gradient: "from-[#fcd34d] to-[#d97706]"
         },
         {
             number: "04",
             title: "Launch & Prosper",
             description: "Receive your polished eBook in all formats. You're set to publish and start earning.",
+            gradient: "from-[#67e8f9] to-[#0ea5e9]"
         }
     ];
 
@@ -766,11 +770,7 @@ function HowItWorks() {
                                 >
                                     {/* Massive step number */}
                                     <span
-                                        className="text-[35vw] font-black leading-[0.8] tracking-tighter select-none"
-                                        style={{
-                                            color: 'transparent',
-                                            WebkitTextStroke: '1px rgba(168, 255, 196, 0.15)'
-                                        }}
+                                        className={`text-[35vw] font-black leading-[0.8] tracking-tighter select-none bg-gradient-to-b ${step.gradient} bg-clip-text text-transparent opacity-20`}
                                     >
                                         {step.number}
                                     </span>
