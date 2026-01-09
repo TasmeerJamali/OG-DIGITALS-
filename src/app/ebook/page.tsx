@@ -395,7 +395,204 @@ function InfiniteMarquee() {
     );
 }
 
-// --- PLACEHOLDER: Sections below will be added one by one ---
+// 3. SERVICE PACKAGES - Horizontal Scroll Belt
+import { FileText, Brush, SpellCheck, FileCode, Megaphone } from "lucide-react";
+
+function ServicePackages() {
+    const containerRef = useRef<HTMLDivElement>(null);
+    const { scrollYProgress } = useScroll({
+        target: containerRef,
+        offset: ["start start", "end end"]
+    });
+
+    // Transform vertical scroll to horizontal movement
+    const x = useTransform(scrollYProgress, [0, 1], ["5%", "-75%"]);
+
+    // Progress indicator
+    const progressWidth = useTransform(scrollYProgress, [0, 1], ["0%", "100%"]);
+
+    const services = [
+        {
+            icon: <FileText className="w-10 h-10" />,
+            title: "eBook Writing",
+            subtitle: "Research-Based Content",
+            features: ["SEO-friendly structure", "Tone/style alignment", "100% original content", "Industry research"],
+            color: "from-emerald-500/20 to-emerald-600/5",
+            accent: "#10b981"
+        },
+        {
+            icon: <Brush className="w-10 h-10" />,
+            title: "Design & Layout",
+            subtitle: "Premium Visual Identity",
+            features: ["Custom cover designs", "Aesthetic page formatting", "Brand-aligned colors", "Professional typography"],
+            color: "from-violet-500/20 to-violet-600/5",
+            accent: "#8b5cf6"
+        },
+        {
+            icon: <SpellCheck className="w-10 h-10" />,
+            title: "Editing & Proofreading",
+            subtitle: "Polished Perfection",
+            features: ["Grammar & clarity", "Flow improvements", "Consistency check", "Final polish"],
+            color: "from-amber-500/20 to-amber-600/5",
+            accent: "#f59e0b"
+        },
+        {
+            icon: <FileCode className="w-10 h-10" />,
+            title: "Multi-Platform Formatting",
+            subtitle: "Publish Everywhere",
+            features: ["Amazon KDP ready", "Apple Books format", "Kindle optimized", "PDF & EPUB"],
+            color: "from-cyan-500/20 to-cyan-600/5",
+            accent: "#06b6d4"
+        },
+        {
+            icon: <Megaphone className="w-10 h-10" />,
+            title: "Marketing Kit",
+            subtitle: "Launch Ready",
+            features: ["Social media assets", "Ad creatives", "Landing page banners", "Email templates"],
+            color: "from-rose-500/20 to-rose-600/5",
+            accent: "#f43f5e"
+        }
+    ];
+
+    return (
+        <section ref={containerRef} className="relative h-[400vh] bg-[#050505]">
+            {/* Sticky container */}
+            <div className="sticky top-0 h-screen overflow-hidden">
+                {/* Background effects */}
+                <div className="absolute inset-0 pointer-events-none">
+                    <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[1000px] h-[600px] bg-[#a8ffc4] rounded-full blur-[300px] opacity-[0.03]" />
+                </div>
+
+                {/* Header */}
+                <div className="absolute top-16 left-0 right-0 z-20 text-center px-6">
+                    <motion.span
+                        initial={{ opacity: 0, y: 20 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        className="inline-block px-4 py-2 mb-4 text-sm font-mono text-[#a8ffc4] bg-[#a8ffc4]/10 rounded-full border border-[#a8ffc4]/20"
+                    >
+                        OUR SERVICES
+                    </motion.span>
+                    <motion.h2
+                        initial={{ opacity: 0, y: 20 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        transition={{ delay: 0.1 }}
+                        className="text-4xl md:text-6xl font-bold text-white tracking-tight"
+                    >
+                        Complete eBook <span className="text-[#a8ffc4]">Packages</span>
+                    </motion.h2>
+                </div>
+
+                {/* Horizontal scrolling cards */}
+                <motion.div
+                    style={{ x }}
+                    className="absolute top-1/2 -translate-y-1/2 left-0 flex gap-8 px-[10vw] pt-20"
+                >
+                    {services.map((service, i) => (
+                        <motion.div
+                            key={i}
+                            initial={{ opacity: 0, y: 50 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            viewport={{ once: true }}
+                            transition={{ delay: i * 0.1 }}
+                            whileHover={{
+                                y: -15,
+                                rotateY: 5,
+                                rotateX: -5,
+                                transition: { duration: 0.3 }
+                            }}
+                            className="group relative w-[380px] h-[480px] flex-shrink-0"
+                            style={{ perspective: "1000px" }}
+                        >
+                            {/* Card */}
+                            <div
+                                className={`relative w-full h-full rounded-3xl bg-gradient-to-br ${service.color} border border-white/10 backdrop-blur-xl overflow-hidden transition-all duration-500 group-hover:border-white/20`}
+                                style={{ transformStyle: "preserve-3d" }}
+                            >
+                                {/* Glow effect on hover */}
+                                <div
+                                    className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"
+                                    style={{
+                                        background: `radial-gradient(circle at 50% 0%, ${service.accent}20 0%, transparent 50%)`,
+                                    }}
+                                />
+
+                                {/* Content */}
+                                <div className="relative z-10 p-8 h-full flex flex-col">
+                                    {/* Icon */}
+                                    <div
+                                        className="w-20 h-20 rounded-2xl flex items-center justify-center mb-6 transition-all duration-300 group-hover:scale-110 group-hover:shadow-lg"
+                                        style={{
+                                            background: `linear-gradient(135deg, ${service.accent}30, ${service.accent}10)`,
+                                            color: service.accent,
+                                            boxShadow: `0 0 0 1px ${service.accent}40`
+                                        }}
+                                    >
+                                        {service.icon}
+                                    </div>
+
+                                    {/* Title */}
+                                    <h3 className="text-2xl font-bold text-white mb-2 group-hover:text-[#a8ffc4] transition-colors">
+                                        {service.title}
+                                    </h3>
+                                    <p className="text-white/50 text-sm mb-6 font-medium uppercase tracking-wider">
+                                        {service.subtitle}
+                                    </p>
+
+                                    {/* Features */}
+                                    <ul className="space-y-3 flex-grow">
+                                        {service.features.map((feature, fi) => (
+                                            <li key={fi} className="flex items-center gap-3 text-white/60 group-hover:text-white/80 transition-colors">
+                                                <span
+                                                    className="w-1.5 h-1.5 rounded-full"
+                                                    style={{ background: service.accent }}
+                                                />
+                                                {feature}
+                                            </li>
+                                        ))}
+                                    </ul>
+
+                                    {/* CTA */}
+                                    <button
+                                        className="mt-6 py-3 px-6 rounded-full font-semibold text-sm transition-all duration-300 group-hover:scale-105"
+                                        style={{
+                                            background: `linear-gradient(135deg, ${service.accent}, ${service.accent}80)`,
+                                            color: "#000"
+                                        }}
+                                    >
+                                        Learn More →
+                                    </button>
+                                </div>
+
+                                {/* Grid pattern overlay */}
+                                <div
+                                    className="absolute inset-0 opacity-[0.03] pointer-events-none"
+                                    style={{
+                                        backgroundImage: "linear-gradient(rgba(255,255,255,0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.1) 1px, transparent 1px)",
+                                        backgroundSize: "30px 30px"
+                                    }}
+                                />
+                            </div>
+                        </motion.div>
+                    ))}
+                </motion.div>
+
+                {/* Progress indicator */}
+                <div className="absolute bottom-12 left-1/2 -translate-x-1/2 w-[200px]">
+                    <div className="h-1 bg-white/10 rounded-full overflow-hidden">
+                        <motion.div
+                            style={{ width: progressWidth }}
+                            className="h-full bg-gradient-to-r from-[#a8ffc4] to-emerald-400 rounded-full"
+                        />
+                    </div>
+                    <p className="text-center text-white/40 text-xs mt-3 font-mono">SCROLL TO EXPLORE</p>
+                </div>
+            </div>
+        </section>
+    );
+}
+
+// --- PLACEHOLDER: More sections to be added ---
+
 
 // --- MAIN PAGE ---
 export default function EbookServicesPage() {
@@ -404,8 +601,9 @@ export default function EbookServicesPage() {
             <Hero />
             <WhyChooseComponents />
             <InfiniteMarquee />
+            <ServicePackages />
 
-            {/* More sections to be added by user */}
+            {/* More sections to be added */}
 
             <footer className="py-12 bg-black text-center border-t border-white/5">
                 <p className="text-white/20 text-sm font-mono">
