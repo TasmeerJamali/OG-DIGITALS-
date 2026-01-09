@@ -494,124 +494,76 @@ function ServicePackages() {
                             whileInView={{ opacity: 1, y: 0 }}
                             viewport={{ once: true }}
                             transition={{ delay: i * 0.1 }}
-                            whileHover={{
-                                y: -10,
-                                transition: { duration: 0.3 }
-                            }}
-                            className="group relative w-[380px] h-[480px] flex-shrink-0"
+                            className="group relative w-[420px] h-[500px] flex-shrink-0 cursor-pointer"
                         >
-                            {/* Card - Unified Dark Glass Design */}
-                            <div className="relative w-full h-full rounded-3xl bg-[#0f0f0f] border border-white/10 backdrop-blur-xl overflow-hidden transition-all duration-500 group-hover:border-[#a8ffc4]/30">
+                            {/* Card Container */}
+                            <div className="relative w-full h-full rounded-[32px] bg-[#111111] border border-white/5 overflow-hidden transition-all duration-700 group-hover:border-[#a8ffc4]/40 group-hover:shadow-[0_0_60px_rgba(168,255,196,0.15)]">
 
-                                {/* Animated Web Mesh Background */}
+                                {/* Animated Background on Hover - Floating orbs */}
                                 <div className="absolute inset-0 pointer-events-none overflow-hidden">
-                                    {/* Web mesh SVG that expands on hover */}
-                                    <svg
-                                        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] opacity-0 group-hover:opacity-100 transition-all duration-700 ease-out"
-                                        viewBox="0 0 200 200"
-                                    >
-                                        <defs>
-                                            <radialGradient id={`webGrad-${i}`} cx="50%" cy="50%" r="50%">
-                                                <stop offset="0%" stopColor="#a8ffc4" stopOpacity="0.15" />
-                                                <stop offset="100%" stopColor="#a8ffc4" stopOpacity="0" />
-                                            </radialGradient>
-                                        </defs>
-                                        <g className="origin-center scale-0 group-hover:scale-100 transition-transform duration-700 ease-out" style={{ transformOrigin: 'center' }}>
-                                            {/* Radial web lines */}
-                                            {Array.from({ length: 12 }).map((_, li) => (
-                                                <line
-                                                    key={li}
-                                                    x1="100" y1="100"
-                                                    x2={100 + 90 * Math.cos((li * 30 * Math.PI) / 180)}
-                                                    y2={100 + 90 * Math.sin((li * 30 * Math.PI) / 180)}
-                                                    stroke="#a8ffc4"
-                                                    strokeWidth="0.5"
-                                                    strokeOpacity="0.3"
-                                                />
+                                    <div className="absolute top-1/4 left-1/4 w-32 h-32 bg-[#a8ffc4]/10 rounded-full blur-3xl opacity-0 group-hover:opacity-100 transition-all duration-1000 group-hover:translate-x-10 group-hover:translate-y-5" />
+                                    <div className="absolute bottom-1/3 right-1/4 w-40 h-40 bg-[#a8ffc4]/8 rounded-full blur-3xl opacity-0 group-hover:opacity-100 transition-all duration-1000 delay-100 group-hover:-translate-x-5" />
+
+                                    {/* Orbiting elements */}
+                                    <div className="absolute inset-0 flex items-center justify-center">
+                                        <div className="relative w-64 h-64 opacity-0 group-hover:opacity-100 transition-all duration-700 group-hover:scale-100 scale-50">
+                                            {[0, 60, 120, 180, 240, 300].map((deg, idx) => (
+                                                <div
+                                                    key={idx}
+                                                    className="absolute top-1/2 left-1/2 w-8 h-8 -translate-x-1/2 -translate-y-1/2 transition-all duration-700 group-hover:opacity-60 opacity-0"
+                                                    style={{
+                                                        transform: `rotate(${deg}deg) translateY(-80px) rotate(-${deg}deg)`,
+                                                        transitionDelay: `${idx * 50}ms`
+                                                    }}
+                                                >
+                                                    <div className="w-full h-full rounded-lg bg-[#a8ffc4]/20 border border-[#a8ffc4]/30" />
+                                                </div>
                                             ))}
-                                            {/* Concentric circles */}
-                                            {[20, 40, 60, 80].map((r, ci) => (
-                                                <circle
-                                                    key={ci}
-                                                    cx="100" cy="100" r={r}
-                                                    fill="none"
-                                                    stroke="#a8ffc4"
-                                                    strokeWidth="0.5"
-                                                    strokeOpacity={0.2 - ci * 0.03}
-                                                />
-                                            ))}
-                                            {/* Center glow */}
-                                            <circle cx="100" cy="100" r="90" fill={`url(#webGrad-${i})`} />
-                                        </g>
-                                    </svg>
+                                            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-24 h-24 rounded-full bg-[#a8ffc4]/10 blur-2xl group-hover:scale-150 transition-transform duration-700" />
+                                        </div>
+                                    </div>
                                 </div>
 
-                                {/* Subtle gradient overlay on hover */}
-                                <div className="absolute inset-0 bg-gradient-to-t from-[#a8ffc4]/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
-
-                                {/* Content - Centered Premium Layout */}
-                                <div className="relative z-10 p-10 h-full flex flex-col items-center text-center">
-                                    {/* Icon - Animated entrance */}
-                                    <motion.div
-                                        initial={{ scale: 0, opacity: 0 }}
-                                        whileInView={{ scale: 1, opacity: 1 }}
-                                        viewport={{ once: true }}
-                                        transition={{ delay: 0.1, type: "spring", stiffness: 200 }}
-                                        className="w-20 h-20 rounded-2xl flex items-center justify-center mb-8 transition-all duration-300 group-hover:scale-110 bg-[#a8ffc4]/10 border border-[#a8ffc4]/20 text-[#a8ffc4] group-hover:bg-[#a8ffc4]/20 group-hover:border-[#a8ffc4]/40 group-hover:shadow-[0_0_40px_rgba(168,255,196,0.3)]"
-                                    >
+                                {/* Main Icon - Top left */}
+                                <div className="absolute top-10 left-10">
+                                    <div className="w-14 h-14 rounded-xl flex items-center justify-center bg-[#a8ffc4]/10 border border-[#a8ffc4]/20 text-[#a8ffc4] transition-all duration-500 group-hover:scale-125 group-hover:bg-[#a8ffc4]/20 group-hover:shadow-[0_0_40px_rgba(168,255,196,0.4)]">
                                         {service.icon}
-                                    </motion.div>
+                                    </div>
+                                </div>
 
-                                    {/* Title - Larger & Bolder */}
-                                    <motion.h3
-                                        initial={{ y: 20, opacity: 0 }}
-                                        whileInView={{ y: 0, opacity: 1 }}
-                                        viewport={{ once: true }}
-                                        transition={{ delay: 0.15 }}
-                                        className="text-[28px] font-extrabold text-white mb-3 group-hover:text-[#a8ffc4] transition-colors leading-tight"
-                                    >
-                                        {service.title}
-                                    </motion.h3>
-
-                                    {/* Subtitle - Better styling */}
-                                    <motion.p
-                                        initial={{ y: 20, opacity: 0 }}
-                                        whileInView={{ y: 0, opacity: 1 }}
-                                        viewport={{ once: true }}
-                                        transition={{ delay: 0.2 }}
-                                        className="text-[#a8ffc4]/60 text-xs mb-8 font-semibold uppercase tracking-[0.2em]"
-                                    >
-                                        {service.subtitle}
-                                    </motion.p>
-
-                                    {/* Features - Larger text, staggered reveal */}
-                                    <ul className="space-y-4 flex-grow w-full">
+                                {/* Features - Revealed on hover */}
+                                <div className="absolute top-32 left-10 right-10 opacity-0 -translate-y-4 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-500 delay-150">
+                                    <ul className="space-y-4">
                                         {service.features.map((feature, fi) => (
-                                            <motion.li
+                                            <li
                                                 key={fi}
-                                                initial={{ x: -20, opacity: 0 }}
-                                                whileInView={{ x: 0, opacity: 1 }}
-                                                viewport={{ once: true }}
-                                                transition={{ delay: 0.25 + fi * 0.08 }}
-                                                className="flex items-center gap-4 text-white/70 group-hover:text-white/90 transition-colors text-[15px]"
+                                                className="flex items-center gap-4 text-white/80 text-lg"
                                             >
-                                                <span className="w-2 h-2 rounded-full bg-[#a8ffc4] flex-shrink-0" />
-                                                <span className="text-left">{feature}</span>
-                                            </motion.li>
+                                                <span className="w-2.5 h-2.5 rounded-full bg-[#a8ffc4] flex-shrink-0" />
+                                                <span>{feature}</span>
+                                            </li>
                                         ))}
                                     </ul>
-
-                                    {/* CTA - Larger & more prominent */}
-                                    <motion.button
-                                        initial={{ y: 20, opacity: 0 }}
-                                        whileInView={{ y: 0, opacity: 1 }}
-                                        viewport={{ once: true }}
-                                        transition={{ delay: 0.5 }}
-                                        className="mt-8 py-4 px-8 rounded-full font-bold text-base transition-all duration-300 border-2 border-[#a8ffc4]/50 text-[#a8ffc4] group-hover:bg-[#a8ffc4] group-hover:text-black group-hover:border-[#a8ffc4] group-hover:shadow-[0_0_30px_rgba(168,255,196,0.4)]"
-                                    >
-                                        Learn More →
-                                    </motion.button>
                                 </div>
+
+                                {/* Bottom Content - Title and Info */}
+                                <div className="absolute bottom-0 left-0 right-0 p-10 bg-gradient-to-t from-[#111111] via-[#111111]/90 to-transparent">
+                                    <p className="text-[#a8ffc4] text-sm font-semibold uppercase tracking-[0.15em] mb-3 opacity-60 group-hover:opacity-100 transition-opacity">
+                                        {service.subtitle}
+                                    </p>
+                                    <h3 className="text-[32px] font-bold text-white leading-tight mb-6 group-hover:text-[#a8ffc4] transition-colors duration-300">
+                                        {service.title}
+                                    </h3>
+                                    <div className="flex items-center gap-3 text-[#a8ffc4] font-semibold text-lg opacity-0 translate-y-4 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-500 delay-200">
+                                        <span>Explore</span>
+                                        <svg className="w-5 h-5 group-hover:translate-x-2 transition-transform duration-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                                        </svg>
+                                    </div>
+                                </div>
+
+                                {/* Top right indicator */}
+                                <div className="absolute top-10 right-10 w-3 h-3 rounded-full border border-white/20 group-hover:border-[#a8ffc4] group-hover:bg-[#a8ffc4] transition-all duration-300" />
                             </div>
                         </motion.div>
                     ))}
@@ -631,6 +583,7 @@ function ServicePackages() {
         </section>
     );
 }
+
 
 // 4. HOW IT WORKS - Cinematic Timeline
 function HowItWorks() {
