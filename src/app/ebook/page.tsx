@@ -13,6 +13,7 @@ import {
     useInView
 } from "framer-motion";
 import Book3D from "@/components/Book3D";
+import { Check, Star, Zap, ExternalLink, PenTool, Palette, TabletSmartphone, Lock, Rocket, CheckCircle2, ChevronDown, FileText, Brush, SpellCheck, FileCode, Megaphone } from "lucide-react";
 
 // --- SHARED COMPONENTS ---
 
@@ -248,8 +249,6 @@ function Hero() {
 }
 
 // 2. WHY CHOOSE US - Premium Bento Grid
-import { PenTool, Palette, Zap, TabletSmartphone, Lock, Rocket, CheckCircle2 } from "lucide-react";
-
 function WhyChooseComponents() {
     const features = [
         { title: "High-Quality Content", desc: "Deeply researched, authority-building writing that positions you as an expert.", icon: <PenTool className="w-7 h-7" />, bullets: ["SEO-optimized structure", "Industry research included", "Plagiarism-free guarantee"], stat: "500+", statLabel: "Books Written" },
@@ -396,7 +395,7 @@ function InfiniteMarquee() {
 }
 
 // 3. SERVICE PACKAGES - Horizontal Scroll Belt
-import { FileText, Brush, SpellCheck, FileCode, Megaphone } from "lucide-react";
+
 
 function ServicePackages() {
     const containerRef = useRef<HTMLDivElement>(null);
@@ -914,8 +913,6 @@ function HowItWorks() {
 
 
 // 5. PORTFOLIO SHOWCASE
-import { ExternalLink } from "lucide-react";
-
 function PortfolioShowcase() {
     const projects = [
         { title: "The Startup Playbook", category: "Business", image: "/assets/ebook-1.jpg" },
@@ -984,111 +981,167 @@ function PortfolioShowcase() {
     );
 }
 
-// 6. PRICING TIERS - Holographic Cards
-import { Check, Star } from "lucide-react";
 
 function PricingSection() {
+    const [activePlan, setActivePlan] = useState<number | null>(1); // Default to middle plan
+
     const plans = [
         {
             name: "Basic",
             subtitle: "Design Only",
-            price: "$299",
+            price: "299",
             features: ["Custom cover design", "Basic page formatting", "PDF delivery", "1 revision round"],
-            popular: false,
-            accent: "#06b6d4"
+            accent: "#06b6d4", // Cyan
+            glow: "shadow-[0_0_80px_-20px_#06b6d4]"
         },
         {
             name: "Standard",
             subtitle: "Writing + Design",
-            price: "$799",
-            features: ["Full eBook writing (up to 10k words)", "Custom cover design", "Professional formatting", "PDF + EPUB", "3 revision rounds"],
+            price: "799",
+            features: ["Full eBook writing (10k words)", "Custom cover design", "Professional formatting", "PDF + EPUB", "3 revision rounds"],
+            accent: "#a8ffc4", // OG Green
             popular: true,
-            accent: "#a8ffc4"
+            glow: "shadow-[0_0_100px_-20px_#a8ffc4]"
         },
         {
             name: "Premium",
             subtitle: "Full Service",
-            price: "$1,499",
-            features: ["Extended writing (up to 25k words)", "Premium cover + interior design", "All formats (PDF, EPUB, KDP)", "Marketing kit included", "Unlimited revisions", "Priority support"],
-            popular: false,
-            accent: "#8b5cf6"
+            price: "1,499",
+            features: ["Extended writing (25k words)", "Premium cover + interior", "All formats (PDF, EPUB, KDP)", "Marketing kit included", "Unlimited revisions"],
+            accent: "#8b5cf6", // Violet
+            glow: "shadow-[0_0_80px_-20px_#8b5cf6]"
         }
     ];
 
     return (
-        <section className="py-32 bg-[#050505] relative overflow-hidden">
+        <section className="py-32 bg-[#020202] relative overflow-hidden min-h-screen flex flex-col justify-center">
+            {/* Ambient Background */}
             <div className="absolute inset-0 pointer-events-none">
-                <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[800px] h-[400px] bg-[#a8ffc4] rounded-full blur-[300px] opacity-[0.05]" />
+                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[1000px] h-[600px] bg-gradient-to-r from-[#06b6d4]/10 via-[#a8ffc4]/10 to-[#8b5cf6]/10 rounded-full blur-[120px] opacity-30 animate-pulse" />
             </div>
 
             <div className="container mx-auto px-6 relative z-10">
                 <motion.div
-                    initial={{ opacity: 0, y: 30 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    className="text-center mb-16"
+                    initial={{ opacity: 0 }}
+                    whileInView={{ opacity: 1 }}
+                    className="text-center mb-20"
                 >
-                    <span className="inline-block px-4 py-2 mb-4 text-sm font-mono text-[#a8ffc4] bg-[#a8ffc4]/10 rounded-full border border-[#a8ffc4]/20">
-                        PRICING
-                    </span>
-                    <h2 className="text-4xl md:text-6xl font-bold text-white tracking-tight mb-4">
-                        Simple, Transparent <span className="text-[#a8ffc4]">Pricing</span>
+                    <span className="text-[#a8ffc4] font-mono tracking-[0.5em] text-sm uppercase">Choose Your Power</span>
+                    <h2 className="text-5xl md:text-7xl font-black text-white mt-4 tracking-tighter">
+                        Unlock <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#a8ffc4] to-emerald-600">Potential</span>
                     </h2>
-                    <p className="text-xl text-white/60 max-w-2xl mx-auto">Choose the package that fits your needs. All plans include 100% copyright ownership.</p>
                 </motion.div>
 
-                <div className="grid md:grid-cols-3 gap-6 max-w-5xl mx-auto">
-                    {plans.map((plan, i) => (
-                        <motion.div
-                            key={i}
-                            initial={{ opacity: 0, y: 40 }}
-                            whileInView={{ opacity: 1, y: 0 }}
-                            viewport={{ once: true }}
-                            transition={{ delay: i * 0.15 }}
-                            whileHover={{ y: -10, scale: 1.02 }}
-                            className={`group relative p-8 rounded-3xl border backdrop-blur-sm transition-all duration-500 ${plan.popular
-                                ? "bg-gradient-to-br from-[#a8ffc4]/20 to-[#a8ffc4]/5 border-[#a8ffc4]/50 scale-105"
-                                : "bg-white/5 border-white/10 hover:border-white/20"
-                                }`}
-                        >
-                            {/* Popular badge */}
-                            {plan.popular && (
-                                <div className="absolute -top-4 left-1/2 -translate-x-1/2 px-4 py-1 bg-[#a8ffc4] text-black text-sm font-bold rounded-full flex items-center gap-1">
-                                    <Star className="w-4 h-4" /> MOST POPULAR
+                {/* The Monoliths */}
+                <div className="flex flex-col lg:flex-row gap-4 h-[auto] lg:h-[600px] max-w-7xl mx-auto">
+                    {plans.map((plan, i) => {
+                        const isActive = activePlan === i;
+                        return (
+                            <motion.div
+                                key={i}
+                                layout
+                                onHoverStart={() => setActivePlan(i)}
+                                onClick={() => setActivePlan(i)}
+                                className={`relative rounded-[30px] border border-white/10 overflow-hidden cursor-pointer backdrop-blur-xl transition-all duration-700 ease-[0.23,1,0.32,1] ${isActive ? 'lg:flex-[3] bg-white/[0.03]' : 'lg:flex-[1] bg-transparent hover:bg-white/[0.02]'
+                                    }`}
+                                style={{
+                                    boxShadow: isActive ? `0 0 0 1px ${plan.accent}40, 0 20px 80px -20px ${plan.accent}20` : 'none'
+                                }}
+                            >
+                                {/* Active Glow Gradient */}
+                                {isActive && (
+                                    <div className="absolute inset-0 pointer-events-none opacity-20">
+                                        <div className="absolute inset-0 bg-gradient-to-br from-white/10 to-transparent" />
+                                        <div className="absolute bottom-0 left-0 right-0 h-1/2 bg-gradient-to-t" style={{ backgroundImage: `linear-gradient(to top, ${plan.accent}40, transparent)` }} />
+                                    </div>
+                                )}
+
+                                {/* Content Container */}
+                                <div className="relative h-full p-8 md:p-12 flex flex-col justify-between">
+
+                                    {/* Top Section */}
+                                    <div className="flex justify-between items-start">
+                                        <div>
+                                            <div className="flex items-center gap-3 mb-2">
+                                                {plan.popular && (
+                                                    <span className="px-3 py-1 rounded-full bg-[#a8ffc4] text-black text-xs font-bold uppercase tracking-wider flex items-center gap-1">
+                                                        <Star size={12} fill="black" /> Popular
+                                                    </span>
+                                                )}
+                                                <h3 className={`text-2xl font-bold transition-colors duration-300 ${isActive ? 'text-white' : 'text-white/60'}`}>
+                                                    {plan.name}
+                                                </h3>
+                                            </div>
+                                            <p className={`text-sm font-mono transition-opacity duration-300 ${isActive ? 'text-white/60 opacity-100' : 'opacity-0 h-0 hidden lg:block'}`}>
+                                                {plan.subtitle}
+                                            </p>
+                                        </div>
+
+                                        {/* Price */}
+                                        <div className="text-right">
+                                            <div className="flex items-start gap-1">
+                                                <span className="text-xl text-white/40 mt-1">$</span>
+                                                <motion.span
+                                                    layout="position"
+                                                    className={`font-black text-white leading-none ${isActive ? 'text-6xl md:text-7xl' : 'text-4xl'}`}
+                                                    style={{ textShadow: `0 0 40px ${plan.accent}40` }}
+                                                >
+                                                    {plan.price}
+                                                </motion.span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    {/* Middle Section - Features (Hidden when collapsed on desktop) */}
+                                    <div className={`overflow-hidden transition-all duration-700 ${isActive ? 'opacity-100 max-h-[500px] mt-12' : 'opacity-0 max-h-0 lg:mt-0'}`}>
+                                        <div className="space-y-6">
+                                            {plan.features.map((feature, fi) => (
+                                                <motion.div
+                                                    key={fi}
+                                                    initial={{ opacity: 0, x: -20 }}
+                                                    animate={{ opacity: isActive ? 1 : 0, x: isActive ? 0 : -20 }}
+                                                    transition={{ delay: fi * 0.1 }}
+                                                    className="flex items-center gap-4 group/item"
+                                                >
+                                                    <div className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center border border-white/10 group-hover/item:border-white/30 transition-colors">
+                                                        <Check size={18} style={{ color: plan.accent }} />
+                                                    </div>
+                                                    <span className="text-lg text-white/80 font-light">{feature}</span>
+                                                </motion.div>
+                                            ))}
+                                        </div>
+                                    </div>
+
+                                    {/* Bottom Section - Action */}
+                                    <div className={`mt-auto pt-10 transition-all duration-500 ${isActive ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10 lg:translate-y-20'}`}>
+                                        <button
+                                            className="w-full py-6 rounded-2xl font-bold text-lg tracking-wider uppercase transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] relative overflow-hidden group/btn"
+                                            style={{
+                                                backgroundColor: plan.accent,
+                                                color: plan.name === 'Standard' ? 'black' : 'black', // Standard (Green) needs black text, others usually dark too with these neon colors
+                                                boxShadow: `0 0 40px -10px ${plan.accent}`
+                                            }}
+                                        >
+                                            <div className="absolute inset-0 bg-white/20 translate-y-full group-hover/btn:translate-y-0 transition-transform duration-300" />
+                                            <span className="relative flex items-center justify-center gap-2">
+                                                Get Started <Zap size={18} fill="black" />
+                                            </span>
+                                        </button>
+                                    </div>
+
+                                    {/* Collapsed Vertical Text (Desktop Only) */}
+                                    {!isActive && (
+                                        <div className="absolute bottom-12 left-1/2 -translate-x-1/2 hidden lg:flex flex-col items-center gap-4 opacity-50">
+                                            <div className="w-[1px] h-20 bg-white/20" />
+                                            <span className="writing-vertical-rl text-white/40 font-mono tracking-widest text-xs uppercase rotate-180">
+                                                {plan.subtitle}
+                                            </span>
+                                        </div>
+                                    )}
                                 </div>
-                            )}
-
-                            {/* Holographic shimmer effect */}
-                            <div className="absolute inset-0 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none overflow-hidden">
-                                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000" />
-                            </div>
-
-                            <div className="relative z-10">
-                                <h3 className="text-2xl font-bold text-white mb-1">{plan.name}</h3>
-                                <p className="text-white/50 text-sm mb-6">{plan.subtitle}</p>
-
-                                <div className="mb-8">
-                                    <span className="text-5xl font-black text-white">{plan.price}</span>
-                                    <span className="text-white/50 ml-2">/ project</span>
-                                </div>
-
-                                <ul className="space-y-3 mb-8">
-                                    {plan.features.map((feature, fi) => (
-                                        <li key={fi} className="flex items-start gap-3 text-white/70">
-                                            <Check className="w-5 h-5 text-[#a8ffc4] flex-shrink-0 mt-0.5" />
-                                            {feature}
-                                        </li>
-                                    ))}
-                                </ul>
-
-                                <button className={`w-full py-4 rounded-full font-bold transition-all duration-300 ${plan.popular
-                                    ? "bg-[#a8ffc4] text-black hover:bg-white"
-                                    : "bg-white/10 text-white border border-white/20 hover:bg-white/20"
-                                    }`}>
-                                    Get Started
-                                </button>
-                            </div>
-                        </motion.div>
-                    ))}
+                            </motion.div>
+                        );
+                    })}
                 </div>
             </div>
         </section>
@@ -1204,7 +1257,7 @@ function BottomCTA() {
 }
 
 // 9. FAQ - Accordion with Depth
-import { ChevronDown } from "lucide-react";
+
 
 function FAQSection() {
     const [openIndex, setOpenIndex] = useState<number | null>(null);
