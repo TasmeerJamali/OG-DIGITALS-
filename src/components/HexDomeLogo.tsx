@@ -2,61 +2,152 @@
 
 import { motion } from "framer-motion";
 
-export default function HexDomeLogo() {
+// Hexagon component
+function Hexagon({
+    x,
+    y,
+    size,
+    delay,
+    glowIntensity = 1
+}: {
+    x: number;
+    y: number;
+    size: number;
+    delay: number;
+    glowIntensity?: number;
+}) {
+    // Hexagon points calculation
+    const points = Array.from({ length: 6 }, (_, i) => {
+        const angle = (Math.PI / 3) * i - Math.PI / 2;
+        const px = size / 2 + (size / 2) * Math.cos(angle);
+        const py = size / 2 + (size / 2) * Math.sin(angle);
+        return `${px},${py}`;
+    }).join(" ");
+
     return (
-        <div className="relative w-48 h-48 perspective-[1000px] transform-style-3d group">
-            {/* Ambient Glow */}
-            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-32 h-32 bg-[#00FF41] rounded-full blur-[60px] opacity-20 animate-pulse-slow"></div>
+        <motion.svg
+            width={size}
+            height={size}
+            viewBox={`0 0 ${size} ${size}`}
+            style={{
+                position: "absolute",
+                left: x - size / 2,
+                top: y - size / 2,
+                filter: `drop-shadow(0 0 ${4 * glowIntensity}px #00FF41) drop-shadow(0 0 ${8 * glowIntensity}px #00FF41)`,
+            }}
+            initial={{ scale: 0, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            transition={{
+                duration: 0.4,
+                delay: delay,
+                ease: [0.34, 1.56, 0.64, 1] // Bouncy overshoot
+            }}
+        >
+            <polygon
+                points={points}
+                fill="rgba(0, 255, 65, 0.15)"
+                stroke="#00FF41"
+                strokeWidth="2"
+            />
+        </motion.svg>
+    );
+}
 
+// Generate hex positions for a dome/half-sphere pattern
+function generateDomeHexagons(centerX: number, centerY: number, radius: number, hexSize: number) {
+    const hexagons: { x: number; y: number; delay: number; glow: number }[] = [];
+
+    // Create rows of hexagons in a dome pattern
+    const rows = 5;
+    const hexWidth = hexSize * 0.9;
+    const hexHeight = hexSize * 0.8;
+
+    for (let row = 0; row < rows; row++) {
+        // Calculate arc position for this row (dome curve)
+        const rowProgress = row / (rows - 1);
+        const arcAngle = Math.PI * rowProgress; // 0 to PI for half circle
+        const rowRadius = radius * Math.sin(arcAngle);
+        const rowY = centerY - radius * Math.cos(arcAngle) * 0.6 + row * hexHeight * 0.6;
+
+        // Number of hexagons in this row (more in middle, fewer at edges)
+        const hexCount = Math.max(1, Math.round(rowRadius / hexWidth * 2));
+
+        for (let i = 0; i < hexCount; i++) {
+            const offsetX = (i - (hexCount - 1) / 2) * hexWidth;
+            const x = centerX + offsetX;
+
+            // Stagger delay based on distance from center
+            const distFromCenter = Math.abs(offsetX) / rowRadius;
+            const delay = row * 0.05 + distFromCenter * 0.1;
+
+            // Glow intensity - brighter in center
+            const glow = 1 - distFromCenter * 0.5;
+
+            hexagons.push({ x, y: rowY, delay, glow });
+        }
+    }
+
+    return hexagons;
+}
+
+export default function HexDomeLogo() {
+    const containerSize = 280;
+    const centerX = containerSize / 2;
+    const centerY = containerSize / 2 + 20;
+    const radius = 100;
+    const hexSize = 32;
+
+    const hexagons = generateDomeHexagons(centerX, centerY, radius, hexSize);
+
+    return (
+        <div
+            className="relative"
+            style={{
+                width: containerSize,
+                height: containerSize,
+            }}
+        >
+            {/* Central glow */}
             <motion.div
-                className="w-full h-full relative transform-style-3d"
-                animate={{ rotateY: 360 }}
-                transition={{ duration: 15, repeat: Infinity, ease: "linear" }}
-            >
-                {/* Generating Hexagons on a Hemisphere Surface */}
-                {Array.from({ length: 32 }).map((_, i) => {
-                    // Golden Angle / Fibonacci Hemisphere Algorithm
-                    // To get a hemisphere, we adjust the range of phi or simply shift the points
-                    const numPoints = 32;
-                    const phi = Math.acos(1 - (i / numPoints)); // 0 to PI/2 approx for hemisphere (top half)
-                    const theta = Math.sqrt(numPoints * Math.PI) * phi;
-                    const r = 60; // Radius
+                className="absolute rounded-full bg-[#00FF41]"
+                style={{
+                    width: 60,
+                    height: 60,
+                    left: centerX - 30,
+                    top: centerY - 30,
+                    filter: "blur(30px)",
+                }}
+                initial={{ opacity: 0, scale: 0 }}
+                animate={{ opacity: 0.4, scale: 1 }}
+                transition={{ duration: 0.5 }}
+            />
 
-                    // Convert to Cartesian
-                    const x = r * Math.cos(theta) * Math.sin(phi);
-                    const y = r * Math.sin(theta) * Math.sin(phi) - 20; // Shift up slightly
-                    const z = r * Math.cos(phi);
+            {/* Hexagons */}
+            {hexagons.map((hex, i) => (
+                <Hexagon
+                    key={i}
+                    x={hex.x}
+                    y={hex.y}
+                    size={hexSize}
+                    delay={hex.delay}
+                    glowIntensity={hex.glow}
+                />
+            ))}
 
-                    return (
-                        <motion.div
-                            key={i}
-                            className="absolute top-1/2 left-1/2 w-6 h-6 -ml-3 -mt-3 transform-style-3d backface-visible"
-                            style={{
-                                transform: `translate3d(${x}px, ${y}px, ${z}px) rotateY(${theta}rad) rotateX(${phi}rad)`,
-                            }}
-                            initial={{ scale: 0, opacity: 0 }}
-                            animate={{ scale: 1, opacity: 0.6 + Math.random() * 0.4 }}
-                            transition={{ delay: i * 0.05, duration: 0.5 }}
-                        >
-                            <div className="w-full h-full relative group/hex transition-transform duration-300">
-                                {/* Hexagon Shape */}
-                                <svg viewBox="0 0 100 100" className="w-full h-full drop-shadow-[0_0_2px_#00FF41]">
-                                    <polygon
-                                        points="50 0 93 25 93 75 50 100 7 75 7 25"
-                                        className="fill-[#00FF41]/10 stroke-[#00FF41] stroke-[4] hover:fill-[#00FF41] transition-colors duration-300"
-                                    />
-                                </svg>
-                            </div>
-                        </motion.div>
-                    );
-                })}
-            </motion.div>
-
-            <style jsx>{`
-                .transform-style-3d { transform-style: preserve-3d; }
-                .backface-visible { backface-visibility: visible; }
-                .perspective-\[1000px\] { perspective: 1000px; }
-            `}</style>
+            {/* Outer glow ring */}
+            <motion.div
+                className="absolute border-2 border-[#00FF41]/30 rounded-full"
+                style={{
+                    width: containerSize - 40,
+                    height: containerSize - 40,
+                    left: 20,
+                    top: 20,
+                    boxShadow: "0 0 20px rgba(0, 255, 65, 0.2), inset 0 0 20px rgba(0, 255, 65, 0.1)",
+                }}
+                initial={{ opacity: 0, scale: 0.8 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 0.6, delay: 0.2 }}
+            />
         </div>
     );
 }

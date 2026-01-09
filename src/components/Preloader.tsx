@@ -2,16 +2,16 @@
 
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import GeodesicSphere from "@/components/GeodesicSphere";
+import HexDomeLogo from "@/components/HexDomeLogo";
 
 export default function Preloader({ onComplete }: { onComplete: () => void }) {
     const [phase, setPhase] = useState<"loading" | "reveal" | "done">("loading");
 
     useEffect(() => {
-        // Phase 1: Show the organic blob animation (3 seconds)
+        // Phase 1: Show the hex dome animation (2 seconds)
         const loadingTimer = setTimeout(() => {
             setPhase("reveal");
-        }, 3000);
+        }, 2000);
 
         return () => clearTimeout(loadingTimer);
     }, []);
@@ -53,14 +53,14 @@ export default function Preloader({ onComplete }: { onComplete: () => void }) {
                         animate={phase === "reveal" ? { opacity: 0 } : { opacity: 1 }}
                         transition={{ duration: 0.5 }}
                     >
-                        {/* 3D Geodesic Sphere Logo */}
+                        {/* Hex Dome Logo */}
                         <motion.div
-                            className="relative mb-8"
-                            initial={{ scale: 0, opacity: 0 }}
+                            className="relative mb-6"
+                            initial={{ scale: 0.8, opacity: 0 }}
                             animate={{ scale: 1, opacity: 1 }}
-                            transition={{ duration: 1, ease: "easeOut" }}
+                            transition={{ duration: 0.5, ease: "easeOut" }}
                         >
-                            <GeodesicSphere />
+                            <HexDomeLogo />
                         </motion.div>
 
                         {/* Text */}
@@ -68,7 +68,7 @@ export default function Preloader({ onComplete }: { onComplete: () => void }) {
                             className="text-center"
                             initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
-                            transition={{ delay: 0.5, duration: 0.8 }}
+                            transition={{ delay: 0.3, duration: 0.6 }}
                         >
                             <h1 className="text-2xl md:text-3xl font-light tracking-[0.5em] text-white/90 uppercase">
                                 The OG Digitals
@@ -89,7 +89,7 @@ export default function Preloader({ onComplete }: { onComplete: () => void }) {
                                     className="h-full bg-primary"
                                     initial={{ width: "0%" }}
                                     animate={{ width: "100%" }}
-                                    transition={{ duration: 2.5, ease: "easeInOut" }}
+                                    transition={{ duration: 1.8, ease: "easeInOut" }}
                                 />
                             </motion.div>
                         </motion.div>
