@@ -983,165 +983,111 @@ function PortfolioShowcase() {
 
 
 function PricingSection() {
-    const [activePlan, setActivePlan] = useState<number | null>(1); // Default to middle plan
-
     const plans = [
         {
             name: "Basic",
-            subtitle: "Design Only",
             price: "299",
+            desc: "Essential design for starters",
             features: ["Custom cover design", "Basic page formatting", "PDF delivery", "1 revision round"],
-            accent: "#06b6d4", // Cyan
-            glow: "shadow-[0_0_80px_-20px_#06b6d4]"
+            accent: "from-cyan-500 to-blue-500",
+            border: "group-hover:border-cyan-500/50",
+            delay: 0
         },
         {
             name: "Standard",
-            subtitle: "Writing + Design",
             price: "799",
-            features: ["Full eBook writing (10k words)", "Custom cover design", "Professional formatting", "PDF + EPUB", "3 revision rounds"],
-            accent: "#a8ffc4", // OG Green
+            desc: "Complete publishing package",
+            features: ["Full eBook writing (10k)", "Custom cover design", "Professional formatting", "PDF + EPUB", "3 revision rounds"],
+            accent: "from-[#a8ffc4] to-emerald-500",
+            border: "border-[#a8ffc4]/50 shadow-[0_0_80px_-20px_rgba(168,255,196,0.3)]",
             popular: true,
-            glow: "shadow-[0_0_100px_-20px_#a8ffc4]"
+            delay: 0.1
         },
         {
             name: "Premium",
-            subtitle: "Full Service",
             price: "1,499",
-            features: ["Extended writing (25k words)", "Premium cover + interior", "All formats (PDF, EPUB, KDP)", "Marketing kit included", "Unlimited revisions"],
-            accent: "#8b5cf6", // Violet
-            glow: "shadow-[0_0_80px_-20px_#8b5cf6]"
+            desc: "The ultimate authority suite",
+            features: ["Extended writing (25k)", "Premium cover + interior", "All formats (PDF, EPUB, KDP)", "Marketing kit included", "Unlimited revisions"],
+            accent: "from-violet-500 to-purple-500",
+            border: "group-hover:border-violet-500/50",
+            delay: 0.2
         }
     ];
 
     return (
-        <section className="py-32 bg-[#020202] relative overflow-hidden min-h-screen flex flex-col justify-center">
-            {/* Ambient Background */}
-            <div className="absolute inset-0 pointer-events-none">
-                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[1000px] h-[600px] bg-gradient-to-r from-[#06b6d4]/10 via-[#a8ffc4]/10 to-[#8b5cf6]/10 rounded-full blur-[120px] opacity-30 animate-pulse" />
-            </div>
+        <section className="relative py-32 bg-black min-h-screen flex items-center justify-center overflow-hidden" id="pricing">
+            {/* Background Grid - Sci-Fi Floor */}
+            <div className="absolute inset-0 bg-[linear-gradient(to_right,#4f4f4f2e_1px,transparent_1px),linear-gradient(to_bottom,#4f4f4f2e_1px,transparent_1px)] bg-[size:14px_24px] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)] pointer-events-none" />
+
+            {/* Ambient Nebula */}
+            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[1000px] h-[400px] bg-[#a8ffc4]/10 blur-[120px] rounded-full pointer-events-none" />
 
             <div className="container mx-auto px-6 relative z-10">
                 <motion.div
-                    initial={{ opacity: 0 }}
-                    whileInView={{ opacity: 1 }}
+                    initial={{ opacity: 0, y: 30 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
                     className="text-center mb-20"
                 >
-                    <span className="text-[#a8ffc4] font-mono tracking-[0.5em] text-sm uppercase">Choose Your Power</span>
-                    <h2 className="text-5xl md:text-7xl font-black text-white mt-4 tracking-tighter">
-                        Unlock <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#a8ffc4] to-emerald-600">Potential</span>
+                    <h2 className="text-5xl md:text-8xl font-black text-white tracking-tighter mb-6">
+                        Secure Your <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#a8ffc4] to-emerald-400">Legacy.</span>
                     </h2>
+                    <p className="text-white/40 text-lg md:text-xl max-w-2xl mx-auto font-light">
+                        Select the power source that aligns with your ambition.
+                    </p>
                 </motion.div>
 
-                {/* The Monoliths */}
-                <div className="flex flex-col lg:flex-row gap-4 h-[auto] lg:h-[600px] max-w-7xl mx-auto">
-                    {plans.map((plan, i) => {
-                        const isActive = activePlan === i;
-                        return (
-                            <motion.div
-                                key={i}
-                                layout
-                                onHoverStart={() => setActivePlan(i)}
-                                onClick={() => setActivePlan(i)}
-                                className={`relative rounded-[30px] border border-white/10 overflow-hidden cursor-pointer backdrop-blur-xl transition-all duration-700 ease-[0.23,1,0.32,1] ${isActive ? 'lg:flex-[3] bg-white/[0.03]' : 'lg:flex-[1] bg-transparent hover:bg-white/[0.02]'
-                                    }`}
-                                style={{
-                                    boxShadow: isActive ? `0 0 0 1px ${plan.accent}40, 0 20px 80px -20px ${plan.accent}20` : 'none'
-                                }}
-                            >
-                                {/* Active Glow Gradient */}
-                                {isActive && (
-                                    <div className="absolute inset-0 pointer-events-none opacity-20">
-                                        <div className="absolute inset-0 bg-gradient-to-br from-white/10 to-transparent" />
-                                        <div className="absolute bottom-0 left-0 right-0 h-1/2 bg-gradient-to-t" style={{ backgroundImage: `linear-gradient(to top, ${plan.accent}40, transparent)` }} />
+                <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-center max-w-7xl mx-auto">
+                    {plans.map((plan, i) => (
+                        <motion.div
+                            key={i}
+                            initial={{ opacity: 0, y: 50 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            viewport={{ once: true }}
+                            transition={{ delay: plan.delay, duration: 0.8 }}
+                            className={`group relative p-8 rounded-[40px] backdrop-blur-3xl border transition-all duration-500 ${plan.popular ? 'bg-white/[0.03] border-[#a8ffc4]/50 scale-105 lg:-mt-12 z-10' : 'bg-white/[0.02] border-white/5 hover:border-white/20'}`}
+                        >
+                            {/* Hover Gradient Glow */}
+                            <div className={`absolute inset-0 opacity-0 group-hover:opacity-20 transition-opacity duration-500 bg-gradient-to-br ${plan.accent}`} />
+
+                            {/* Content */}
+                            <div className="relative z-10">
+                                {plan.popular && (
+                                    <div className="absolute -top-12 left-0 right-0 flex justify-center">
+                                        <div className="bg-[#a8ffc4] text-black text-xs font-bold px-4 py-1.5 rounded-full uppercase tracking-wider shadow-[0_0_20px_rgba(168,255,196,0.6)]">
+                                            Most Popular
+                                        </div>
                                     </div>
                                 )}
 
-                                {/* Content Container */}
-                                <div className="relative h-full p-8 md:p-12 flex flex-col justify-between">
+                                <h3 className="text-2xl font-bold text-white mb-2">{plan.name}</h3>
+                                <p className="text-white/40 text-sm mb-8 font-mono">{plan.desc}</p>
 
-                                    {/* Top Section */}
-                                    <div className="flex justify-between items-start">
-                                        <div>
-                                            <div className="flex items-center gap-3 mb-2">
-                                                {plan.popular && (
-                                                    <span className="px-3 py-1 rounded-full bg-[#a8ffc4] text-black text-xs font-bold uppercase tracking-wider flex items-center gap-1">
-                                                        <Star size={12} fill="black" /> Popular
-                                                    </span>
-                                                )}
-                                                <h3 className={`text-2xl font-bold transition-colors duration-300 ${isActive ? 'text-white' : 'text-white/60'}`}>
-                                                    {plan.name}
-                                                </h3>
-                                            </div>
-                                            <p className={`text-sm font-mono transition-opacity duration-300 ${isActive ? 'text-white/60 opacity-100' : 'opacity-0 h-0 hidden lg:block'}`}>
-                                                {plan.subtitle}
-                                            </p>
-                                        </div>
-
-                                        {/* Price */}
-                                        <div className="text-right">
-                                            <div className="flex items-start gap-1">
-                                                <span className="text-xl text-white/40 mt-1">$</span>
-                                                <motion.span
-                                                    layout="position"
-                                                    className={`font-black text-white leading-none ${isActive ? 'text-6xl md:text-7xl' : 'text-4xl'}`}
-                                                    style={{ textShadow: `0 0 40px ${plan.accent}40` }}
-                                                >
-                                                    {plan.price}
-                                                </motion.span>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    {/* Middle Section - Features (Hidden when collapsed on desktop) */}
-                                    <div className={`overflow-hidden transition-all duration-700 ${isActive ? 'opacity-100 max-h-[500px] mt-12' : 'opacity-0 max-h-0 lg:mt-0'}`}>
-                                        <div className="space-y-6">
-                                            {plan.features.map((feature, fi) => (
-                                                <motion.div
-                                                    key={fi}
-                                                    initial={{ opacity: 0, x: -20 }}
-                                                    animate={{ opacity: isActive ? 1 : 0, x: isActive ? 0 : -20 }}
-                                                    transition={{ delay: fi * 0.1 }}
-                                                    className="flex items-center gap-4 group/item"
-                                                >
-                                                    <div className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center border border-white/10 group-hover/item:border-white/30 transition-colors">
-                                                        <Check size={18} style={{ color: plan.accent }} />
-                                                    </div>
-                                                    <span className="text-lg text-white/80 font-light">{feature}</span>
-                                                </motion.div>
-                                            ))}
-                                        </div>
-                                    </div>
-
-                                    {/* Bottom Section - Action */}
-                                    <div className={`mt-auto pt-10 transition-all duration-500 ${isActive ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10 lg:translate-y-20'}`}>
-                                        <button
-                                            className="w-full py-6 rounded-2xl font-bold text-lg tracking-wider uppercase transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] relative overflow-hidden group/btn"
-                                            style={{
-                                                backgroundColor: plan.accent,
-                                                color: plan.name === 'Standard' ? 'black' : 'black', // Standard (Green) needs black text, others usually dark too with these neon colors
-                                                boxShadow: `0 0 40px -10px ${plan.accent}`
-                                            }}
-                                        >
-                                            <div className="absolute inset-0 bg-white/20 translate-y-full group-hover/btn:translate-y-0 transition-transform duration-300" />
-                                            <span className="relative flex items-center justify-center gap-2">
-                                                Get Started <Zap size={18} fill="black" />
-                                            </span>
-                                        </button>
-                                    </div>
-
-                                    {/* Collapsed Vertical Text (Desktop Only) */}
-                                    {!isActive && (
-                                        <div className="absolute bottom-12 left-1/2 -translate-x-1/2 hidden lg:flex flex-col items-center gap-4 opacity-50">
-                                            <div className="w-[1px] h-20 bg-white/20" />
-                                            <span className="writing-vertical-rl text-white/40 font-mono tracking-widest text-xs uppercase rotate-180">
-                                                {plan.subtitle}
-                                            </span>
-                                        </div>
-                                    )}
+                                <div className="flex items-baseline gap-1 mb-8">
+                                    <span className="text-lg text-white/40">$</span>
+                                    <span className={`text-6xl font-black tracking-tighter text-transparent bg-clip-text bg-gradient-to-br ${plan.accent}`}>
+                                        {plan.price}
+                                    </span>
                                 </div>
-                            </motion.div>
-                        );
-                    })}
+
+                                <ul className="space-y-4 mb-10">
+                                    {plan.features.map((feature, idx) => (
+                                        <li key={idx} className="flex items-start gap-3 text-white/80">
+                                            <Check className={`w-5 h-5 shrink-0 ${plan.popular ? 'text-[#a8ffc4]' : 'text-white/30'}`} />
+                                            <span className="text-sm font-medium">{feature}</span>
+                                        </li>
+                                    ))}
+                                </ul>
+
+                                <button className={`w-full py-4 rounded-xl font-bold uppercase tracking-widest text-sm transition-all duration-300 ${plan.popular
+                                    ? 'bg-[#a8ffc4] text-black hover:shadow-[0_0_30px_rgba(168,255,196,0.4)] hover:scale-105'
+                                    : 'bg-white/5 text-white border border-white/10 hover:bg-white/10 hover:border-white/20'
+                                    }`}>
+                                    Get Started
+                                </button>
+                            </div>
+                        </motion.div>
+                    ))}
                 </div>
             </div>
         </section>
