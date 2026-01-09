@@ -987,106 +987,89 @@ function PricingSection() {
         {
             name: "Basic",
             price: "299",
-            desc: "Essential design for starters",
+            desc: "For individuals looking to launch their first professional eBook.",
             features: ["Custom cover design", "Basic page formatting", "PDF delivery", "1 revision round"],
-            accent: "from-cyan-500 to-blue-500",
-            border: "group-hover:border-cyan-500/50",
-            delay: 0
+            popular: false
         },
         {
             name: "Standard",
             price: "799",
-            desc: "Complete publishing package",
+            desc: "For serious authors requiring full writing and design services.",
             features: ["Full eBook writing (10k)", "Custom cover design", "Professional formatting", "PDF + EPUB", "3 revision rounds"],
-            accent: "from-[#a8ffc4] to-emerald-500",
-            border: "border-[#a8ffc4]/50 shadow-[0_0_80px_-20px_rgba(168,255,196,0.3)]",
-            popular: true,
-            delay: 0.1
+            popular: true
         },
         {
             name: "Premium",
             price: "1,499",
-            desc: "The ultimate authority suite",
+            desc: "For businesses wanting a complete authority-building asset.",
             features: ["Extended writing (25k)", "Premium cover + interior", "All formats (PDF, EPUB, KDP)", "Marketing kit included", "Unlimited revisions"],
-            accent: "from-violet-500 to-purple-500",
-            border: "group-hover:border-violet-500/50",
-            delay: 0.2
+            popular: false
         }
     ];
 
     return (
         <section className="relative py-32 bg-black min-h-screen flex items-center justify-center overflow-hidden" id="pricing">
-            {/* Background Grid - Sci-Fi Floor */}
-            <div className="absolute inset-0 bg-[linear-gradient(to_right,#4f4f4f2e_1px,transparent_1px),linear-gradient(to_bottom,#4f4f4f2e_1px,transparent_1px)] bg-[size:14px_24px] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)] pointer-events-none" />
+            {/* Subtle Grid Background */}
+            <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px] pointer-events-none" />
 
-            {/* Ambient Nebula */}
-            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[1000px] h-[400px] bg-[#a8ffc4]/10 blur-[120px] rounded-full pointer-events-none" />
-
-            <div className="container mx-auto px-6 relative z-10">
-                <motion.div
-                    initial={{ opacity: 0, y: 30 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    className="text-center mb-20"
-                >
-                    <h2 className="text-5xl md:text-8xl font-black text-white tracking-tighter mb-6">
-                        Secure Your <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#a8ffc4] to-emerald-400">Legacy.</span>
+            <div className="container mx-auto px-6 relative z-10 max-w-7xl">
+                <div className="text-center mb-20">
+                    <h2 className="text-4xl md:text-5xl font-bold text-white mb-6">
+                        Simple, Transparent Pricing
                     </h2>
-                    <p className="text-white/40 text-lg md:text-xl max-w-2xl mx-auto font-light">
-                        Select the power source that aligns with your ambition.
+                    <p className="text-white/60 text-lg max-w-2xl mx-auto">
+                        Choose the package that aligns with your ambition. No hidden fees.
                     </p>
-                </motion.div>
+                </div>
 
-                <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-center max-w-7xl mx-auto">
+                <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 items-start">
                     {plans.map((plan, i) => (
-                        <motion.div
+                        <div
                             key={i}
-                            initial={{ opacity: 0, y: 50 }}
-                            whileInView={{ opacity: 1, y: 0 }}
-                            viewport={{ once: true }}
-                            transition={{ delay: plan.delay, duration: 0.8 }}
-                            className={`group relative p-8 rounded-[40px] backdrop-blur-3xl border transition-all duration-500 ${plan.popular ? 'bg-white/[0.03] border-[#a8ffc4]/50 scale-105 lg:-mt-12 z-10' : 'bg-white/[0.02] border-white/5 hover:border-white/20'}`}
+                            className={`flex flex-col p-8 rounded-2xl border transition-all duration-300 h-full ${plan.popular
+                                ? 'bg-[#a8ffc4]/[0.02] border-[#a8ffc4] shadow-[0_0_40px_-20px_rgba(168,255,196,0.3)] relative lg:-mt-4 lg:mb-[-16px] z-10'
+                                : 'bg-white/[0.02] border-white/10 hover:border-white/20'
+                                }`}
                         >
-                            {/* Hover Gradient Glow */}
-                            <div className={`absolute inset-0 opacity-0 group-hover:opacity-20 transition-opacity duration-500 bg-gradient-to-br ${plan.accent}`} />
-
-                            {/* Content */}
-                            <div className="relative z-10">
-                                {plan.popular && (
-                                    <div className="absolute -top-12 left-0 right-0 flex justify-center">
-                                        <div className="bg-[#a8ffc4] text-black text-xs font-bold px-4 py-1.5 rounded-full uppercase tracking-wider shadow-[0_0_20px_rgba(168,255,196,0.6)]">
-                                            Most Popular
-                                        </div>
-                                    </div>
-                                )}
-
-                                <h3 className="text-2xl font-bold text-white mb-2">{plan.name}</h3>
-                                <p className="text-white/40 text-sm mb-8 font-mono">{plan.desc}</p>
-
-                                <div className="flex items-baseline gap-1 mb-8">
-                                    <span className="text-lg text-white/40">$</span>
-                                    <span className={`text-6xl font-black tracking-tighter text-transparent bg-clip-text bg-gradient-to-br ${plan.accent}`}>
-                                        {plan.price}
-                                    </span>
+                            <div className="mb-8">
+                                <div className="flex items-center gap-3 mb-4">
+                                    <h3 className="text-xl font-bold text-white">{plan.name}</h3>
+                                    {plan.popular && (
+                                        <span className="px-2.5 py-0.5 rounded-full bg-[#a8ffc4]/10 text-[#a8ffc4] text-[10px] font-bold uppercase tracking-wider border border-[#a8ffc4]/20">
+                                            Popular
+                                        </span>
+                                    )}
                                 </div>
-
-                                <ul className="space-y-4 mb-10">
-                                    {plan.features.map((feature, idx) => (
-                                        <li key={idx} className="flex items-start gap-3 text-white/80">
-                                            <Check className={`w-5 h-5 shrink-0 ${plan.popular ? 'text-[#a8ffc4]' : 'text-white/30'}`} />
-                                            <span className="text-sm font-medium">{feature}</span>
-                                        </li>
-                                    ))}
-                                </ul>
-
-                                <button className={`w-full py-4 rounded-xl font-bold uppercase tracking-widest text-sm transition-all duration-300 ${plan.popular
-                                    ? 'bg-[#a8ffc4] text-black hover:shadow-[0_0_30px_rgba(168,255,196,0.4)] hover:scale-105'
-                                    : 'bg-white/5 text-white border border-white/10 hover:bg-white/10 hover:border-white/20'
-                                    }`}>
-                                    Get Started
-                                </button>
+                                <p className="text-white/50 text-sm leading-relaxed min-h-[40px]">
+                                    {plan.desc}
+                                </p>
                             </div>
-                        </motion.div>
+
+                            <div className="mb-8">
+                                <span className="text-4xl font-bold text-white">${plan.price}</span>
+                                <span className="text-white/40 text-sm ml-2">/project</span>
+                            </div>
+
+                            <button
+                                className={`w-full py-4 rounded-lg font-bold text-sm transition-all duration-300 mb-10 ${plan.popular
+                                    ? 'bg-[#a8ffc4] text-black hover:bg-[#96e6b0] hover:shadow-[0_0_20px_rgba(168,255,196,0.4)]'
+                                    : 'bg-white/5 text-white hover:bg-white/10 border border-white/10'
+                                    }`}
+                            >
+                                Get Started
+                            </button>
+
+                            <div className="space-y-4 mt-auto">
+                                {plan.features.map((feature, fi) => (
+                                    <div key={fi} className="flex items-start gap-3">
+                                        <div className={`mt-0.5 w-5 h-5 rounded-full flex items-center justify-center shrink-0 ${plan.popular ? 'bg-[#a8ffc4] text-black' : 'bg-white/10 text-white'}`}>
+                                            <Check size={12} strokeWidth={3} />
+                                        </div>
+                                        <span className="text-white/70 text-sm leading-tight">{feature}</span>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
                     ))}
                 </div>
             </div>
