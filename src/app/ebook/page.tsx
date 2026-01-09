@@ -1028,7 +1028,7 @@ function PricingSection() {
                 >
                     <span className="text-[#a8ffc4] font-mono tracking-[0.5em] text-sm uppercase">Choose Your Power</span>
                     <h2 className="text-5xl md:text-7xl font-black text-white mt-4 tracking-tighter">
-                        Unlock <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#a8ffc4] to-emerald-600">Potential</span> <span className="text-sm align-top opacity-30 font-mono">v2</span>
+                        Unlock <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#a8ffc4] to-emerald-600">Potential</span>
                     </h2>
                 </motion.div>
 
