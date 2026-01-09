@@ -739,7 +739,366 @@ function HowItWorks() {
     );
 }
 
-// --- PLACEHOLDER: More sections to be added ---
+// 5. PORTFOLIO SHOWCASE
+import { ExternalLink } from "lucide-react";
+
+function PortfolioShowcase() {
+    const projects = [
+        { title: "The Startup Playbook", category: "Business", image: "/assets/ebook-1.jpg" },
+        { title: "Mindful Leadership", category: "Self-Help", image: "/assets/ebook-2.jpg" },
+        { title: "Digital Marketing 101", category: "Marketing", image: "/assets/ebook-3.jpg" },
+        { title: "Crypto Decoded", category: "Finance", image: "/assets/ebook-4.jpg" },
+        { title: "Healthy Habits", category: "Health", image: "/assets/ebook-5.jpg" },
+        { title: "AI Revolution", category: "Technology", image: "/assets/ebook-6.jpg" },
+    ];
+
+    return (
+        <section className="py-32 bg-black relative overflow-hidden">
+            <div className="absolute inset-0 pointer-events-none">
+                <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-violet-500 rounded-full blur-[300px] opacity-[0.05]" />
+            </div>
+
+            <div className="container mx-auto px-6 relative z-10">
+                <motion.div
+                    initial={{ opacity: 0, y: 30 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    className="text-center mb-16"
+                >
+                    <span className="inline-block px-4 py-2 mb-4 text-sm font-mono text-[#a8ffc4] bg-[#a8ffc4]/10 rounded-full border border-[#a8ffc4]/20">
+                        OUR WORK
+                    </span>
+                    <h2 className="text-4xl md:text-6xl font-bold text-white tracking-tight">
+                        Featured <span className="text-[#a8ffc4]">Projects</span>
+                    </h2>
+                </motion.div>
+
+                <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    {projects.map((project, i) => (
+                        <motion.div
+                            key={i}
+                            initial={{ opacity: 0, y: 40 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            viewport={{ once: true }}
+                            transition={{ delay: i * 0.1 }}
+                            whileHover={{ y: -10 }}
+                            className="group relative aspect-[3/4] rounded-2xl overflow-hidden bg-gradient-to-br from-white/10 to-white/5 border border-white/10 cursor-pointer"
+                        >
+                            {/* Placeholder gradient for book cover */}
+                            <div className="absolute inset-0 bg-gradient-to-br from-emerald-600/30 via-violet-600/20 to-cyan-600/30" />
+
+                            {/* Book mockup placeholder */}
+                            <div className="absolute inset-8 bg-gradient-to-br from-white/10 to-white/5 rounded-lg border border-white/20 shadow-2xl transform group-hover:rotate-[-2deg] transition-transform duration-500" />
+
+                            {/* Overlay */}
+                            <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                                <div className="text-center">
+                                    <ExternalLink className="w-8 h-8 text-[#a8ffc4] mx-auto mb-2" />
+                                    <span className="text-white font-semibold">View Project</span>
+                                </div>
+                            </div>
+
+                            {/* Info */}
+                            <div className="absolute bottom-0 left-0 right-0 p-6 bg-gradient-to-t from-black/80 to-transparent">
+                                <span className="text-[#a8ffc4] text-xs font-mono uppercase tracking-wider">{project.category}</span>
+                                <h3 className="text-white text-xl font-bold mt-1">{project.title}</h3>
+                            </div>
+                        </motion.div>
+                    ))}
+                </div>
+            </div>
+        </section>
+    );
+}
+
+// 6. PRICING TIERS - Holographic Cards
+import { Check, Star } from "lucide-react";
+
+function PricingSection() {
+    const plans = [
+        {
+            name: "Basic",
+            subtitle: "Design Only",
+            price: "$299",
+            features: ["Custom cover design", "Basic page formatting", "PDF delivery", "1 revision round"],
+            popular: false,
+            accent: "#06b6d4"
+        },
+        {
+            name: "Standard",
+            subtitle: "Writing + Design",
+            price: "$799",
+            features: ["Full eBook writing (up to 10k words)", "Custom cover design", "Professional formatting", "PDF + EPUB", "3 revision rounds"],
+            popular: true,
+            accent: "#a8ffc4"
+        },
+        {
+            name: "Premium",
+            subtitle: "Full Service",
+            price: "$1,499",
+            features: ["Extended writing (up to 25k words)", "Premium cover + interior design", "All formats (PDF, EPUB, KDP)", "Marketing kit included", "Unlimited revisions", "Priority support"],
+            popular: false,
+            accent: "#8b5cf6"
+        }
+    ];
+
+    return (
+        <section className="py-32 bg-[#050505] relative overflow-hidden">
+            <div className="absolute inset-0 pointer-events-none">
+                <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[800px] h-[400px] bg-[#a8ffc4] rounded-full blur-[300px] opacity-[0.05]" />
+            </div>
+
+            <div className="container mx-auto px-6 relative z-10">
+                <motion.div
+                    initial={{ opacity: 0, y: 30 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    className="text-center mb-16"
+                >
+                    <span className="inline-block px-4 py-2 mb-4 text-sm font-mono text-[#a8ffc4] bg-[#a8ffc4]/10 rounded-full border border-[#a8ffc4]/20">
+                        PRICING
+                    </span>
+                    <h2 className="text-4xl md:text-6xl font-bold text-white tracking-tight mb-4">
+                        Simple, Transparent <span className="text-[#a8ffc4]">Pricing</span>
+                    </h2>
+                    <p className="text-xl text-white/60 max-w-2xl mx-auto">Choose the package that fits your needs. All plans include 100% copyright ownership.</p>
+                </motion.div>
+
+                <div className="grid md:grid-cols-3 gap-6 max-w-5xl mx-auto">
+                    {plans.map((plan, i) => (
+                        <motion.div
+                            key={i}
+                            initial={{ opacity: 0, y: 40 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            viewport={{ once: true }}
+                            transition={{ delay: i * 0.15 }}
+                            whileHover={{ y: -10, scale: 1.02 }}
+                            className={`group relative p-8 rounded-3xl border backdrop-blur-sm transition-all duration-500 ${plan.popular
+                                ? "bg-gradient-to-br from-[#a8ffc4]/20 to-[#a8ffc4]/5 border-[#a8ffc4]/50 scale-105"
+                                : "bg-white/5 border-white/10 hover:border-white/20"
+                                }`}
+                        >
+                            {/* Popular badge */}
+                            {plan.popular && (
+                                <div className="absolute -top-4 left-1/2 -translate-x-1/2 px-4 py-1 bg-[#a8ffc4] text-black text-sm font-bold rounded-full flex items-center gap-1">
+                                    <Star className="w-4 h-4" /> MOST POPULAR
+                                </div>
+                            )}
+
+                            {/* Holographic shimmer effect */}
+                            <div className="absolute inset-0 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none overflow-hidden">
+                                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000" />
+                            </div>
+
+                            <div className="relative z-10">
+                                <h3 className="text-2xl font-bold text-white mb-1">{plan.name}</h3>
+                                <p className="text-white/50 text-sm mb-6">{plan.subtitle}</p>
+
+                                <div className="mb-8">
+                                    <span className="text-5xl font-black text-white">{plan.price}</span>
+                                    <span className="text-white/50 ml-2">/ project</span>
+                                </div>
+
+                                <ul className="space-y-3 mb-8">
+                                    {plan.features.map((feature, fi) => (
+                                        <li key={fi} className="flex items-start gap-3 text-white/70">
+                                            <Check className="w-5 h-5 text-[#a8ffc4] flex-shrink-0 mt-0.5" />
+                                            {feature}
+                                        </li>
+                                    ))}
+                                </ul>
+
+                                <button className={`w-full py-4 rounded-full font-bold transition-all duration-300 ${plan.popular
+                                    ? "bg-[#a8ffc4] text-black hover:bg-white"
+                                    : "bg-white/10 text-white border border-white/20 hover:bg-white/20"
+                                    }`}>
+                                    Get Started
+                                </button>
+                            </div>
+                        </motion.div>
+                    ))}
+                </div>
+            </div>
+        </section>
+    );
+}
+
+
+// 7. TESTIMONIALS - Auto-scroll carousel
+import { Quote } from "lucide-react";
+
+function TestimonialsSection() {
+    const testimonials = [
+        { name: "Sarah Chen", role: "Entrepreneur", quote: "The OG Digitals transformed my rough manuscript into a bestseller. Their attention to detail is unmatched.", rating: 5 },
+        { name: "Marcus Johnson", role: "Coach", quote: "From concept to launch in just 3 weeks. The design blew my audience away!", rating: 5 },
+        { name: "Emily Rodriguez", role: "Author", quote: "Finally found a team that understands both writing AND design. 10/10 recommend.", rating: 5 },
+        { name: "David Kim", role: "Consultant", quote: "My eBook has generated over $50K in revenue. Best investment I've made for my business.", rating: 5 },
+    ];
+
+    return (
+        <section className="py-32 bg-black relative overflow-hidden">
+            <div className="absolute inset-0 pointer-events-none">
+                <div className="absolute top-1/2 left-0 w-[400px] h-[400px] bg-emerald-500 rounded-full blur-[200px] opacity-[0.05]" />
+            </div>
+
+            <div className="container mx-auto px-6 relative z-10">
+                <motion.div
+                    initial={{ opacity: 0, y: 30 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    className="text-center mb-16"
+                >
+                    <span className="inline-block px-4 py-2 mb-4 text-sm font-mono text-[#a8ffc4] bg-[#a8ffc4]/10 rounded-full border border-[#a8ffc4]/20">
+                        TESTIMONIALS
+                    </span>
+                    <h2 className="text-4xl md:text-6xl font-bold text-white tracking-tight">
+                        What Our <span className="text-[#a8ffc4]">Clients Say</span>
+                    </h2>
+                </motion.div>
+
+                <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+                    {testimonials.map((t, i) => (
+                        <motion.div
+                            key={i}
+                            initial={{ opacity: 0, y: 40 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            viewport={{ once: true }}
+                            transition={{ delay: i * 0.1 }}
+                            className="group p-6 rounded-2xl bg-white/5 border border-white/10 hover:border-[#a8ffc4]/30 transition-all duration-300"
+                        >
+                            <Quote className="w-8 h-8 text-[#a8ffc4] mb-4" />
+                            <p className="text-white/70 mb-6 leading-relaxed">&ldquo;{t.quote}&rdquo;</p>
+                            <div className="flex items-center gap-3">
+                                <div className="w-10 h-10 rounded-full bg-gradient-to-br from-[#a8ffc4] to-emerald-600" />
+                                <div>
+                                    <p className="text-white font-semibold">{t.name}</p>
+                                    <p className="text-white/50 text-sm">{t.role}</p>
+                                </div>
+                            </div>
+                        </motion.div>
+                    ))}
+                </div>
+            </div>
+        </section>
+    );
+}
+
+// 8. BOTTOM CTA - Gravity Pull Effect
+function BottomCTA() {
+    return (
+        <section className="py-32 bg-gradient-to-b from-[#050505] to-black relative overflow-hidden">
+            {/* Animated background glow */}
+            <motion.div
+                animate={{ scale: [1, 1.2, 1], opacity: [0.1, 0.2, 0.1] }}
+                transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+                className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-[#a8ffc4] rounded-full blur-[200px] opacity-10"
+            />
+
+            <div className="container mx-auto px-6 relative z-10 text-center">
+                <motion.div
+                    initial={{ opacity: 0, y: 30 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                >
+                    <span className="inline-block px-4 py-2 mb-6 text-sm font-mono text-[#a8ffc4] bg-[#a8ffc4]/10 rounded-full border border-[#a8ffc4]/20">
+                        GET STARTED
+                    </span>
+                    <h2 className="text-4xl md:text-7xl font-bold text-white tracking-tight mb-6">
+                        Ready to Launch Your<br /><span className="text-[#a8ffc4]">eBook?</span>
+                    </h2>
+                    <p className="text-xl text-white/60 max-w-2xl mx-auto mb-12">
+                        Join hundreds of authors who&apos;ve turned their ideas into income. Let&apos;s create something amazing together.
+                    </p>
+
+                    <div className="flex flex-col md:flex-row gap-6 justify-center">
+                        <motion.button
+                            whileHover={{ scale: 1.05 }}
+                            whileTap={{ scale: 0.95 }}
+                            className="px-10 py-5 bg-[#a8ffc4] text-black font-bold text-lg rounded-full shadow-[0_0_40px_rgba(168,255,196,0.3)] hover:shadow-[0_0_60px_rgba(168,255,196,0.5)] transition-all"
+                        >
+                            Start Your Project →
+                        </motion.button>
+                        <motion.button
+                            whileHover={{ scale: 1.05 }}
+                            whileTap={{ scale: 0.95 }}
+                            className="px-10 py-5 bg-transparent border border-white/20 text-white font-bold text-lg rounded-full hover:bg-white/10 transition-all"
+                        >
+                            Get Free Sample
+                        </motion.button>
+                    </div>
+                </motion.div>
+            </div>
+        </section>
+    );
+}
+
+// 9. FAQ - Accordion with Depth
+import { ChevronDown } from "lucide-react";
+
+function FAQSection() {
+    const [openIndex, setOpenIndex] = useState<number | null>(null);
+
+    const faqs = [
+        { q: "How long does an eBook take to complete?", a: "Typically 2-4 weeks depending on the package. Rush delivery is available for urgent projects." },
+        { q: "Do I get full copyright ownership?", a: "Absolutely! You retain 100% copyright and ownership of your eBook and all deliverables." },
+        { q: "What formats do you deliver?", a: "We provide PDF, EPUB, and Amazon KDP-ready formats. Print-ready files are also available." },
+        { q: "Do you provide cover designs?", a: "Yes! All packages include custom cover design. We also offer standalone cover design services." },
+        { q: "Can you publish the eBook for me?", a: "We prepare everything for publishing. We can guide you through the process or handle it for an additional fee." },
+    ];
+
+    return (
+        <section className="py-32 bg-[#0a0a0a] relative">
+            <div className="container mx-auto px-6 max-w-3xl">
+                <motion.div
+                    initial={{ opacity: 0, y: 30 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    className="text-center mb-16"
+                >
+                    <span className="inline-block px-4 py-2 mb-4 text-sm font-mono text-[#a8ffc4] bg-[#a8ffc4]/10 rounded-full border border-[#a8ffc4]/20">
+                        FAQ
+                    </span>
+                    <h2 className="text-4xl md:text-6xl font-bold text-white tracking-tight">
+                        Questions & <span className="text-[#a8ffc4]">Answers</span>
+                    </h2>
+                </motion.div>
+
+                <div className="space-y-4">
+                    {faqs.map((faq, i) => (
+                        <motion.div
+                            key={i}
+                            initial={{ opacity: 0, y: 20 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            viewport={{ once: true }}
+                            transition={{ delay: i * 0.05 }}
+                            className={`border rounded-2xl overflow-hidden transition-all duration-300 ${openIndex === i ? "border-[#a8ffc4]/50 bg-[#a8ffc4]/5" : "border-white/10 bg-white/5"
+                                }`}
+                        >
+                            <button
+                                onClick={() => setOpenIndex(openIndex === i ? null : i)}
+                                className="w-full p-6 flex items-center justify-between text-left"
+                            >
+                                <span className="text-white font-semibold text-lg">{faq.q}</span>
+                                <ChevronDown className={`w-5 h-5 text-[#a8ffc4] transition-transform duration-300 ${openIndex === i ? "rotate-180" : ""}`} />
+                            </button>
+                            <AnimatePresence>
+                                {openIndex === i && (
+                                    <motion.div
+                                        initial={{ height: 0, opacity: 0 }}
+                                        animate={{ height: "auto", opacity: 1 }}
+                                        exit={{ height: 0, opacity: 0 }}
+                                        transition={{ duration: 0.3 }}
+                                        className="overflow-hidden"
+                                    >
+                                        <p className="px-6 pb-6 text-white/60 leading-relaxed">{faq.a}</p>
+                                    </motion.div>
+                                )}
+                            </AnimatePresence>
+                        </motion.div>
+                    ))}
+                </div>
+            </div>
+        </section>
+    );
+}
+
+// --- ALL SECTIONS COMPLETE ---
 
 
 // --- MAIN PAGE ---
@@ -751,8 +1110,11 @@ export default function EbookServicesPage() {
             <InfiniteMarquee />
             <ServicePackages />
             <HowItWorks />
-
-            {/* More sections to be added */}
+            <PortfolioShowcase />
+            <PricingSection />
+            <TestimonialsSection />
+            <BottomCTA />
+            <FAQSection />
 
             <footer className="py-12 bg-black text-center border-t border-white/5">
                 <p className="text-white/20 text-sm font-mono">
