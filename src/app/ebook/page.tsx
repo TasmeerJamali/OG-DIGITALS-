@@ -1181,6 +1181,9 @@ function TestimonialsSection() {
 function BottomCTA() {
     return (
         <section className="py-40 bg-black relative overflow-hidden">
+            {/* Version Marker for Debugging */}
+            <div className="hidden">VERSION_V4_FIXED</div>
+
             {/* Singularity Core */}
             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-[#a8ffc4]/10 rounded-full blur-[120px] animate-pulse" />
 
