@@ -220,6 +220,19 @@ function Hero() {
                 .animate-pulse-slow {
                     animation: pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite;
                 }
+                .transform-style-3d {
+                    transform-style: preserve-3d;
+                }
+                .backface-visible {
+                    backface-visibility: visible;
+                }
+                .animate-float-slow {
+                    animation: float 6s ease-in-out infinite;
+                }
+                @keyframes float {
+                    0%, 100% { transform: translateY(0px); }
+                    50% { transform: translateY(-20px); }
+                }
                 @keyframes tilt {
                     0%, 50%, 100% { transform: rotate(0deg); }
                     25% { transform: rotate(1deg); }
