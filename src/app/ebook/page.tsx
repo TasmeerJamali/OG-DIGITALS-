@@ -1248,11 +1248,11 @@ function FAQSection() {
     ];
 
     return (
-        <section className="py-40 bg-black relative">
+        <section className="py-48 bg-black relative flex flex-col justify-center items-center">
             {/* Spacer Line */}
             <div className="absolute top-0 left-1/2 -translate-x-1/2 w-px h-24 bg-gradient-to-b from-[#a8ffc4]/50 to-transparent" />
 
-            <div className="container mx-auto px-6 max-w-4xl">
+            <div className="container mx-auto px-6 max-w-4xl w-full">
                 <motion.div
                     initial={{ opacity: 0, y: 30 }}
                     whileInView={{ opacity: 1, y: 0 }}
