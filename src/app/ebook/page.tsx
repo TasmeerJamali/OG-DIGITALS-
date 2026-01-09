@@ -495,38 +495,64 @@ function ServicePackages() {
                             viewport={{ once: true }}
                             transition={{ delay: i * 0.1 }}
                             whileHover={{
-                                y: -15,
-                                rotateY: 5,
-                                rotateX: -5,
+                                y: -10,
                                 transition: { duration: 0.3 }
                             }}
                             className="group relative w-[380px] h-[480px] flex-shrink-0"
-                            style={{ perspective: "1000px" }}
                         >
-                            {/* Card */}
-                            <div
-                                className={`relative w-full h-full rounded-3xl bg-gradient-to-br ${service.color} border border-white/10 backdrop-blur-xl overflow-hidden transition-all duration-500 group-hover:border-white/20`}
-                                style={{ transformStyle: "preserve-3d" }}
-                            >
-                                {/* Glow effect on hover */}
-                                <div
-                                    className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"
-                                    style={{
-                                        background: `radial-gradient(circle at 50% 0%, ${service.accent}20 0%, transparent 50%)`,
-                                    }}
-                                />
+                            {/* Card - Unified Dark Glass Design */}
+                            <div className="relative w-full h-full rounded-3xl bg-[#0f0f0f] border border-white/10 backdrop-blur-xl overflow-hidden transition-all duration-500 group-hover:border-[#a8ffc4]/30">
+
+                                {/* Animated Web Mesh Background */}
+                                <div className="absolute inset-0 pointer-events-none overflow-hidden">
+                                    {/* Web mesh SVG that expands on hover */}
+                                    <svg
+                                        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] opacity-0 group-hover:opacity-100 transition-all duration-700 ease-out"
+                                        viewBox="0 0 200 200"
+                                    >
+                                        <defs>
+                                            <radialGradient id={`webGrad-${i}`} cx="50%" cy="50%" r="50%">
+                                                <stop offset="0%" stopColor="#a8ffc4" stopOpacity="0.15" />
+                                                <stop offset="100%" stopColor="#a8ffc4" stopOpacity="0" />
+                                            </radialGradient>
+                                        </defs>
+                                        <g className="origin-center scale-0 group-hover:scale-100 transition-transform duration-700 ease-out" style={{ transformOrigin: 'center' }}>
+                                            {/* Radial web lines */}
+                                            {Array.from({ length: 12 }).map((_, li) => (
+                                                <line
+                                                    key={li}
+                                                    x1="100" y1="100"
+                                                    x2={100 + 90 * Math.cos((li * 30 * Math.PI) / 180)}
+                                                    y2={100 + 90 * Math.sin((li * 30 * Math.PI) / 180)}
+                                                    stroke="#a8ffc4"
+                                                    strokeWidth="0.5"
+                                                    strokeOpacity="0.3"
+                                                />
+                                            ))}
+                                            {/* Concentric circles */}
+                                            {[20, 40, 60, 80].map((r, ci) => (
+                                                <circle
+                                                    key={ci}
+                                                    cx="100" cy="100" r={r}
+                                                    fill="none"
+                                                    stroke="#a8ffc4"
+                                                    strokeWidth="0.5"
+                                                    strokeOpacity={0.2 - ci * 0.03}
+                                                />
+                                            ))}
+                                            {/* Center glow */}
+                                            <circle cx="100" cy="100" r="90" fill={`url(#webGrad-${i})`} />
+                                        </g>
+                                    </svg>
+                                </div>
+
+                                {/* Subtle gradient overlay on hover */}
+                                <div className="absolute inset-0 bg-gradient-to-t from-[#a8ffc4]/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
 
                                 {/* Content */}
                                 <div className="relative z-10 p-8 h-full flex flex-col">
-                                    {/* Icon */}
-                                    <div
-                                        className="w-20 h-20 rounded-2xl flex items-center justify-center mb-6 transition-all duration-300 group-hover:scale-110 group-hover:shadow-lg"
-                                        style={{
-                                            background: `linear-gradient(135deg, ${service.accent}30, ${service.accent}10)`,
-                                            color: service.accent,
-                                            boxShadow: `0 0 0 1px ${service.accent}40`
-                                        }}
-                                    >
+                                    {/* Icon - Always green */}
+                                    <div className="w-16 h-16 rounded-2xl flex items-center justify-center mb-6 transition-all duration-300 group-hover:scale-110 bg-[#a8ffc4]/10 border border-[#a8ffc4]/20 text-[#a8ffc4] group-hover:bg-[#a8ffc4]/20 group-hover:border-[#a8ffc4]/40 group-hover:shadow-[0_0_30px_rgba(168,255,196,0.2)]">
                                         {service.icon}
                                     </div>
 
@@ -534,43 +560,25 @@ function ServicePackages() {
                                     <h3 className="text-2xl font-bold text-white mb-2 group-hover:text-[#a8ffc4] transition-colors">
                                         {service.title}
                                     </h3>
-                                    <p className="text-white/50 text-sm mb-6 font-medium uppercase tracking-wider">
+                                    <p className="text-white/40 text-sm mb-6 font-medium uppercase tracking-wider">
                                         {service.subtitle}
                                     </p>
 
                                     {/* Features */}
                                     <ul className="space-y-3 flex-grow">
                                         {service.features.map((feature, fi) => (
-                                            <li key={fi} className="flex items-center gap-3 text-white/60 group-hover:text-white/80 transition-colors">
-                                                <span
-                                                    className="w-1.5 h-1.5 rounded-full"
-                                                    style={{ background: service.accent }}
-                                                />
+                                            <li key={fi} className="flex items-center gap-3 text-white/50 group-hover:text-white/70 transition-colors">
+                                                <span className="w-1.5 h-1.5 rounded-full bg-[#a8ffc4]" />
                                                 {feature}
                                             </li>
                                         ))}
                                     </ul>
 
-                                    {/* CTA */}
-                                    <button
-                                        className="mt-6 py-3 px-6 rounded-full font-semibold text-sm transition-all duration-300 group-hover:scale-105"
-                                        style={{
-                                            background: `linear-gradient(135deg, ${service.accent}, ${service.accent}80)`,
-                                            color: "#000"
-                                        }}
-                                    >
+                                    {/* CTA - Simple outline that fills on hover */}
+                                    <button className="mt-6 py-3 px-6 rounded-full font-semibold text-sm transition-all duration-300 border border-[#a8ffc4]/50 text-[#a8ffc4] group-hover:bg-[#a8ffc4] group-hover:text-black group-hover:shadow-[0_0_20px_rgba(168,255,196,0.3)]">
                                         Learn More →
                                     </button>
                                 </div>
-
-                                {/* Grid pattern overlay */}
-                                <div
-                                    className="absolute inset-0 opacity-[0.03] pointer-events-none"
-                                    style={{
-                                        backgroundImage: "linear-gradient(rgba(255,255,255,0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.1) 1px, transparent 1px)",
-                                        backgroundSize: "30px 30px"
-                                    }}
-                                />
                             </div>
                         </motion.div>
                     ))}
