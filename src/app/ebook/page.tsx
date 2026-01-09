@@ -1083,23 +1083,46 @@ import { Quote } from "lucide-react";
 
 function TestimonialsSection() {
     const testimonials = [
-        { name: "Sarah Chen", role: "Entrepreneur", quote: "The OG Digitals transformed my rough manuscript into a bestseller. Their attention to detail is unmatched.", rating: 5 },
-        { name: "Marcus Johnson", role: "Coach", quote: "From concept to launch in just 3 weeks. The design blew my audience away!", rating: 5 },
-        { name: "Emily Rodriguez", role: "Author", quote: "Finally found a team that understands both writing AND design. 10/10 recommend.", rating: 5 },
-        { name: "David Kim", role: "Consultant", quote: "My eBook has generated over $50K in revenue. Best investment I've made for my business.", rating: 5 },
+        {
+            quote: "The OG Digitals transformed my rough manuscript into a bestseller. Their attention to detail is unmatched.",
+            name: "Sarah Chen",
+            role: "Entrepreneur",
+            color: "from-[#a8ffc4] to-emerald-600"
+        },
+        {
+            quote: "From concept to launch in just 3 weeks. The design blew my audience away!",
+            name: "Marcus Johnson",
+            role: "Coach",
+            color: "from-blue-400 to-blue-600"
+        },
+        {
+            quote: "Finally found a team that understands both writing AND design. 10/10 recommend.",
+            name: "Emily Rodriguez",
+            role: "Author",
+            color: "from-purple-400 to-purple-600"
+        },
+        {
+            quote: "My eBook has generated over $50K in revenue. Best investment I've made for my business.",
+            name: "David Kim",
+            role: "Consultant",
+            color: "from-amber-400 to-orange-600"
+        }
     ];
 
-    return (
-        <section className="py-32 bg-black relative overflow-hidden">
-            <div className="absolute inset-0 pointer-events-none">
-                <div className="absolute top-1/2 left-0 w-[400px] h-[400px] bg-emerald-500 rounded-full blur-[200px] opacity-[0.05]" />
-            </div>
+    // Duplicate for infinite scroll
+    const duplicatedTestimonials = [...testimonials, ...testimonials, ...testimonials];
 
-            <div className="container mx-auto px-6 relative z-10">
+    return (
+        <section className="py-24 bg-black relative overflow-hidden">
+            {/* Background Elements */}
+            <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-[#a8ffc4]/20 to-transparent" />
+            <div className="absolute bottom-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-[#a8ffc4]/20 to-transparent" />
+
+            <div className="container mx-auto px-6 mb-16 relative z-10">
                 <motion.div
                     initial={{ opacity: 0, y: 30 }}
                     whileInView={{ opacity: 1, y: 0 }}
-                    className="text-center mb-16"
+                    className="text-center"
                 >
                     <span className="inline-block px-4 py-2 mb-4 text-sm font-mono text-[#a8ffc4] bg-[#a8ffc4]/10 rounded-full border border-[#a8ffc4]/20">
                         TESTIMONIALS
@@ -1108,29 +1131,46 @@ function TestimonialsSection() {
                         What Our <span className="text-[#a8ffc4]">Clients Say</span>
                     </h2>
                 </motion.div>
+            </div>
 
-                <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-                    {testimonials.map((t, i) => (
-                        <motion.div
+            {/* Infinite Slider Track */}
+            <div className="relative w-full overflow-hidden">
+                {/* Gradient Masks for fade effect at edges */}
+                <div className="absolute left-0 top-0 bottom-0 w-24 md:w-48 z-20 bg-gradient-to-r from-black via-black/80 to-transparent pointer-events-none" />
+                <div className="absolute right-0 top-0 bottom-0 w-24 md:w-48 z-20 bg-gradient-to-l from-black via-black/80 to-transparent pointer-events-none" />
+
+                <motion.div
+                    className="flex gap-6 w-max"
+                    animate={{ x: "-33.33%" }} // Move by one full set of items
+                    transition={{
+                        ease: "linear",
+                        duration: 30, // Adjust speed here
+                        repeat: Infinity,
+                    }}
+                >
+                    {duplicatedTestimonials.map((t, i) => (
+                        <div
                             key={i}
-                            initial={{ opacity: 0, y: 40 }}
-                            whileInView={{ opacity: 1, y: 0 }}
-                            viewport={{ once: true }}
-                            transition={{ delay: i * 0.1 }}
-                            className="group p-6 rounded-2xl bg-white/5 border border-white/10 hover:border-[#a8ffc4]/30 transition-all duration-300"
+                            className="w-[350px] md:w-[450px] flex-shrink-0 group p-8 rounded-2xl bg-[#0a0a0a] border border-white/5 hover:border-[#a8ffc4]/30 transition-all duration-300 relative overflow-hidden"
                         >
-                            <Quote className="w-8 h-8 text-[#a8ffc4] mb-4" />
-                            <p className="text-white/70 mb-6 leading-relaxed">&ldquo;{t.quote}&rdquo;</p>
-                            <div className="flex items-center gap-3">
-                                <div className="w-10 h-10 rounded-full bg-gradient-to-br from-[#a8ffc4] to-emerald-600" />
+                            {/* Card Glow Effect */}
+                            <div className="absolute top-0 right-0 w-32 h-32 bg-[#a8ffc4]/5 rounded-full blur-[50px] group-hover:bg-[#a8ffc4]/10 transition-all duration-500" />
+
+                            <Quote className="w-10 h-10 text-[#a8ffc4] mb-6 opacity-50 group-hover:opacity-100 transition-opacity" />
+                            <p className="text-white/80 mb-8 text-lg font-light leading-relaxed">
+                                &ldquo;{t.quote}&rdquo;
+                            </p>
+
+                            <div className="flex items-center gap-4">
+                                <div className={`w-12 h-12 rounded-full bg-gradient-to-br ${t.color}`} />
                                 <div>
-                                    <p className="text-white font-semibold">{t.name}</p>
-                                    <p className="text-white/50 text-sm">{t.role}</p>
+                                    <p className="text-white font-bold text-lg">{t.name}</p>
+                                    <p className="text-white/40 text-sm font-mono">{t.role}</p>
                                 </div>
                             </div>
-                        </motion.div>
+                        </div>
                     ))}
-                </div>
+                </motion.div>
             </div>
         </section>
     );
