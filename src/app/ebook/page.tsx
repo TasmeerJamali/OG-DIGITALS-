@@ -1177,46 +1177,56 @@ function TestimonialsSection() {
 }
 
 // 8. BOTTOM CTA - Gravity Pull Effect
+// 8. BOTTOM CTA - The Singularity
 function BottomCTA() {
     return (
-        <section className="py-32 bg-gradient-to-b from-[#050505] to-black relative overflow-hidden">
-            {/* Animated background glow */}
-            <motion.div
-                animate={{ scale: [1, 1.2, 1], opacity: [0.1, 0.2, 0.1] }}
-                transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-                className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-[#a8ffc4] rounded-full blur-[200px] opacity-10"
-            />
+        <section className="py-40 bg-black relative overflow-hidden">
+            {/* Singularity Core */}
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-[#a8ffc4]/10 rounded-full blur-[120px] animate-pulse" />
+
+            {/* Event Horizon */}
+            <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20 brightness-150 mix-blend-overlay" />
 
             <div className="container mx-auto px-6 relative z-10 text-center">
                 <motion.div
-                    initial={{ opacity: 0, y: 30 }}
-                    whileInView={{ opacity: 1, y: 0 }}
+                    initial={{ opacity: 0, scale: 0.9 }}
+                    whileInView={{ opacity: 1, scale: 1 }}
                     viewport={{ once: true }}
+                    className="max-w-4xl mx-auto"
                 >
-                    <span className="inline-block px-4 py-2 mb-6 text-sm font-mono text-[#a8ffc4] bg-[#a8ffc4]/10 rounded-full border border-[#a8ffc4]/20">
-                        GET STARTED
+                    <span className="inline-block px-6 py-2 mb-8 text-sm font-mono tracking-widest text-[#a8ffc4] bg-[#a8ffc4]/5 rounded-full border border-[#a8ffc4]/30 shadow-[0_0_20px_rgba(168,255,196,0.1)]">
+                        SYSTEM READY
                     </span>
-                    <h2 className="text-4xl md:text-7xl font-bold text-white tracking-tight mb-6">
-                        Ready to Launch Your<br /><span className="text-[#a8ffc4]">eBook?</span>
+
+                    <h2 className="text-5xl md:text-8xl font-bold text-white tracking-tighter mb-8 leading-tight">
+                        Launch Your <br />
+                        <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#a8ffc4] via-emerald-400 to-[#a8ffc4] animate-text-shimmer bg-[length:200%_auto]">
+                            Legacy Today.
+                        </span>
                     </h2>
-                    <p className="text-xl text-white/60 max-w-2xl mx-auto mb-12">
-                        Join hundreds of authors who&apos;ve turned their ideas into income. Let&apos;s create something amazing together.
+
+                    <p className="text-xl md:text-2xl text-white/60 max-w-2xl mx-auto mb-16 leading-relaxed">
+                        Don't let your knowledge vanish into the void. Turn your expertise into an enduring digital asset.
                     </p>
 
-                    <div className="flex flex-col md:flex-row gap-6 justify-center">
+                    <div className="flex flex-col md:flex-row gap-8 justify-center items-center">
                         <motion.button
                             whileHover={{ scale: 1.05 }}
                             whileTap={{ scale: 0.95 }}
-                            className="px-10 py-5 bg-[#a8ffc4] text-black font-bold text-lg rounded-full shadow-[0_0_40px_rgba(168,255,196,0.3)] hover:shadow-[0_0_60px_rgba(168,255,196,0.5)] transition-all"
+                            className="group relative px-12 py-6 bg-[#a8ffc4] text-black font-bold text-xl rounded-full overflow-hidden"
                         >
-                            Start Your Project →
+                            <div className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300" />
+                            <span className="relative z-10 flex items-center gap-3">
+                                Initialize Project <Zap className="w-5 h-5 fill-current" />
+                            </span>
                         </motion.button>
+
                         <motion.button
                             whileHover={{ scale: 1.05 }}
                             whileTap={{ scale: 0.95 }}
-                            className="px-10 py-5 bg-transparent border border-white/20 text-white font-bold text-lg rounded-full hover:bg-white/10 transition-all"
+                            className="px-12 py-6 bg-white/5 border border-white/10 text-white font-bold text-xl rounded-full hover:bg-white/10 hover:border-[#a8ffc4]/30 transition-all"
                         >
-                            Get Free Sample
+                            View Case Studies
                         </motion.button>
                     </div>
                 </motion.div>
@@ -1225,11 +1235,9 @@ function BottomCTA() {
     );
 }
 
-// 9. FAQ - Accordion with Depth
-
-
+// 9. FAQ - The Data Terminal
 function FAQSection() {
-    const [openIndex, setOpenIndex] = useState<number | null>(null);
+    const [openIndex, setOpenIndex] = useState<number | null>(0);
 
     const faqs = [
         { q: "How long does an eBook take to complete?", a: "Typically 2-4 weeks depending on the package. Rush delivery is available for urgent projects." },
@@ -1240,38 +1248,45 @@ function FAQSection() {
     ];
 
     return (
-        <section className="py-32 bg-[#0a0a0a] relative">
-            <div className="container mx-auto px-6 max-w-3xl">
+        <section className="py-40 bg-black relative">
+            {/* Spacer Line */}
+            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-px h-24 bg-gradient-to-b from-[#a8ffc4]/50 to-transparent" />
+
+            <div className="container mx-auto px-6 max-w-4xl">
                 <motion.div
                     initial={{ opacity: 0, y: 30 }}
                     whileInView={{ opacity: 1, y: 0 }}
-                    className="text-center mb-16"
+                    className="text-center mb-24"
                 >
-                    <span className="inline-block px-4 py-2 mb-4 text-sm font-mono text-[#a8ffc4] bg-[#a8ffc4]/10 rounded-full border border-[#a8ffc4]/20">
-                        FAQ
-                    </span>
-                    <h2 className="text-4xl md:text-6xl font-bold text-white tracking-tight">
-                        Questions & <span className="text-[#a8ffc4]">Answers</span>
+                    <h2 className="text-4xl md:text-5xl font-bold text-white mb-6">
+                        System <span className="text-[#a8ffc4]">Intelligence</span>
                     </h2>
+                    <p className="text-white/50">Common protocols and procedures.</p>
                 </motion.div>
 
-                <div className="space-y-4">
+                <div className="space-y-6">
                     {faqs.map((faq, i) => (
                         <motion.div
                             key={i}
-                            initial={{ opacity: 0, y: 20 }}
-                            whileInView={{ opacity: 1, y: 0 }}
+                            initial={{ opacity: 0, x: -20 }}
+                            whileInView={{ opacity: 1, x: 0 }}
                             viewport={{ once: true }}
-                            transition={{ delay: i * 0.05 }}
-                            className={`border rounded-2xl overflow-hidden transition-all duration-300 ${openIndex === i ? "border-[#a8ffc4]/50 bg-[#a8ffc4]/5" : "border-white/10 bg-white/5"
+                            transition={{ delay: i * 0.1 }}
+                            className={`group border rounded-xl overflow-hidden transition-all duration-500 ${openIndex === i
+                                ? "border-[#a8ffc4] bg-[#a8ffc4]/[0.03] shadow-[0_0_30px_-10px_rgba(168,255,196,0.2)]"
+                                : "border-white/10 bg-white/[0.02] hover:border-white/20"
                                 }`}
                         >
                             <button
                                 onClick={() => setOpenIndex(openIndex === i ? null : i)}
-                                className="w-full p-6 flex items-center justify-between text-left"
+                                className="w-full p-8 flex items-center justify-between text-left"
                             >
-                                <span className="text-white font-semibold text-lg">{faq.q}</span>
-                                <ChevronDown className={`w-5 h-5 text-[#a8ffc4] transition-transform duration-300 ${openIndex === i ? "rotate-180" : ""}`} />
+                                <span className={`font-medium text-xl transition-colors duration-300 ${openIndex === i ? "text-[#a8ffc4]" : "text-white/90"
+                                    }`}>
+                                    {faq.q}
+                                </span>
+                                <ChevronDown className={`w-6 h-6 transition-all duration-300 ${openIndex === i ? "rotate-180 text-[#a8ffc4]" : "text-white/30 group-hover:text-white"
+                                    }`} />
                             </button>
                             <AnimatePresence>
                                 {openIndex === i && (
@@ -1279,10 +1294,11 @@ function FAQSection() {
                                         initial={{ height: 0, opacity: 0 }}
                                         animate={{ height: "auto", opacity: 1 }}
                                         exit={{ height: 0, opacity: 0 }}
-                                        transition={{ duration: 0.3 }}
-                                        className="overflow-hidden"
+                                        transition={{ duration: 0.3, ease: "easeInOut" }}
                                     >
-                                        <p className="px-6 pb-6 text-white/60 leading-relaxed">{faq.a}</p>
+                                        <div className="px-8 pb-8 text-white/60 leading-relaxed text-lg border-t border-[#a8ffc4]/10 pt-6">
+                                            {faq.a}
+                                        </div>
                                     </motion.div>
                                 )}
                             </AnimatePresence>
@@ -1292,31 +1308,31 @@ function FAQSection() {
             </div>
         </section>
     );
-}
-
-// --- ALL SECTIONS COMPLETE ---
 
 
-// --- MAIN PAGE ---
-export default function EbookServicesPage() {
-    return (
-        <main className="bg-black min-h-screen selection:bg-[#a8ffc4] selection:text-black">
-            <Hero />
-            <WhyChooseComponents />
-            <InfiniteMarquee />
-            <ServicePackages />
-            <HowItWorks />
-            <PortfolioShowcase />
-            <PricingSection />
-            <TestimonialsSection />
-            <BottomCTA />
-            <FAQSection />
+    // --- ALL SECTIONS COMPLETE ---
 
-            <footer className="py-12 bg-black text-center border-t border-white/5">
-                <p className="text-white/20 text-sm font-mono">
-                    THE OG DIGITALS © 2024
-                </p>
-            </footer>
-        </main>
-    );
-}
+
+    // --- MAIN PAGE ---
+    export default function EbookServicesPage() {
+        return (
+            <main className="bg-black min-h-screen selection:bg-[#a8ffc4] selection:text-black">
+                <Hero />
+                <WhyChooseComponents />
+                <InfiniteMarquee />
+                <ServicePackages />
+                <HowItWorks />
+                <PortfolioShowcase />
+                <PricingSection />
+                <TestimonialsSection />
+                <BottomCTA />
+                <FAQSection />
+
+                <footer className="py-12 bg-black text-center border-t border-white/5">
+                    <p className="text-white/20 text-sm font-mono">
+                        THE OG DIGITALS © 2024
+                    </p>
+                </footer>
+            </main>
+        );
+    }
