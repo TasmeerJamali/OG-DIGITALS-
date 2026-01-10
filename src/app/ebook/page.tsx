@@ -248,46 +248,91 @@ function Hero() {
     );
 }
 
-// 2. WHY CHOOSE US - Premium Bento Grid
+
+// 2. WHY CHOOSE US - The Obsidian Monoliths
 function WhyChooseComponents() {
     const features = [
-        { title: "High-Quality Content", desc: "Deeply researched, authority-building writing that positions you as an expert.", icon: <PenTool className="w-7 h-7" />, bullets: ["SEO-optimized structure", "Industry research included", "Plagiarism-free guarantee"], stat: "500+", statLabel: "Books Written" },
-        { title: "Premium Design", desc: "Award-winning layouts that make your book impossible to ignore.", icon: <Palette className="w-7 h-7" />, bullets: ["Custom cover art", "Professional typography", "Print & digital formats"], stat: "98%", statLabel: "Client Satisfaction" },
-        { title: "Fast Delivery", desc: "Rapid turnarounds without compromising on quality or detail.", icon: <Zap className="w-7 h-7" />, bullets: ["2-4 week delivery", "Unlimited revisions", "Rush options available"], stat: "14", statLabel: "Days Average" },
-        { title: "Multi-Platform", desc: "Your book, everywhere. Optimized for every major reading platform.", icon: <TabletSmartphone className="w-7 h-7" />, bullets: ["Amazon KDP ready", "Apple Books format", "PDF for print"], stat: "12+", statLabel: "Platforms" },
-        { title: "Full Ownership", desc: "You keep 100% of the copyright, royalties, and creative control.", icon: <Lock className="w-7 h-7" />, bullets: ["No hidden fees", "Full source files", "Lifetime license"], stat: "100%", statLabel: "Yours Forever" },
-        { title: "Marketing Ready", desc: "Launch with everything you need to make sales from day one.", icon: <Rocket className="w-7 h-7" />, bullets: ["Social media assets", "Email templates", "Ad creatives"], stat: "25+", statLabel: "Assets Included" }
+        { title: "High-Quality Content", desc: "Deeply researched, authority-building writing that positions you as an expert.", icon: <PenTool className="w-8 h-8" />, bullets: ["SEO-optimized structure", "Industry research included", "Plagiarism-free guarantee"], stat: "500+", statLabel: "Books Written" },
+        { title: "Premium Design", desc: "Award-winning layouts that make your book impossible to ignore.", icon: <Palette className="w-8 h-8" />, bullets: ["Custom cover art", "Professional typography", "Print & digital formats"], stat: "98%", statLabel: "Client Satisfaction" },
+        { title: "Fast Delivery", desc: "Rapid turnarounds without compromising on quality or detail.", icon: <Zap className="w-8 h-8" />, bullets: ["2-4 week delivery", "Unlimited revisions", "Rush options available"], stat: "14", statLabel: "Days Average" },
+        { title: "Multi-Platform", desc: "Your book, everywhere. Optimized for every major reading platform.", icon: <TabletSmartphone className="w-8 h-8" />, bullets: ["Amazon KDP ready", "Apple Books format", "PDF for print"], stat: "12+", statLabel: "Platforms" },
+        { title: "Full Ownership", desc: "You keep 100% of the copyright, royalties, and creative control.", icon: <Lock className="w-8 h-8" />, bullets: ["No hidden fees", "Full source files", "Lifetime license"], stat: "100%", statLabel: "Yours Forever" },
+        { title: "Marketing Ready", desc: "Launch with everything you need to make sales from day one.", icon: <Rocket className="w-8 h-8" />, bullets: ["Social media assets", "Email templates", "Ad creatives"], stat: "25+", statLabel: "Assets Included" }
     ];
 
     return (
-        <section className="py-32 bg-[#0a0a0a] relative overflow-hidden">
-            {/* Animated Background Grid */}
-            <div className="absolute inset-0 pointer-events-none">
-                <div className="absolute inset-0 bg-[linear-gradient(rgba(168,255,196,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(168,255,196,0.03)_1px,transparent_1px)] bg-[size:60px_60px]" />
-                <motion.div animate={{ opacity: [0.1, 0.2, 0.1], scale: [1, 1.1, 1] }} transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }} className="absolute top-1/4 right-0 w-[600px] h-[600px] bg-[#a8ffc4] rounded-full blur-[200px] opacity-10" />
-                <motion.div animate={{ opacity: [0.05, 0.15, 0.05], scale: [1, 1.2, 1] }} transition={{ duration: 12, repeat: Infinity, ease: "easeInOut", delay: 3 }} className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-emerald-600 rounded-full blur-[180px] opacity-10" />
-            </div>
+        <section className="py-22 bg-black relative overflow-hidden">
+            {/* Ambient Background */}
+            <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-[#a8ffc4]/10 via-black to-black opacity-40" />
+            
             <div className="container mx-auto px-6 relative z-10">
-                <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.6 }} className="text-center mb-20">
-                    <span className="inline-block px-4 py-2 mb-6 text-sm font-mono text-[#a8ffc4] bg-[#a8ffc4]/10 rounded-full border border-[#a8ffc4]/20">WHY CHOOSE US</span>
-                    <h2 className="text-5xl md:text-6xl font-bold text-white mb-6 tracking-tight">Everything You Need to <span className="text-[#a8ffc4]">Publish</span></h2>
-                    <p className="text-xl text-white/60 max-w-2xl mx-auto">From concept to bestseller, we handle every detail so you can focus on your message.</p>
+                <motion.div 
+                    initial={{ opacity: 0, y: 30 }} 
+                    whileInView={{ opacity: 1, y: 0 }} 
+                    viewport={{ once: true }} 
+                    className="text-center mb-24"
+                >
+                    <span className="inline-block px-6 py-2 mb-8 text-sm font-mono tracking-[0.2em] text-[#a8ffc4] bg-[#a8ffc4]/5 rounded-full border border-[#a8ffc4]/20 shadow-[0_0_15px_rgba(168,255,196,0.1)]">
+                        CORE PROTOCOLS
+                    </span>
+                    <h2 className="text-5xl md:text-7xl font-bold text-white mb-8 tracking-tighter">
+                        Everything You Need to <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#a8ffc4] to-emerald-500">Publish</span>
+                    </h2>
+                    <p className="text-xl md:text-2xl text-white/50 max-w-3xl mx-auto font-light leading-relaxed">
+                        From concept to bestseller, we handle every detail so you can focus on your message.
+                    </p>
                 </motion.div>
-                <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+
+                <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
                     {features.map((f, i) => (
-                        <motion.div key={i} initial={{ opacity: 0, y: 40, scale: 0.95 }} whileInView={{ opacity: 1, y: 0, scale: 1 }} viewport={{ once: true, margin: "-50px" }} transition={{ duration: 0.5, delay: i * 0.1, ease: "easeOut" }} whileHover={{ y: -8, transition: { duration: 0.3 } }} className="group relative p-8 rounded-3xl bg-gradient-to-br from-white/[0.08] to-white/[0.02] border border-white/10 hover:border-[#a8ffc4]/40 transition-all duration-500 overflow-hidden">
-                            <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"><div className="absolute inset-0 bg-gradient-to-br from-[#a8ffc4]/10 via-transparent to-transparent" /><div className="absolute top-0 left-0 w-32 h-32 bg-[#a8ffc4]/20 rounded-full blur-3xl -translate-x-1/2 -translate-y-1/2" /></div>
-                            <div className="absolute top-4 right-4 w-2 h-2 rounded-full bg-[#a8ffc4]/40 group-hover:bg-[#a8ffc4] group-hover:shadow-[0_0_10px_#a8ffc4] transition-all duration-300" />
-                            <div className="relative z-10">
-                                <div className="flex items-start justify-between mb-6">
-                                    <div className="w-14 h-14 rounded-2xl bg-[#a8ffc4]/10 border border-[#a8ffc4]/20 flex items-center justify-center text-[#a8ffc4] group-hover:bg-[#a8ffc4] group-hover:text-black group-hover:border-transparent transition-all duration-300 group-hover:shadow-[0_0_25px_rgba(168,255,196,0.5)]">{f.icon}</div>
-                                    <div className="text-right"><div className="text-3xl font-black text-white group-hover:text-[#a8ffc4] transition-colors">{f.stat}</div><div className="text-xs text-white/40 font-medium uppercase tracking-wider">{f.statLabel}</div></div>
+                        <motion.div
+                            key={i}
+                            initial={{ opacity: 0, y: 50 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            viewport={{ once: true }}
+                            transition={{ duration: 0.5, delay: i * 0.1 }}
+                            className="group relative h-full"
+                        >
+                            {/* Card Container */}
+                            <div className="relative h-full p-1 bg-gradient-to-br from-white/10 to-white/0 rounded-[30px] overflow-hidden backdrop-blur-sm group-hover:from-[#a8ffc4]/40 group-hover:to-[#a8ffc4]/0 transition-all duration-500">
+                                {/* Inner Card content */}
+                                <div className="relative h-full bg-[#050505]/90 rounded-[28px] p-8 md:p-10 flex flex-col justify-between overflow-hidden">
+                                    
+                                    {/* Hover Grid overlay */}
+                                    <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-10 mix-blend-overlay group-hover:opacity-20 transition-opacity duration-500" />
+                                    <div className="absolute -right-20 -top-20 w-64 h-64 bg-[#a8ffc4]/20 rounded-full blur-[80px] group-hover:bg-[#a8ffc4]/30 transition-all duration-500 group-hover:scale-150" />
+
+                                    {/* Header & Icon */}
+                                    <div className="relative z-10">
+                                        <div className="flex justify-between items-start mb-8">
+                                            <div className="w-16 h-16 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center text-[#a8ffc4] group-hover:scale-110 group-hover:bg-[#a8ffc4] group-hover:text-black transition-all duration-500 shadow-[0_0_0_1px_rgba(255,255,255,0.05)] group-hover:shadow-[0_0_30px_rgba(168,255,196,0.4)]">
+                                                {f.icon}
+                                            </div>
+                                            <div className="text-right">
+                                                <span className="block text-4xl font-bold text-white group-hover:text-[#a8ffc4] transition-colors duration-300 tracking-tight">{f.stat}</span>
+                                                <span className="text-xs font-mono text-white/40 uppercase tracking-wider">{f.statLabel}</span>
+                                            </div>
+                                        </div>
+
+                                        <h3 className="text-2xl font-bold text-white mb-4 group-hover:translate-x-2 transition-transform duration-300">{f.title}</h3>
+                                        <p className="text-white/60 mb-8 leading-relaxed font-light text-lg border-l-2 border-white/10 pl-4 py-1 group-hover:border-[#a8ffc4] transition-colors duration-300">
+                                            {f.desc}
+                                        </p>
+                                    </div>
+
+                                    {/* Footer / Bullets */}
+                                    <div className="relative z-10 pt-8 border-t border-white/5 group-hover:border-[#a8ffc4]/20 transition-colors duration-500">
+                                        <ul className="space-y-3">
+                                            {f.bullets.map((b, j) => (
+                                                <li key={j} className="flex items-center text-sm md:text-base text-white/50 group-hover:text-white/80 transition-colors duration-300">
+                                                    <span className="w-1.5 h-1.5 rounded-full bg-[#a8ffc4] mr-3 group-hover:shadow-[0_0_8px_#a8ffc4] transition-all duration-300" />
+                                                    {b}
+                                                </li>
+                                            ))}
+                                        </ul>
+                                    </div>
                                 </div>
-                                <h3 className="text-2xl font-bold text-white mb-3 group-hover:text-[#a8ffc4] transition-colors">{f.title}</h3>
-                                <p className="text-white/50 mb-6 leading-relaxed group-hover:text-white/70 transition-colors">{f.desc}</p>
-                                <ul className="space-y-2">{f.bullets.map((bullet, bi) => (<li key={bi} className="flex items-center gap-2 text-sm text-white/40 group-hover:text-white/60 transition-colors"><CheckCircle2 className="w-4 h-4 text-[#a8ffc4]/60 group-hover:text-[#a8ffc4] transition-colors flex-shrink-0" />{bullet}</li>))}</ul>
                             </div>
-                            <div className="absolute bottom-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-[#a8ffc4]/0 to-transparent group-hover:via-[#a8ffc4]/50 transition-all duration-500" />
                         </motion.div>
                     ))}
                 </div>
@@ -296,8 +341,7 @@ function WhyChooseComponents() {
     );
 }
 
-// WORLD-CLASS INFINITE MARQUEE - Multi-layer velocity-based cross-crossing
-function InfiniteMarquee() {
+\nfunction InfiniteMarquee() {
     const containerRef = useRef<HTMLDivElement>(null);
     const { scrollYProgress } = useScroll({ target: containerRef, offset: ["start end", "end start"] });
 
