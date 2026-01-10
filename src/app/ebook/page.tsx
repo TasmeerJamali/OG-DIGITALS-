@@ -1181,9 +1181,6 @@ function TestimonialsSection() {
 function BottomCTA() {
     return (
         <section className="py-40 bg-black relative overflow-hidden">
-            {/* Version Marker for Debugging */}
-            <div className="hidden">VERSION_V4_FIXED</div>
-
             {/* Singularity Core */}
             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-[#a8ffc4]/10 rounded-full blur-[120px] animate-pulse" />
 
@@ -1311,31 +1308,132 @@ function FAQSection() {
             </div>
         </section>
     );
+}
 
 
-    // --- ALL SECTIONS COMPLETE ---
+// --- ALL SECTIONS COMPLETE ---
 
 
-    // --- MAIN PAGE ---
-    export default function EbookServicesPage() {
-        return (
-            <main className="bg-black min-h-screen selection:bg-[#a8ffc4] selection:text-black">
-                <Hero />
-                <WhyChooseComponents />
-                <InfiniteMarquee />
-                <ServicePackages />
-                <HowItWorks />
-                <PortfolioShowcase />
-                <PricingSection />
-                <TestimonialsSection />
-                <BottomCTA />
-                <FAQSection />
+// --- MAIN PAGE ---
+export default function EbookServicesPage() {
+    return (
+        <main className="bg-black min-h-screen selection:bg-[#a8ffc4] selection:text-black">
+            <Hero />
+            <WhyChooseComponents />
+            <InfiniteMarquee />
+            <ServicePackages />
+            <HowItWorks />
+            <PortfolioShowcase />
+            <PricingSection />
+            <TestimonialsSection />
+            <BottomCTA />
+            <FAQSection />
 
-                <footer className="py-12 bg-black text-center border-t border-white/5">
-                    <p className="text-white/20 text-sm font-mono">
-                        THE OG DIGITALS © 2024
-                    </p>
-                </footer>
-            </main>
-        );
-    }
+            <footer className="py-12 bg-black text-center border-t border-white/5">
+                <p className="text-white/20 text-sm font-mono">
+                    THE OG DIGITALS © 2024
+                </p>
+            </footer>
+        </main>
+    );
+}
+const [openIndex, setOpenIndex] = useState<number | null>(0);
+
+const faqs = [
+    { q: "How long does an eBook take to complete?", a: "Typically 2-4 weeks depending on the package. Rush delivery is available for urgent projects." },
+    { q: "Do I get full copyright ownership?", a: "Absolutely! You retain 100% copyright and ownership of your eBook and all deliverables." },
+    { q: "What formats do you deliver?", a: "We provide PDF, EPUB, and Amazon KDP-ready formats. Print-ready files are also available." },
+    { q: "Do you provide cover designs?", a: "Yes! All packages include custom cover design. We also offer standalone cover design services." },
+    { q: "Can you publish the eBook for me?", a: "We prepare everything for publishing. We can guide you through the process or handle it for an additional fee." },
+];
+
+return (
+    <section className="py-48 bg-black relative flex flex-col justify-center items-center">
+        {/* Spacer Line */}
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-px h-24 bg-gradient-to-b from-[#a8ffc4]/50 to-transparent" />
+
+        <div className="container mx-auto px-6 max-w-4xl w-full">
+            <motion.div
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                className="text-center mb-24"
+            >
+                <h2 className="text-4xl md:text-5xl font-bold text-white mb-6">
+                    System <span className="text-[#a8ffc4]">Intelligence</span>
+                </h2>
+                <p className="text-white/50">Common protocols and procedures.</p>
+            </motion.div>
+
+            <div className="space-y-6">
+                {faqs.map((faq, i) => (
+                    <motion.div
+                        key={i}
+                        initial={{ opacity: 0, x: -20 }}
+                        whileInView={{ opacity: 1, x: 0 }}
+                        viewport={{ once: true }}
+                        transition={{ delay: i * 0.1 }}
+                        className={`group border rounded-xl overflow-hidden transition-all duration-500 ${openIndex === i
+                            ? "border-[#a8ffc4] bg-[#a8ffc4]/[0.03] shadow-[0_0_30px_-10px_rgba(168,255,196,0.2)]"
+                            : "border-white/10 bg-white/[0.02] hover:border-white/20"
+                            }`}
+                    >
+                        <button
+                            onClick={() => setOpenIndex(openIndex === i ? null : i)}
+                            className="w-full p-8 flex items-center justify-between text-left"
+                        >
+                            <span className={`font-medium text-xl transition-colors duration-300 ${openIndex === i ? "text-[#a8ffc4]" : "text-white/90"
+                                }`}>
+                                {faq.q}
+                            </span>
+                            <ChevronDown className={`w-6 h-6 transition-all duration-300 ${openIndex === i ? "rotate-180 text-[#a8ffc4]" : "text-white/30 group-hover:text-white"
+                                }`} />
+                        </button>
+                        <AnimatePresence>
+                            {openIndex === i && (
+                                <motion.div
+                                    initial={{ height: 0, opacity: 0 }}
+                                    animate={{ height: "auto", opacity: 1 }}
+                                    exit={{ height: 0, opacity: 0 }}
+                                    transition={{ duration: 0.3, ease: "easeInOut" }}
+                                >
+                                    <div className="px-8 pb-8 text-white/60 leading-relaxed text-lg border-t border-[#a8ffc4]/10 pt-6">
+                                        {faq.a}
+                                    </div>
+                                </motion.div>
+                            )}
+                        </AnimatePresence>
+                    </motion.div>
+                ))}
+            </div>
+        </div>
+    </section>
+);
+}
+
+
+// --- ALL SECTIONS COMPLETE ---
+
+
+// --- MAIN PAGE ---
+export default function EbookServicesPage() {
+    return (
+        <main className="bg-black min-h-screen selection:bg-[#a8ffc4] selection:text-black">
+            <Hero />
+            <WhyChooseComponents />
+            <InfiniteMarquee />
+            <ServicePackages />
+            <HowItWorks />
+            <PortfolioShowcase />
+            <PricingSection />
+            <TestimonialsSection />
+            <BottomCTA />
+            <FAQSection />
+
+            <footer className="py-12 bg-black text-center border-t border-white/5">
+                <p className="text-white/20 text-sm font-mono">
+                    THE OG DIGITALS © 2024
+                </p>
+            </footer>
+        </main>
+    );
+}
