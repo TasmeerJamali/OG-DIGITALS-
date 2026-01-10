@@ -406,12 +406,15 @@ export default function WorkPage() {
                         ))}
                     </div>
                 </motion.section>
-                {/* Explicit Spacer */}
-                <div className="h-[50vh]" />
+            </div>
 
-                {/* Glassmorphic Spotlight CTA */}
-                <motion.section
-                    className="relative max-w-4xl mx-auto mb-40"
+            {/* Extended Bottom Section - Ecosystem Grid */}
+            <EcosystemGrid />
+
+            {/* Glassmorphic Spotlight CTA - At the Very Bottom */}
+            <section className="py-40 px-6">
+                <motion.div
+                    className="relative max-w-4xl mx-auto"
                     initial={{ opacity: 0, y: 50 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.8 }}
@@ -448,11 +451,8 @@ export default function WorkPage() {
                             <ArrowUpRight className="w-6 h-6" />
                         </Link>
                     </div>
-                </motion.section>
-            </div>
-
-            {/* Extended Bottom Section - Ecosystem Grid */}
-            <EcosystemGrid />
+                </motion.div>
+            </section>
         </main>
     );
 }

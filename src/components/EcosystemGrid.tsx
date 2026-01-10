@@ -50,7 +50,7 @@ export default function EcosystemGrid() {
                 <div className="w-full max-w-md mx-auto h-[1px] bg-gradient-to-r from-transparent via-white/20 to-transparent" />
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 place-items-center">
                 {partners.map((partner, index) => (
                     <Link
                         key={partner.name}
