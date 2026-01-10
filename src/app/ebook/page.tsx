@@ -1178,10 +1178,11 @@ function TestimonialsSection() {
 
 
 
+
 // 8. BOTTOM CTA - The Singularity
 function BottomCTA() {
     return (
-        <section className="py-96 bg-black relative overflow-hidden flex flex-col items-center justify-center border-t border-white/5">
+        <section className="py-64 bg-black relative overflow-hidden flex flex-col items-center justify-center border-t border-white/5">
             {/* Singularity Core - Adjusted opacity to not overwhelm */}
             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[1000px] h-[1000px] bg-[#a8ffc4]/5 rounded-full blur-[120px] animate-pulse pointer-events-none" />
             
@@ -1249,9 +1250,9 @@ function FAQSection() {
     ];
 
     return (
-        <section className="py-96 bg-black relative flex flex-col justify-center items-center overflow-hidden border-t border-white/5">
+        <section className="pt-32 pb-64 mt-32 bg-black relative flex flex-col justify-center items-center overflow-hidden border-t border-white/5">
             {/* Spacer Line - Extended */}
-            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-px h-64 bg-gradient-to-b from-[#a8ffc4]/30 to-transparent" />
+            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-px h-32 bg-gradient-to-b from-[#a8ffc4]/30 to-transparent" />
 
             <div className="container mx-auto px-6 max-w-5xl w-full relative z-10">
                 <motion.div
