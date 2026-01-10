@@ -8,38 +8,52 @@ import { ArrowLeft, ArrowRight } from "lucide-react";
 const services = [
     {
         id: "01",
-        title: "Web Development",
-        subtitle: "UX/UI Design · Development",
+        title: "AI Automation",
+        subtitle: "Operations · Efficiency",
+        description: "Streamlining complex workflows with intelligent, autonomous systems that work while you sleep.",
+        video: "/assets/web-dev.mp4", // Placeholder
+    },
+    {
+        id: "02",
+        title: "Social Media Marketing",
+        subtitle: "Growth · Engagement",
+        description: "Building communities and driving conversations that turn followers into brand advocates.",
+        video: "/assets/seo.mp4", // Placeholder
+    },
+    {
+        id: "03",
+        title: "Web Design & Dev",
+        subtitle: "UX/UI · Engineering",
         description: "Architecting digital organisms that live and breathe in the modern web ecosystem.",
         video: "/assets/web-dev.mp4",
     },
     {
-        id: "02",
-        title: "SEO Strategy",
-        subtitle: "Analytics · Optimization",
-        description: "Dominating the neural pathways of search engines with data-driven precision.",
+        id: "04",
+        title: "Performance Marketing",
+        subtitle: "Ads · Analytics",
+        description: "Data-driven campaigns that maximize ROI and dominate the neural pathways of your audience.",
         video: "/assets/seo.mp4",
     },
     {
-        id: "03",
+        id: "05",
         title: "Brand Identity",
-        subtitle: "Visual Design · Strategy",
+        subtitle: "Strategy · Visuals",
         description: "Forging visual legacies that burn into the collective consciousness.",
         video: "/assets/brand-identity.mp4",
     },
     {
-        id: "04",
-        title: "UI/UX Design",
-        subtitle: "Research · Prototyping",
-        description: "Crafting intuitive interfaces for seamless human-digital interaction.",
+        id: "06",
+        title: "Logo Design",
+        subtitle: "Symbolism · Impact",
+        description: "Distilling your essence into a singular, powerful mark of distinction.",
         video: "/assets/uiux-design.mp4",
     },
     {
-        id: "05",
-        title: "Content Creation",
-        subtitle: "Copywriting · Storytelling",
-        description: "Narratives that resonate on a molecular level with your audience.",
-        video: "/assets/web-dev.mp4", // Placeholder reuse
+        id: "07",
+        title: "E-book Writing",
+        subtitle: "Authority · Content",
+        description: "Detailed, authoritative content that positions you as the thought leader in your industry.",
+        video: "/assets/video.mp4",
     },
 ];
 
@@ -234,15 +248,15 @@ export default function Services() {
     // Auto-scroll logic (The "Belt" Effect)
     useEffect(() => {
         let animationFrameId: number;
-        
+
         const scroll = () => {
             if (scrollContainerRef.current && isAutoScrolling) {
                 const { scrollLeft, scrollWidth, clientWidth } = scrollContainerRef.current;
-                
+
                 // Slow consistent speed
                 if (scrollLeft + clientWidth >= scrollWidth - 1) {
                     // Reset to start seamlessly (requires duplicated content for true seamless, but minimal jump is okay for now)
-                    scrollContainerRef.current.scrollLeft = 0; 
+                    scrollContainerRef.current.scrollLeft = 0;
                 } else {
                     scrollContainerRef.current.scrollLeft += 1; // Speed of the belt
                 }
@@ -263,7 +277,7 @@ export default function Services() {
         if (scrollContainerRef.current) {
             const scrollAmount = 600; // Card width approx
             const targetScroll = scrollContainerRef.current.scrollLeft + (direction === 'left' ? -scrollAmount : scrollAmount);
-            
+
             scrollContainerRef.current.scrollTo({
                 left: targetScroll,
                 behavior: 'smooth'
@@ -276,47 +290,47 @@ export default function Services() {
 
     return (
         <section className="py-32 bg-black relative overflow-hidden">
-             {/* Header */}
-             <div className="container mx-auto px-6 mb-16 flex flex-col md:flex-row justify-between items-end gap-10">
+            {/* Header */}
+            <div className="container mx-auto px-6 mb-16 flex flex-col md:flex-row justify-between items-end gap-10">
                 <div>
-                     <span className="inline-block px-4 py-2 mb-6 text-sm font-mono text-[#a8ffc4] bg-[#a8ffc4]/10 rounded-full border border-[#a8ffc4]/20">
+                    <span className="inline-block px-4 py-2 mb-6 text-sm font-mono text-[#a8ffc4] bg-[#a8ffc4]/10 rounded-full border border-[#a8ffc4]/20">
                         WHAT WE DO
                     </span>
                     <h2 className="text-5xl md:text-7xl font-bold text-white tracking-tighter">
                         Digital <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#a8ffc4] to-emerald-600">Evolution</span>
                     </h2>
                 </div>
-                
+
                 {/* Navigation Buttons */}
                 <div className="flex gap-4">
-                    <button 
+                    <button
                         onClick={() => scroll('left')}
                         className="w-16 h-16 rounded-full border border-white/10 flex items-center justify-center text-white hover:bg-[#a8ffc4] hover:text-black hover:border-[#a8ffc4] transition-all duration-300"
                     >
                         <ArrowLeft className="w-6 h-6" />
                     </button>
-                    <button 
+                    <button
                         onClick={() => scroll('right')}
                         className="w-16 h-16 rounded-full border border-white/10 flex items-center justify-center text-white hover:bg-[#a8ffc4] hover:text-black hover:border-[#a8ffc4] transition-all duration-300"
                     >
                         <ArrowRight className="w-6 h-6" />
                     </button>
                 </div>
-             </div>
+            </div>
 
-             {/* Slider Belt */}
-             <div 
+            {/* Slider Belt */}
+            <div
                 ref={scrollContainerRef}
                 className="flex gap-8 overflow-x-auto pb-12 pl-6 md:pl-20 no-scrollbar"
                 style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
                 onMouseEnter={() => setIsAutoScrolling(false)}
                 onMouseLeave={() => setIsAutoScrolling(true)}
-             >
+            >
                 {services.map((service, index) => (
                     <ServiceCard key={service.id} service={service} index={index} />
                 ))}
                 {/* Duplicate for length/feeling of belt */}
-                 {services.map((service, index) => (
+                {services.map((service, index) => (
                     <ServiceCard key={`${service.id}-duplicate`} service={service} index={index + services.length} />
                 ))}
             </div>

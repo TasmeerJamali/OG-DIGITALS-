@@ -3,14 +3,28 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
-
+import { ChevronDown } from "lucide-react";
 import HexDomeLogo from "@/components/HexDomeLogo";
 
-const navLinks = [
+type NavItem = {
+    name: string;
+    href: string;
+    dropdown?: { name: string; href: string }[];
+};
+
+const navLinks: NavItem[] = [
     { name: "Work", href: "/work" },
     { name: "Services", href: "/services" },
     { name: "E-Book", href: "/ebook" },
-    { name: "Testimonials", href: "/testimonials" },
+    {
+        name: "Case Studies",
+        href: "#",
+        dropdown: [
+            { name: "Testimonials", href: "/testimonials" },
+            { name: "Blogs", href: "/blog" },
+            { name: "FAQs", href: "/faq" },
+        ]
+    },
     { name: "About", href: "/about" },
     { name: "Contact Us", href: "/contact" },
 ];
@@ -48,6 +62,7 @@ function RollingText({ children }: { children: string }) {
 export default function Navigation() {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const [isHovered, setIsHovered] = useState(false);
+    const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
 
     return (
         <>
@@ -62,7 +77,10 @@ export default function Navigation() {
                 <div
                     className="relative"
                     onMouseEnter={() => setIsHovered(true)}
-                    onMouseLeave={() => setIsHovered(false)}
+                    onMouseLeave={() => {
+                        setIsHovered(false);
+                        setActiveDropdown(null);
+                    }}
                 >
                     {/* Lightsaber border container */}
                     <div
@@ -106,7 +124,7 @@ export default function Navigation() {
 
                     {/* Inner glass container - Premium Glossy Effect */}
                     <div
-                        className="flex items-center rounded-full cursor-pointer relative overflow-hidden"
+                        className="flex items-center rounded-full relative overflow-visible"
                         style={{
                             background:
                                 "linear-gradient(145deg, rgba(60,70,80,0.65) 0%, rgba(40,50,60,0.55) 50%, rgba(50,60,70,0.6) 100%)",
@@ -116,10 +134,11 @@ export default function Navigation() {
                             boxShadow:
                                 "inset 0 1px 1px rgba(255,255,255,0.15), inset 0 -1px 1px rgba(0,0,0,0.2), 0 10px 40px rgba(0,0,0,0.3)",
                         }}
+                        onMouseLeave={() => setActiveDropdown(null)}
                     >
                         {/* Top glossy highlight - creates the glass shine */}
                         <div
-                            className="absolute inset-0 pointer-events-none rounded-full"
+                            className="absolute inset-0 pointer-events-none rounded-full overflow-hidden"
                             style={{
                                 background:
                                     "linear-gradient(180deg, rgba(255,255,255,0.2) 0%, rgba(255,255,255,0.08) 20%, transparent 45%)",
@@ -128,7 +147,7 @@ export default function Navigation() {
 
                         {/* Bottom subtle shadow for depth */}
                         <div
-                            className="absolute inset-0 pointer-events-none rounded-full"
+                            className="absolute inset-0 pointer-events-none rounded-full overflow-hidden"
                             style={{
                                 background:
                                     "linear-gradient(0deg, rgba(0,0,0,0.15) 0%, transparent 30%)",
@@ -137,7 +156,7 @@ export default function Navigation() {
 
                         {/* Left/Right prism edge highlights */}
                         <div
-                            className="absolute inset-0 pointer-events-none rounded-full"
+                            className="absolute inset-0 pointer-events-none rounded-full overflow-hidden"
                             style={{
                                 background:
                                     "linear-gradient(90deg, rgba(180,220,255,0.08) 0%, transparent 8%, transparent 92%, rgba(255,200,180,0.08) 100%)",
@@ -177,20 +196,73 @@ export default function Navigation() {
                             }}
                         >
                             {navLinks.map((link) => (
-                                <Link
+                                <div
                                     key={link.name}
-                                    href={link.href}
-                                    className="text-white/75 hover:text-white transition-colors duration-200"
-                                    style={{
-                                        padding: "10px 22px",
-                                        fontSize: "14px",
-                                        fontWeight: 500,
-                                        whiteSpace: "nowrap",
-                                        letterSpacing: "0.01em",
-                                    }}
+                                    className="relative"
+                                    onMouseEnter={() => link.dropdown && setActiveDropdown(link.name)}
                                 >
-                                    <RollingText>{link.name}</RollingText>
-                                </Link>
+                                    {link.dropdown ? (
+                                        <button
+                                            className="text-white/75 hover:text-white transition-colors duration-200 flex items-center gap-1"
+                                            style={{
+                                                padding: "10px 22px",
+                                                fontSize: "14px",
+                                                fontWeight: 500,
+                                                whiteSpace: "nowrap",
+                                                letterSpacing: "0.01em",
+                                            }}
+                                        >
+                                            <RollingText>{link.name}</RollingText>
+                                            <ChevronDown className="w-4 h-4" />
+                                        </button>
+                                    ) : (
+                                        <Link
+                                            href={link.href}
+                                            className="text-white/75 hover:text-white transition-colors duration-200 block"
+                                            style={{
+                                                padding: "10px 22px",
+                                                fontSize: "14px",
+                                                fontWeight: 500,
+                                                whiteSpace: "nowrap",
+                                                letterSpacing: "0.01em",
+                                            }}
+                                            onMouseEnter={() => setActiveDropdown(null)}
+                                        >
+                                            <RollingText>{link.name}</RollingText>
+                                        </Link>
+                                    )}
+
+                                    {/* Dropdown Menu */}
+                                    <AnimatePresence>
+                                        {activeDropdown === link.name && link.dropdown && (
+                                            <motion.div
+                                                initial={{ opacity: 0, y: 10, scale: 0.95 }}
+                                                animate={{ opacity: 1, y: 0, scale: 1 }}
+                                                exit={{ opacity: 0, y: 10, scale: 0.95 }}
+                                                transition={{ duration: 0.2 }}
+                                                className="absolute top-full left-0 mt-2 min-w-[200px] rounded-xl overflow-hidden"
+                                                style={{
+                                                    background: "rgba(20,20,20,0.95)",
+                                                    backdropFilter: "blur(20px)",
+                                                    border: "1px solid rgba(255,255,255,0.1)",
+                                                    boxShadow: "0 10px 40px rgba(0,0,0,0.5)",
+                                                }}
+                                            >
+                                                <div className="py-2">
+                                                    {link.dropdown.map((item) => (
+                                                        <Link
+                                                            key={item.name}
+                                                            href={item.href}
+                                                            className="block px-4 py-3 text-sm text-white/70 hover:text-[#a8ffc4] hover:bg-white/5 transition-all"
+                                                        >
+                                                            {item.name}
+                                                        </Link>
+                                                    ))}
+                                                </div>
+                                            </motion.div>
+                                        )}
+                                    </AnimatePresence>
+                                </div>
                             ))}
                         </div>
 
@@ -324,11 +396,12 @@ export default function Navigation() {
                         animate={{ opacity: 1 }}
                         exit={{ opacity: 0 }}
                         transition={{ duration: 0.3 }}
-                        className="fixed inset-0 z-40 lg:hidden"
+                        className="fixed inset-0 z-40 lg:hidden overflow-y-auto"
                         style={{
                             background: "rgba(0,0,0,0.95)",
                             backdropFilter: "blur(20px)",
                             paddingTop: "100px",
+                            paddingBottom: "40px"
                         }}
                     >
                         <div
@@ -337,26 +410,65 @@ export default function Navigation() {
                                 flexDirection: "column",
                                 alignItems: "center",
                                 justifyContent: "center",
-                                height: "100%",
+                                minHeight: "100%",
                                 gap: "32px",
                             }}
                         >
                             {navLinks.map((link, index) => (
-                                <motion.div
-                                    key={link.name}
-                                    initial={{ opacity: 0, y: 20 }}
-                                    animate={{ opacity: 1, y: 0 }}
-                                    exit={{ opacity: 0, y: 20 }}
-                                    transition={{ duration: 0.3, delay: index * 0.1 }}
-                                >
-                                    <Link
-                                        href={link.href}
-                                        onClick={() => setIsMenuOpen(false)}
-                                        style={{ fontSize: "28px", fontWeight: 600, color: "white" }}
-                                    >
-                                        {link.name}
-                                    </Link>
-                                </motion.div>
+                                <div key={link.name} className="flex flex-col items-center gap-4">
+                                    {link.dropdown ? (
+                                        <>
+                                            <motion.button
+                                                initial={{ opacity: 0, y: 20 }}
+                                                animate={{ opacity: 1, y: 0 }}
+                                                exit={{ opacity: 0, y: 20 }}
+                                                transition={{ duration: 0.3, delay: index * 0.1 }}
+                                                className="text-white font-semibold text-2xl flex items-center gap-2"
+                                                onClick={() => setActiveDropdown(activeDropdown === link.name ? null : link.name)}
+                                            >
+                                                {link.name}
+                                                <ChevronDown className={`w-5 h-5 transition-transform ${activeDropdown === link.name ? 'rotate-180' : ''}`} />
+                                            </motion.button>
+
+                                            <AnimatePresence>
+                                                {activeDropdown === link.name && (
+                                                    <motion.div
+                                                        initial={{ height: 0, opacity: 0 }}
+                                                        animate={{ height: "auto", opacity: 1 }}
+                                                        exit={{ height: 0, opacity: 0 }}
+                                                        className="flex flex-col items-center gap-4 overflow-hidden"
+                                                    >
+                                                        {link.dropdown.map((item) => (
+                                                            <Link
+                                                                key={item.name}
+                                                                href={item.href}
+                                                                onClick={() => setIsMenuOpen(false)}
+                                                                className="text-white/60 hover:text-[#a8ffc4] text-xl"
+                                                            >
+                                                                {item.name}
+                                                            </Link>
+                                                        ))}
+                                                    </motion.div>
+                                                )}
+                                            </AnimatePresence>
+                                        </>
+                                    ) : (
+                                        <motion.div
+                                            initial={{ opacity: 0, y: 20 }}
+                                            animate={{ opacity: 1, y: 0 }}
+                                            exit={{ opacity: 0, y: 20 }}
+                                            transition={{ duration: 0.3, delay: index * 0.1 }}
+                                        >
+                                            <Link
+                                                href={link.href}
+                                                onClick={() => setIsMenuOpen(false)}
+                                                style={{ fontSize: "28px", fontWeight: 600, color: "white" }}
+                                            >
+                                                {link.name}
+                                            </Link>
+                                        </motion.div>
+                                    )}
+                                </div>
                             ))}
                         </div>
                     </motion.div>
