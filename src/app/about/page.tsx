@@ -61,7 +61,8 @@ const team = [
         keywords: ["VISION", "LEADERSHIP", "FUTURE"],
         desc: "Driving the digital evolution with uncompromising vision.",
         color: "#a8ffc4",
-        warning: "WARNING: EGO OVERLOAD DETECTED. DO NOT FEED THE VISIONARY."
+        warning: "WARNING: EGO OVERLOAD DETECTED. DO NOT FEED THE VISIONARY.",
+        success: "ALERT: SALARIES DISPENSED 2 WEEKS EARLY. MORALE OVERLOAD."
     },
     {
         name: "SUHAIB",
@@ -70,7 +71,8 @@ const team = [
         keywords: ["ARCHITECT", "SYSTEMS", "SCALE"],
         desc: "Building the impossible through code and logic.",
         color: "#60a5fa",
-        warning: "WARNING: CAFFEINE LEVELS CRITICAL. SPAGHETTI CODE IS FORBIDDEN."
+        warning: "WARNING: CAFFEINE LEVELS CRITICAL. SPAGHETTI CODE IS FORBIDDEN.",
+        success: "SYSTEM: DEPLOYED TO PRODUCTION ON FRIDAY. 0 BUGS FOUND."
     },
     {
         name: "MAZHAR",
@@ -79,7 +81,8 @@ const team = [
         keywords: ["AESTHETICS", "DESIGN", "SOUL"],
         desc: "Crafting visual narratives that defy convention.",
         color: "#c084fc",
-        warning: "WARNING: REALITY DISTORTION FIELD ACTIVE. PIXELS MAY BITE."
+        warning: "WARNING: REALITY DISTORTION FIELD ACTIVE. PIXELS MAY BITE.",
+        success: "VISUALS: PIXEL PERFECTION REACHED. CLIENT IS CRYING TEARS OF JOY."
     },
     {
         name: "WALEED",
@@ -88,7 +91,8 @@ const team = [
         keywords: ["GROWTH", "DATA", "IMPACT"],
         desc: "Turning abstract data into concrete success.",
         color: "#fbbf24",
-        warning: "WARNING: DATA SINGULARITY IMMINENT. YOUR ROI IS BELONG TO US."
+        warning: "WARNING: DATA SINGULARITY IMMINENT. YOUR ROI IS BELONG TO US.",
+        success: "METRICS: ROI EXCEEDED 500%. MONEY PRINTER GO BRRR."
     }
 ];
 
