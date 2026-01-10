@@ -41,22 +41,22 @@ const partners = [
 
 export default function EcosystemGrid() {
     return (
-        <section className="py-20 relative z-10 px-6 max-w-5xl mx-auto">
+        <section className="py-6 relative z-10 px-6 w-full flex flex-col items-center">
             {/* Header */}
-            <div className="text-center mb-24">
+            <div className="text-center mb-8">
                 <h2 className="text-4xl md:text-6xl font-black text-white tracking-widest uppercase mb-4 opacity-50">
                     &lt; SYSTEM_ALLIANCE /&gt;
                 </h2>
                 <div className="w-full max-w-md mx-auto h-[1px] bg-gradient-to-r from-transparent via-white/20 to-transparent" />
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 place-items-center">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 max-w-4xl">
                 {partners.map((partner, index) => (
                     <Link
                         key={partner.name}
                         href={partner.url}
                         target="_blank"
-                        className="group relative h-[350px] w-full block overflow-hidden rounded-xl bg-black border border-white/5 transition-all duration-300 hover:border-white/30 hover:shadow-[0_0_30px_rgba(255,255,255,0.1)]"
+                        className="group relative h-[280px] w-full max-w-[400px] block overflow-hidden rounded-xl bg-black border border-white/5 transition-all duration-300 hover:border-white/30 hover:shadow-[0_0_30px_rgba(255,255,255,0.1)] mx-auto"
                     >
                         {/* 1. BACKGROUND CODING ANIMATIONS */}
                         <div className="absolute inset-0 opacity-20 group-hover:opacity-10 transition-opacity duration-500">
