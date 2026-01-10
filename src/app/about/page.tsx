@@ -60,7 +60,8 @@ const team = [
         id: "01",
         keywords: ["VISION", "LEADERSHIP", "FUTURE"],
         desc: "Driving the digital evolution with uncompromising vision.",
-        color: "#a8ffc4"
+        color: "#a8ffc4",
+        warning: "WARNING: EGO OVERLOAD DETECTED. DO NOT FEED THE VISIONARY."
     },
     {
         name: "SUHAIB",
@@ -68,7 +69,8 @@ const team = [
         id: "02",
         keywords: ["ARCHITECT", "SYSTEMS", "SCALE"],
         desc: "Building the impossible through code and logic.",
-        color: "#60a5fa"
+        color: "#60a5fa",
+        warning: "WARNING: CAFFEINE LEVELS CRITICAL. SPAGHETTI CODE IS FORBIDDEN."
     },
     {
         name: "MAZHAR",
@@ -76,7 +78,8 @@ const team = [
         id: "03",
         keywords: ["AESTHETICS", "DESIGN", "SOUL"],
         desc: "Crafting visual narratives that defy convention.",
-        color: "#c084fc"
+        color: "#c084fc",
+        warning: "WARNING: REALITY DISTORTION FIELD ACTIVE. PIXELS MAY BITE."
     },
     {
         name: "WALEED",
@@ -84,7 +87,8 @@ const team = [
         id: "04",
         keywords: ["GROWTH", "DATA", "IMPACT"],
         desc: "Turning abstract data into concrete success.",
-        color: "#fbbf24"
+        color: "#fbbf24",
+        warning: "WARNING: DATA SINGULARITY IMMINENT. YOUR ROI IS BELONG TO US."
     }
 ];
 
