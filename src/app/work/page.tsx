@@ -4,7 +4,7 @@ import { useRef, useState, useCallback, useEffect } from "react";
 import { motion, useSpring, AnimatePresence } from "framer-motion";
 import Link from "next/link";
 import Image from "next/image";
-import AnimePartners from "@/components/AnimePartners";
+import EcosystemGrid from "@/components/EcosystemGrid";
 
 // Project data
 const projects = [
@@ -437,8 +437,8 @@ export default function WorkPage() {
                 </motion.section>
             </div>
 
-            {/* Extended Bottom Section - Anime Partners */}
-            <AnimePartners />
-        </main >
+            {/* Extended Bottom Section - Ecosystem */}
+            <EcosystemGrid />
+        </main>
     );
 }
