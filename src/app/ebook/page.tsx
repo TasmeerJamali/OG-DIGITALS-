@@ -341,7 +341,7 @@ function WhyChooseComponents() {
     );
 }
 
-\nfunction InfiniteMarquee() {
+function InfiniteMarquee() {
     const containerRef = useRef<HTMLDivElement>(null);
     const { scrollYProgress } = useScroll({ target: containerRef, offset: ["start end", "end start"] });
 
