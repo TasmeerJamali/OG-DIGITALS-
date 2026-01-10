@@ -437,7 +437,7 @@ export default function WorkPage() {
                 </motion.section>
             </div>
 
-            {/* Extended Bottom Section - Ecosystem */}
+            {/* Extended Bottom Section - Ecosystem Grid */}
             <EcosystemGrid />
         </main>
     );
