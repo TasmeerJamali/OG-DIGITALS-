@@ -484,45 +484,48 @@ function ViralTeamCard({ member, index }: { member: typeof team[0]; index: numbe
                     </div>
                 </div>
 
-                {/* Center - MAIN GLITCH TITLE (FLOATING) */}
-                <motion.div
-                    className="relative"
-                    animate={hovered ? {
-                        y: [-2, 2, -2],
-                        x: [-1, 1, -1],
-                        rotate: [-1, 1, -1]
-                    } : { y: 0, x: 0, rotate: 0 }}
-                    transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
-                >
-                    {/* Ghost text for chromatic aberration effect */}
-                    {hovered && (
-                        <>
-                            <div className="absolute top-0 left-1 text-5xl md:text-6xl font-black opacity-50 mix-blend-screen animate-pulse" style={{ color: "red" }}>
-                                {member.name}
-                            </div>
-                            <div className="absolute top-0 -left-1 text-5xl md:text-6xl font-black opacity-50 mix-blend-screen animate-pulse" style={{ color: "blue" }}>
-                                {member.name}
-                            </div>
-                        </>
-                    )}
+                {/* Center - MAIN GLITCH TITLE (FLOATING & CENTERED) */}
+                <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+                    <motion.div
+                        className="relative z-50 text-center"
+                        animate={hovered ? {
+                            y: [-2, 2, -2],
+                            x: [-1, 1, -1],
+                            rotate: [-1, 1, -1],
+                            scale: 1.1
+                        } : { y: 0, x: 0, rotate: 0, scale: 1 }}
+                        transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+                    >
+                        {/* Ghost text for chromatic aberration effect */}
+                        {hovered && (
+                            <>
+                                <div className="absolute top-0 left-1 w-full text-center text-5xl md:text-6xl font-black opacity-50 mix-blend-screen animate-pulse" style={{ color: "red" }}>
+                                    {member.name}
+                                </div>
+                                <div className="absolute top-0 -left-1 w-full text-center text-5xl md:text-6xl font-black opacity-50 mix-blend-screen animate-pulse" style={{ color: "blue" }}>
+                                    {member.name}
+                                </div>
+                            </>
+                        )}
 
-                    <h3 className="text-5xl md:text-6xl font-black text-white mb-2 relative z-10 leading-none">
-                        <GlitchTextV2 text={member.name} active={hovered} />
-                    </h3>
+                        <h3 className="text-5xl md:text-6xl font-black text-white mb-2 relative z-10 leading-none">
+                            <GlitchTextV2 text={member.name} active={hovered} />
+                        </h3>
 
-                    <div className="h-[2px] w-full bg-white/10 mt-4 overflow-hidden">
-                        <motion.div
-                            className="h-full"
-                            style={{ backgroundColor: member.color }}
-                            initial={{ width: "0%" }}
-                            animate={{ width: hovered ? "100%" : "20%" }}
-                            transition={{ duration: 0.5, ease: "circIn" }}
-                        />
-                    </div>
-                </motion.div>
+                        <div className="h-[2px] w-full bg-white/10 mt-4 overflow-hidden mx-auto max-w-[200px]">
+                            <motion.div
+                                className="h-full mx-auto"
+                                style={{ backgroundColor: member.color }}
+                                initial={{ width: "0%" }}
+                                animate={{ width: hovered ? "100%" : "20%" }}
+                                transition={{ duration: 0.5, ease: "circIn" }}
+                            />
+                        </div>
+                    </motion.div>
+                </div>
 
                 {/* Bottom - Role & Desc */}
-                <div>
+                <div className="relative z-40">
                     <span
                         className="block text-sm font-mono tracking-[0.2em] uppercase mb-4"
                         style={{ color: member.color }}
@@ -530,11 +533,14 @@ function ViralTeamCard({ member, index }: { member: typeof team[0]; index: numbe
                         {hovered ? `<${member.role} />` : member.role}
                     </span>
 
-                    <p className="text-white/60 text-sm font-mono leading-relaxed h-[60px] overflow-hidden">
+                    <p className="text-white/60 text-sm font-mono leading-relaxed h-[80px] overflow-hidden">
                         {hovered ? (
-                            <span className="font-bold" style={{ color: member.color }}>
-                                {member.warning} <br />
-                                {corruptionCheck}
+                            <span className="font-bold block" style={{ color: member.color }}>
+                                {member.warning}
+                                <br />
+                                <span className="text-white block mt-2 opacity-80">
+                                    {member.success}
+                                </span>
                             </span>
                         ) : (
                             member.desc
