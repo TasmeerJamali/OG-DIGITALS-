@@ -548,7 +548,7 @@ function ViralTeamCard({ member, index }: { member: typeof team[0]; index: numbe
                             <span className="font-bold block" style={{ color: member.color }}>
                                 {member.warning}
                                 <br />
-                                <span className="text-white block mt-2 opacity-80">
+                                <span className="block mt-2 font-bold animate-pulse" style={{ color: "#ff003c" }}>
                                     {member.success}
                                 </span>
                             </span>
