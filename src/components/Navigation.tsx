@@ -130,7 +130,8 @@ export default function Navigation() {
                                 "linear-gradient(145deg, rgba(60,70,80,0.65) 0%, rgba(40,50,60,0.55) 50%, rgba(50,60,70,0.6) 100%)",
                             backdropFilter: "blur(20px) saturate(180%)",
                             WebkitBackdropFilter: "blur(20px) saturate(180%)",
-                            padding: "6px 10px",
+                            padding: "6px 8px", // Reduced padding slightly to accommodate larger logo
+                            height: "64px", // Fixed height for consistent alignment
                             boxShadow:
                                 "inset 0 1px 1px rgba(255,255,255,0.15), inset 0 -1px 1px rgba(0,0,0,0.2), 0 10px 40px rgba(0,0,0,0.3)",
                         }}
@@ -163,22 +164,23 @@ export default function Navigation() {
                             }}
                         />
 
-                        {/* Logo - Mint Green */}
+                        {/* Logo - BIGGER & SPINNING */}
                         <Link
                             href="/"
                             className="relative flex items-center justify-center rounded-full hover:scale-105 transition-transform duration-300"
                             style={{
-                                width: "34px",
-                                height: "34px",
+                                width: "48px", // Increased from 34px
+                                height: "48px", // Increased from 34px
                                 flexShrink: 0,
                                 zIndex: 1,
                                 background: "rgba(0,0,0,0.8)",
                                 border: "1px solid rgba(168,255,196,0.3)",
                                 boxShadow: "0 2px 8px rgba(168,255,196,0.3)",
-                                overflow: "hidden"
+                                overflow: "hidden",
+                                marginLeft: "4px"
                             }}
                         >
-                            <div className="scale-[0.17] pointer-events-none">
+                            <div className="scale-[0.25] pointer-events-none"> {/* Increased scale */}
                                 <HexDomeLogo />
                             </div>
                         </Link>
@@ -188,39 +190,40 @@ export default function Navigation() {
                             style={{
                                 display: "flex",
                                 alignItems: "center",
-                                gap: "0px",
-                                marginLeft: "12px",
-                                marginRight: "12px",
+                                gap: "4px",
+                                marginLeft: "16px",
+                                marginRight: "16px",
                                 position: "relative",
                                 zIndex: 1,
+                                height: "100%", // Full height for alignment
                             }}
                         >
                             {navLinks.map((link) => (
                                 <div
                                     key={link.name}
-                                    className="relative"
+                                    className="relative h-full flex items-center" // Centering container
                                     onMouseEnter={() => link.dropdown && setActiveDropdown(link.name)}
                                 >
                                     {link.dropdown ? (
                                         <button
-                                            className="text-white/75 hover:text-white transition-colors duration-200 flex items-center gap-1"
+                                            className="text-white/75 hover:text-white transition-colors duration-200 flex items-center gap-1.5 h-full"
                                             style={{
-                                                padding: "10px 22px",
+                                                padding: "0 18px",
                                                 fontSize: "14px",
                                                 fontWeight: 500,
                                                 whiteSpace: "nowrap",
                                                 letterSpacing: "0.01em",
                                             }}
                                         >
-                                            <RollingText>{link.name}</RollingText>
-                                            <ChevronDown className="w-4 h-4" />
+                                            <span className="relative top-[1px]"><RollingText>{link.name}</RollingText></span>
+                                            <ChevronDown className={`w-3.5 h-3.5 transition-transform duration-300 ${activeDropdown === link.name ? "rotate-180" : ""}`} />
                                         </button>
                                     ) : (
                                         <Link
                                             href={link.href}
-                                            className="text-white/75 hover:text-white transition-colors duration-200 block"
+                                            className="text-white/75 hover:text-white transition-colors duration-200 flex items-center h-full"
                                             style={{
-                                                padding: "10px 22px",
+                                                padding: "0 18px",
                                                 fontSize: "14px",
                                                 fontWeight: 500,
                                                 whiteSpace: "nowrap",
@@ -228,35 +231,54 @@ export default function Navigation() {
                                             }}
                                             onMouseEnter={() => setActiveDropdown(null)}
                                         >
-                                            <RollingText>{link.name}</RollingText>
+                                            <span className="relative top-[1px]"><RollingText>{link.name}</RollingText></span>
                                         </Link>
                                     )}
 
-                                    {/* Dropdown Menu */}
+                                    {/* Dropdown Menu - ENHANCED ANIMATION */}
                                     <AnimatePresence>
                                         {activeDropdown === link.name && link.dropdown && (
                                             <motion.div
-                                                initial={{ opacity: 0, y: 10, scale: 0.95 }}
-                                                animate={{ opacity: 1, y: 0, scale: 1 }}
-                                                exit={{ opacity: 0, y: 10, scale: 0.95 }}
-                                                transition={{ duration: 0.2 }}
-                                                className="absolute top-full left-0 mt-2 min-w-[200px] rounded-xl overflow-hidden"
+                                                initial={{ opacity: 0, rotateX: -15, y: 20, filter: "blur(5px)" }}
+                                                animate={{ opacity: 1, rotateX: 0, y: 0, filter: "blur(0px)" }}
+                                                exit={{ opacity: 0, rotateX: -10, y: 10, filter: "blur(5px)" }}
+                                                transition={{
+                                                    type: "spring",
+                                                    stiffness: 300,
+                                                    damping: 20,
+                                                    mass: 0.8
+                                                }}
+                                                className="absolute top-[80%] left-0 mt-2 min-w-[220px] rounded-2xl overflow-hidden origin-top-left"
                                                 style={{
-                                                    background: "rgba(20,20,20,0.95)",
-                                                    backdropFilter: "blur(20px)",
-                                                    border: "1px solid rgba(255,255,255,0.1)",
-                                                    boxShadow: "0 10px 40px rgba(0,0,0,0.5)",
+                                                    background: "rgba(10,10,12,0.85)", // Darker, more premium
+                                                    backdropFilter: "blur(24px) saturate(200%)",
+                                                    border: "1px solid rgba(255,255,255,0.08)",
+                                                    boxShadow: "0 20px 50px -10px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.1)",
                                                 }}
                                             >
-                                                <div className="py-2">
-                                                    {link.dropdown.map((item) => (
-                                                        <Link
+                                                {/* Connecting bridge to prevent mouse gap */}
+                                                <div className="absolute top-[-20px] left-0 w-full h-[20px] bg-transparent" />
+
+                                                <div className="p-2 flex flex-col gap-1">
+                                                    {link.dropdown.map((item, i) => (
+                                                        <motion.div
                                                             key={item.name}
-                                                            href={item.href}
-                                                            className="block px-4 py-3 text-sm text-white/70 hover:text-[#a8ffc4] hover:bg-white/5 transition-all"
+                                                            initial={{ opacity: 0, x: -10 }}
+                                                            animate={{ opacity: 1, x: 0 }}
+                                                            transition={{ delay: i * 0.05 }}
                                                         >
-                                                            {item.name}
-                                                        </Link>
+                                                            <Link
+                                                                href={item.href}
+                                                                className="block px-4 py-3 text-sm text-white/60 hover:text-white hover:bg-white/5 rounded-xl transition-all relative group"
+                                                            >
+                                                                <span className="relative z-10">{item.name}</span>
+
+                                                                {/* Hover Glow */}
+                                                                <motion.div
+                                                                    className="absolute inset-0 rounded-xl bg-gradient-to-r from-[#a8ffc4]/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"
+                                                                />
+                                                            </Link>
+                                                        </motion.div>
                                                     ))}
                                                 </div>
                                             </motion.div>
@@ -266,22 +288,24 @@ export default function Navigation() {
                             ))}
                         </div>
 
-                        {/* CTA Button - Mint Green */}
+                        {/* CTA Button - Mint Green Arrow */}
                         <Link
                             href="#contact"
-                            className="relative flex items-center justify-center rounded-full hover:scale-105 transition-transform duration-300"
+                            className="relative flex items-center justify-center rounded-full hover:scale-110 active:scale-95 transition-all duration-300 group"
                             style={{
-                                width: "34px",
-                                height: "34px",
+                                width: "48px", // Match logo size
+                                height: "48px", // Match logo size
                                 flexShrink: 0,
                                 zIndex: 1,
-                                background: "rgba(0,0,0,0.8)",
+                                background: "rgba(0,0,0,0.6)",
                                 border: "1px solid rgba(168,255,196,0.3)",
-                                boxShadow: "0 2px 8px rgba(168,255,196,0.3)",
+                                boxShadow: "0 2px 12px rgba(168,255,196,0.15)",
+                                marginRight: "4px"
                             }}
                         >
+                            <div className="absolute inset-0 rounded-full bg-[#a8ffc4] opacity-0 group-hover:opacity-10 transition-opacity" />
                             <svg
-                                className="w-4 h-4 text-black"
+                                className="w-5 h-5 text-[#a8ffc4] group-hover:rotate-45 transition-transform duration-300"
                                 fill="none"
                                 viewBox="0 0 24 24"
                                 stroke="currentColor"
