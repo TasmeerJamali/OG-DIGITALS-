@@ -1180,11 +1180,12 @@ function TestimonialsSection() {
 
 
 
+
 // 8. BOTTOM CTA - The Singularity
 function BottomCTA() {
     return (
         <section className="py-24 bg-black relative overflow-hidden flex flex-col items-center justify-center border-t border-white/5">
-            {/* Singularity Core - Adjusted opacity to not overwhelm */}
+            {/* Singularity Core */}
             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[1000px] h-[1000px] bg-[#a8ffc4]/5 rounded-full blur-[120px] animate-pulse pointer-events-none" />
             
             {/* Event Horizon */}
@@ -1252,55 +1253,74 @@ function FAQSection() {
 
     return (
         <section className="py-24 bg-black relative flex flex-col justify-center items-center overflow-hidden border-t border-white/5">
-            {/* Spacer Line - Extended */}
-            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-px h-32 bg-gradient-to-b from-[#a8ffc4]/30 to-transparent" />
-
-            <div className="container mx-auto px-6 max-w-5xl w-full relative z-10">
+            <div className="container mx-auto px-6 max-w-6xl w-full relative z-10">
                 <motion.div
                     initial={{ opacity: 0, y: 30 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     className="text-center mb-32"
                 >
-                    <h2 className="text-5xl md:text-7xl font-bold text-white mb-8 tracking-tight">
-                        System <span className="text-[#a8ffc4]">Intelligence</span>
+                    <h2 className="text-5xl md:text-8xl font-bold text-white mb-8 tracking-tighter">
+                        Values & <span className="text-[#a8ffc4]">Protocols</span>
                     </h2>
-                    <p className="text-white/50 text-xl md:text-2xl font-light">Common protocols and procedures.</p>
+                    <p className="text-white/50 text-xl md:text-2xl font-light max-w-2xl mx-auto">
+                        Everything you need to know about our operational procedures.
+                    </p>
                 </motion.div>
 
-                <div className="space-y-8">
+                <div className="space-y-6">
                     {faqs.map((faq, i) => (
                         <motion.div
                             key={i}
-                            initial={{ opacity: 0, x: -20 }}
-                            whileInView={{ opacity: 1, x: 0 }}
+                            initial={{ opacity: 0, scale: 0.95 }}
+                            whileInView={{ opacity: 1, scale: 1 }}
                             viewport={{ once: true }}
                             transition={{ delay: i * 0.1 }}
-                            className={`group border rounded-2xl overflow-hidden transition-all duration-500 ${openIndex === i
-                                ? "border-[#a8ffc4] bg-[#a8ffc4]/[0.03] shadow-[0_0_30px_-10px_rgba(168,255,196,0.2)]"
-                                : "border-white/10 bg-white/[0.02] hover:border-white/20"
-                                }`}
+                            className={`group border rounded-3xl overflow-hidden backdrop-blur-sm transition-all duration-500 relative
+                                ${openIndex === i 
+                                    ? "bg-[#a8ffc4]/[0.02] border-[#a8ffc4]/50 shadow-[0_0_50px_-20px_rgba(168,255,196,0.3)]" 
+                                    : "bg-white/[0.03] border-white/10 hover:border-white/30 hover:bg-white/[0.05]"
+                                }`
+                            }
                         >
+                            {/* Animated Left Glow Line for Active State */}
+                            {openIndex === i && (
+                                <motion.div 
+                                    layoutId="active-glow"
+                                    className="absolute left-0 top-0 bottom-0 w-1 bg-[#a8ffc4] box-shadow-[0_0_20px_#a8ffc4]" 
+                                    initial={{ opacity: 0 }}
+                                    animate={{ opacity: 1 }}
+                                />
+                            )}
+
                             <button
                                 onClick={() => setOpenIndex(openIndex === i ? null : i)}
-                                className="w-full p-10 flex items-center justify-between text-left focus:outline-none focus:bg-white/5"
+                                className="w-full p-12 flex items-center justify-between text-left focus:outline-none"
                             >
-                                <span className={`font-medium text-2xl md:text-3xl transition-colors duration-300 ${openIndex === i ? "text-[#a8ffc4]" : "text-white/90"
+                                <span className={`font-medium text-3xl md:text-4xl tracking-tight transition-colors duration-300 ${openIndex === i ? "text-[#a8ffc4]" : "text-white"
                                     }`}>
                                     {faq.q}
                                 </span>
-                                <ChevronDown className={`w-8 h-8 flex-shrink-0 transition-all duration-300 ${openIndex === i ? "rotate-180 text-[#a8ffc4]" : "text-white/30 group-hover:text-white"
-                                    }`} />
+                                <div className={`p-4 rounded-full border transition-all duration-300 ${
+                                    openIndex === i 
+                                        ? "bg-[#a8ffc4] border-[#a8ffc4] text-black rotate-180" 
+                                        : "border-white/20 text-white group-hover:border-white group-hover:bg-white group-hover:text-black"
+                                }`}>
+                                    <ChevronDown className="w-8 h-8" />
+                                </div>
                             </button>
+                            
                             <AnimatePresence>
                                 {openIndex === i && (
                                     <motion.div
                                         initial={{ height: 0, opacity: 0 }}
                                         animate={{ height: "auto", opacity: 1 }}
                                         exit={{ height: 0, opacity: 0 }}
-                                        transition={{ duration: 0.3, ease: "easeInOut" }}
+                                        transition={{ duration: 0.4, ease: [0.04, 0.62, 0.23, 0.98] }}
                                     >
-                                        <div className="px-10 pb-10 text-white/70 leading-relaxed text-xl border-t border-[#a8ffc4]/10 pt-8 font-light">
-                                            {faq.a}
+                                        <div className="px-12 pb-12 pt-2">
+                                            <p className="text-white/60 leading-relaxed text-xl md:text-2xl font-light">
+                                                {faq.a}
+                                            </p>
                                         </div>
                                     </motion.div>
                                 )}
