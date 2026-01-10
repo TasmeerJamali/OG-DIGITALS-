@@ -1,7 +1,7 @@
 "use client";
 
 import { useRef, useState, useEffect } from "react";
-import { motion, useScroll, useTransform, useSpring, useInView } from "framer-motion";
+import { motion, useScroll, useTransform, useSpring, useInView, Variants } from "framer-motion";
 import Link from "next/link";
 import ParticleNet from "@/components/ParticleNet";
 
@@ -413,7 +413,7 @@ function ViralTeamCard({ member, index }: { member: typeof team[0]; index: numbe
     const corruptionCheck = useCorruption(hovered);
 
     // Scale up massively on hover
-    const variants = {
+    const variants: Variants = {
         idle: {
             scale: 1,
             zIndex: 10,
