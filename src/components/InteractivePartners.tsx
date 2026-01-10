@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
 
+// Reliable URLs from Wikimedia/Official sources
 const partners = [
     {
         name: "MIP",
@@ -17,7 +18,8 @@ const partners = [
     {
         name: "JAC",
         fullName: "JAC Motors",
-        url: "https://jac.com.cn/", // Or local ghandhara link
+        url: "https://jac.com.cn/",
+        // Wikimedia transparent PNG
         logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/c/cd/Jac-motors.png/800px-Jac-motors.png",
         color: "#E31D1A",
         description: "Leading authentic automotive manufacturing."
@@ -26,15 +28,9 @@ const partners = [
         name: "Gandhara",
         fullName: "Gandhara Automobiles",
         url: "https://ghandharaautomobiles.com.pk/",
-        logo: "https://upload.wikimedia.org/wikipedia/commons/b/b3/Isuzu_Motors_Ltd._Logo.svg", // Using Isuzu parent/partner logo as backup for clean svg, or text
-        // Actually, let's use a text fallback or the specific GAL logo if accessible. 
-        // For the sake of "authentic", I will try a generic car placeholder style if the direct hotlink is risky, 
-        // BUT the user asked for web images. I'll stick to text-based reveal if image fails? 
-        // No, I'll use a reliable Isuzu/JAC related image or the GAL one if I can construct the wikimedia link.
-        // Let's use a safe placeholder for now that looks premium.
-        // Re-using JAC for Gandhara context or finding a specific one.
-        // Let's use the 'Isuzu' logo for Gandhara since they are 'Isuzu Pakistan'.
-        // logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/c/cd/Jac-motors.png/800px-Jac-motors.png" 
+        // Using Isuzu logo as they are the main partner/assembler and Ghandhara logo is hard to find transparently hosted
+        // But let's try the one found or Isuzu for authenticity "Powering Industry Leaders"
+        logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/4/47/Isuzu_sample_logo.svg/1024px-Isuzu_sample_logo.svg.png",
         color: "#D7000F",
         description: "Pioneering the future of transportation in Pakistan."
     },
@@ -42,7 +38,8 @@ const partners = [
         name: "Prince",
         fullName: "Prince Automotive",
         url: "http://www.regalautomobiles.com/",
-        logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/30/Dongfeng_Sokon_%28DFSK%29_logo.svg/800px-Dongfeng_Sokon_%28DFSK%29_logo.svg.png",
+        // DFSK Logo
+        logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/30/Dongfeng_Sokon_%28DFSK%29_logo.svg/1200px-Dongfeng_Sokon_%28DFSK%29_logo.svg.png",
         color: "#C7000B",
         description: "Innovative engineering meets modern design."
     }
@@ -67,19 +64,24 @@ export default function InteractivePartners() {
         <section
             ref={containerRef}
             onMouseMove={handleMouseMove}
-            className="py-32 bg-black relative overflow-hidden cursor-none" // Hiding default cursor for immersion
+            className="py-40 bg-black relative overflow-hidden cursor-none" // Increased padding
         >
+            {/* Background Texture/Grid for more pro look */}
+            <div className="absolute inset-0 opacity-[0.03] pointer-events-none"
+                style={{ backgroundImage: 'linear-gradient(#fff 1px, transparent 1px), linear-gradient(90deg, #fff 1px, transparent 1px)', backgroundSize: '50px 50px' }}
+            />
+
             <div className="max-w-7xl mx-auto px-6 md:px-20 relative z-10">
-                <div className="mb-20">
+                <div className="mb-24">
                     <span className="text-[#a8ffc4] font-mono text-xs tracking-[0.2em] opacity-60 uppercase mb-4 block">
                         Our Network
                     </span>
-                    <h2 className="text-4xl md:text-6xl font-bold text-white tracking-tighter">
+                    <h2 className="text-4xl md:text-7xl font-bold text-white tracking-tighter">
                         Trusted by Giants.
                     </h2>
                 </div>
 
-                <div className="flex flex-col">
+                <div className="flex flex-col group/list hover:from-black/10">
                     {partners.map((partner, index) => (
                         <Link
                             key={partner.name}
@@ -87,18 +89,19 @@ export default function InteractivePartners() {
                             target="_blank"
                             onMouseEnter={() => setHoveredPartner(index)}
                             onMouseLeave={() => setHoveredPartner(null)}
-                            className="group relative border-t border-white/10 py-12 flex justify-between items-center transition-all duration-300 hover:px-8 hover:bg-white/5"
+                            className="group relative border-t border-white/10 py-16 flex justify-between items-center transition-all duration-500 hover:px-10 hover:bg-white/5"
                         >
-                            <div className="flex flex-col">
-                                <span className="text-4xl md:text-7xl font-bold text-white/40 group-hover:text-white transition-colors duration-500">
+                            {/* Focus Effect: Dim others when hovering one */}
+                            <div className={`flex flex-col transition-opacity duration-500 ${hoveredPartner !== null && hoveredPartner !== index ? "opacity-20 blur-[2px]" : "opacity-100"}`}>
+                                <span className="text-5xl md:text-8xl font-black tracking-tight text-white/40 group-hover:text-white transition-colors duration-500">
                                     {partner.name}
                                 </span>
-                                <span className="text-sm font-mono text-white/40 mt-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 transform translate-y-4 group-hover:translate-y-0">
+                                <span className="text-base font-mono text-white/40 mt-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300 transform translate-y-4 group-hover:translate-y-0">
                                     {partner.description}
                                 </span>
                             </div>
 
-                            <ArrowUpRight className="w-8 h-8 text-[#a8ffc4] opacity-0 group-hover:opacity-100 transition-all duration-300 transform translate-x-4 group-hover:translate-x-0" />
+                            <ArrowUpRight className={`w-10 h-10 text-[#a8ffc4] opacity-0 group-hover:opacity-100 transition-all duration-300 transform translate-x-4 group-hover:translate-x-0 ${hoveredPartner !== null && hoveredPartner !== index ? "opacity-0" : ""}`} />
                         </Link>
                     ))}
                     <div className="border-t border-white/10" />
@@ -107,20 +110,17 @@ export default function InteractivePartners() {
 
             {/* CURSOR FOLLOWER / IMAGE REVEAL */}
             <motion.div
-                className="pointer-events-none fixed top-0 left-0 z-50 w-[300px] h-[300px] rounded-full overflow-hidden mix-blend-normal pointer-events-none hidden md:flex items-center justify-center p-8 bg-black/80 backdrop-blur-md border border-white/10"
+                className="pointer-events-none fixed top-0 left-0 z-50 w-[350px] h-[350px] rounded-full overflow-hidden mix-blend-normal pointer-events-none hidden md:flex items-center justify-center p-10 bg-black/90 backdrop-blur-xl border border-white/10 shadow-2xl"
                 style={{
-                    x: mousePosition.x - 150, // Center the follower
-                    y: mousePosition.y - 150,
-                    // Use fixed positioning relative to viewport or absolute relative to container?
-                    // "fixed" is tricky with scroll. "absolute" is better if container is relative.
-                    // But mousePosition is clientX relative to container.
+                    x: mousePosition.x - 175,
+                    y: mousePosition.y - 175,
                     position: "absolute"
                 }}
                 animate={{
                     scale: hoveredPartner !== null ? 1 : 0,
                     opacity: hoveredPartner !== null ? 1 : 0,
                 }}
-                transition={{ type: "spring", stiffness: 150, damping: 15, mass: 0.8 }}
+                transition={{ type: "spring", stiffness: 120, damping: 15, mass: 0.5 }}
             >
                 <AnimatePresence mode="wait">
                     {hoveredPartner !== null && (
@@ -128,23 +128,39 @@ export default function InteractivePartners() {
                             key={partners[hoveredPartner].logo}
                             src={partners[hoveredPartner].logo}
                             alt={partners[hoveredPartner].name}
-                            className="w-full h-full object-contain filter brightness-0 invert" // Making logos white for aesthetic if they are black
-                            initial={{ opacity: 0, scale: 0.8 }}
-                            animate={{ opacity: 1, scale: 1 }}
-                            exit={{ opacity: 0, scale: 0.8 }}
-                            transition={{ duration: 0.2 }}
+                            className="w-full h-full object-contain filter" // Removing invert for color truth, or keep consistent?
+                            // User asked for "authentic images". Usually logos are colored.
+                            // Let's try keeping natural color but ensure contrast.
+                            // If user disliked it, I'll invert.
+                            initial={{ opacity: 0, scale: 0.8, rotate: -10 }}
+                            animate={{ opacity: 1, scale: 1, rotate: 0 }}
+                            exit={{ opacity: 0, scale: 0.8, rotate: 10 }}
+                            transition={{ duration: 0.3 }}
                         />
                     )}
                 </AnimatePresence>
 
-                {/* Glowing ring matching partner color */}
+                {/* Glowing ring - AUTOMATING */}
                 <motion.div
-                    className="absolute inset-0 rounded-full opacity-20"
+                    className="absolute inset-0 rounded-full border-2 border-white/5"
                     animate={{
-                        boxShadow: hoveredPartner !== null
-                            ? `0 0 60px ${partners[hoveredPartner].color}`
-                            : "none"
+                        borderColor: hoveredPartner !== null ? partners[hoveredPartner].color : "rgba(255,255,255,0.05)",
+                        rotate: 360 // Continuous rotation
                     }}
+                    transition={{
+                        rotate: { duration: 8, ease: "linear", repeat: Infinity }, // Automate rotation
+                        borderColor: { duration: 0.3 }
+                    }}
+                >
+                    {/* Decorative blip on the ring */}
+                    <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 w-3 h-3 bg-white rounded-full shadow-[0_0_10px_white]" />
+                </motion.div>
+
+                {/* Second reverse ring for more complexity */}
+                <motion.div
+                    className="absolute inset-[20px] rounded-full border border-dashed border-white/10"
+                    animate={{ rotate: -360 }}
+                    transition={{ duration: 12, ease: "linear", repeat: Infinity }}
                 />
             </motion.div>
 
