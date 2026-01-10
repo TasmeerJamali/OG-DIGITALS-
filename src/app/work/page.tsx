@@ -407,7 +407,7 @@ export default function WorkPage() {
                     </div>
                 </motion.section>
                 {/* Explicit Spacer */}
-                <div className="h-64" />
+                <div className="h-[50vh]" />
 
                 {/* Glassmorphic Spotlight CTA */}
                 <motion.section
