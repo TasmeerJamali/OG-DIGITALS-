@@ -1,7 +1,7 @@
 "use client";
 
 import { useRef, useEffect, useState } from "react";
-import anime from "animejs/lib/anime.es.js";
+import anime from "animejs/lib/anime.js";
 import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
 
