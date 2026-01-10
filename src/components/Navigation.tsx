@@ -153,7 +153,8 @@ export default function Navigation() {
                                 height: "34px",
                                 flexShrink: 0,
                                 zIndex: 1,
-                                background: "linear-gradient(135deg, #a8ffc4 0%, #7affb8 100%)",
+                                background: "rgba(0,0,0,0.8)",
+                                border: "1px solid rgba(168,255,196,0.3)",
                                 boxShadow: "0 2px 8px rgba(168,255,196,0.3)",
                                 overflow: "hidden"
                             }}
@@ -202,7 +203,8 @@ export default function Navigation() {
                                 height: "34px",
                                 flexShrink: 0,
                                 zIndex: 1,
-                                background: "linear-gradient(135deg, #a8ffc4 0%, #7affb8 100%)",
+                                background: "rgba(0,0,0,0.8)",
+                                border: "1px solid rgba(168,255,196,0.3)",
                                 boxShadow: "0 2px 8px rgba(168,255,196,0.3)",
                             }}
                         >
@@ -266,7 +268,8 @@ export default function Navigation() {
                                 width: "32px",
                                 height: "32px",
                                 zIndex: 1,
-                                background: "linear-gradient(135deg, #a8ffc4 0%, #7affb8 100%)",
+                                background: "rgba(0,0,0,0.8)",
+                                border: "1px solid rgba(168,255,196,0.3)",
                             }}
                         >
                             <div className="scale-[0.16] pointer-events-none">
