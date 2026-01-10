@@ -444,6 +444,10 @@ function ViralTeamCard({ member, index }: { member: typeof team[0]; index: numbe
             onMouseLeave={() => setHovered(false)}
             variants={variants}
             className="group relative h-[400px] w-full cursor-pointer bg-black border border-white/10 overflow-hidden"
+            style={{
+                borderColor: hovered ? member.color : "rgba(255,255,255,0.1)",
+                boxShadow: hovered ? `0 0 30px ${member.color}40` : "none"
+            }}
         >
             {/* 1. Background Chaos */}
             <div className="absolute inset-0 bg-[#050505] transition-colors duration-300 group-hover:bg-black">
@@ -456,6 +460,12 @@ function ViralTeamCard({ member, index }: { member: typeof team[0]; index: numbe
                     }}
                 />
             </div>
+
+            {/* Corner Brackets */}
+            <div className="absolute top-0 left-0 w-4 h-4 border-l-2 border-t-2 transition-colors duration-300" style={{ borderColor: hovered ? member.color : "rgba(255,255,255,0.2)" }} />
+            <div className="absolute top-0 right-0 w-4 h-4 border-r-2 border-t-2 transition-colors duration-300" style={{ borderColor: hovered ? member.color : "rgba(255,255,255,0.2)" }} />
+            <div className="absolute bottom-0 left-0 w-4 h-4 border-l-2 border-b-2 transition-colors duration-300" style={{ borderColor: hovered ? member.color : "rgba(255,255,255,0.2)" }} />
+            <div className="absolute bottom-0 right-0 w-4 h-4 border-r-2 border-b-2 transition-colors duration-300" style={{ borderColor: hovered ? member.color : "rgba(255,255,255,0.2)" }} />
 
             {/* 2. Viral Overlay (Code Rain) */}
             <ViralOverlay active={hovered} color={member.color} />
