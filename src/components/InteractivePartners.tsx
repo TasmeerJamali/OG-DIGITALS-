@@ -131,19 +131,20 @@ export default function InteractivePartners() {
             >
                 <AnimatePresence mode="wait">
                     {hoveredPartner !== null && (
-                        <motion.img
-                            key={partners[hoveredPartner].logo}
-                            src={partners[hoveredPartner].logo}
-                            alt={partners[hoveredPartner].name}
-                            className="w-full h-full object-contain filter" // Removing invert for color truth, or keep consistent?
-                            // User asked for "authentic images". Usually logos are colored.
-                            // Let's try keeping natural color but ensure contrast.
-                            // If user disliked it, I'll invert.
+                        <motion.div
+                            key={partners[hoveredPartner].name}
                             initial={{ opacity: 0, scale: 0.8, rotate: -10 }}
                             animate={{ opacity: 1, scale: 1, rotate: 0 }}
                             exit={{ opacity: 0, scale: 0.8, rotate: 10 }}
                             transition={{ duration: 0.3 }}
-                        />
+                            className={`w-full h-full flex items-center justify-center ${partners[hoveredPartner].needsWhiteBg ? "bg-white p-4 rounded-xl" : ""}`}
+                        >
+                            <img
+                                src={partners[hoveredPartner].logo}
+                                alt={partners[hoveredPartner].name}
+                                className={`w-full h-full object-contain ${partners[hoveredPartner].needsWhiteBg ? "" : "filter brightness-0 invert"}`}
+                            />
+                        </motion.div>
                     )}
                 </AnimatePresence>
 
