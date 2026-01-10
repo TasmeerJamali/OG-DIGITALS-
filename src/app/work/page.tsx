@@ -433,7 +433,7 @@ export default function WorkPage() {
                     </Link>
                 </motion.section>
             </motion.section>
-        </div>
+         </div>
             
             {/* Extended Bottom Section - Interactive Partners */ }
     <InteractivePartners />
