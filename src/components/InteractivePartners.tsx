@@ -138,13 +138,15 @@ export default function InteractivePartners() {
                             animate={{ opacity: 1, scale: 1, rotate: 0 }}
                             exit={{ opacity: 0, scale: 0.8, rotate: 10 }}
                             transition={{ duration: 0.3 }}
-                            className={`w-full h-full flex items-center justify-center ${partners[hoveredPartner].needsWhiteBg ? "bg-white p-4 rounded-xl" : ""}`}
+                            className="w-full h-full flex items-center justify-center"
                         >
-                            <img
-                                src={partners[hoveredPartner].logo}
-                                alt={partners[hoveredPartner].name}
-                                className={`w-full h-full object-contain ${partners[hoveredPartner].needsWhiteBg ? "" : "filter brightness-0 invert"}`}
-                            />
+                            <div className={`flex items-center justify-center ${partners[hoveredPartner].needsWhiteBg ? "bg-white p-6 rounded-2xl w-[80%] h-[60%] shadow-lg" : "w-full h-full"}`}>
+                                <img
+                                    src={partners[hoveredPartner].logo}
+                                    alt={partners[hoveredPartner].name}
+                                    className={`object-contain max-w-full max-h-full ${partners[hoveredPartner].needsWhiteBg ? "" : "filter brightness-0 invert"}`}
+                                />
+                            </div>
                         </motion.div>
                     )}
                 </AnimatePresence>

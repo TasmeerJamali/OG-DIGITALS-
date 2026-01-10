@@ -406,11 +406,12 @@ export default function WorkPage() {
                     </div>
                 </motion.section>
 
-
+                {/* Explicit Spacer for Visual Separation */}
+                <div className="h-40 md:h-64" />
 
                 {/* CTA */}
                 <motion.section
-                    className="pb-40 pt-20 text-center" // Added pt-20 and increased pb
+                    className="pb-40 text-center"
                     initial={{ opacity: 0, y: 40 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.8 }}
