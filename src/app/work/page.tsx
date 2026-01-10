@@ -406,38 +406,38 @@ export default function WorkPage() {
                     </div>
                 </motion.section>
 
-            </motion.section>
 
-            {/* CTA */}
-            <motion.section
-                className="pb-40 pt-20 text-center" // Added pt-20 and increased pb
-                initial={{ opacity: 0, y: 40 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8 }}
-                viewport={{ once: true }}
-            >
-                <h2 className="text-3xl md:text-5xl lg:text-6xl font-bold text-white mb-8">
-                    Want to be next?
-                </h2>
-                <Link
-                    href="/#contact"
-                    className="inline-flex items-center gap-3 px-10 py-5 rounded-full font-medium text-lg transition-all duration-300 hover:scale-105 hover:shadow-xl group"
-                    style={{
-                        background: "linear-gradient(135deg, #a8ffc4 0%, #7affb8 100%)",
-                        color: "#000",
-                        boxShadow: "0 10px 40px rgba(168,255,196,0.3)",
-                    }}
+
+                {/* CTA */}
+                <motion.section
+                    className="pb-40 pt-20 text-center" // Added pt-20 and increased pb
+                    initial={{ opacity: 0, y: 40 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.8 }}
+                    viewport={{ once: true }}
                 >
-                    Start a Project
-                    <svg className="w-5 h-5 transition-transform duration-300 group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                        <path strokeLinecap="round" strokeLinejoin="round" d="M7 17L17 7M17 7H7M17 7V17" />
-                    </svg>
-                </Link>
-            </motion.section>
-        </div>
+                    <h2 className="text-3xl md:text-5xl lg:text-6xl font-bold text-white mb-8">
+                        Want to be next?
+                    </h2>
+                    <Link
+                        href="/#contact"
+                        className="inline-flex items-center gap-3 px-10 py-5 rounded-full font-medium text-lg transition-all duration-300 hover:scale-105 hover:shadow-xl group"
+                        style={{
+                            background: "linear-gradient(135deg, #a8ffc4 0%, #7affb8 100%)",
+                            color: "#000",
+                            boxShadow: "0 10px 40px rgba(168,255,196,0.3)",
+                        }}
+                    >
+                        Start a Project
+                        <svg className="w-5 h-5 transition-transform duration-300 group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M7 17L17 7M17 7H7M17 7V17" />
+                        </svg>
+                    </Link>
+                </motion.section>
+            </div>
 
-            {/* Extended Bottom Section - Interactive Partners */ }
-    <InteractivePartners />
+            {/* Extended Bottom Section - Interactive Partners */}
+            <InteractivePartners />
         </main >
     );
 }

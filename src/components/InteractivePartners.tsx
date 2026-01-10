@@ -1,9 +1,16 @@
 "use client";
 
-import { useState, useRef, useEffect } from "react";
+import { useRef, useState } from "react"; // Removed useEffect if not used, or keep
 import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
+// Dynamic import for R3F to avoid SSR issues
+import dynamic from 'next/dynamic';
+
+const BackgroundParticles = dynamic(() => import('@/components/QuantumParticles').then(mod => mod.BackgroundParticles), {
+    ssr: false,
+    loading: () => <div className="absolute inset-0 bg-black" />
+});
 
 // Reliable URLs from Wikimedia/Official sources
 const partners = [
