@@ -4,6 +4,7 @@ import { useRef, useState, useCallback, useEffect } from "react";
 import { motion, useSpring, AnimatePresence } from "framer-motion";
 import Link from "next/link";
 import Image from "next/image";
+import InteractivePartners from "@/components/InteractivePartners";
 
 // Project data
 const projects = [
@@ -431,7 +432,11 @@ export default function WorkPage() {
                         </svg>
                     </Link>
                 </motion.section>
-            </div>
-        </main>
+            </motion.section>
+        </div>
+            
+            {/* Extended Bottom Section - Interactive Partners */ }
+    <InteractivePartners />
+        </main >
     );
 }
