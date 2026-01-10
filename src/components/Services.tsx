@@ -43,77 +43,186 @@ const services = [
     },
 ];
 
-// Service Card Component
+// Original Service Card Component (Reverted Design)
 function ServiceCard({ service, index }: { service: typeof services[0]; index: number }) {
     const [isHovered, setIsHovered] = useState(false);
 
     return (
         <motion.div
-            className="group relative flex-shrink-0 w-[85vw] md:w-[600px] h-[600px] rounded-[3rem] overflow-hidden cursor-pointer"
-            initial={{ opacity: 0, scale: 0.9 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.8, delay: index * 0.1 }}
+            className="group relative flex-shrink-0 w-[85vw] md:w-[50vw] lg:w-[40vw] h-[50vh] md:h-[55vh] rounded-[2rem] overflow-hidden cursor-pointer"
+            initial={{ opacity: 0, y: 60 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: index * 0.15, ease: [0.25, 1, 0.5, 1] }}
             onMouseEnter={() => setIsHovered(true)}
             onMouseLeave={() => setIsHovered(false)}
         >
-            {/* Video Background */}
+            {/* Video Background - plays on hover */}
             <motion.div
                 className="absolute inset-0 z-0"
-                animate={{ scale: isHovered ? 1.1 : 1, opacity: isHovered ? 1 : 0 }}
-                transition={{ duration: 0.8 }}
+                animate={{
+                    scale: isHovered ? 1.05 : 1,
+                    opacity: isHovered ? 1 : 0
+                }}
+                transition={{ duration: 0.6 }}
             >
                 <video
                     autoPlay
                     muted
                     loop
                     playsInline
-                    className="absolute inset-0 w-full h-full object-cover opacity-80"
+                    className="absolute inset-0 w-full h-full object-cover"
+                    style={{ filter: "brightness(0.4)" }}
                 >
                     <source src={service.video} type="video/mp4" />
                 </video>
             </motion.div>
 
-            {/* Default Dark Background */}
-            <div className={`absolute inset-0 bg-[#0a0a0a] transition-opacity duration-500 ${isHovered ? 'opacity-0' : 'opacity-100'}`} />
-
-            {/* Gradient Overlays */}
-            <div className="absolute inset-0 bg-gradient-to-b from-transparent via-black/20 to-black/90 z-10" />
-            <motion.div 
-                className="absolute inset-0 bg-[#a8ffc4]/10 mix-blend-overlay z-10"
-                animate={{ opacity: isHovered ? 1 : 0 }}
+            {/* Gradient Background */}
+            <motion.div
+                className="absolute inset-0"
+                animate={{
+                    background: isHovered
+                        ? "linear-gradient(135deg, rgba(168,255,196,0.08) 0%, rgba(0,0,0,0.9) 100%)"
+                        : "linear-gradient(135deg, rgba(255,255,255,0.06) 0%, rgba(255,255,255,0.01) 100%)"
+                }}
+                transition={{ duration: 0.5 }}
             />
 
-            {/* Borders */}
-            <div className="absolute inset-0 rounded-[3rem] border border-white/10 z-20 transition-colors duration-500 group-hover:border-[#a8ffc4]/30" />
+            {/* Glass layer */}
+            <div
+                className="absolute inset-0"
+                style={{
+                    backdropFilter: "blur(1px)",
+                    WebkitBackdropFilter: "blur(1px)",
+                }}
+            />
+
+            {/* Glossy top shine */}
+            <div
+                className="absolute inset-0 pointer-events-none"
+                style={{
+                    background: "linear-gradient(180deg, rgba(255,255,255,0.08) 0%, transparent 30%)",
+                }}
+            />
+
+            {/* Border with glow animation */}
+            <motion.div
+                className="absolute inset-0 rounded-[2rem] pointer-events-none"
+                style={{
+                    border: "1px solid rgba(255,255,255,0.08)",
+                }}
+                animate={{
+                    borderColor: isHovered ? "rgba(168,255,196,0.4)" : "rgba(255,255,255,0.08)",
+                    boxShadow: isHovered
+                        ? "0 0 60px rgba(168,255,196,0.15), inset 0 0 40px rgba(168,255,196,0.03)"
+                        : "none"
+                }}
+                transition={{ duration: 0.5 }}
+            />
 
             {/* Content */}
-            <div className="relative z-30 h-full flex flex-col justify-between p-10 md:p-12">
+            <div className="relative z-10 h-full flex flex-col justify-between p-8 md:p-10">
+                {/* Top - Number */}
                 <div className="flex justify-between items-start">
-                    <span className="text-8xl font-bold text-white/5 group-hover:text-[#a8ffc4]/20 transition-colors duration-500">
-                        {service.id}
-                    </span>
-                    <motion.div 
-                        className="w-12 h-12 rounded-full border border-white/20 flex items-center justify-center group-hover:bg-[#a8ffc4] group-hover:border-[#a8ffc4] transition-all duration-300"
-                        whileHover={{ rotate: 45 }}
+                    <motion.span
+                        className="text-[8rem] md:text-[10rem] font-bold leading-none select-none"
+                        style={{ color: "rgba(255,255,255,0.04)" }}
+                        animate={{
+                            color: isHovered ? "rgba(168,255,196,0.12)" : "rgba(255,255,255,0.04)",
+                            y: isHovered ? -10 : 0,
+                        }}
+                        transition={{ duration: 0.5 }}
                     >
-                         <svg className="w-5 h-5 text-white group-hover:text-black" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 12h14M12 5l7 7-7 7" />
-                        </svg>
-                    </motion.div>
+                        {service.id}
+                    </motion.span>
+
+                    {/* Indicator dot */}
+                    <motion.div
+                        className="w-3 h-3 rounded-full"
+                        style={{ background: "rgba(255,255,255,0.15)" }}
+                        animate={{
+                            background: isHovered ? "#a8ffc4" : "rgba(255,255,255,0.15)",
+                            boxShadow: isHovered ? "0 0 20px rgba(168,255,196,0.8)" : "none",
+                            scale: isHovered ? 1.2 : 1,
+                        }}
+                        transition={{ duration: 0.3 }}
+                    />
                 </div>
 
+                {/* Bottom - Text content */}
                 <div>
-                    <span className="text-[#a8ffc4] text-xs font-mono tracking-[0.2em] uppercase mb-4 block">
+                    {/* Subtitle */}
+                    <motion.p
+                        className="text-xs tracking-[0.3em] uppercase mb-4 font-medium"
+                        style={{ color: "rgba(255,255,255,0.35)" }}
+                        animate={{
+                            color: isHovered ? "rgba(168,255,196,0.7)" : "rgba(255,255,255,0.35)",
+                        }}
+                        transition={{ duration: 0.4 }}
+                    >
                         {service.subtitle}
-                    </span>
-                    <h3 className="text-4xl md:text-5xl font-bold text-white mb-6 group-hover:translate-x-2 transition-transform duration-500">
-                        {service.title}
-                    </h3>
-                    <p className="text-white/50 text-lg leading-relaxed max-w-sm group-hover:text-white/80 transition-colors duration-500">
-                         {service.description}
-                    </p>
+                    </motion.p>
+
+                    {/* Title with rolling underline */}
+                    <div className="relative overflow-hidden mb-4">
+                        <motion.h3
+                            className="text-3xl md:text-4xl lg:text-5xl font-bold text-white tracking-tight"
+                            animate={{
+                                color: isHovered ? "#a8ffc4" : "#ffffff",
+                            }}
+                            transition={{ duration: 0.4 }}
+                        >
+                            {service.title}
+                        </motion.h3>
+                        {/* Animated underline */}
+                        <motion.div
+                            className="h-[2px] mt-2 rounded-full"
+                            style={{ background: "linear-gradient(90deg, #a8ffc4, #7affb8)" }}
+                            initial={{ width: 0 }}
+                            animate={{ width: isHovered ? "100%" : 0 }}
+                            transition={{ duration: 0.5, ease: [0.25, 1, 0.5, 1] }}
+                        />
+                    </div>
+
+                    {/* Description */}
+                    <motion.p
+                        className="text-base md:text-lg max-w-md leading-relaxed"
+                        style={{ color: "rgba(255,255,255,0.5)" }}
+                        animate={{
+                            color: isHovered ? "rgba(255,255,255,0.75)" : "rgba(255,255,255,0.5)",
+                        }}
+                        transition={{ duration: 0.4 }}
+                    >
+                        {service.description}
+                    </motion.p>
                 </div>
             </div>
+
+            {/* Arrow button */}
+            <motion.div
+                className="absolute bottom-8 right-8 md:bottom-10 md:right-10 w-14 h-14 rounded-full flex items-center justify-center"
+                style={{
+                    border: "1px solid rgba(255,255,255,0.1)",
+                    background: "rgba(255,255,255,0.03)",
+                }}
+                animate={{
+                    borderColor: isHovered ? "rgba(168,255,196,0.5)" : "rgba(255,255,255,0.1)",
+                    background: isHovered ? "rgba(168,255,196,0.1)" : "rgba(255,255,255,0.03)",
+                    scale: isHovered ? 1.1 : 1,
+                    rotate: isHovered ? 45 : 0,
+                }}
+                transition={{ duration: 0.4 }}
+            >
+                <svg
+                    className="w-5 h-5"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke={isHovered ? "#a8ffc4" : "white"}
+                    strokeWidth={1.5}
+                >
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M7 17L17 7M17 7H7M17 7V17" />
+                </svg>
+            </motion.div>
         </motion.div>
     );
 }
@@ -133,7 +242,6 @@ export default function Services() {
                 // Slow consistent speed
                 if (scrollLeft + clientWidth >= scrollWidth - 1) {
                     // Reset to start seamlessly (requires duplicated content for true seamless, but minimal jump is okay for now)
-                    // For true seamless, we'd need duplicated children. Let's stick to loop reset for robustness.
                     scrollContainerRef.current.scrollLeft = 0; 
                 } else {
                     scrollContainerRef.current.scrollLeft += 1; // Speed of the belt
@@ -211,7 +319,7 @@ export default function Services() {
                  {services.map((service, index) => (
                     <ServiceCard key={`${service.id}-duplicate`} service={service} index={index + services.length} />
                 ))}
-             </div>
+            </div>
         </section>
     );
 }
