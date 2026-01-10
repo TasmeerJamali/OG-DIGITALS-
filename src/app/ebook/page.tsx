@@ -1176,55 +1176,55 @@ function TestimonialsSection() {
     );
 }
 
-// 8. BOTTOM CTA - Gravity Pull Effect
+
 // 8. BOTTOM CTA - The Singularity
 function BottomCTA() {
     return (
-        <section className="py-40 bg-black relative overflow-hidden">
+        <section className="py-64 bg-black relative overflow-hidden flex flex-col items-center justify-center">
             {/* Singularity Core */}
-            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-[#a8ffc4]/10 rounded-full blur-[120px] animate-pulse" />
-
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-[#a8ffc4]/10 rounded-full blur-[120px] animate-pulse pointer-events-none" />
+            
             {/* Event Horizon */}
-            <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20 brightness-150 mix-blend-overlay" />
-
-            <div className="container mx-auto px-6 relative z-10 text-center">
+            <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20 brightness-150 mix-blend-overlay pointer-events-none" />
+            
+            <div className="container mx-auto px-6 relative z-10 text-center w-full flex flex-col items-center">
                 <motion.div
                     initial={{ opacity: 0, scale: 0.9 }}
                     whileInView={{ opacity: 1, scale: 1 }}
                     viewport={{ once: true }}
-                    className="max-w-4xl mx-auto"
+                    className="max-w-5xl mx-auto w-full"
                 >
                     <span className="inline-block px-6 py-2 mb-8 text-sm font-mono tracking-widest text-[#a8ffc4] bg-[#a8ffc4]/5 rounded-full border border-[#a8ffc4]/30 shadow-[0_0_20px_rgba(168,255,196,0.1)]">
                         SYSTEM READY
                     </span>
-
-                    <h2 className="text-5xl md:text-8xl font-bold text-white tracking-tighter mb-8 leading-tight">
+                    
+                    <h2 className="text-5xl md:text-8xl font-bold text-white tracking-tighter mb-12 leading-tight">
                         Launch Your <br />
                         <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#a8ffc4] via-emerald-400 to-[#a8ffc4] animate-text-shimmer bg-[length:200%_auto]">
                             Legacy Today.
                         </span>
                     </h2>
-
-                    <p className="text-xl md:text-2xl text-white/60 max-w-2xl mx-auto mb-16 leading-relaxed">
+                    
+                    <p className="text-xl md:text-3xl text-white/60 max-w-3xl mx-auto mb-16 leading-relaxed">
                         Don't let your knowledge vanish into the void. Turn your expertise into an enduring digital asset.
                     </p>
 
-                    <div className="flex flex-col md:flex-row gap-8 justify-center items-center">
+                    <div className="flex flex-col md:flex-row gap-8 justify-center items-center w-full">
                         <motion.button
                             whileHover={{ scale: 1.05 }}
                             whileTap={{ scale: 0.95 }}
-                            className="group relative px-12 py-6 bg-[#a8ffc4] text-black font-bold text-xl rounded-full overflow-hidden"
+                            className="group relative px-12 py-6 bg-[#a8ffc4] text-black font-bold text-xl rounded-full overflow-hidden shadow-[0_0_40px_rgba(168,255,196,0.4)]"
                         >
                             <div className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300" />
                             <span className="relative z-10 flex items-center gap-3">
                                 Initialize Project <Zap className="w-5 h-5 fill-current" />
                             </span>
                         </motion.button>
-
+                        
                         <motion.button
                             whileHover={{ scale: 1.05 }}
                             whileTap={{ scale: 0.95 }}
-                            className="px-12 py-6 bg-white/5 border border-white/10 text-white font-bold text-xl rounded-full hover:bg-white/10 hover:border-[#a8ffc4]/30 transition-all"
+                            className="px-12 py-6 bg-white/5 border border-white/10 text-white font-bold text-xl rounded-full hover:bg-white/10 hover:border-[#a8ffc4]/30 transition-all focus:outline-none focus:ring-2 focus:ring-[#a8ffc4]/50"
                         >
                             View Case Studies
                         </motion.button>
@@ -1248,20 +1248,20 @@ function FAQSection() {
     ];
 
     return (
-        <section className="py-48 bg-black relative flex flex-col justify-center items-center">
+        <section className="py-64 bg-black relative flex flex-col justify-center items-center overflow-hidden">
             {/* Spacer Line */}
-            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-px h-24 bg-gradient-to-b from-[#a8ffc4]/50 to-transparent" />
+            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-px h-32 bg-gradient-to-b from-[#a8ffc4]/50 to-transparent" />
 
-            <div className="container mx-auto px-6 max-w-4xl w-full">
+            <div className="container mx-auto px-6 max-w-4xl w-full relative z-10">
                 <motion.div
                     initial={{ opacity: 0, y: 30 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     className="text-center mb-24"
                 >
-                    <h2 className="text-4xl md:text-5xl font-bold text-white mb-6">
+                    <h2 className="text-4xl md:text-6xl font-bold text-white mb-6 tracking-tight">
                         System <span className="text-[#a8ffc4]">Intelligence</span>
                     </h2>
-                    <p className="text-white/50">Common protocols and procedures.</p>
+                    <p className="text-white/50 text-lg">Common protocols and procedures.</p>
                 </motion.div>
 
                 <div className="space-y-6">
@@ -1279,13 +1279,13 @@ function FAQSection() {
                         >
                             <button
                                 onClick={() => setOpenIndex(openIndex === i ? null : i)}
-                                className="w-full p-8 flex items-center justify-between text-left"
+                                className="w-full p-8 flex items-center justify-between text-left focus:outline-none focus:bg-white/5"
                             >
-                                <span className={`font-medium text-xl transition-colors duration-300 ${openIndex === i ? "text-[#a8ffc4]" : "text-white/90"
+                                <span className={`font-medium text-xl md:text-2xl transition-colors duration-300 ${openIndex === i ? "text-[#a8ffc4]" : "text-white/90"
                                     }`}>
                                     {faq.q}
                                 </span>
-                                <ChevronDown className={`w-6 h-6 transition-all duration-300 ${openIndex === i ? "rotate-180 text-[#a8ffc4]" : "text-white/30 group-hover:text-white"
+                                <ChevronDown className={`w-6 h-6 flex-shrink-0 transition-all duration-300 ${openIndex === i ? "rotate-180 text-[#a8ffc4]" : "text-white/30 group-hover:text-white"
                                     }`} />
                             </button>
                             <AnimatePresence>
@@ -1309,7 +1309,6 @@ function FAQSection() {
         </section>
     );
 }
-
 
 // --- ALL SECTIONS COMPLETE ---
 
