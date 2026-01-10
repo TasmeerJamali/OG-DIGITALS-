@@ -432,11 +432,10 @@ export default function WorkPage() {
                         </svg>
                     </Link>
                 </motion.section>
-            </motion.section>
-         </div>
-            
-            {/* Extended Bottom Section - Interactive Partners */ }
-    <InteractivePartners />
+            </div>
+
+            {/* Extended Bottom Section - Interactive Partners */}
+            <InteractivePartners />
         </main >
     );
 }
