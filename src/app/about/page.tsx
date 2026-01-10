@@ -565,68 +565,10 @@ export default function AboutPage() {
                         </h2>
                     </motion.div>
 
-                    {/* Creative Team Grid - Digital Dossier Style */}
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6 relative">
+                    {/* Creative Team Grid - Platinum Holographic Style */}
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8 relative perspective-1000">
                         {team.map((member, index) => (
-                            <motion.div
-                                key={member.id}
-                                initial={{ opacity: 0, y: 50 }}
-                                whileInView={{ opacity: 1, y: 0 }}
-                                transition={{ duration: 0.6, delay: index * 0.15 }}
-                                viewport={{ once: true }}
-                                className="group relative h-[300px] md:h-[360px] bg-[#0a0a0a] border border-white/5 rounded-2xl overflow-hidden hover:border-[#a8ffc4]/30 transition-all duration-500"
-                            >
-                                {/* Inner Glow */}
-                                <div className="absolute inset-0 bg-gradient-to-br from-white/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-
-                                {/* Top Right ID */}
-                                <div className="absolute top-6 right-6 font-mono text-4xl font-bold text-white/5 group-hover:text-[#a8ffc4]/10 transition-colors duration-300 select-none">
-                                    {member.id}
-                                </div>
-
-                                {/* Corner Keywords (Animated) */}
-                                {member.keywords.map((kw, i) => (
-                                    <motion.div
-                                        key={kw}
-                                        className="absolute text-[10px] tracking-[0.2em] font-mono"
-                                        style={{
-                                            color: `${member.color}40`,
-                                            top: i === 0 ? "20px" : "auto",
-                                            bottom: i === 1 ? "20px" : i === 2 ? "20px" : "auto",
-                                            left: i === 0 ? "20px" : i === 1 ? "20px" : "auto",
-                                            right: i === 2 ? "20px" : "auto",
-                                        }}
-                                        initial={{ opacity: 0 }}
-                                        whileInView={{ opacity: 1 }}
-                                        transition={{ delay: 0.5 + i * 0.2 }}
-                                    >
-                                        {kw}
-                                    </motion.div>
-                                ))}
-
-                                {/* Content Centered */}
-                                <div className="absolute inset-0 flex flex-col items-center justify-center p-8 text-center z-10">
-                                    <h3 className="text-3xl md:text-5xl font-bold text-white mb-2 tracking-tighter">
-                                        <GlitchText text={member.name} />
-                                    </h3>
-                                    <div
-                                        className="h-[2px] w-12 mb-4 group-hover:w-24 transition-all duration-500"
-                                        style={{ backgroundColor: member.color }}
-                                    />
-                                    <span
-                                        className="text-sm md:text-base font-mono tracking-widest uppercase mb-6"
-                                        style={{ color: member.color }}
-                                    >
-                                        {member.role}
-                                    </span>
-                                    <p className="text-white/40 max-w-xs text-sm leading-relaxed opacity-0 group-hover:opacity-100 transform translate-y-4 group-hover:translate-y-0 transition-all duration-500 delay-100">
-                                        {member.desc}
-                                    </p>
-                                </div>
-
-                                {/* Scanline Effect */}
-                                <div className="absolute inset-0 bg-[linear-gradient(rgba(18,16,16,0)_50%,rgba(0,0,0,0.25)_50%),linear-gradient(90deg,rgba(255,0,0,0.06),rgba(0,255,0,0.02),rgba(0,0,255,0.06))] z-[5] bg-[length:100%_2px,3px_100%] pointer-events-none opacity-20" />
-                            </motion.div>
+                            <PlatinumTeamCard key={member.id} member={member} index={index} />
                         ))}
                     </div>
                 </div>
