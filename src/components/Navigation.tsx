@@ -4,6 +4,8 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
 
+import HexDomeLogo from "@/components/HexDomeLogo";
+
 const navLinks = [
     { name: "Work", href: "/work" },
     { name: "Services", href: "/services" },
@@ -153,15 +155,12 @@ export default function Navigation() {
                                 zIndex: 1,
                                 background: "linear-gradient(135deg, #a8ffc4 0%, #7affb8 100%)",
                                 boxShadow: "0 2px 8px rgba(168,255,196,0.3)",
+                                overflow: "hidden"
                             }}
                         >
-                            <svg
-                                className="w-4 h-4 text-black"
-                                fill="currentColor"
-                                viewBox="0 0 24 24"
-                            >
-                                <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
-                            </svg>
+                            <div className="scale-[0.17] pointer-events-none">
+                                <HexDomeLogo />
+                            </div>
                         </Link>
 
                         {/* Nav Links */}
@@ -262,7 +261,7 @@ export default function Navigation() {
 
                         <Link
                             href="/"
-                            className="relative flex items-center justify-center rounded-full"
+                            className="relative flex items-center justify-center rounded-full overflow-hidden"
                             style={{
                                 width: "32px",
                                 height: "32px",
@@ -270,13 +269,9 @@ export default function Navigation() {
                                 background: "linear-gradient(135deg, #a8ffc4 0%, #7affb8 100%)",
                             }}
                         >
-                            <svg
-                                className="w-4 h-4 text-black"
-                                fill="currentColor"
-                                viewBox="0 0 24 24"
-                            >
-                                <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
-                            </svg>
+                            <div className="scale-[0.16] pointer-events-none">
+                                <HexDomeLogo />
+                            </div>
                         </Link>
 
                         <button
