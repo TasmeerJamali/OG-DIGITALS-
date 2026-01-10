@@ -405,35 +405,48 @@ export default function WorkPage() {
                         ))}
                     </div>
                 </motion.section>
+                {/* Explicit Spacer */}
+                <div className="h-64" />
 
-                {/* Explicit Spacer for Visual Separation */}
-                <div className="h-40 md:h-64" />
-
-                {/* CTA */}
+                {/* Glassmorphic Spotlight CTA */}
                 <motion.section
-                    className="pb-40 text-center"
-                    initial={{ opacity: 0, y: 40 }}
+                    className="relative max-w-4xl mx-auto mb-40"
+                    initial={{ opacity: 0, y: 50 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.8 }}
                     viewport={{ once: true }}
                 >
-                    <h2 className="text-3xl md:text-5xl lg:text-6xl font-bold text-white mb-8">
-                        Want to be next?
-                    </h2>
-                    <Link
-                        href="/#contact"
-                        className="inline-flex items-center gap-3 px-10 py-5 rounded-full font-medium text-lg transition-all duration-300 hover:scale-105 hover:shadow-xl group"
-                        style={{
-                            background: "linear-gradient(135deg, #a8ffc4 0%, #7affb8 100%)",
-                            color: "#000",
-                            boxShadow: "0 10px 40px rgba(168,255,196,0.3)",
-                        }}
-                    >
-                        Start a Project
-                        <svg className="w-5 h-5 transition-transform duration-300 group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                            <path strokeLinecap="round" strokeLinejoin="round" d="M7 17L17 7M17 7H7M17 7V17" />
-                        </svg>
-                    </Link>
+                    {/* Glass Container */}
+                    <div className="relative overflow-hidden rounded-[2.5rem] bg-white/5 border border-white/10 backdrop-blur-2xl p-12 md:p-20 text-center group">
+
+                        {/* Mouse Spotlight Effect */}
+                        <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"
+                            style={{ background: 'radial-gradient(600px circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(168, 255, 196, 0.15), transparent 40%)' }}
+                        />
+
+                        <h2 className="text-4xl md:text-7xl font-bold text-white mb-8 tracking-tight relative z-10">
+                            Want to be next?
+                        </h2>
+
+                        <Link
+                            href="/#contact"
+                            className="relative z-10 inline-flex items-center gap-4 px-12 py-6 rounded-full font-bold text-xl transition-all duration-300 hover:scale-105 hover:shadow-[0_0_40px_rgba(168,255,196,0.4)]"
+                            style={{
+                                background: "linear-gradient(135deg, #a8ffc4 0%, #7affb8 100%)",
+                                color: "#000",
+                            }}
+                            onMouseMove={(e) => {
+                                const rect = e.currentTarget.parentElement?.getBoundingClientRect();
+                                if (rect) {
+                                    e.currentTarget.parentElement?.style.setProperty('--mouse-x', `${e.clientX - rect.left}px`);
+                                    e.currentTarget.parentElement?.style.setProperty('--mouse-y', `${e.clientY - rect.top}px`);
+                                }
+                            }}
+                        >
+                            Start a Project
+                            <ArrowUpRight className="w-6 h-6" />
+                        </Link>
+                    </div>
                 </motion.section>
             </div>
 

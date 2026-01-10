@@ -2,121 +2,167 @@
 
 import { motion } from "framer-motion";
 import Link from "next/link";
-import { ArrowUpRight } from "lucide-react";
-import Image from "next/image";
+import { ArrowUpRight, Terminal, Cpu, Activity, Zap } from "lucide-react";
 
 const partners = [
     {
         name: "MIP",
-        id: "mip",
-        url: "https://mip.com.pk/",
-        logo: "https://madeinpakistan.online/MIP-LOGO.png",
-        color: "#006600",
-        description: "Global B2B Platform",
         fullname: "Made in Pakistan",
-        needsWhiteBg: false
+        url: "https://mip.com.pk/",
+        color: "#00ff88", // Matrix Green
+        type: "binary",
+        message: "INITIATE COMMERCE PROTOCOL"
     },
     {
         name: "JAC",
-        id: "jac",
-        url: "https://jac.com.cn/",
-        logo: "https://seeklogo.com/images/J/jac-motors-logo-8F8D62C384-seeklogo.com.png",
-        color: "#E31D1A",
-        description: "Authentic Automotive",
         fullname: "JAC Motors",
-        needsWhiteBg: false
+        url: "https://jac.com.cn/",
+        color: "#ff3333", // Red Alert
+        type: "radar",
+        message: "ENGAGE AUTOMOTIVE SYSTEMS"
     },
     {
         name: "Gandhara",
-        id: "gandhara",
+        fullname: "Gandhara Auto",
         url: "https://ghandharaautomobiles.com.pk/",
-        logo: "/assets/clients/ghandhara.png",
-        color: "#D7000F",
-        description: "Future of Transport",
-        fullname: "Gandhara Automobiles",
-        needsWhiteBg: true
+        color: "#33ccff", // Cyan Future
+        type: "flow",
+        message: "ACCELERATE TRANSPORT"
     },
     {
         name: "Prince",
-        id: "prince",
+        fullname: "Prince Automine",
         url: "http://www.regalautomobiles.com/",
-        logo: "/assets/clients/prince.png",
-        color: "#C7000B",
-        description: "Modern Design",
-        fullname: "Prince Automotive",
-        needsWhiteBg: true
+        color: "#ff00ff", // Neon Purple
+        type: "glitch",
+        message: "DEPLOY INNOVATION"
     }
 ];
 
 export default function EcosystemGrid() {
     return (
-        <section className="py-32 relative z-10 px-6 max-w-7xl mx-auto">
+        <section className="py-20 relative z-10 px-6 max-w-7xl mx-auto">
+            {/* Header */}
             <div className="text-center mb-24">
-                <motion.h2
-                    initial={{ opacity: 0, y: 20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    className="text-4xl md:text-6xl font-black text-white tracking-tighter uppercase mb-4"
-                >
-                    Our Ecosystem
-                </motion.h2>
-                <div className="w-16 h-1 bg-white/20 mx-auto rounded-full" />
+                <h2 className="text-4xl md:text-6xl font-black text-white tracking-widest uppercase mb-4 opacity-50">
+                    &lt; SYSTEM_ALLIANCE /&gt;
+                </h2>
+                <div className="w-full max-w-md mx-auto h-[1px] bg-gradient-to-r from-transparent via-white/20 to-transparent" />
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                 {partners.map((partner, index) => (
                     <Link
-                        key={partner.id}
+                        key={partner.name}
                         href={partner.url}
                         target="_blank"
-                        className="group relative h-[300px] md:h-[400px] w-full block perspective-1000"
+                        className="group relative h-[350px] w-full block overflow-hidden rounded-xl bg-black border border-white/5 transition-all duration-300 hover:border-white/30 hover:shadow-[0_0_30px_rgba(255,255,255,0.1)]"
                     >
-                        <div className="relative w-full h-full rounded-3xl overflow-hidden border border-white/10 bg-white/5 backdrop-blur-sm transition-all duration-500 group-hover:border-white/30 group-hover:shadow-[0_0_50px_rgba(255,255,255,0.1)]">
+                        {/* 1. BACKGROUND CODING ANIMATIONS */}
+                        <div className="absolute inset-0 opacity-20 group-hover:opacity-10 transition-opacity duration-500">
 
-                            {/* HOVER GRADIENT BACKGROUND */}
-                            <div
-                                className="absolute inset-0 opacity-0 group-hover:opacity-20 transition-opacity duration-700"
-                                style={{ background: `radial-gradient(circle at center, ${partner.color}, transparent 80%)` }}
-                            />
-
-                            {/* CONTENT CONTAINER */}
-                            <div className="absolute inset-0 p-8 flex flex-col justify-between z-20">
-                                {/* TOP: Status & Name */}
-                                <div className="flex justify-between items-start">
-                                    <div className="flex flex-col">
-                                        <span className="text-2xl font-bold text-white group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-white group-hover:to-white/70 transition-all">
-                                            {partner.name}
-                                        </span>
-                                        <span className="text-xs text-white/40 uppercase tracking-widest mt-1 opacity-100 group-hover:opacity-0 transition-opacity duration-300">
-                                            {partner.fullname}
-                                        </span>
-                                    </div>
-                                    <ArrowUpRight className="text-white/30 group-hover:text-white group-hover:translate-x-1 group-hover:-translate-y-1 transition-all duration-300 w-6 h-6" />
+                            {/* BINARY RAIN (MIP) */}
+                            {partner.type === "binary" && (
+                                <div className="absolute inset-0 flex flex-col font-mono text-xs overflow-hidden leading-none text-[#00ff88]">
+                                    {Array.from({ length: 20 }).map((_, i) => (
+                                        <motion.div
+                                            key={i}
+                                            animate={{ y: [0, 400] }}
+                                            transition={{ duration: 2 + Math.random() * 2, repeat: Infinity, ease: "linear" }}
+                                            className="opacity-50 whitespace-nowrap"
+                                            style={{ marginLeft: `${i * 5}%` }}
+                                        >
+                                            {Array.from({ length: 30 }).map(() => Math.random() > 0.5 ? "1" : "0").join(" ")}
+                                        </motion.div>
+                                    ))}
                                 </div>
+                            )}
 
-                                {/* CENTER: Logo Reveal */}
-                                <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 scale-90 group-hover:scale-100 transition-all duration-500 delay-100">
-                                    <div className={`relative w-48 h-48 flex items-center justify-center p-6 ${partner.needsWhiteBg ? "bg-white rounded-2xl shadow-2xl" : ""}`}>
-                                        <img
-                                            src={partner.logo}
-                                            alt={partner.name}
-                                            className={`w-full h-full object-contain ${partner.needsWhiteBg ? "" : "filter drop-shadow-[0_0_15px_rgba(255,255,255,0.3)] brightness-125"}`}
+                            {/* RADAR SCAN (JAC) */}
+                            {partner.type === "radar" && (
+                                <div className="absolute inset-0 flex items-center justify-center">
+                                    <motion.div
+                                        animate={{ rotate: 360 }}
+                                        transition={{ duration: 4, repeat: Infinity, ease: "linear" }}
+                                        className="w-[500px] h-[500px] border border-red-900/40 rounded-full border-dashed"
+                                    />
+                                    <motion.div
+                                        animate={{ scale: [0.8, 1.2], opacity: [0.5, 0] }}
+                                        transition={{ duration: 2, repeat: Infinity }}
+                                        className="absolute w-32 h-32 bg-red-500/10 rounded-full blur-xl"
+                                    />
+                                    <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_20%,#000_100%)]" />
+                                </div>
+                            )}
+
+                            {/* FLOW LINES (Gandhara) */}
+                            {partner.type === "flow" && (
+                                <div className="absolute inset-0">
+                                    {Array.from({ length: 5 }).map((_, i) => (
+                                        <motion.div
+                                            key={i}
+                                            className="absolute h-[2px] w-full bg-cyan-500/50"
+                                            style={{ top: `${20 + i * 15}%` }}
+                                            animate={{ x: [-1000, 1000] }}
+                                            transition={{ duration: 3 + i, repeat: Infinity, ease: "linear" }}
                                         />
-                                    </div>
+                                    ))}
                                 </div>
+                            )}
 
-                                {/* BOTTOM: Description */}
-                                <div className="transform translate-y-4 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-500 delay-200">
-                                    <p className="text-[#a8ffc4] font-mono text-sm tracking-wide border-l-2 border-[#a8ffc4] pl-3">
-                                        {partner.description}
-                                    </p>
+                            {/* GLITCH GRID (Prince) */}
+                            {partner.type === "glitch" && (
+                                <div className="absolute inset-0 grid grid-cols-10 grid-rows-10 gap-1 p-4">
+                                    {Array.from({ length: 20 }).map((_, i) => (
+                                        <motion.div
+                                            key={i}
+                                            className="bg-purple-500/40"
+                                            style={{
+                                                gridColumn: Math.floor(Math.random() * 10) + 1,
+                                                gridRow: Math.floor(Math.random() * 10) + 1
+                                            }}
+                                            animate={{ opacity: [0, 1, 0] }}
+                                            transition={{ duration: 0.2, repeat: Infinity, repeatDelay: Math.random() * 2 }}
+                                        />
+                                    ))}
+                                </div>
+                            )}
+                        </div>
+
+                        {/* 2. BASE CONTENT (IDLE) */}
+                        <div className="absolute top-6 left-6 z-20 transition-all duration-300 group-hover:opacity-0 group-hover:-translate-y-4">
+                            <div className="flex items-center gap-3 mb-2">
+                                <span className={`w-2 h-2 rounded-full shadow-[0_0_10px_${partner.color}]`} style={{ backgroundColor: partner.color }} />
+                                <span className="font-mono text-xs text-white/50 tracking-[0.2em]">{partner.fullname}</span>
+                            </div>
+                            <h3 className="text-4xl font-bold text-white tracking-tighter">{partner.name}</h3>
+                        </div>
+
+                        {/* 3. HYPER MESSAGE (HOVER) */}
+                        <div className="absolute inset-0 flex flex-col items-center justify-center z-30 opacity-0 group-hover:opacity-100 transition-all duration-300 scale-90 group-hover:scale-100">
+                            <div
+                                className="absolute inset-0 bg-black/80 backdrop-blur-sm"
+                                style={{ border: `1px solid ${partner.color}` }}
+                            />
+                            <div className="relative z-10 text-center">
+                                <motion.div
+                                    animate={{ opacity: [0.5, 1, 0.5] }}
+                                    transition={{ duration: 0.1, repeat: Infinity }}
+                                    className="text-xs font-mono mb-2"
+                                    style={{ color: partner.color }}
+                                >
+                                    &gt;&gt; ACCESS_GRANTED
+                                </motion.div>
+                                <h4 className="text-3xl md:text-5xl font-black text-white tracking-tighter uppercase mb-4">
+                                    {partner.message}
+                                </h4>
+                                <div className="inline-flex items-center gap-2 px-6 py-2 bg-white/10 rounded-full border border-white/20">
+                                    <span className="text-sm font-bold text-white">VISIT EXTERNAL NODE</span>
+                                    <ArrowUpRight className="w-4 h-4 text-white" />
                                 </div>
                             </div>
-
-                            {/* NOISE OVERLAY for Texture */}
-                            <div className="absolute inset-0 opacity-[0.05] pointer-events-none"
-                                style={{ backgroundImage: 'url("/assets/noise.png")', backgroundSize: '100px' }}
-                            />
                         </div>
+
                     </Link>
                 ))}
             </div>
