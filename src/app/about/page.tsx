@@ -290,6 +290,137 @@ function SplitText({ children, className = "" }: { children: string; className?:
     );
 }
 
+// Platinum Holographic Card Component
+function PlatinumTeamCard({ member, index }: { member: typeof team[0]; index: number }) {
+    const cardRef = useRef<HTMLDivElement>(null);
+    const cursorX = useRef(0);
+    const cursorY = useRef(0);
+    const [rotateX, setRotateX] = useState(0);
+    const [rotateY, setRotateY] = useState(0);
+    const [shineOpacity, setShineOpacity] = useState(0);
+    const [shinePos, setShinePos] = useState({ x: 0, y: 0 });
+
+    const isInView = useInView(cardRef, { once: true });
+
+    const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+        if (!cardRef.current) return;
+        const rect = cardRef.current.getBoundingClientRect();
+        const centerX = rect.left + rect.width / 2;
+        const centerY = rect.top + rect.height / 2;
+
+        // Calculate tilt
+        const x = e.clientX - centerX;
+        const y = e.clientY - centerY;
+
+        // Damping for smooth tilt
+        setRotateX(-y / 15);
+        setRotateY(x / 15);
+
+        // Calculate shine position
+        const normalizedX = (e.clientX - rect.left) / rect.width;
+        const normalizedY = (e.clientY - rect.top) / rect.height;
+        setShinePos({ x: normalizedX * 100, y: normalizedY * 100 });
+        setShineOpacity(1);
+    };
+
+    const handleMouseLeave = () => {
+        setRotateX(0);
+        setRotateY(0);
+        setShineOpacity(0);
+    };
+
+    return (
+        <motion.div
+            ref={cardRef}
+            initial={{ opacity: 0, y: 50 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: index * 0.15 }}
+            viewport={{ once: true }}
+            onMouseMove={handleMouseMove}
+            onMouseLeave={handleMouseLeave}
+            className="group relative h-[300px] md:h-[380px] w-full cursor-pointer"
+            style={{ perspective: 1000 }}
+        >
+            <motion.div
+                className="relative w-full h-full rounded-2xl overflow-hidden bg-[#0a0a0a] border border-white/5"
+                style={{
+                    rotateX,
+                    rotateY,
+                    transformStyle: "preserve-3d",
+                }}
+                transition={{ type: "spring", stiffness: 300, damping: 20 }}
+            >
+                {/* 1. Base Metallic Gradient (Subtle) */}
+                <div
+                    className="absolute inset-0 z-0"
+                    style={{
+                        background: `linear-gradient(135deg, #111 0%, #050505 50%, #1a1a1a 100%)`,
+                    }}
+                />
+
+                {/* 2. Holographic Rainbow Sheen (Mouse Follow) */}
+                <motion.div
+                    className="absolute inset-0 z-10 opacity-0 group-hover:opacity-40 transition-opacity duration-300 pointer-events-none"
+                    style={{
+                        background: `radial-gradient(circle at ${shinePos.x}% ${shinePos.y}%, rgba(255,255,255,0.15), transparent 60%)`,
+                        mixBlendMode: "overlay",
+                    }}
+                />
+
+                {/* 3. Platinum Border Shine (Animated) */}
+                <div className="absolute inset-0 z-20 pointer-events-none rounded-2xl p-[1px]">
+                    <div className="absolute inset-0 rounded-2xl overflow-hidden">
+                        <motion.div
+                            className="absolute top-0 left-0 w-[200%] h-[200%] -translate-x-1/2 -translate-y-1/2"
+                            style={{
+                                background: "conic-gradient(from 0deg, transparent 0%, rgba(255,255,255,0.3) 10%, transparent 20%)",
+                            }}
+                            animate={{ rotate: 360 }}
+                            transition={{ duration: 4, repeat: Infinity, ease: "linear" }}
+                        />
+                    </div>
+                </div>
+
+                {/* 4. Content */}
+                <div className="absolute inset-0 z-30 flex flex-col items-center justify-center p-6 text-center" style={{ transform: "translateZ(30px)" }}>
+                    {/* Top ID */}
+                    <div className="absolute top-6 right-6 font-mono text-2xl font-bold text-white/5 group-hover:text-white/20 transition-colors">
+                        {member.id}
+                    </div>
+
+                    {/* Glitch Name */}
+                    <h3 className="text-4xl md:text-5xl font-bold text-white mb-2 tracking-tighter" style={{ textShadow: "0 0 10px rgba(255,255,255,0.1)" }}>
+                        <GlitchText text={member.name} />
+                    </h3>
+
+                    {/* Member Role Line */}
+                    <div className="h-[1px] w-12 bg-white/20 my-4 group-hover:w-24 group-hover:bg-[#a8ffc4] transition-all duration-500" />
+
+                    <span
+                        className="text-xs md:text-sm font-mono tracking-[0.2em] uppercase mb-4"
+                        style={{ color: "#a8ffc4" }}
+                    >
+                        {member.role}
+                    </span>
+
+                    {/* Animated Keywords */}
+                    <div className="flex gap-2 mt-2 opacity-0 group-hover:opacity-100 transition-opacity duration-500 delay-100">
+                        {member.keywords.map((kw, i) => (
+                            <span key={i} className="text-[10px] uppercase font-mono px-2 py-1 rounded border border-white/10 bg-white/5 text-white/50">
+                                {kw}
+                            </span>
+                        ))}
+                    </div>
+                </div>
+
+                {/* 5. Scanline Overlay */}
+                <div className="absolute inset-0 z-40 bg-[linear-gradient(rgba(18,16,16,0)_50%,rgba(0,0,0,0.25)_50%),linear-gradient(90deg,rgba(255,0,0,0.06),rgba(0,255,0,0.02),rgba(0,0,255,0.06))] bg-[length:100%_4px,3px_100%] opacity-20 pointer-events-none" />
+
+            </motion.div>
+        </motion.div>
+    );
+}
+
 export default function AboutPage() {
     const containerRef = useRef<HTMLDivElement>(null);
     const heroRef = useRef<HTMLDivElement>(null);
