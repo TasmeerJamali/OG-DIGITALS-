@@ -4,52 +4,36 @@ import { useRef, useState, useEffect } from "react";
 import { motion, useScroll, useTransform, useInView, useSpring } from "framer-motion";
 import HexagonGrid from "./HexagonGrid";
 
-// Formatting helper for glitch effect
-const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-const GlitchText = ({ text }: { text: string }) => {
-    const [display, setDisplay] = useState(text);
-    const [active, setActive] = useState(false);
+// Animated counter component
+function AnimatedCounter({ value, suffix = "", duration = 2 }: { value: number; suffix?: string; duration?: number }) {
+    const [count, setCount] = useState(0);
+    const ref = useRef<HTMLSpanElement>(null);
+    const isInView = useInView(ref, { once: true, margin: "-100px" });
 
     useEffect(() => {
-        if (!active) {
-            setDisplay(text);
-            return;
+        if (isInView) {
+            let start = 0;
+            const end = value;
+            const incrementTime = (duration * 1000) / end;
+
+            const timer = setInterval(() => {
+                start += 1;
+                setCount(start);
+                if (start >= end) {
+                    clearInterval(timer);
+                }
+            }, incrementTime);
+
+            return () => clearInterval(timer);
         }
-
-        let iterations = 0;
-        const interval = setInterval(() => {
-            setDisplay(
-                text
-                    .split("")
-                    .map((letter, index) => {
-                        if (index < iterations) {
-                            return text[index];
-                        }
-                        return letters[Math.floor(Math.random() * 26)];
-                    })
-                    .join("")
-            );
-
-            if (iterations >= text.length) {
-                clearInterval(interval);
-            }
-
-            iterations += 1 / 3;
-        }, 30);
-
-        return () => clearInterval(interval);
-    }, [active, text]);
+    }, [isInView, value, duration]);
 
     return (
-        <span
-            onMouseEnter={() => setActive(true)}
-            onMouseLeave={() => setActive(false)}
-            className="font-mono cursor-default"
-        >
-            {display}
+        <span ref={ref}>
+            {count}{suffix}
         </span>
     );
-};
+}
 
 // Word-by-word reveal component
 function WordReveal({ children, className }: { children: string; className?: string }) {
@@ -101,36 +85,12 @@ function WordReveal({ children, className }: { children: string; className?: str
     );
 }
 
-// Team Data
-const team = [
-    {
-        name: "OSAMA",
-        role: "FOUNDER & CEO",
-        id: "01",
-        keywords: ["VISION", "LEADERSHIP", "FUTURE"],
-        desc: "Driving the digital evolution with uncompromising vision."
-    },
-    {
-        name: "SUHAIB",
-        role: "HEAD OF DEV",
-        id: "02",
-        keywords: ["ARCHITECT", "SYSTEMS", "SCALE"],
-        desc: "Building the impossible through code and logic."
-    },
-    {
-        name: "MAZHAR",
-        role: "CREATIVE DIR",
-        id: "03",
-        keywords: ["AESTHETICS", "DESIGN", "SOUL"],
-        desc: "Crafting visual narratives that defy convention."
-    },
-    {
-        name: "WALEED",
-        role: "LEAD STRATEGIST",
-        id: "04",
-        keywords: ["GROWTH", "DATA", "IMPACT"],
-        desc: "Turning abstract data into concrete success."
-    }
+// Stats data
+const stats = [
+    { value: 50, suffix: "+", label: "Projects Delivered", description: "Successful digital transformations" },
+    { value: 98, suffix: "%", label: "Client Satisfaction", description: "Happy clients worldwide" },
+    { value: 5, suffix: "+", label: "Years Experience", description: "Crafting digital excellence" },
+    { value: 24, suffix: "/7", label: "Support Available", description: "Always here for you" },
 ];
 
 export default function About() {
@@ -158,6 +118,7 @@ export default function About() {
         >
             {/* Background decorative elements */}
             <div className="absolute inset-0 pointer-events-none overflow-hidden">
+                {/* Floating gradient orbs */}
                 <motion.div
                     className="absolute -top-40 -right-40 w-[600px] h-[600px] rounded-full opacity-20"
                     style={{
@@ -174,6 +135,8 @@ export default function About() {
                         filter: "blur(80px)",
                     }}
                 />
+
+                {/* Grid pattern overlay */}
                 <div
                     className="absolute inset-0 opacity-[0.02]"
                     style={{
@@ -183,17 +146,18 @@ export default function About() {
                 />
             </div>
 
+            {/* Interactive Hexagon Grid on right side */}
             <HexagonGrid />
 
             <motion.div
                 className="max-w-7xl mx-auto relative z-10"
                 style={{ opacity, scale }}
             >
-                {/* About Label */}
+                {/* Section Header with animated line */}
                 <motion.div
                     initial={{ opacity: 0, x: -30 }}
                     whileInView={{ opacity: 1, x: 0 }}
-                    transition={{ duration: 0.8 }}
+                    transition={{ duration: 0.8, ease: [0.25, 1, 0.5, 1] }}
                     viewport={{ once: true }}
                     className="mb-12 md:mb-16 flex items-center justify-center gap-6"
                 >
@@ -212,87 +176,174 @@ export default function About() {
                     </span>
                 </motion.div>
 
-                {/* Main Text */}
-                <div className="mb-24 text-center md:text-left">
-                    <WordReveal className="text-3xl sm:text-4xl md:text-5xl lg:text-7xl font-bold leading-[1.1] tracking-tight">
-                        The minds behind the magic.
+                {/* Main Text with Word-by-Word Reveal */}
+                <div className="mb-20 md:mb-32">
+                    <WordReveal className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold leading-[1.1] tracking-tight">
+                        In a world of digital noise, we create signal.
                     </WordReveal>
+
+                    <motion.div
+                        initial={{ opacity: 0, y: 30 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.8, delay: 0.5 }}
+                        viewport={{ once: true }}
+                        className="mt-8 md:mt-12 max-w-4xl"
+                    >
+                        <p
+                            className="text-lg md:text-xl lg:text-2xl leading-relaxed"
+                            style={{ color: "rgba(255,255,255,0.6)" }}
+                        >
+                            Our work cuts through the chaos with{" "}
+                            <span style={{ color: "#a8ffc4", fontWeight: 500 }}>strategic clarity</span>{" "}
+                            and{" "}
+                            <span style={{ color: "#a8ffc4", fontWeight: 500 }}>creative courage</span>,
+                            transforming passive viewers into active participants in your brand&apos;s{" "}
+                            <motion.span
+                                className="inline-block italic"
+                                style={{
+                                    background: "linear-gradient(135deg, #a8ffc4 0%, #7affb8 100%)",
+                                    WebkitBackgroundClip: "text",
+                                    WebkitTextFillColor: "transparent",
+                                    backgroundClip: "text",
+                                    fontWeight: 600,
+                                }}
+                                whileHover={{ scale: 1.05 }}
+                            >
+                                journey.
+                            </motion.span>
+                        </p>
+                    </motion.div>
                 </div>
 
-                {/* Creative Team Grid */}
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 relative">
-                    {team.map((member, index) => (
+                {/* Stats Grid - Premium Cards */}
+                <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 max-w-5xl mx-auto">
+                    {stats.map((stat, index) => (
                         <motion.div
-                            key={member.id}
-                            initial={{ opacity: 0, y: 50 }}
-                            whileInView={{ opacity: 1, y: 0 }}
-                            transition={{ duration: 0.6, delay: index * 0.15 }}
+                            key={stat.label}
+                            initial={{ opacity: 0, y: 40, scale: 0.95 }}
+                            whileInView={{ opacity: 1, y: 0, scale: 1 }}
+                            transition={{
+                                duration: 0.6,
+                                delay: index * 0.1,
+                                ease: [0.25, 1, 0.5, 1]
+                            }}
                             viewport={{ once: true }}
-                            className="group relative h-[300px] md:h-[360px] bg-[#0a0a0a] border border-white/5 rounded-2xl overflow-hidden hover:border-[#a8ffc4]/30 transition-all duration-500"
+                            whileHover={{
+                                y: -8,
+                                transition: { duration: 0.3 }
+                            }}
+                            className="group relative p-6 md:p-8 rounded-2xl cursor-pointer overflow-hidden text-center"
+                            style={{
+                                background: "linear-gradient(135deg, rgba(255,255,255,0.04) 0%, rgba(255,255,255,0.01) 100%)",
+                                border: "1px solid rgba(255,255,255,0.06)",
+                            }}
                         >
-                            {/* Inner Glow */}
-                            <div className="absolute inset-0 bg-gradient-to-br from-white/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                            {/* Hover glow effect */}
+                            <motion.div
+                                className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+                                style={{
+                                    background: "radial-gradient(circle at 50% 50%, rgba(168,255,196,0.08) 0%, transparent 70%)",
+                                }}
+                            />
 
-                            {/* Top Right ID */}
-                            <div className="absolute top-6 right-6 font-mono text-4xl font-bold text-white/5 group-hover:text-[#a8ffc4]/10 transition-colors duration-300 select-none">
-                                {member.id}
-                            </div>
+                            {/* Top accent line */}
+                            <motion.div
+                                className="absolute top-0 left-0 h-[2px] bg-gradient-to-r from-transparent via-[#a8ffc4] to-transparent"
+                                initial={{ width: 0, left: "50%" }}
+                                whileHover={{ width: "100%", left: 0 }}
+                                transition={{ duration: 0.4 }}
+                            />
 
-                            {/* Corner Keywords (Animated) */}
-                            {member.keywords.map((kw, i) => (
-                                <motion.div
-                                    key={kw}
-                                    className="absolute text-[10px] tracking-[0.2em] text-[#a8ffc4]/40 font-mono"
+                            {/* Content */}
+                            <div className="relative z-10">
+                                {/* Number */}
+                                <div
+                                    className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold mb-3"
                                     style={{
-                                        top: i === 0 ? "20px" : "auto",
-                                        bottom: i === 1 ? "20px" : i === 2 ? "20px" : "auto",
-                                        left: i === 0 ? "20px" : i === 1 ? "20px" : "auto",
-                                        right: i === 2 ? "20px" : "auto",
+                                        background: "linear-gradient(135deg, #a8ffc4 0%, #7affb8 100%)",
+                                        WebkitBackgroundClip: "text",
+                                        WebkitTextFillColor: "transparent",
+                                        backgroundClip: "text",
                                     }}
-                                    initial={{ opacity: 0 }}
-                                    whileInView={{ opacity: 1 }}
-                                    transition={{ delay: 0.5 + i * 0.2 }}
                                 >
-                                    {kw}
-                                </motion.div>
-                            ))}
+                                    <AnimatedCounter
+                                        value={stat.value}
+                                        suffix={stat.suffix}
+                                        duration={1.5}
+                                    />
+                                </div>
 
-                            {/* Content Centered */}
-                            <div className="absolute inset-0 flex flex-col items-center justify-center p-8 text-center z-10">
-                                <h3 className="text-3xl md:text-5xl font-bold text-white mb-2 tracking-tighter">
-                                    <GlitchText text={member.name} />
-                                </h3>
-                                <div className="h-[2px] w-12 bg-[#a8ffc4] mb-4 group-hover:w-24 transition-all duration-500" />
-                                <span className="text-sm md:text-base font-mono text-[#a8ffc4] tracking-widest uppercase mb-6">
-                                    {member.role}
-                                </span>
-                                <p className="text-white/40 max-w-xs text-sm leading-relaxed opacity-0 group-hover:opacity-100 transform translate-y-4 group-hover:translate-y-0 transition-all duration-500 delay-100">
-                                    {member.desc}
-                                </p>
+                                {/* Label */}
+                                <div
+                                    className="text-xs md:text-sm uppercase tracking-[0.2em] font-medium mb-2"
+                                    style={{ color: "rgba(255,255,255,0.7)" }}
+                                >
+                                    {stat.label}
+                                </div>
+
+                                {/* Description - shows on hover */}
+                                <motion.div
+                                    className="text-xs md:text-sm overflow-hidden"
+                                    style={{ color: "rgba(255,255,255,0.4)" }}
+                                    initial={{ height: 0, opacity: 0 }}
+                                    whileHover={{ height: "auto", opacity: 1 }}
+                                    transition={{ duration: 0.3 }}
+                                >
+                                    {stat.description}
+                                </motion.div>
                             </div>
 
-                            {/* Scanline Effect */}
-                            <div className="absolute inset-0 bg-[linear-gradient(rgba(18,16,16,0)_50%,rgba(0,0,0,0.25)_50%),linear-gradient(90deg,rgba(255,0,0,0.06),rgba(0,255,0,0.02),rgba(0,0,255,0.06))] z-[5] bg-[length:100%_2px,3px_100%] pointer-events-none opacity-20" />
+                            {/* Decorative corner */}
+                            <div
+                                className="absolute bottom-4 right-4 w-8 h-8 opacity-10 group-hover:opacity-30 transition-opacity duration-300"
+                                style={{
+                                    borderRight: "2px solid #a8ffc4",
+                                    borderBottom: "2px solid #a8ffc4",
+                                }}
+                            />
                         </motion.div>
                     ))}
                 </div>
 
                 {/* Bottom CTA */}
                 <motion.div
-                    className="mt-32 text-center"
-                    initial={{ opacity: 0 }}
-                    whileInView={{ opacity: 1 }}
-                    transition={{ delay: 0.5 }}
+                    className="mt-20 md:mt-32 text-center"
+                    initial={{ opacity: 0, y: 30 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.8, delay: 0.3 }}
+                    viewport={{ once: true }}
                 >
-                    <a
+                    <motion.a
                         href="#contact"
-                        className="inline-flex flex-col items-center gap-2 group cursor-pointer"
+                        className="inline-flex items-center gap-4 text-lg md:text-xl font-medium group"
+                        style={{ color: "rgba(255,255,255,0.7)" }}
+                        whileHover={{ color: "#a8ffc4" }}
                     >
-                        <span className="text-white/60 text-sm tracking-widest uppercase group-hover:text-[#a8ffc4] transition-colors">
-                            Join the ranks
-                        </span>
-                        <div className="h-px w-24 bg-white/20 group-hover:w-full group-hover:bg-[#a8ffc4] transition-all duration-500" />
-                    </a>
+                        <span>Let&apos;s create something extraordinary</span>
+                        <motion.span
+                            className="w-12 h-12 rounded-full flex items-center justify-center"
+                            style={{
+                                border: "1px solid rgba(168,255,196,0.3)",
+                                background: "rgba(168,255,196,0.05)",
+                            }}
+                            whileHover={{
+                                scale: 1.1,
+                                background: "rgba(168,255,196,0.15)",
+                                borderColor: "rgba(168,255,196,0.6)",
+                            }}
+                            transition={{ duration: 0.3 }}
+                        >
+                            <svg
+                                className="w-5 h-5 transition-transform duration-300 group-hover:translate-x-1 group-hover:-translate-y-1"
+                                fill="none"
+                                viewBox="0 0 24 24"
+                                stroke="currentColor"
+                                strokeWidth={1.5}
+                            >
+                                <path strokeLinecap="round" strokeLinejoin="round" d="M7 17L17 7M17 7H7M17 7V17" />
+                            </svg>
+                        </motion.span>
+                    </motion.a>
                 </motion.div>
             </motion.div>
         </section>

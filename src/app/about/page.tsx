@@ -5,32 +5,87 @@ import { motion, useScroll, useTransform, useSpring, useInView } from "framer-mo
 import Link from "next/link";
 import ParticleNet from "@/components/ParticleNet";
 
-// Team members
+// Formatting helper for glitch effect
+const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+const GlitchText = ({ text }: { text: string }) => {
+    const [display, setDisplay] = useState(text);
+    const [active, setActive] = useState(false);
+
+    useEffect(() => {
+        if (!active) {
+            setDisplay(text);
+            return;
+        }
+
+        let iterations = 0;
+        const interval = setInterval(() => {
+            setDisplay(
+                text
+                    .split("")
+                    .map((letter, index) => {
+                        if (index < iterations) {
+                            return text[index];
+                        }
+                        return letters[Math.floor(Math.random() * 26)];
+                    })
+                    .join("")
+            );
+
+            if (iterations >= text.length) {
+                clearInterval(interval);
+            }
+
+            iterations += 1 / 3;
+        }, 30);
+
+        return () => clearInterval(interval);
+    }, [active, text]);
+
+    return (
+        <span
+            onMouseEnter={() => setActive(true)}
+            onMouseLeave={() => setActive(false)}
+            className="font-mono cursor-default"
+        >
+            {display}
+        </span>
+    );
+};
+
+// Team Data
 const team = [
     {
-        name: "Founder",
-        role: "Creative Director",
-        image: "/team/founder.jpg",
-        color: "#a8ffc4",
+        name: "OSAMA",
+        role: "FOUNDER & CEO",
+        id: "01",
+        keywords: ["VISION", "LEADERSHIP", "FUTURE"],
+        desc: "Driving the digital evolution with uncompromising vision.",
+        color: "#a8ffc4"
     },
     {
-        name: "Design Lead",
-        role: "Head of Design",
-        image: "/team/design.jpg",
-        color: "#60a5fa",
+        name: "SUHAIB",
+        role: "HEAD OF DEV",
+        id: "02",
+        keywords: ["ARCHITECT", "SYSTEMS", "SCALE"],
+        desc: "Building the impossible through code and logic.",
+        color: "#60a5fa"
     },
     {
-        name: "Tech Lead",
-        role: "Lead Developer",
-        image: "/team/tech.jpg",
-        color: "#c084fc",
+        name: "MAZHAR",
+        role: "CREATIVE DIR",
+        id: "03",
+        keywords: ["AESTHETICS", "DESIGN", "SOUL"],
+        desc: "Crafting visual narratives that defy convention.",
+        color: "#c084fc"
     },
     {
-        name: "Strategy Lead",
-        role: "Marketing Director",
-        image: "/team/strategy.jpg",
-        color: "#fbbf24",
-    },
+        name: "WALEED",
+        role: "LEAD STRATEGIST",
+        id: "04",
+        keywords: ["GROWTH", "DATA", "IMPACT"],
+        desc: "Turning abstract data into concrete success.",
+        color: "#fbbf24"
+    }
 ];
 
 // Values
@@ -510,40 +565,69 @@ export default function AboutPage() {
                         </h2>
                     </motion.div>
 
-                    {/* Team - Clean horizontal list */}
-                    <div className="space-y-0">
-                        {team.map((member, i) => (
+                    {/* Creative Team Grid - Digital Dossier Style */}
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6 relative">
+                        {team.map((member, index) => (
                             <motion.div
-                                key={member.name}
-                                className="group border-t border-white/10 py-8 md:py-12"
-                                initial={{ opacity: 0, x: i % 2 === 0 ? -50 : 50 }}
-                                whileInView={{ opacity: 1, x: 0 }}
-                                transition={{ duration: 0.6, delay: i * 0.1 }}
+                                key={member.id}
+                                initial={{ opacity: 0, y: 50 }}
+                                whileInView={{ opacity: 1, y: 0 }}
+                                transition={{ duration: 0.6, delay: index * 0.15 }}
                                 viewport={{ once: true }}
+                                className="group relative h-[300px] md:h-[360px] bg-[#0a0a0a] border border-white/5 rounded-2xl overflow-hidden hover:border-[#a8ffc4]/30 transition-all duration-500"
                             >
-                                <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-                                    {/* Left - Name and role */}
-                                    <div className="flex flex-col md:flex-row md:items-baseline gap-2 md:gap-8">
-                                        <span
-                                            className="text-sm uppercase tracking-widest"
-                                            style={{ color: member.color }}
-                                        >
-                                            {member.role}
-                                        </span>
-                                        <h3 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white group-hover:text-[#a8ffc4] transition-colors duration-300">
-                                            {member.name}
-                                        </h3>
-                                    </div>
+                                {/* Inner Glow */}
+                                <div className="absolute inset-0 bg-gradient-to-br from-white/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
 
-                                    {/* Right - Number */}
-                                    <span className="text-6xl md:text-7xl font-bold text-white/5">
-                                        0{i + 1}
-                                    </span>
+                                {/* Top Right ID */}
+                                <div className="absolute top-6 right-6 font-mono text-4xl font-bold text-white/5 group-hover:text-[#a8ffc4]/10 transition-colors duration-300 select-none">
+                                    {member.id}
                                 </div>
+
+                                {/* Corner Keywords (Animated) */}
+                                {member.keywords.map((kw, i) => (
+                                    <motion.div
+                                        key={kw}
+                                        className="absolute text-[10px] tracking-[0.2em] font-mono"
+                                        style={{
+                                            color: `${member.color}40`,
+                                            top: i === 0 ? "20px" : "auto",
+                                            bottom: i === 1 ? "20px" : i === 2 ? "20px" : "auto",
+                                            left: i === 0 ? "20px" : i === 1 ? "20px" : "auto",
+                                            right: i === 2 ? "20px" : "auto",
+                                        }}
+                                        initial={{ opacity: 0 }}
+                                        whileInView={{ opacity: 1 }}
+                                        transition={{ delay: 0.5 + i * 0.2 }}
+                                    >
+                                        {kw}
+                                    </motion.div>
+                                ))}
+
+                                {/* Content Centered */}
+                                <div className="absolute inset-0 flex flex-col items-center justify-center p-8 text-center z-10">
+                                    <h3 className="text-3xl md:text-5xl font-bold text-white mb-2 tracking-tighter">
+                                        <GlitchText text={member.name} />
+                                    </h3>
+                                    <div
+                                        className="h-[2px] w-12 mb-4 group-hover:w-24 transition-all duration-500"
+                                        style={{ backgroundColor: member.color }}
+                                    />
+                                    <span
+                                        className="text-sm md:text-base font-mono tracking-widest uppercase mb-6"
+                                        style={{ color: member.color }}
+                                    >
+                                        {member.role}
+                                    </span>
+                                    <p className="text-white/40 max-w-xs text-sm leading-relaxed opacity-0 group-hover:opacity-100 transform translate-y-4 group-hover:translate-y-0 transition-all duration-500 delay-100">
+                                        {member.desc}
+                                    </p>
+                                </div>
+
+                                {/* Scanline Effect */}
+                                <div className="absolute inset-0 bg-[linear-gradient(rgba(18,16,16,0)_50%,rgba(0,0,0,0.25)_50%),linear-gradient(90deg,rgba(255,0,0,0.06),rgba(0,255,0,0.02),rgba(0,0,255,0.06))] z-[5] bg-[length:100%_2px,3px_100%] pointer-events-none opacity-20" />
                             </motion.div>
                         ))}
-                        {/* Bottom border */}
-                        <div className="border-t border-white/10" />
                     </div>
                 </div>
             </section>
