@@ -236,49 +236,47 @@ export default function Navigation() {
                                     )}
 
                                     {/* Dropdown Menu - ENHANCED ANIMATION */}
+                                    {/* Dropdown Menu - REFINED & SUPER CLEAN */}
                                     <AnimatePresence>
                                         {activeDropdown === link.name && link.dropdown && (
                                             <motion.div
-                                                initial={{ opacity: 0, rotateX: -15, y: 20, filter: "blur(5px)" }}
-                                                animate={{ opacity: 1, rotateX: 0, y: 0, filter: "blur(0px)" }}
-                                                exit={{ opacity: 0, rotateX: -10, y: 10, filter: "blur(5px)" }}
-                                                transition={{
-                                                    type: "spring",
-                                                    stiffness: 300,
-                                                    damping: 20,
-                                                    mass: 0.8
-                                                }}
-                                                className="absolute top-[80%] left-0 mt-2 min-w-[220px] rounded-2xl overflow-hidden origin-top-left"
+                                                initial={{ opacity: 0, y: 10, scale: 0.98 }}
+                                                animate={{ opacity: 1, y: 0, scale: 1 }}
+                                                exit={{ opacity: 0, y: 10, scale: 0.98 }}
+                                                transition={{ duration: 0.2, ease: "easeOut" }}
+                                                className="absolute top-[120%] left-[-20px] min-w-[240px] rounded-2xl overflow-hidden"
                                                 style={{
-                                                    background: "rgba(10,10,12,0.85)", // Darker, more premium
-                                                    backdropFilter: "blur(24px) saturate(200%)",
-                                                    border: "1px solid rgba(255,255,255,0.08)",
-                                                    boxShadow: "0 20px 50px -10px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.1)",
+                                                    background: "#0a0a0a",
+                                                    border: "1px solid rgba(255,255,255,0.1)",
+                                                    boxShadow: "0 20px 40px -10px rgba(0,0,0,0.8)",
+                                                    padding: "8px"
                                                 }}
                                             >
-                                                {/* Connecting bridge to prevent mouse gap */}
+                                                {/* Connecting bridge */}
                                                 <div className="absolute top-[-20px] left-0 w-full h-[20px] bg-transparent" />
-
-                                                <div className="p-2 flex flex-col gap-1">
+                                                
+                                                <div className="flex flex-col gap-1">
                                                     {link.dropdown.map((item, i) => (
-                                                        <motion.div
+                                                        <Link
                                                             key={item.name}
-                                                            initial={{ opacity: 0, x: -10 }}
-                                                            animate={{ opacity: 1, x: 0 }}
-                                                            transition={{ delay: i * 0.05 }}
+                                                            href={item.href}
+                                                            className="relative flex items-center px-4 py-3 rounded-lg group overflow-hidden"
                                                         >
-                                                            <Link
-                                                                href={item.href}
-                                                                className="block px-4 py-3 text-sm text-white/60 hover:text-white hover:bg-white/5 rounded-xl transition-all relative group"
-                                                            >
-                                                                <span className="relative z-10">{item.name}</span>
+                                                            {/* Hover Background - Subtle Mint */}
+                                                            <span className="absolute inset-0 bg-white/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                                                            
+                                                            {/* Text */}
+                                                            <span className="relative z-10 text-sm font-medium text-white/60 group-hover:text-white transition-colors duration-300">
+                                                                {item.name}
+                                                            </span>
 
-                                                                {/* Hover Glow */}
-                                                                <motion.div
-                                                                    className="absolute inset-0 rounded-xl bg-gradient-to-r from-[#a8ffc4]/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"
-                                                                />
-                                                            </Link>
-                                                        </motion.div>
+                                                            {/* Micro-Arrow on Hover */}
+                                                            <motion.span 
+                                                                className="absolute right-3 text-[#a8ffc4] opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300"
+                                                            >
+                                                                →
+                                                            </motion.span>
+                                                        </Link>
                                                     ))}
                                                 </div>
                                             </motion.div>
