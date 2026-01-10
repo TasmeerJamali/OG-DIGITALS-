@@ -466,22 +466,30 @@ function ViralTeamCard({ member, index }: { member: typeof team[0]; index: numbe
                             {hovered ? corruptionCheck.substring(0, 4) : member.id}
                         </span>
                     </div>
-                    {/* Status Indicator */}
+                    {/* Status Indicator - Color Matches Member */}
                     <div className="flex items-center gap-2">
-                        <span className="text-[10px] uppercase font-mono tracking-widest" style={{ color: hovered ? "#ff003c" : "#00ff00" }}>
+                        <span className="text-[10px] uppercase font-mono tracking-widest" style={{ color: hovered ? member.color : "#333" }}>
                             {hovered ? "INFECTED" : "SECURE"}
                         </span>
                         <motion.div
                             className="w-2 h-2 rounded-full"
-                            style={{ backgroundColor: hovered ? "#ff003c" : "#00ff00" }}
+                            style={{ backgroundColor: hovered ? member.color : "#333" }}
                             animate={{ opacity: [1, 0.2, 1] }}
                             transition={{ duration: hovered ? 0.1 : 2, repeat: Infinity }}
                         />
                     </div>
                 </div>
 
-                {/* Center - MAIN GLITCH TITLE */}
-                <div className="relative">
+                {/* Center - MAIN GLITCH TITLE (FLOATING) */}
+                <motion.div
+                    className="relative"
+                    animate={hovered ? {
+                        y: [-2, 2, -2],
+                        x: [-1, 1, -1],
+                        rotate: [-1, 1, -1]
+                    } : { y: 0, x: 0, rotate: 0 }}
+                    transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+                >
                     {/* Ghost text for chromatic aberration effect */}
                     {hovered && (
                         <>
@@ -507,7 +515,7 @@ function ViralTeamCard({ member, index }: { member: typeof team[0]; index: numbe
                             transition={{ duration: 0.5, ease: "circIn" }}
                         />
                     </div>
-                </div>
+                </motion.div>
 
                 {/* Bottom - Role & Desc */}
                 <div>
@@ -520,8 +528,8 @@ function ViralTeamCard({ member, index }: { member: typeof team[0]; index: numbe
 
                     <p className="text-white/60 text-sm font-mono leading-relaxed h-[60px] overflow-hidden">
                         {hovered ? (
-                            <span className="text-[#ff003c] font-bold">
-                                WARNING: ENTITY CONSCIOUSNESS DETECTED. DO NOT INTERACT.
+                            <span className="font-bold" style={{ color: member.color }}>
+                                {member.warning} <br />
                                 {corruptionCheck}
                             </span>
                         ) : (
@@ -531,9 +539,10 @@ function ViralTeamCard({ member, index }: { member: typeof team[0]; index: numbe
                 </div>
             </div>
 
-            {/* 4. "Virus" Spreading Mask */}
+            {/* 4. "Virus" Spreading Mask - DYNAMIC COLOR */}
             <motion.div
-                className="absolute inset-0 bg-[#a8ffc4] z-10 mix-blend-difference pointer-events-none"
+                className="absolute inset-0 z-10 mix-blend-difference pointer-events-none"
+                style={{ backgroundColor: member.color }}
                 initial={{ clipPath: "circle(0% at 50% 50%)" }}
                 animate={{
                     clipPath: hovered ? "circle(150% at 50% 50%)" : "circle(0% at 50% 50%)",
