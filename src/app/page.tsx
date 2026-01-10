@@ -23,7 +23,7 @@ export default function Home() {
         initial={{ opacity: 0 }}
         animate={{ opacity: isLoading ? 0 : 1 }}
         transition={{ duration: 0.5 }}
-        className={isLoading ? "pointer-events-none" : ""}
+        className={`flex flex-col gap-32 ${isLoading ? "pointer-events-none" : ""}`}
       >
         <Hero />
         <Services />
