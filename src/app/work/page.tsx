@@ -3,6 +3,7 @@
 import { useRef, useState, useCallback, useEffect } from "react";
 import { motion, useSpring, AnimatePresence } from "framer-motion";
 import Link from "next/link";
+import { ArrowUpRight } from "lucide-react";
 import Image from "next/image";
 import EcosystemGrid from "@/components/EcosystemGrid";
 
