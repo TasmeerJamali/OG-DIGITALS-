@@ -290,133 +290,260 @@ function SplitText({ children, className = "" }: { children: string; className?:
     );
 }
 
-// Platinum Holographic Card Component
-function PlatinumTeamCard({ member, index }: { member: typeof team[0]; index: number }) {
-    const cardRef = useRef<HTMLDivElement>(null);
-    const cursorX = useRef(0);
-    const cursorY = useRef(0);
-    const [rotateX, setRotateX] = useState(0);
-    const [rotateY, setRotateY] = useState(0);
-    const [shineOpacity, setShineOpacity] = useState(0);
-    const [shinePos, setShinePos] = useState({ x: 0, y: 0 });
+// Custom hook for aggressive random character generation
+function useCorruption(active: boolean, speed = 30) {
+    const [text, setText] = useState("");
 
-    const isInView = useInView(cardRef, { once: true });
+    useEffect(() => {
+        if (!active) {
+            setText("");
+            return;
+        }
 
-    const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-        if (!cardRef.current) return;
-        const rect = cardRef.current.getBoundingClientRect();
-        const centerX = rect.left + rect.width / 2;
-        const centerY = rect.top + rect.height / 2;
+        const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789$#@%&[]{}<>";
+        const interval = setInterval(() => {
+            setText(Array(10).fill(0).map(() => chars[Math.floor(Math.random() * chars.length)]).join(""));
+        }, speed);
 
-        // Calculate tilt
-        const x = e.clientX - centerX;
-        const y = e.clientY - centerY;
+        return () => clearInterval(interval);
+    }, [active, speed]);
 
-        // Damping for smooth tilt
-        setRotateX(-y / 15);
-        setRotateY(x / 15);
+    return text;
+}
 
-        // Calculate shine position
-        const normalizedX = (e.clientX - rect.left) / rect.width;
-        const normalizedY = (e.clientY - rect.top) / rect.height;
-        setShinePos({ x: normalizedX * 100, y: normalizedY * 100 });
-        setShineOpacity(1);
-    };
+// Aggressive Glitch Text that changes fonts and weights
+const GlitchTextV2 = ({ text, active }: { text: string; active: boolean }) => {
+    const [display, setDisplay] = useState(text);
+    const fonts = ["font-mono", "font-sans", "font-serif"];
+    const weights = ["font-light", "font-normal", "font-bold", "font-black"];
+    const [currentFont, setCurrentFont] = useState("font-bold");
 
-    const handleMouseLeave = () => {
-        setRotateX(0);
-        setRotateY(0);
-        setShineOpacity(0);
+    useEffect(() => {
+        if (!active) {
+            setDisplay(text);
+            setCurrentFont("font-bold");
+            return;
+        }
+
+        const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ!@#$%^&*()_+-=[]{}|;':,./<>?";
+        let iterations = 0;
+
+        const interval = setInterval(() => {
+            // Text Scramble
+            setDisplay(
+                text.split("").map((letter, index) => {
+                    if (index < iterations) return text[index];
+                    return letters[Math.floor(Math.random() * letters.length)];
+                }).join("")
+            );
+
+            // Font Chaos
+            if (Math.random() > 0.7) {
+                setCurrentFont(`${fonts[Math.floor(Math.random() * fonts.length)]} ${weights[Math.floor(Math.random() * weights.length)]}`);
+            }
+
+            if (iterations >= text.length) {
+                // Keep scrambling even after "done" for the virus effect
+                // iterations = 0; 
+            } else {
+                iterations += 1 / 2;
+            }
+        }, 40);
+
+        return () => clearInterval(interval);
+    }, [active, text]);
+
+    return (
+        <span className={`${currentFont} transition-all duration-75 inline-block`}>
+            {display}
+        </span>
+    );
+};
+
+// The Viral Overlay - heavy DOM manipulation for "Code Rain" effect
+const ViralOverlay = ({ active, color }: { active: boolean; color: string }) => {
+    const [lines, setLines] = useState<string[]>([]);
+
+    useEffect(() => {
+        if (!active) {
+            setLines([]);
+            return;
+        }
+
+        const phrases = [
+            "SYSTEM_FAILURE", "CORRUPTION_DETECTED", "OVERRIDE_AUTH",
+            "CEO_IS_OUR_LOVE", "WORSHIP_THE_CODE", "DIGITAL_ASCENSION",
+            "NO_ESCAPE", "JOIN_THE_HIVE", "PLAY_THE_GAME",
+            "0x9A_ERROR", "STACK_OVERFLOW", "MEMORY_LEAK"
+        ];
+
+        const interval = setInterval(() => {
+            setLines(prev => {
+                const newLine = `${Math.random().toString(36).substring(7)} // ${phrases[Math.floor(Math.random() * phrases.length)]}`;
+                const newLines = [...prev, newLine];
+                if (newLines.length > 15) newLines.shift();
+                return newLines;
+            });
+        }, 80);
+
+        return () => clearInterval(interval);
+    }, [active]);
+
+    return (
+        <div className="absolute inset-0 overflow-hidden pointer-events-none z-20 mix-blend-screen">
+            {lines.map((line, i) => (
+                <div
+                    key={i}
+                    className="text-[10px] font-mono leading-none opacity-70 whitespace-nowrap"
+                    style={{
+                        color: Math.random() > 0.8 ? "#ff003c" : color, // Random red sparks
+                        marginLeft: `${Math.random() * 20}%`
+                    }}
+                >
+                    {line}
+                </div>
+            ))}
+        </div>
+    );
+};
+
+// THE VIRAL CARD COMPONENT
+function ViralTeamCard({ member, index }: { member: typeof team[0]; index: number }) {
+    const [hovered, setHovered] = useState(false);
+    const corruptionCheck = useCorruption(hovered);
+
+    // Scale up massively on hover
+    const variants = {
+        idle: {
+            scale: 1,
+            zIndex: 10,
+            filter: "grayscale(100%) blur(0px)",
+        },
+        hover: {
+            scale: 1.15,
+            zIndex: 50,
+            filter: "grayscale(0%) blur(0px)",
+            transition: { duration: 0.3, ease: "circOut" }
+        }
     };
 
     return (
         <motion.div
-            ref={cardRef}
-            initial={{ opacity: 0, y: 50 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: index * 0.15 }}
-            viewport={{ once: true }}
-            onMouseMove={handleMouseMove}
-            onMouseLeave={handleMouseLeave}
-            className="group relative h-[300px] md:h-[380px] w-full cursor-pointer"
-            style={{ perspective: 1000 }}
+            initial="idle"
+            whileHover="hover"
+            animate={hovered ? "hover" : "idle"}
+            onMouseEnter={() => setHovered(true)}
+            onMouseLeave={() => setHovered(false)}
+            variants={variants}
+            className="group relative h-[400px] w-full cursor-pointer bg-black border border-white/10 overflow-hidden"
         >
-            <motion.div
-                className="relative w-full h-full rounded-2xl overflow-hidden bg-[#0a0a0a] border border-white/5"
-                style={{
-                    rotateX,
-                    rotateY,
-                    transformStyle: "preserve-3d",
-                }}
-                transition={{ type: "spring", stiffness: 300, damping: 20 }}
-            >
-                {/* 1. Base Metallic Gradient (Subtle) */}
+            {/* 1. Background Chaos */}
+            <div className="absolute inset-0 bg-[#050505] transition-colors duration-300 group-hover:bg-black">
+                {/* Random flashing grid */}
                 <div
-                    className="absolute inset-0 z-0"
+                    className="absolute inset-0 opacity-10 group-hover:opacity-30 transition-opacity duration-100"
                     style={{
-                        background: `linear-gradient(135deg, #111 0%, #050505 50%, #1a1a1a 100%)`,
+                        backgroundImage: `linear-gradient(${member.color} 1px, transparent 1px), linear-gradient(90deg, ${member.color} 1px, transparent 1px)`,
+                        backgroundSize: hovered ? "20px 20px" : "40px 40px",
                     }}
                 />
+            </div>
 
-                {/* 2. Holographic Rainbow Sheen (Mouse Follow) */}
-                <motion.div
-                    className="absolute inset-0 z-10 opacity-0 group-hover:opacity-40 transition-opacity duration-300 pointer-events-none"
-                    style={{
-                        background: `radial-gradient(circle at ${shinePos.x}% ${shinePos.y}%, rgba(255,255,255,0.15), transparent 60%)`,
-                        mixBlendMode: "overlay",
-                    }}
-                />
+            {/* 2. Viral Overlay (Code Rain) */}
+            <ViralOverlay active={hovered} color={member.color} />
 
-                {/* 3. Platinum Border Shine (Animated) */}
-                <div className="absolute inset-0 z-20 pointer-events-none rounded-2xl p-[1px]">
-                    <div className="absolute inset-0 rounded-2xl overflow-hidden">
+            {/* 3. Main Content Container */}
+            <div className="absolute inset-0 flex flex-col justify-between p-8 z-30">
+                {/* Top Bar */}
+                <div className="flex justify-between items-start">
+                    <div className="flex flex-col">
+                        <span className="text-[10px] font-mono text-white/40 mb-1">ID_REF</span>
+                        <span className="text-xl font-bold font-mono text-white">
+                            {hovered ? corruptionCheck.substring(0, 4) : member.id}
+                        </span>
+                    </div>
+                    {/* Status Indicator */}
+                    <div className="flex items-center gap-2">
+                        <span className="text-[10px] uppercase font-mono tracking-widest" style={{ color: hovered ? "#ff003c" : "#00ff00" }}>
+                            {hovered ? "INFECTED" : "SECURE"}
+                        </span>
                         <motion.div
-                            className="absolute top-0 left-0 w-[200%] h-[200%] -translate-x-1/2 -translate-y-1/2"
-                            style={{
-                                background: "conic-gradient(from 0deg, transparent 0%, rgba(255,255,255,0.3) 10%, transparent 20%)",
-                            }}
-                            animate={{ rotate: 360 }}
-                            transition={{ duration: 4, repeat: Infinity, ease: "linear" }}
+                            className="w-2 h-2 rounded-full"
+                            style={{ backgroundColor: hovered ? "#ff003c" : "#00ff00" }}
+                            animate={{ opacity: [1, 0.2, 1] }}
+                            transition={{ duration: hovered ? 0.1 : 2, repeat: Infinity }}
                         />
                     </div>
                 </div>
 
-                {/* 4. Content */}
-                <div className="absolute inset-0 z-30 flex flex-col items-center justify-center p-6 text-center" style={{ transform: "translateZ(30px)" }}>
-                    {/* Top ID */}
-                    <div className="absolute top-6 right-6 font-mono text-2xl font-bold text-white/5 group-hover:text-white/20 transition-colors">
-                        {member.id}
-                    </div>
+                {/* Center - MAIN GLITCH TITLE */}
+                <div className="relative">
+                    {/* Ghost text for chromatic aberration effect */}
+                    {hovered && (
+                        <>
+                            <div className="absolute top-0 left-1 text-5xl md:text-6xl font-black opacity-50 mix-blend-screen animate-pulse" style={{ color: "red" }}>
+                                {member.name}
+                            </div>
+                            <div className="absolute top-0 -left-1 text-5xl md:text-6xl font-black opacity-50 mix-blend-screen animate-pulse" style={{ color: "blue" }}>
+                                {member.name}
+                            </div>
+                        </>
+                    )}
 
-                    {/* Glitch Name */}
-                    <h3 className="text-4xl md:text-5xl font-bold text-white mb-2 tracking-tighter" style={{ textShadow: "0 0 10px rgba(255,255,255,0.1)" }}>
-                        <GlitchText text={member.name} />
+                    <h3 className="text-5xl md:text-6xl font-black text-white mb-2 relative z-10 leading-none">
+                        <GlitchTextV2 text={member.name} active={hovered} />
                     </h3>
 
-                    {/* Member Role Line */}
-                    <div className="h-[1px] w-12 bg-white/20 my-4 group-hover:w-24 group-hover:bg-[#a8ffc4] transition-all duration-500" />
-
-                    <span
-                        className="text-xs md:text-sm font-mono tracking-[0.2em] uppercase mb-4"
-                        style={{ color: "#a8ffc4" }}
-                    >
-                        {member.role}
-                    </span>
-
-                    {/* Animated Keywords */}
-                    <div className="flex gap-2 mt-2 opacity-0 group-hover:opacity-100 transition-opacity duration-500 delay-100">
-                        {member.keywords.map((kw, i) => (
-                            <span key={i} className="text-[10px] uppercase font-mono px-2 py-1 rounded border border-white/10 bg-white/5 text-white/50">
-                                {kw}
-                            </span>
-                        ))}
+                    <div className="h-[2px] w-full bg-white/10 mt-4 overflow-hidden">
+                        <motion.div
+                            className="h-full"
+                            style={{ backgroundColor: member.color }}
+                            initial={{ width: "0%" }}
+                            animate={{ width: hovered ? "100%" : "20%" }}
+                            transition={{ duration: 0.5, ease: "circIn" }}
+                        />
                     </div>
                 </div>
 
-                {/* 5. Scanline Overlay */}
-                <div className="absolute inset-0 z-40 bg-[linear-gradient(rgba(18,16,16,0)_50%,rgba(0,0,0,0.25)_50%),linear-gradient(90deg,rgba(255,0,0,0.06),rgba(0,255,0,0.02),rgba(0,0,255,0.06))] bg-[length:100%_4px,3px_100%] opacity-20 pointer-events-none" />
+                {/* Bottom - Role & Desc */}
+                <div>
+                    <span
+                        className="block text-sm font-mono tracking-[0.2em] uppercase mb-4"
+                        style={{ color: member.color }}
+                    >
+                        {hovered ? `<${member.role} />` : member.role}
+                    </span>
 
-            </motion.div>
+                    <p className="text-white/60 text-sm font-mono leading-relaxed h-[60px] overflow-hidden">
+                        {hovered ? (
+                            <span className="text-[#ff003c] font-bold">
+                                WARNING: ENTITY CONSCIOUSNESS DETECTED. DO NOT INTERACT.
+                                {corruptionCheck}
+                            </span>
+                        ) : (
+                            member.desc
+                        )}
+                    </p>
+                </div>
+            </div>
+
+            {/* 4. "Virus" Spreading Mask */}
+            <motion.div
+                className="absolute inset-0 bg-[#a8ffc4] z-10 mix-blend-difference pointer-events-none"
+                initial={{ clipPath: "circle(0% at 50% 50%)" }}
+                animate={{
+                    clipPath: hovered ? "circle(150% at 50% 50%)" : "circle(0% at 50% 50%)",
+                }}
+                transition={{ duration: 0.8, ease: "circIn" }}
+            />
+
+            {/* 5. Scanline & RGB Split Overlay effects */}
+            <div className="absolute inset-0 pointer-events-none z-40 opacity-20"
+                style={{
+                    backgroundImage: "linear-gradient(transparent 50%, rgba(0, 0, 0, 0.5) 50%)",
+                    backgroundSize: "100% 4px"
+                }}
+            />
         </motion.div>
     );
 }
@@ -696,10 +823,10 @@ export default function AboutPage() {
                         </h2>
                     </motion.div>
 
-                    {/* Creative Team Grid - Platinum Holographic Style */}
+                    {/* Creative Team Grid - VIRAL Style */}
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-8 relative perspective-1000">
                         {team.map((member, index) => (
-                            <PlatinumTeamCard key={member.id} member={member} index={index} />
+                            <ViralTeamCard key={member.id} member={member} index={index} />
                         ))}
                     </div>
                 </div>
