@@ -13,6 +13,7 @@ const BackgroundParticles = dynamic(() => import('@/components/QuantumParticles'
 });
 
 // Reliable URLs from Wikimedia/Official sources
+// Reliable URLs & Assets
 const partners = [
     {
         name: "MIP",
@@ -20,35 +21,35 @@ const partners = [
         url: "https://mip.com.pk/",
         logo: "https://madeinpakistan.online/MIP-LOGO.png",
         color: "#006600",
-        description: "Global B2B Platform connecting Pakistani businesses."
+        description: "Global B2B Platform connecting Pakistani businesses.",
+        needsWhiteBg: false
     },
     {
         name: "JAC",
         fullName: "JAC Motors",
         url: "https://jac.com.cn/",
-        // Wikimedia transparent PNG
-        logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/c/cd/Jac-motors.png/800px-Jac-motors.png",
+        logo: "https://seeklogo.com/images/J/jac-motors-logo-8F8D62C384-seeklogo.com.png", // Verified Clean PNG
         color: "#E31D1A",
-        description: "Leading authentic automotive manufacturing."
+        description: "Leading authentic automotive manufacturing.",
+        needsWhiteBg: false
     },
     {
         name: "Gandhara",
         fullName: "Gandhara Automobiles",
         url: "https://ghandharaautomobiles.com.pk/",
-        // Using Isuzu logo as they are the main partner/assembler and Ghandhara logo is hard to find transparently hosted
-        // But let's try the one found or Isuzu for authenticity "Powering Industry Leaders"
-        logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/4/47/Isuzu_sample_logo.svg/1024px-Isuzu_sample_logo.svg.png",
+        logo: "/assets/clients/ghandhara.png", // User Uploaded
         color: "#D7000F",
-        description: "Pioneering the future of transportation in Pakistan."
+        description: "Pioneering the future of transportation in Pakistan.",
+        needsWhiteBg: true
     },
     {
         name: "Prince",
         fullName: "Prince Automotive",
         url: "http://www.regalautomobiles.com/",
-        // DFSK Logo
-        logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/30/Dongfeng_Sokon_%28DFSK%29_logo.svg/1200px-Dongfeng_Sokon_%28DFSK%29_logo.svg.png",
+        logo: "/assets/clients/prince.png", // User Uploaded
         color: "#C7000B",
-        description: "Innovative engineering meets modern design."
+        description: "Innovative engineering meets modern design.",
+        needsWhiteBg: true
     }
 ];
 
