@@ -113,18 +113,7 @@ export default function GrowthGraph() {
                 </div>
             ))}
 
-            {/* Overlay Text "Production in Record Time" vibe */}
-            <motion.div
-                className="absolute top-10 left-4 md:left-0 text-white/30 font-mono text-xs md:text-sm"
-                initial={{ opacity: 0, x: -20 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                transition={{ delay: 1.5 }}
-            >
-                <div>[SYSTEM_OPTIMIZED]</div>
-                <div className="text-[#a8ffc4] mt-1">
-                    {">"} SCALING_VELOCITY: MAX
-                </div>
-            </motion.div>
+            {/* Overlay Text removed */}
 
         </div>
     );
