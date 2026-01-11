@@ -14,7 +14,7 @@ const cards = [
                 {/* Visual: Cursor Switching Tabs */}
                 <div className="relative w-64 h-40 bg-[#0F0F0F] rounded-lg border border-white/10 overflow-hidden flex flex-col p-4 shadow-2xl skew-x-1 group-hover:skew-x-0 transition-transform duration-500">
                     {/* Fake Browser Tabs */}
-                    <div className="flex gap-2 mb-4 border-b border-white/5 pb-2">
+                    <div className="flex gap-2 mb-4 border-b border-white/5 pb-2 justify-center">
                         {[0, 1, 2].map((i) => (
                             <motion.div
                                 key={i}
@@ -42,13 +42,13 @@ const cards = [
                     {/* Content Placeholder */}
                     <div className="space-y-3">
                         <motion.div
-                            className="h-2 w-3/4 bg-white/10 rounded-full"
+                            className="h-2 w-3/4 bg-white/10 rounded-full mx-auto"
                             animate={{ width: ["75%", "90%", "75%"] }}
                             transition={{ duration: 4, repeat: Infinity }}
                         />
-                        <div className="flex gap-2">
+                        <div className="flex gap-2 justify-center">
                             <div className="h-20 w-1/3 bg-white/5 rounded" />
-                            <div className="h-20 w-2/3 bg-white/5 rounded relative overflow-hidden">
+                            <div className="h-20 w-1/2 bg-white/5 rounded relative overflow-hidden">
                                 <motion.div
                                     className="absolute inset-0 bg-[#a8ffc4]/5"
                                     animate={{ x: ["-100%", "100%"] }}
@@ -62,7 +62,7 @@ const cards = [
                     <motion.div
                         className="absolute z-20"
                         animate={{
-                            x: [20, 90, 160, 20],
+                            x: [80, 120, 160, 80],
                             y: [10, 10, 10, 10],
                             scale: [1, 0.9, 1, 1]
                         }}
@@ -82,42 +82,46 @@ const cards = [
         link: "How we create",
         visual: (
             <div className="relative w-full h-full bg-gradient-to-b from-[#1a1a1a] to-black flex items-center justify-center overflow-hidden group-hover:from-[#2a2a2a] group-hover:to-black transition-colors duration-500">
-                {/* Visual: Moving Cards + Popping Dollars */}
-                <div className="relative w-full h-full flex items-center justify-center">
+                {/* Visual: VERTICAL Moving Feed + Popping Dollars */}
+                <div className="relative w-full h-full flex flex-col items-center justify-center">
 
-                    {/* Moving Ribbon */}
-                    <motion.div
-                        className="flex gap-4 absolute"
-                        animate={{ x: [-100, -300] }}
-                        transition={{ duration: 8, repeat: Infinity, ease: "linear" }}
-                    >
-                        {[1, 2, 3, 4, 5].map((i) => (
-                            <div key={i} className="w-32 h-44 bg-[#0F0F0F] border border-white/5 rounded-xl flex flex-col p-3 gap-2 shadow-xl group-hover:border-[#a8ffc4]/20 transition-colors">
-                                <div className="w-full aspect-video bg-white/5 rounded-lg overflow-hidden relative">
-                                    <div className="absolute inset-0 bg-gradient-to-br from-transparent to-white/10" />
+                    {/* Vertical Scrolling Feed */}
+                    <div className="relative w-48 h-full overflow-hidden mask-linear-fade">
+                        <div className="absolute inset-x-0 top-0 h-12 bg-gradient-to-b from-[#1a1a1a] z-10" />
+                        <div className="absolute inset-x-0 bottom-0 h-12 bg-gradient-to-t from-black z-10" />
+
+                        <motion.div
+                            className="flex flex-col gap-4 w-full"
+                            animate={{ y: [-20, -200] }}
+                            transition={{ duration: 6, repeat: Infinity, ease: "linear" }}
+                        >
+                            {[1, 2, 3, 4, 5].map((i) => (
+                                <div key={i} className="w-full h-28 bg-[#0F0F0F] border border-white/5 rounded-xl flex items-center p-3 gap-3 shadow-xl group-hover:border-[#a8ffc4]/20 transition-colors">
+                                    <div className="h-16 w-16 bg-white/5 rounded-lg flex-shrink-0" />
+                                    <div className="flex flex-col gap-2 w-full">
+                                        <div className="h-2 w-full bg-white/10 rounded-full" />
+                                        <div className="h-2 w-2/3 bg-white/5 rounded-full" />
+                                    </div>
                                 </div>
-                                <div className="h-2 w-1/2 bg-white/10 rounded-full" />
-                                <div className="h-2 w-3/4 bg-white/5 rounded-full" />
-                            </div>
-                        ))}
-                    </motion.div>
+                            ))}
+                        </motion.div>
+                    </div>
 
-                    {/* Floating Dollars */}
+                    {/* Popping Dollars (Centered) */}
                     {[1, 2, 3].map((i) => (
                         <motion.div
                             key={i}
-                            className="absolute z-10 flex flex-col items-center"
-                            initial={{ opacity: 0, y: 50, scale: 0.5 }}
-                            animate={{ opacity: [0, 1, 0], y: -50, scale: 1.2 }}
+                            className="absolute z-20"
+                            initial={{ opacity: 0, scale: 0.5, y: 0 }}
+                            animate={{ opacity: [0, 1, 0], scale: [0.5, 1.5, 1], y: -80 }}
                             transition={{
-                                duration: 2.5,
+                                duration: 2,
                                 repeat: Infinity,
-                                delay: i * 0.8,
+                                delay: i * 0.6,
                                 ease: "easeOut"
                             }}
-                            style={{ left: `${30 + i * 15}%` }}
                         >
-                            <span className="text-[#a8ffc4] font-bold text-2xl drop-shadow-[0_0_10px_#a8ffc4]">$</span>
+                            <span className="text-[#a8ffc4] font-bold text-3xl drop-shadow-[0_0_15px_#a8ffc4]">$</span>
                         </motion.div>
                     ))}
                 </div>
