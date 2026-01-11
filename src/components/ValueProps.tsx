@@ -164,12 +164,12 @@ export default function ValueProps() {
                     initial={{ opacity: 0, y: 20 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
-                    className="mb-20 text-center max-w-3xl mx-auto"
+                    className="mb-20 flex flex-col items-center text-center w-full"
                 >
                     <h2 className="text-4xl md:text-6xl font-bold text-white mb-6 tracking-tight">
                         Dominate the <span className="text-[#a8ffc4]">Feed.</span>
                     </h2>
-                    <p className="text-white/40 text-lg md:text-xl leading-relaxed">
+                    <p className="text-white/40 text-lg md:text-xl leading-relaxed max-w-2xl">
                         With multiple ways to interact, we adapt to your workflow. Whether you need a full-scale platform or a strategic pivot, we have the tools.
                     </p>
                 </motion.div>
