@@ -329,94 +329,77 @@ export default function Navigation() {
                 </div>
             </motion.nav>
 
-            {/* Mobile Header */}
+            {/* Mobile Header - Deconstructed / Floating */}
             <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
+                initial={{ opacity: 0, y: -20 }}
+                animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: 1 }}
-                className="fixed top-4 left-4 right-4 z-50 lg:hidden"
+                className="fixed top-6 left-6 right-6 z-50 lg:hidden flex justify-between items-start pointer-events-none"
             >
-                <div className="relative rounded-full" style={{ padding: "1px" }}>
-                    <div
-                        className="absolute inset-0 rounded-full"
-                        style={{
-                            background:
-                                "linear-gradient(135deg, rgba(255,255,255,0.2) 0%, rgba(255,255,255,0.05) 50%, rgba(255,255,255,0.2) 100%)",
-                        }}
-                    />
-                    <div
-                        className="flex items-center justify-between rounded-full relative overflow-hidden"
-                        style={{
-                            background:
-                                "linear-gradient(145deg, rgba(60,70,80,0.7) 0%, rgba(40,50,60,0.6) 50%, rgba(50,60,70,0.65) 100%)",
-                            backdropFilter: "blur(20px) saturate(180%)",
-                            WebkitBackdropFilter: "blur(20px) saturate(180%)",
-                            padding: "6px 10px",
-                            boxShadow:
-                                "inset 0 1px 1px rgba(255,255,255,0.15), 0 8px 32px rgba(0,0,0,0.25)",
-                        }}
-                    >
-                        <div
-                            className="absolute inset-0 pointer-events-none rounded-full"
-                            style={{
-                                background:
-                                    "linear-gradient(180deg, rgba(255,255,255,0.18) 0%, transparent 40%)",
-                            }}
-                        />
-
-                        <Link
-                            href="/"
-                            className="relative flex items-center justify-center rounded-full overflow-hidden"
-                            style={{
-                                width: "32px",
-                                height: "32px",
-                                zIndex: 1,
-                                background: "rgba(0,0,0,0.8)",
-                                border: "1px solid rgba(168,255,196,0.3)",
-                            }}
-                        >
-                            <div className="scale-[0.16] pointer-events-none">
-                                <HexDomeLogo />
-                            </div>
-                        </Link>
-
-                        <button
-                            onClick={() => setIsMenuOpen(!isMenuOpen)}
-                            className="relative flex flex-col justify-center items-center"
-                            style={{ width: "32px", height: "32px", gap: "5px", zIndex: 1 }}
-                        >
-                            <motion.span
-                                style={{
-                                    width: "18px",
-                                    height: "2px",
-                                    background: "white",
-                                    borderRadius: "2px",
-                                }}
-                                animate={isMenuOpen ? { rotate: 45, y: 7 } : { rotate: 0, y: 0 }}
-                            />
-                            <motion.span
-                                style={{
-                                    width: "18px",
-                                    height: "2px",
-                                    background: "white",
-                                    borderRadius: "2px",
-                                }}
-                                animate={isMenuOpen ? { opacity: 0 } : { opacity: 1 }}
-                            />
-                            <motion.span
-                                style={{
-                                    width: "18px",
-                                    height: "2px",
-                                    background: "white",
-                                    borderRadius: "2px",
-                                }}
-                                animate={
-                                    isMenuOpen ? { rotate: -45, y: -7 } : { rotate: 0, y: 0 }
-                                }
-                            />
-                        </button>
+                {/* Floating Logo - Left */}
+                <Link
+                    href="/"
+                    className="pointer-events-auto relative flex items-center justify-center rounded-full transition-transform active:scale-95"
+                    style={{
+                        width: "48px",
+                        height: "48px",
+                        background: "rgba(10,10,10,0.6)",
+                        backdropFilter: "blur(12px)",
+                        border: "1px solid rgba(255,255,255,0.1)",
+                        boxShadow: "0 4px 20px rgba(0,0,0,0.2)",
+                    }}
+                >
+                    <div className="scale-[0.25]">
+                        <HexDomeLogo />
                     </div>
-                </div>
+                </Link>
+
+                {/* Floating Menu Trigger - Right */}
+                <button
+                    onClick={() => setIsMenuOpen(!isMenuOpen)}
+                    className="pointer-events-auto relative flex flex-col justify-center items-center rounded-full transition-all active:scale-95 group"
+                    style={{
+                        width: "48px",
+                        height: "48px",
+                        gap: "5px",
+                        background: isMenuOpen ? "transparent" : "rgba(10,10,10,0.6)",
+                        backdropFilter: isMenuOpen ? "none" : "blur(12px)",
+                        border: isMenuOpen ? "none" : "1px solid rgba(255,255,255,0.1)",
+                        boxShadow: isMenuOpen ? "none" : "0 4px 20px rgba(0,0,0,0.2)",
+                    }}
+                >
+                    <motion.span
+                        style={{
+                            width: "20px",
+                            height: "2px",
+                            background: "white",
+                            borderRadius: "2px",
+                            originX: 0.5,
+                        }}
+                        animate={isMenuOpen ? { rotate: 45, y: 7 } : { rotate: 0, y: 0 }}
+                    />
+                    <motion.span
+                        style={{
+                            width: "20px",
+                            height: "2px",
+                            background: "white",
+                            borderRadius: "2px",
+                        }}
+                        animate={isMenuOpen ? { opacity: 0, scale: 0 } : { opacity: 1, scale: 1 }}
+                    />
+                    <motion.span
+                        style={{
+                            width: "20px",
+                            height: "2px",
+                            background: "white",
+                            borderRadius: "2px",
+                            originX: 0.5,
+                        }}
+                        animate={
+                            isMenuOpen ? { rotate: -45, y: -7 } : { rotate: 0, y: 0 }
+                        }
+                    />
+                </button>
             </motion.div>
 
             {/* Mobile Menu Overlay */}
