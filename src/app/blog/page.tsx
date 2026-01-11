@@ -55,7 +55,7 @@ export default function Blog() {
             <Navigation />
 
             {/* 1. HERO SECTION (Editorial Style) */}
-            <section className="relative pt-96 pb-20 px-6 md:px-12 border-b border-white/5">
+            <section className="relative pt-[35vh] pb-20 px-6 md:px-12 border-b border-white/5">
                 <div className="max-w-[1800px] mx-auto">
 
                     {/* Tiny Label */}
@@ -184,11 +184,11 @@ function ArticleRow({ article, index }: { article: any, index: number }) {
                     <div className="absolute inset-0 bg-black/10 group-hover:bg-transparent transition-colors duration-500 z-10" />
 
                     <motion.div style={{ y }} className="w-full h-[120%] -mt-[10%]">
-                        <Image
+                        {/* Using standard img with motion to ensure immediate loading without config restart */}
+                        <motion.img
                             src={article.image}
                             alt={article.title}
-                            fill
-                            className="object-cover grayscale group-hover:grayscale-0 transition-all duration-700"
+                            className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700"
                         />
                     </motion.div>
                 </div>
