@@ -177,7 +177,7 @@ const cards = [
 
 export default function ValueProps() {
     return (
-        <section className="relative py-32 px-6 md:px-12 bg-black overflow-hidden">
+        <section className="relative w-full left-0 right-0 mx-auto py-32 px-6 md:px-12 bg-black overflow-hidden flex flex-col items-center">
             <div className="max-w-7xl mx-auto">
                 <motion.div
                     initial={{ opacity: 0, y: 20 }}
