@@ -114,7 +114,7 @@ export default function About() {
         <section
             id="culture"
             ref={containerRef}
-            className="relative min-h-screen bg-black py-20 md:py-24 px-6 md:px-16 overflow-hidden"
+            className="relative bg-black py-20 md:py-24 px-6 md:px-16 overflow-hidden"
         >
             {/* Background decorative elements */}
             <div className="absolute inset-0 pointer-events-none overflow-hidden">
@@ -172,7 +172,7 @@ export default function About() {
                         className="text-xs tracking-[0.4em] uppercase font-medium"
                         style={{ color: "rgba(168,255,196,0.8)" }}
                     >
-                        About us
+                        WE MAKE IT WORK.
                     </span>
                 </motion.div>
 
