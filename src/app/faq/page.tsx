@@ -78,113 +78,10 @@ const faqData = [
 ];
 
 // ----------------------------------------------------------------------
-// 2. MAIN PAGE
+// 2. MAIN PAGE COMPONENT
 // ----------------------------------------------------------------------
 
 export default function FAQ() {
-    return (
-        <main className={`min-h-screen bg-[#050505] text-white selection:bg-[#a8ffc4] selection:text-black ${spaceGrotesk.className} overflow-x-hidden`}>
-            <Navigation />
-
-            {/* 1. PINNED SCROLL TRIGGER CONTAINER */}
-            {/* Increased height to 300vh to give plenty of 'scroll time' for the effect */}
-            {/* The content inside is 'sticky', so it stays pinned while the container scrolls. */}
-            <div className="relative h-[300vh] bg-[#050505]">
-
-                {/* The Sticky Viewport */}
-                <div className="sticky top-0 h-screen w-full overflow-hidden">
-                    <TearingInterface />
-                </div>
-
-            </div>
-
-            {/* 2. MAIN CONTENT (FAQs) */}
-            {/* This naturally flows in ONLY after the 300vh container is fully scrolled past */}
-            <div className="relative z-20 bg-[#050505] border-t border-white/10 -mt-[1px]">
-                <section className="max-w-[1920px] mx-auto px-6 md:px-12 lg:px-20 py-32">
-                    <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-24">
-
-                        {/* Sticky Header Column */}
-                        <div className="lg:col-span-5 relative">
-                            <div className="sticky top-32 h-fit flex flex-col justify-start">
-                                <FAQHeader />
-                            </div>
-                        </div>
-
-                        {/* Scrollable Questions Column */}
-                        <div className="lg:col-span-7 pt-12 lg:pt-32">
-                            <FAQList />
-                        </div>
-
-                    </div>
-                </section>
-
-                <Footer />
-            </div>
-        </main>
-    );
-}
-
-// ----------------------------------------------------------------------
-// 3. TEARING INTERFACE (The Core Effect)
-// ----------------------------------------------------------------------
-
-function TearingInterface() {
-    // We bind the scroll of the STICKY container to this animation
-    // The trick: We are INSIDE a sticky container that is 100vh tall.
-    // The PARENT is 300vh tall.
-    // Framer Motion useScroll usually tracks the viewport or a ref.
-    // Since we want to map the PARENT's scroll progress to this animation, we need a ref to the PARENT in a real app,
-    // OR we can just use window scroll if this is the top of the page.
-    // Given the structure, `useScroll` with a ref needs the ref to be the scrollable container (window).
-    // But we want to track "how far through the 300vh section are we?"
-    // The easiest way without complex context passing is using the ref on the sticky parent (which doesn't scroll) is tricky.
-    // CORRECT APPROACH: We put the ref on the 300vh container in the main component, but let's try to infer it here 
-    // by using a ref that captures the whole view. 
-
-    // Actually, checking standard patterns: Use `useScroll` with target: containerRef of the TALL container.
-    // Since TearingInterface is the child, we'll move the ref logic here but it needs to point to the parent.
-    // For simplicity, we can just make `TearingInterface` accept the Ref or render the structure here.
-
-    // Refactoring to keep it simple: We'll render the component assuming it's the full-screen view.
-    // We'll rely on the fact that `sticky` elements stay in viewport while parent scrolls.
-    // We need to track the Global Scroll Progress relative to this section.
-
-    // Instead of complex ref passing, let's wrap the logic in one component above or use an absolute scroll tracker.
-    // Let's use `document.documentElement` scroll or just a generic ref if possible.
-    // Ideally, we move `TearingInterface` logic up into the parent `FAQ` function or pass the ref down.
-
-    // Let's refactor slightly to ensure the Ref is correctly attached to the 300vh container.
-    return (
-        <TearingLogic />
-    )
-}
-
-function TearingLogic() {
-    // We need to find the parent container to track progress. 
-    // Since we can't easily select "parent" in React, let's change the architecture:
-    // The `TearingInterface` IS the visualization, but the scroll progress comes from elsewhere.
-    // To solve "blank space", we make sure the Green Layer persists.
-
-    // Workaround: We will use a ref attached to a div that spans the full 300vh in the parent.
-    // But since I can't change the parent in this isolated component easily without prop drilling...
-    // I will rewrite the export default `FAQ` to handle the ref and pass `scrollYProgress` down.
-
-    // Wait, I am overwriting the whole file. I can do whatever I want.
-    // REWRITE: FAQ component holds the ref.
-
-    /* This is a placeholder to prevent error, real logic moved to FAQ component below */
-    return null;
-}
-
-
-// RE-WRITING THE MAIN COMPONENT TO HANDLE THE REF CORRECTLY
-/* 
-   We define `FAQ` again properly below to replace the one above. 
-   The one above was just to satisfy the structure of previous edits. 
-*/
-
-function RealFAQ() {
     const containerRef = useRef(null);
     const { scrollYProgress } = useScroll({
         target: containerRef,
@@ -192,15 +89,15 @@ function RealFAQ() {
     });
 
     // 0.0 -> 0.8: The Tear Happens (Pinned)
-    // 0.8 -> 1.0: The Scroll Release (Optional, usually just stays open)
-
-    // Force the tear to complete by 80% of the scroll distance
+    // The animation completes well before the user finishes scrolling the 300vh container,
+    // ensuring the content below is ready to be viewed.
     const tearProgress = useTransform(scrollYProgress, [0, 0.8], [0, 1]);
 
+    // Shutters Move Apart
     const topY = useTransform(tearProgress, [0, 1], ["0%", "-100%"]);
     const bottomY = useTransform(tearProgress, [0, 1], ["0%", "100%"]);
 
-    // The Green Layer Scale
+    // Green Layer Parallax
     const greenScale = useTransform(tearProgress, [0, 1], [0.85, 1]);
     const greenOpacity = useTransform(tearProgress, [0, 0.2], [0, 1]);
 
@@ -209,6 +106,7 @@ function RealFAQ() {
             <Navigation />
 
             {/* 1. SCROLL TRIGGER CONTAINER (300vh) */}
+            {/* The user scrolls through this tall container, but the visual content is 'sticky' inside it */}
             <div ref={containerRef} className="relative h-[300vh] bg-[#050505]">
 
                 {/* 2. STICKY VIEWPORT (100vh) */}
@@ -217,7 +115,7 @@ function RealFAQ() {
                     {/* A. REVEAL LAYER (Green) */}
                     <div className="absolute inset-0 z-0 flex items-center justify-center bg-[#a8ffc4] overflow-hidden">
 
-                        {/* Noise & Vigentte */}
+                        {/* Noise & Vignette Overlay */}
                         <div className="absolute inset-0 opacity-[0.14] bg-[url('https://grainy-gradients.vercel.app/noise.svg')]" />
                         <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_0%,rgba(0,0,0,0.15)_100%)]" />
 
@@ -305,9 +203,8 @@ function RealFAQ() {
 }
 
 // ----------------------------------------------------------------------
-// EXPORTING THE CORRECT COMPONENT
+// 3. HELPER COMPONENTS
 // ----------------------------------------------------------------------
-/* We need to make sure we export `RealFAQ` as default */
 
 function FAQHeader() {
     return (
@@ -442,6 +339,3 @@ function AccordionItem({
         </motion.div>
     )
 }
-
-// Export the Real Component
-export default RealFAQ;
