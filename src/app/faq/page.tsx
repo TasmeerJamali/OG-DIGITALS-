@@ -182,7 +182,7 @@ export default function FAQ() {
                                 style={{
                                     clipPath: useTransform(unzipProgress, (val) => `inset(0 ${100 - val}% 0 0)`)
                                 }}
-                                className={`${playfair.className} text-[8vw] text-[#a8ffc4] font-black tracking-tighter drop-shadow-[0_0_10px_rgba(168,255,196,0.3)]`}
+                                className={`${playfair.className} text-[8vw] text-transparent bg-clip-text bg-gradient-to-b from-white via-[#a8ffc4] to-[#00ff88] font-black tracking-tighter drop-shadow-[0_0_30px_rgba(168,255,196,0.8)] sm:drop-shadow-[0_0_50px_rgba(168,255,196,0.6)]`}
                             >
                                 OG DIGITALS
                             </motion.h1>
