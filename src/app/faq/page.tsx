@@ -280,7 +280,7 @@ export default function FAQ() {
 
 function FAQHeader() {
     return (
-        <div className="flex flex-col gap-8">
+        <div className="flex flex-col gap-8 mb-20">
             <motion.div
                 initial={{ opacity: 0, x: -50 }}
                 whileInView={{ opacity: 1, x: 0 }}
@@ -327,10 +327,11 @@ function FAQHeader() {
     )
 }
 
+// 1. Add gap-6 to separate boxes
 function FAQList() {
     const [openId, setOpenId] = useState<string | null>(null);
     return (
-        <div className="flex flex-col relative w-full">
+        <div className="flex flex-col gap-6 relative w-full pb-32">
             {faqData.map((item, index) => (
                 <AccordionItem
                     key={item.id}
@@ -365,7 +366,8 @@ function AccordionItem({
         >
             <button
                 onClick={onClick}
-                className="w-full py-10 md:py-14 flex items-start text-left relative z-10"
+                // 2. Increased visual size: py-12 md:py-16
+                className="w-full py-12 md:py-16 flex items-start text-left relative z-10"
             >
                 <span className="absolute -top-6 -left-6 text-[100px] font-black text-white/[0.02] pointer-events-none select-none">
                     {item.id}
