@@ -2,7 +2,7 @@
 
 import React, { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import Navbar from "@/components/Navbar";
+import Navigation from "@/components/Navigation";
 import { MagneticButton } from "@/components/MagneticButton";
 
 // GSAP-like Easing
@@ -104,7 +104,7 @@ export default function ContactPage() {
 
     return (
         <main className="min-h-screen bg-black text-white selection:bg-[#a8ffc4] selection:text-black overflow-hidden font-sans">
-            <Navbar />
+            <Navigation />
 
             <div className="relative w-full h-screen flex flex-col items-center justify-center p-6 md:p-12 lg:p-24">
 
@@ -214,8 +214,8 @@ export default function ContactPage() {
                                                     key={s}
                                                     onClick={() => toggleService(s)}
                                                     className={`px-6 py-3 md:px-8 md:py-4 rounded-full text-lg md:text-2xl border transition-all duration-300 ${formState.services.includes(s)
-                                                            ? "bg-[#a8ffc4] text-black border-[#a8ffc4]"
-                                                            : "bg-transparent text-white/40 border-white/10 hover:border-white/40 hover:text-white"
+                                                        ? "bg-[#a8ffc4] text-black border-[#a8ffc4]"
+                                                        : "bg-transparent text-white/40 border-white/10 hover:border-white/40 hover:text-white"
                                                         }`}
                                                 >
                                                     {s}
@@ -235,8 +235,8 @@ export default function ContactPage() {
                                                         setTimeout(handleNext, 250); // Fast auto-advance
                                                     }}
                                                     className={`px-6 py-3 md:px-8 md:py-4 rounded-full text-lg md:text-2xl border transition-all duration-300 ${formState.budget === b
-                                                            ? "bg-[#a8ffc4] text-black border-[#a8ffc4]"
-                                                            : "bg-transparent text-white/40 border-white/10 hover:border-white/40 hover:text-white"
+                                                        ? "bg-[#a8ffc4] text-black border-[#a8ffc4]"
+                                                        : "bg-transparent text-white/40 border-white/10 hover:border-white/40 hover:text-white"
                                                         }`}
                                                 >
                                                     {b}
