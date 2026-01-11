@@ -3,6 +3,7 @@
 import { useRef, useState, useEffect } from "react";
 import { motion, useScroll, useTransform, useInView, useSpring } from "framer-motion";
 import HexagonGrid from "./HexagonGrid";
+import GrowthGraph from "./GrowthGraph";
 
 // Animated counter component
 function AnimatedCounter({ value, suffix = "", duration = 2 }: { value: number; suffix?: string; duration?: number }) {
@@ -216,7 +217,7 @@ export default function About() {
                 </div>
 
                 {/* Stats Grid - Premium Cards */}
-                <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 max-w-5xl mx-auto">
+                <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 max-w-5xl mx-auto mb-20 md:mb-32">
                     {stats.map((stat, index) => (
                         <motion.div
                             key={stat.label}
@@ -304,6 +305,9 @@ export default function About() {
                         </motion.div>
                     ))}
                 </div>
+
+                {/* Growth Graph Animation - Filling Blank Space */}
+                <GrowthGraph />
 
                 {/* Bottom CTA */}
                 <motion.div
