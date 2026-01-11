@@ -297,7 +297,7 @@ export default function ContactPage() {
                                     </p>
                                 </motion.div>
                             ) : (
-                                <form ref={formRef} onSubmit={handleSubmit} className="space-y-24">
+                                <form ref={formRef} onSubmit={handleSubmit} className="space-y-20">
                                     {/* 01. Name */}
                                     <motion.div
                                         initial={{ opacity: 0, y: 30 }}
@@ -306,9 +306,9 @@ export default function ContactPage() {
                                         viewport={{ once: true }}
                                         className="group"
                                     >
-                                        <div className="flex items-baseline gap-4 mb-8">
-                                            <span className="text-[#a8ffc4] font-mono text-sm tracking-widest">01</span>
-                                            <label className="text-3xl md:text-5xl font-bold text-white">What&apos;s your name?</label>
+                                        <div className="flex items-center gap-4 mb-4">
+                                            <span className="text-[#a8ffc4] font-mono text-xs tracking-widest border border-[#a8ffc4]/30 px-2 py-1 rounded-full">01</span>
+                                            <label className="text-xl md:text-2xl text-white/70 font-light">What&apos;s your name?</label>
                                         </div>
                                         <input
                                             type="text"
@@ -317,8 +317,8 @@ export default function ContactPage() {
                                             onChange={(e) => setFormState({ ...formState, name: e.target.value })}
                                             onFocus={() => setFocusedField("name")}
                                             onBlur={() => setFocusedField(null)}
-                                            className="w-full bg-transparent border-b border-white/20 py-6 text-2xl md:text-3xl text-white focus:border-[#a8ffc4] focus:outline-none transition-colors placeholder:text-white/10"
-                                            placeholder="John Doe *"
+                                            className="w-full bg-transparent border-b border-white/20 py-4 text-3xl md:text-5xl font-bold text-white focus:border-[#a8ffc4] focus:outline-none transition-all placeholder:text-white/10"
+                                            placeholder="John Doe"
                                         />
                                     </motion.div>
 
@@ -330,9 +330,9 @@ export default function ContactPage() {
                                         viewport={{ once: true }}
                                         className="group"
                                     >
-                                        <div className="flex items-baseline gap-4 mb-8">
-                                            <span className="text-[#a8ffc4] font-mono text-sm tracking-widest">02</span>
-                                            <label className="text-3xl md:text-5xl font-bold text-white">What&apos;s your email?</label>
+                                        <div className="flex items-center gap-4 mb-4">
+                                            <span className="text-[#a8ffc4] font-mono text-xs tracking-widest border border-[#a8ffc4]/30 px-2 py-1 rounded-full">02</span>
+                                            <label className="text-xl md:text-2xl text-white/70 font-light">What&apos;s your email?</label>
                                         </div>
                                         <input
                                             type="email"
@@ -341,8 +341,8 @@ export default function ContactPage() {
                                             onChange={(e) => setFormState({ ...formState, email: e.target.value })}
                                             onFocus={() => setFocusedField("email")}
                                             onBlur={() => setFocusedField(null)}
-                                            className="w-full bg-transparent border-b border-white/20 py-6 text-2xl md:text-3xl text-white focus:border-[#a8ffc4] focus:outline-none transition-colors placeholder:text-white/10"
-                                            placeholder="john@company.com *"
+                                            className="w-full bg-transparent border-b border-white/20 py-4 text-3xl md:text-5xl font-bold text-white focus:border-[#a8ffc4] focus:outline-none transition-all placeholder:text-white/10"
+                                            placeholder="john@company.com"
                                         />
                                     </motion.div>
 
@@ -354,9 +354,9 @@ export default function ContactPage() {
                                         viewport={{ once: true }}
                                         className="group"
                                     >
-                                        <div className="flex items-baseline gap-4 mb-8">
-                                            <span className="text-[#a8ffc4] font-mono text-sm tracking-widest">03</span>
-                                            <label className="text-3xl md:text-5xl font-bold text-white">What&apos;s the name of your organization?</label>
+                                        <div className="flex items-center gap-4 mb-4">
+                                            <span className="text-[#a8ffc4] font-mono text-xs tracking-widest border border-[#a8ffc4]/30 px-2 py-1 rounded-full">03</span>
+                                            <label className="text-xl md:text-2xl text-white/70 font-light">Organization name?</label>
                                         </div>
                                         <input
                                             type="text"
@@ -364,7 +364,7 @@ export default function ContactPage() {
                                             onChange={(e) => setFormState({ ...formState, company: e.target.value })}
                                             onFocus={() => setFocusedField("company")}
                                             onBlur={() => setFocusedField(null)}
-                                            className="w-full bg-transparent border-b border-white/20 py-6 text-2xl md:text-3xl text-white focus:border-[#a8ffc4] focus:outline-none transition-colors placeholder:text-white/10"
+                                            className="w-full bg-transparent border-b border-white/20 py-4 text-3xl md:text-5xl font-bold text-white focus:border-[#a8ffc4] focus:outline-none transition-all placeholder:text-white/10"
                                             placeholder="Acme Inc."
                                         />
                                     </motion.div>
@@ -376,9 +376,9 @@ export default function ContactPage() {
                                         transition={{ duration: 0.6, delay: 0.3 }}
                                         viewport={{ once: true }}
                                     >
-                                        <div className="flex items-baseline gap-4 mb-8">
-                                            <span className="text-[#a8ffc4] font-mono text-sm tracking-widest">04</span>
-                                            <label className="text-3xl md:text-5xl font-bold text-white">What services act you looking for?</label>
+                                        <div className="flex items-center gap-4 mb-8">
+                                            <span className="text-[#a8ffc4] font-mono text-xs tracking-widest border border-[#a8ffc4]/30 px-2 py-1 rounded-full">04</span>
+                                            <label className="text-xl md:text-2xl text-white/70 font-light">What services are you looking for?</label>
                                         </div>
                                         <div className="flex flex-wrap gap-3">
                                             {["Web Design", "Development", "SEO", "Social Media", "Content", "Other"].map((service) => (
@@ -387,9 +387,8 @@ export default function ContactPage() {
                                                     type="button"
                                                     onClick={(e) => {
                                                         e.preventDefault();
-                                                        // Toggle logic would go here, simplified for now
                                                     }}
-                                                    className="px-6 py-3 rounded-full border border-white/20 text-white/60 hover:border-[#a8ffc4] hover:text-[#a8ffc4] transition-all text-lg"
+                                                    className="px-6 py-3 rounded-full border border-white/10 bg-white/5 text-white/70 hover:bg-[#a8ffc4] hover:text-black hover:border-transparent transition-all duration-300 text-lg md:text-xl"
                                                 >
                                                     {service}
                                                 </button>
@@ -404,9 +403,9 @@ export default function ContactPage() {
                                         transition={{ duration: 0.6, delay: 0.4 }}
                                         viewport={{ once: true }}
                                     >
-                                        <div className="flex items-baseline gap-4 mb-8">
-                                            <span className="text-[#a8ffc4] font-mono text-sm tracking-widest">05</span>
-                                            <label className="text-3xl md:text-5xl font-bold text-white">Your project budget?</label>
+                                        <div className="flex items-center gap-4 mb-8">
+                                            <span className="text-[#a8ffc4] font-mono text-xs tracking-widest border border-[#a8ffc4]/30 px-2 py-1 rounded-full">05</span>
+                                            <label className="text-xl md:text-2xl text-white/70 font-light">Project budget?</label>
                                         </div>
                                         <div className="flex flex-wrap gap-4">
                                             {["< $10k", "$10k - 20k", "$20k - 50k", "$50k +"].map((option) => (
@@ -414,9 +413,9 @@ export default function ContactPage() {
                                                     key={option}
                                                     type="button"
                                                     onClick={() => setFormState({ ...formState, budget: option })}
-                                                    className={`px-8 py-4 rounded-full text-lg transition-all duration-300 border ${formState.budget === option
-                                                            ? "bg-[#a8ffc4] text-black border-[#a8ffc4] font-medium"
-                                                            : "bg-transparent text-white/50 border-white/10 hover:border-white/30 hover:text-white"
+                                                    className={`px-8 py-4 rounded-full text-lg md:text-xl transition-all duration-300 border ${formState.budget === option
+                                                        ? "bg-[#a8ffc4] text-black border-[#a8ffc4] font-semibold"
+                                                        : "bg-white/5 text-white/60 border-white/10 hover:bg-white/10 hover:text-white"
                                                         }`}
                                                 >
                                                     {option}
@@ -432,21 +431,22 @@ export default function ContactPage() {
                                         transition={{ duration: 0.6, delay: 0.5 }}
                                         viewport={{ once: true }}
                                     >
-                                        <div className="flex items-baseline gap-4 mb-8">
-                                            <span className="text-[#a8ffc4] font-mono text-sm tracking-widest">06</span>
-                                            <label className="text-3xl md:text-5xl font-bold text-white">Tell us about your project</label>
+                                        <div className="flex items-center gap-4 mb-4">
+                                            <span className="text-[#a8ffc4] font-mono text-xs tracking-widest border border-[#a8ffc4]/30 px-2 py-1 rounded-full">06</span>
+                                            <label className="text-xl md:text-2xl text-white/70 font-light">Tell us about your project</label>
                                         </div>
                                         <textarea
                                             required
-                                            rows={2}
+                                            rows={1}
                                             value={formState.message}
                                             onChange={(e) => setFormState({ ...formState, message: e.target.value })}
                                             onFocus={() => setFocusedField("message")}
                                             onBlur={() => setFocusedField(null)}
-                                            className="w-full bg-transparent border-b border-white/20 py-6 text-xl md:text-2xl text-white focus:border-[#a8ffc4] focus:outline-none transition-colors resize-none placeholder:text-white/10 leading-relaxed"
-                                            placeholder="I need help with... *"
+                                            className="w-full bg-transparent border-b border-white/20 py-4 text-3xl md:text-5xl font-bold text-white focus:border-[#a8ffc4] focus:outline-none transition-all resize-none placeholder:text-white/10 leading-tight"
+                                            placeholder="I need help with..."
                                         />
                                     </motion.div>
+
 
                                     {/* Submit Button */}
                                     <motion.div
@@ -511,6 +511,6 @@ export default function ContactPage() {
                     </motion.div>
                 </div>
             </section>
-        </main>
+        </main >
     );
 }
