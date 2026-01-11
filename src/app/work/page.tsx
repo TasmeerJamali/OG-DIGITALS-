@@ -417,47 +417,29 @@ export default function WorkPage() {
             {/* Spacer */}
             <div className="h-32" />
 
-            {/* Glassmorphic Spotlight CTA - At the Very Bottom */}
-            <section className="pb-20 pt-0 px-6 flex flex-col items-center justify-center w-full">
-                <motion.div
-                    className="relative max-w-4xl w-full"
-                    initial={{ opacity: 0, y: 50 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.8 }}
-                    viewport={{ once: true }}
-                >
-                    {/* Glass Container */}
-                    <div className="relative overflow-hidden rounded-[2.5rem] bg-white/5 border border-white/10 backdrop-blur-2xl p-12 md:p-20 text-center group">
+            {/* Minimalist Grid CTA */}
+            <section className="pb-20 pt-10 px-6 w-full max-w-7xl mx-auto">
+                <div className="border-t border-white/10 pt-20">
+                    <div className="flex flex-col md:flex-row items-start md:items-end justify-between gap-10">
 
-                        {/* Mouse Spotlight Effect */}
-                        <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"
-                            style={{ background: 'radial-gradient(600px circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(168, 255, 196, 0.15), transparent 40%)' }}
-                        />
+                        {/* Left: Big Typography */}
+                        <div className="text-left">
+                            <h2 className="text-5xl md:text-8xl font-black text-white tracking-tighter leading-[0.9] mb-4">
+                                HAVE AN<br />
+                                <span className="text-white/20">IDEA?</span>
+                            </h2>
+                        </div>
 
-                        <h2 className="text-4xl md:text-7xl font-bold text-white mb-8 tracking-tight relative z-10">
-                            Want to be next?
-                        </h2>
-
+                        {/* Right: Interactive Button */}
                         <Link
                             href="/#contact"
-                            className="relative z-10 inline-flex items-center gap-4 px-12 py-6 rounded-full font-bold text-xl transition-all duration-300 hover:scale-105 hover:shadow-[0_0_40px_rgba(168,255,196,0.4)]"
-                            style={{
-                                background: "linear-gradient(135deg, #a8ffc4 0%, #7affb8 100%)",
-                                color: "#000",
-                            }}
-                            onMouseMove={(e) => {
-                                const rect = e.currentTarget.parentElement?.getBoundingClientRect();
-                                if (rect) {
-                                    e.currentTarget.parentElement?.style.setProperty('--mouse-x', `${e.clientX - rect.left}px`);
-                                    e.currentTarget.parentElement?.style.setProperty('--mouse-y', `${e.clientY - rect.top}px`);
-                                }
-                            }}
+                            className="group relative flex items-center justify-center w-32 h-32 md:w-40 md:h-40 rounded-full bg-white text-black transition-transform duration-500 hover:scale-110"
                         >
-                            Start a Project
-                            <ArrowUpRight className="w-6 h-6" />
+                            <div className="absolute inset-0 rounded-full bg-[#a8ffc4] opacity-0 group-hover:opacity-100 transition-opacity duration-500 blur-xl" />
+                            <ArrowUpRight className="relative z-10 w-12 h-12 md:w-16 md:h-16 transition-transform duration-500 group-hover:rotate-45" strokeWidth={1.5} />
                         </Link>
                     </div>
-                </motion.div>
+                </div>
             </section>
         </main>
     );

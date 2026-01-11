@@ -84,14 +84,13 @@ export default function EcosystemGrid() {
                                     <motion.div
                                         animate={{ rotate: 360 }}
                                         transition={{ duration: 4, repeat: Infinity, ease: "linear" }}
-                                        className="w-[500px] h-[500px] border border-red-900/40 rounded-full border-dashed"
+                                        className="w-[500px] h-[500px] border-[2px] border-red-500/60 rounded-full border-dashed"
                                     />
                                     <motion.div
-                                        animate={{ scale: [0.8, 1.2], opacity: [0.5, 0] }}
+                                        animate={{ scale: [0.8, 1.2], opacity: [0.8, 0] }}
                                         transition={{ duration: 2, repeat: Infinity }}
-                                        className="absolute w-32 h-32 bg-red-500/10 rounded-full blur-xl"
+                                        className="absolute w-40 h-40 bg-red-500/20 rounded-full blur-xl"
                                     />
-                                    <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_20%,#000_100%)]" />
                                 </div>
                             )}
 
