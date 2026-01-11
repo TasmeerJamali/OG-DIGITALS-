@@ -268,6 +268,10 @@ export default function FAQ() {
                         </div>
                     </div>
                 </section>
+
+                {/* EXPLICT SPACER to guarantee gap before Footer */}
+                <div className="w-full h-64 md:h-96 bg-[#050505]" />
+
                 <Footer />
             </div>
         </main>
