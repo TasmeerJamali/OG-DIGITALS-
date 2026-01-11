@@ -408,8 +408,14 @@ export default function WorkPage() {
                 </motion.section>
             </div>
 
+            {/* Spacer */}
+            <div className="h-32" />
+
             {/* Extended Bottom Section - Ecosystem Grid */}
             <EcosystemGrid />
+
+            {/* Spacer */}
+            <div className="h-32" />
 
             {/* Glassmorphic Spotlight CTA - At the Very Bottom */}
             <section className="pb-20 pt-0 px-6 flex flex-col items-center justify-center w-full">
