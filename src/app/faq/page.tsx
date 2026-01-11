@@ -78,52 +78,6 @@ const faqData = [
 ];
 
 // ----------------------------------------------------------------------
-// 2. HELPER: SVG PATH GENERATOR
-// ----------------------------------------------------------------------
-// Generates a perfect sawtooth wave string for the 'd' attribute.
-const generateSawtooth = (width: number, height: number, teethCount: number, invert: boolean = false) => {
-    // Width of one full tooth cycle (Up and Down) = toothWidth * 2? 
-    // No, standard sawtooth: / \ / \
-    // Let's say one 'spike' is width/teethCount.
-    const spikeWidth = width / teethCount;
-
-    let d = "";
-
-    if (!invert) {
-        // TOP SHUTTER (Teeth point DOWN)
-        // Start top-left
-        d += `M 0 0 L ${width} 0 L ${width} ${height} `;
-
-        // Zigzag back from Right to Left along the bottom
-        for (let i = teethCount; i > 0; i--) {
-            // The bottom point is at y = height + amplitude? No, we want the teeth sticking OUT.
-            // Let's assume 'height' is the solid block height, and we add teeth below?
-            // Or 'height' is total height.
-            // Let's make the function simplest:
-            // It draws a rectangle with a jagged bottom edge.
-            // The jagged edge oscillates between y=height and y=height - amplitude.
-
-            // X goes from Width -> 0
-            const xRight = i * spikeWidth;
-            const xLeft = (i - 1) * spikeWidth;
-            const xMid = xRight - (spikeWidth / 2);
-
-            // L x y
-            // We want points DOWN.
-            // So the 'base' is at y=0 (relative to edge?).
-            // Let's define the shape explicitely:
-            // Solid block is 0 to 'baseY'.
-            // Teeth extend from 'baseY' to 'baseY + toothDepth'.
-
-            // Re-think: We construct specific strings in the component for clarity.
-            // This helper is complicating things. Removing for inline logic.
-        }
-    }
-    return d;
-};
-
-
-// ----------------------------------------------------------------------
 // 3. MAIN PAGE COMPONENT
 // ----------------------------------------------------------------------
 
@@ -138,11 +92,14 @@ export default function FAQ() {
     // 0.0 - 0.6 : Unzip (Horizontal)
     // 0.6 - 1.0 : Vertical Separation
 
-    const unzipProgress = useTransform(scrollYProgress, [0, 0.55], ["0%", "100%"]);
+    // TYPE FIX: Output numbers [0, 100] instead of strings ["0%", "100%"]
+    const unzipProgress = useTransform(scrollYProgress, [0, 0.55], [0, 100]);
 
+    // TYPE FIX: Output numbers [0, 1] instead of strings ["0%", "100%"]
     // We create a "V" shape opening or just simple vertical opening AFTER unzip
-    const verticalOpen = useTransform(scrollYProgress, [0.5, 0.9], ["0%", "100%"]);
+    const verticalOpen = useTransform(scrollYProgress, [0.5, 0.9], [0, 1]);
 
+    // Now this works because verticalOpen is a number
     const topY = useTransform(verticalOpen, [0, 1], ["0%", "-105%"]);
     const bottomY = useTransform(verticalOpen, [0, 1], ["0%", "105%"]);
 
@@ -172,13 +129,13 @@ export default function FAQ() {
 
                         <div className="absolute inset-0 opacity-[0.12] bg-[url('https://grainy-gradients.vercel.app/noise.svg')]" />
 
-                        {/* Progressive Reveal Mask */}
+                        {/* Progressive Reveal Mask (TYPE FIX: Removed parseFloat) */}
                         {/* This ensures the green content is only visible where we have 'unzipped' */}
                         <motion.div
                             style={{
                                 scale: greenScale,
                                 opacity: greenOpacity,
-                                clipPath: useTransform(unzipProgress, (val) => `inset(0 ${100 - parseFloat(val)}% 0 0)`)
+                                clipPath: useTransform(unzipProgress, (val) => `inset(0 ${100 - val}% 0 0)`)
                             }}
                             className="relative z-10 w-full max-w-[1800px] px-6 md:px-12 grid grid-cols-1 md:grid-cols-2 gap-12 items-center"
                         >
@@ -250,51 +207,6 @@ export default function FAQ() {
                         {/* SVG TEETH (Pointing UP) */}
                         {/* We position this to stand ABOVE the 50% line */}
                         {/* It must perfectly INTERLOCK with the Top Teeth (which are 10,20 points) */}
-                        {/* So Bottom Teeth must be valleys at 10,0? No. */}
-                        {/* Top: VVV (Points at x=10, 30, 50...) */}
-                        {/* Bottom: ^^^ (Points at x=0, 20, 40...) */}
-                        {/* Let's verify interlocking:
-                             Top: (0,0) -> (10,20) -> (20,0) ...
-                             Bottom Needs: (0,20) -> (10,0) -> (20,20) ...
-                             Wait, Top (10,20) is a low point (down). Bottom needs a low point (down? no up) at 10 to receive it.
-                             If Bottom is (10,0), then at x=10, top is at y=20 (down), bottom is at y=0 (up relative to its box?).
-                             Let's use absolute coords in the h=60 box.
-                             Top Box: y=0 is flush with shutter. y=20 is tip.
-                             Bottom Box: y=20 is flush with shutter. y=0 is tip.
-                             At x=10: Top is y=20. Bottom is y=0. They don't touch?
-                             Ideally they share the same zig zag line.
-                             Line: (0,0) -> (10,20) -> (20,0).
-                             Top Shutter fills EVERYTHING ABOVE this line.
-                             Bottom Shutter fills EVERYTHING BELOW this line.
-                             YES.
-                             
-                             Top SVG: Path = (0,0) -> (10,20) -> (20,0) ... -> Close with Top Rect.
-                             Bottom SVG: Path = (0,0) -> (10,20) -> (20,0) ... -> Close with Bottom Rect.
-                             
-                             So they literally use the SAME path logic for the interface line?
-                             
-                             Top SVG (Hanging Down):
-                             Rect from -100 to 0. Plus Teeth 0 to 20.
-                             Path: M0,0 L10,20 L20,0 ... L100,0 L100,-10 L0,-10 Z.
-                             
-                             Bottom SVG (Standing Up):
-                             Rect from 20 to 100.
-                             Path: M0,0 L10,20 L20,0 ... L100,0 L100,20 L0,20 Z.
-                             Wait, if Bottom fills below line, it needs to fill from line to y=infinity.
-                             The line is y(x) = sawtooth.
-                             Bottom fills y > sawtooth.
-                             Top fills y < sawtooth.
-                             
-                             Implementation:
-                             Top SVG is h=20. Path: M0,0 L10,20 L20,0 ... L100,0 Z. (Triangles pointing down). Gaps are transparent.
-                             Bottom SVG is h=20. Path: M0,0 L10,20 L20,0 ... L100,20 L0,20 Z. (Triangles pointing up? No, this fills the valleys).
-                             Let's trace:
-                             Top: (0,0)-(10,20)-(20,0). Triangle 1. Fills space 0-10.
-                             Bottom: (0,0)-(10,20)-(20,0)-(20,20)-(0,20).
-                                 Segment (0,0) to (10,20) to (20,0). This is the 'roof'.
-                                 (20,20) to (0,20) is the floor.
-                                 So it is a block with V-notches cut out of the top.
-                         */}
                         <div className="absolute top-0 left-0 w-full h-[60px] -translate-y-[99%] z-30">
                             <svg
                                 viewBox="0 0 100 20"
@@ -313,7 +225,7 @@ export default function FAQ() {
                     {/* ZIPPER LINE */}
                     <motion.div
                         style={{
-                            left: unzipProgress,
+                            left: useTransform(unzipProgress, (val) => `${val}%`),
                             opacity: lineOpacity
                         }}
                         className="absolute h-full w-[2px] bg-[#a8ffc4] z-40 top-0 shadow-[0_0_20px_#a8ffc4] mix-blend-screen"
