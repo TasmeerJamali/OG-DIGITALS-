@@ -478,7 +478,7 @@ export default function ServicesPage() {
                                 animate={{ opacity: 1, y: 0 }}
                                 transition={{ duration: 0.8, delay: 0.6 }}
                             >
-                                <span className="text-4xl font-bold text-[#a8ffc4]">04</span>
+                                <span className="text-4xl font-bold text-[#a8ffc4]">06</span>
                                 <span className="text-sm uppercase tracking-widest text-white/30">Core Services</span>
                             </motion.div>
                         </div>
