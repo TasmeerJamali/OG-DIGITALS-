@@ -256,7 +256,7 @@ export default function FAQ() {
 
             {/* 3. MAIN CONTENT (FAQs) */}
             <div className="relative z-30 bg-[#050505] min-h-screen">
-                <section className="max-w-[1920px] mx-auto px-6 md:px-12 lg:px-20 py-40">
+                <section className="max-w-[1920px] mx-auto px-6 md:px-12 lg:px-20 pt-40 pb-64">
                     <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-24">
                         <div className="lg:col-span-5 relative">
                             <div className="sticky top-32 h-fit flex flex-col justify-start">
