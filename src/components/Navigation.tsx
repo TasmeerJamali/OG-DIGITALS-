@@ -165,25 +165,34 @@ export default function Navigation() {
                         />
 
                         {/* Logo - BIGGER & SPINNING */}
-                        <Link
-                            href="/"
-                            className="relative flex items-center justify-center rounded-full hover:scale-105 transition-transform duration-300"
-                            style={{
-                                width: "48px", // Increased from 34px
-                                height: "48px", // Increased from 34px
-                                flexShrink: 0,
-                                zIndex: 1,
-                                background: "rgba(0,0,0,0.8)",
-                                border: "1px solid rgba(168,255,196,0.3)",
-                                boxShadow: "0 2px 8px rgba(168,255,196,0.3)",
-                                overflow: "hidden",
-                                marginLeft: "4px"
-                            }}
-                        >
-                            <div className="scale-[0.25] pointer-events-none"> {/* Increased scale */}
-                                <HexDomeLogo />
+                        <div className="relative group/logo ml-1">
+                            <Link
+                                href="/"
+                                className="relative flex items-center justify-center rounded-full transition-all duration-300"
+                                style={{
+                                    width: "55px", // Increased size
+                                    height: "55px", // Increased size
+                                    flexShrink: 0,
+                                    zIndex: 1,
+                                    background: "rgba(0,0,0,0.8)",
+                                    border: "1px solid rgba(168,255,196,0.3)",
+                                    boxShadow: "0 2px 8px rgba(168,255,196,0.3)",
+                                    overflow: "hidden",
+                                }}
+                            >
+                                <div className="scale-[0.3] pointer-events-none group-hover/logo:scale-[0.35] transition-transform duration-500">
+                                    <HexDomeLogo />
+                                </div>
+
+                                {/* Inner Glow on Hover */}
+                                <div className="absolute inset-0 bg-[#a8ffc4]/0 group-hover/logo:bg-[#a8ffc4]/10 transition-colors duration-300 rounded-full pointer-events-none" />
+                            </Link>
+
+                            {/* Home Indication Tooltip */}
+                            <div className="absolute left-full ml-3 top-1/2 -translate-y-1/2 px-3 py-1.5 bg-black/90 border border-[#a8ffc4]/30 text-[#a8ffc4] text-[10px] font-mono tracking-widest rounded-md opacity-0 -translate-x-2 group-hover/logo:opacity-100 group-hover/logo:translate-x-0 transition-all duration-300 pointer-events-none whitespace-nowrap shadow-[0_0_15px_rgba(168,255,196,0.2)]">
+                                HOME
                             </div>
-                        </Link>
+                        </div>
 
                         {/* Nav Links */}
                         <div
@@ -254,7 +263,7 @@ export default function Navigation() {
                                             >
                                                 {/* Connecting bridge */}
                                                 <div className="absolute top-[-20px] left-0 w-full h-[20px] bg-transparent" />
-                                                
+
                                                 <div className="flex flex-col gap-1">
                                                     {link.dropdown.map((item, i) => (
                                                         <Link
@@ -264,14 +273,14 @@ export default function Navigation() {
                                                         >
                                                             {/* Hover Background - Subtle Mint */}
                                                             <span className="absolute inset-0 bg-white/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                                                            
+
                                                             {/* Text */}
                                                             <span className="relative z-10 text-sm font-medium text-white/60 group-hover:text-white transition-colors duration-300">
                                                                 {item.name}
                                                             </span>
 
                                                             {/* Micro-Arrow on Hover */}
-                                                            <motion.span 
+                                                            <motion.span
                                                                 className="absolute right-3 text-[#a8ffc4] opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300"
                                                             >
                                                                 →
