@@ -307,50 +307,9 @@ export default function About() {
                 </div>
 
                 {/* Growth Graph Animation - Filling Blank Space */}
-                <div className="w-full flex justify-center my-24 md:my-40">
+                <div className="w-full flex justify-center mt-32 md:mt-48 mb-20">
                     <GrowthGraph />
                 </div>
-
-                {/* Bottom CTA */}
-                <motion.div
-                    className="mt-20 md:mt-32 text-center"
-                    initial={{ opacity: 0, y: 30 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.8, delay: 0.3 }}
-                    viewport={{ once: true }}
-                >
-                    <motion.a
-                        href="#contact"
-                        className="inline-flex items-center gap-4 text-lg md:text-xl font-medium group"
-                        style={{ color: "rgba(255,255,255,0.7)" }}
-                        whileHover={{ color: "#a8ffc4" }}
-                    >
-                        <span>Let&apos;s create something extraordinary</span>
-                        <motion.span
-                            className="w-12 h-12 rounded-full flex items-center justify-center"
-                            style={{
-                                border: "1px solid rgba(168,255,196,0.3)",
-                                background: "rgba(168,255,196,0.05)",
-                            }}
-                            whileHover={{
-                                scale: 1.1,
-                                background: "rgba(168,255,196,0.15)",
-                                borderColor: "rgba(168,255,196,0.6)",
-                            }}
-                            transition={{ duration: 0.3 }}
-                        >
-                            <svg
-                                className="w-5 h-5 transition-transform duration-300 group-hover:translate-x-1 group-hover:-translate-y-1"
-                                fill="none"
-                                viewBox="0 0 24 24"
-                                stroke="currentColor"
-                                strokeWidth={1.5}
-                            >
-                                <path strokeLinecap="round" strokeLinejoin="round" d="M7 17L17 7M17 7H7M17 7V17" />
-                            </svg>
-                        </motion.span>
-                    </motion.a>
-                </motion.div>
             </motion.div>
         </section>
     );
