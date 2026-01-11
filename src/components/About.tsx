@@ -307,7 +307,7 @@ export default function About() {
                 </div>
 
                 {/* Growth Graph Animation - Filling Blank Space */}
-                <div className="w-full flex justify-center mt-32 md:mt-48 mb-20">
+                <div className="w-full flex justify-center mt-20 md:mt-32 mb-10">
                     <GrowthGraph />
                 </div>
             </motion.div>

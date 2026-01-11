@@ -25,16 +25,7 @@ export default function GrowthGraph() {
 
     return (
         <div className="w-full max-w-4xl mx-auto h-[400px] relative flex items-end justify-center gap-8 md:gap-16 px-4 my-20">
-            {/* Background horizontal grid lines */}
-            <div className="absolute inset-0 z-0 flex flex-col justify-between pointer-events-none">
-                {[...Array(5)].map((_, i) => (
-                    <div
-                        key={i}
-                        className="w-full h-[1px] bg-white/5"
-                        style={{ opacity: 0.5 - i * 0.1 }}
-                    />
-                ))}
-            </div>
+            {/* Background horizontal grid lines removed */}
 
             {/* Bars */}
             {bars.map((bar, index) => (
