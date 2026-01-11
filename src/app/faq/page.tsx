@@ -1,51 +1,49 @@
 "use client";
 
-import { useState, useRef, useEffect } from "react";
-import { motion, AnimatePresence, useScroll, useTransform, useSpring } from "framer-motion";
+import { useState, useRef } from "react";
+import { motion, AnimatePresence, useScroll, useTransform, useSpring, MotionValue } from "framer-motion";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 import { Plus, X, ArrowUpRight } from "lucide-react";
 import { Playfair_Display, Space_Grotesk } from "next/font/google";
 import Link from "next/link";
-import Image from "next/image";
 
 // ----------------------------------------------------------------------
-// 1. CONFIGURATION & ASSETS
+// 1. FONTS & DATA
 // ----------------------------------------------------------------------
 
-const playfair = Playfair_Display({ 
-    subsets: ["latin"], 
+const playfair = Playfair_Display({
+    subsets: ["latin"],
     weight: ["400", "500", "600", "700", "800", "900"],
     variable: "--font-playfair"
 });
 
-const spaceGrotesk = Space_Grotesk({ 
-    subsets: ["latin"], 
+const spaceGrotesk = Space_Grotesk({
+    subsets: ["latin"],
     weight: ["300", "400", "500", "600", "700"],
     variable: "--font-space"
 });
 
-// Full FAQ Data Set (10 Items as requested)
 const faqData = [
     {
         id: "01",
         question: "What is the OG Digitals architecture?",
-        answer: "We maximize digital performance by blending high-end aesthetics with technical precision. Our architecture is built on a 'modular-first' principle, meaning every component—from the navigation to the database—is designed to be scalable, reusable, and infinitely adaptable. We don't just build websites; we engineer digital ecosystems."
+        answer: "We maximize digital performance by blending high-end aesthetics with technical precision. Our architecture is built on a 'modular-first' principle, meaning every component—from the navigation to the database—is designed to be scalable, reusable, and infinitely adaptable."
     },
     {
         id: "02",
         question: "Are your platforms truly SEO optimized?",
-        answer: "Optimization is in our DNA. We go beyond basic meta tags. We implement semantic HTML5, rigorous structured data (Schema.org), and achieve sub-second Core Web Vitals scores. Our 'data-first' rendering strategy ensures that search engines can crawl, index, and rank your content more effectively than your competitors."
+        answer: "Optimization is in our DNA. We go beyond basic meta tags. We implement semantic HTML5, rigorous structured data (Schema.org), and achieve sub-second Core Web Vitals scores. Our 'data-first' rendering strategy ensures that search engines can crawl, index, and rank your content effectively."
     },
     {
         id: "03",
         question: "Do projects require ongoing maintenance?",
-        answer: "Unlike fragile templates that break with every plugin update, our bespoke builds are engineered for stability. However, digital landscapes evolve using new browser standards and security protocols. We offer comprehensive maintenance suites (Security, Performance, Content) to ensure your platform remains at the bleeding edge."
+        answer: "Unlike fragile templates that break with every plugin update, our bespoke builds are engineered for stability. However, we offer comprehensive maintenance suites (Security, Performance, Content) to ensure your platform remains at the bleeding edge."
     },
     {
         id: "04",
         question: "How long does a typical delivery take?",
-        answer: "Precision takes time, but we move fast. A standard corporate identity platform is typically delivered in 4–6 weeks. Complex web applications, SaaS dashboards, or immersive 3D experiences generally range from 8–12 weeks. We provide a granular timeline during onboarding so you never have to guess."
+        answer: "Precision takes time, but we move fast. A standard corporate identity platform is typically delivered in 4–6 weeks. Complex web applications, SaaS dashboards, or immersive 3D experiences generally range from 8–12 weeks."
     },
     {
         id: "05",
@@ -55,66 +53,65 @@ const faqData = [
     {
         id: "06",
         question: "What technology stack do you use?",
-        answer: "We deploy on the Vercel Edge Network using Next.js 14, React, and Tailwind CSS for the frontend, with robust Node.js or Python backends. This 'Jamstack' approach guarantees your platform is secure, practically un-hackable, and scales globally without expensive server management."
+        answer: "We deploy on the Vercel Edge Network using Next.js 14, React, and Tailwind CSS for the frontend, with robust Node.js or Python backends. This 'Jamstack' approach guarantees your platform is secure and scales globally."
     },
     {
         id: "07",
         question: "Can I customize the design later?",
-        answer: "Absolutely. We build with a 'Headless' philosophy. Your content is decoupled from the design, allowing you to refresh the frontend visuals or add new feature sets without rebuilding the entire backend engine. It's future-proofing by design."
+        answer: "Absolutely. We build with a 'Headless' philosophy. Your content is decoupled from the design, allowing you to refresh the frontend visuals or add new feature sets without rebuilding the entire backend engine."
     },
     {
         id: "08",
         question: "Is there a warranty or support period?",
-        answer: "Every project launches with a dedicated 30-day Hypercare period. We monitor logs, fix any immediate anomalies, and ensure your team is fully trained. Beyond that, our support retainers act as your dedicated DevOps team on call."
+        answer: "Every project launches with a dedicated 30-day Hypercare period. We monitor logs, fix any immediate anomalies, and ensure your team is fully trained. Beyond that, our support retainers act as your dedicated DevOps team."
     },
     {
         id: "09",
         question: "Do you collaborate with international teams?",
-        answer: "We are a decentralized, remote-first collective. Whether you are in New York, London, or Dubai, our async-first workflow and transparent documentation ensure seamless collaboration across time zones. We currently serve clients in 7 different countries."
+        answer: "We are a decentralized, remote-first collective. We currently serve clients in 7 different countries and our async-first workflow ensures seamless collaboration across time zones."
     },
     {
         id: "10",
         question: "What do I own at the end?",
-        answer: "You own everything. The code, the design assets, the deployment configurations, and the IP. We believe in empowering our clients, not locking them in. You will receive a full handover repository and credentials upon completion."
+        answer: "You own everything. The code, the design assets, the deployment configurations, and the IP. We believe in empowering our clients, not locking them in."
     }
 ];
 
 // ----------------------------------------------------------------------
-// 2. MAIN PAGE COMPONENT
+// 2. MAIN PAGE LAYOUT
 // ----------------------------------------------------------------------
 
 export default function FAQ() {
     return (
-        <main className={`min-h-screen bg-[#050505] text-white selection:bg-[#a8ffc4] selection:text-black ${spaceGrotesk.className}`}>
+        <main className={`min-h-screen bg-[#050505] text-white selection:bg-[#a8ffc4] selection:text-black ${spaceGrotesk.className} overflow-x-hidden`}>
             <Navigation />
-            
-            {/* Smooth Scroll Wrapper Effect could go here if using Lenis, but native scroll is safer for now */}
-            
-            {/* A. Spacer to mimic the scroll depth before the reveal */}
-            <div className="h-[25vh] md:h-[40vh] w-full bg-[#050505] relative z-0 flex items-end justify-center pb-20">
-                <p className="text-white/20 text-sm uppercase tracking-[0.2em] font-light animate-pulse">
-                    ( Scroll to Reveal )
+
+            {/* A. Hero / Scroll Prompt */}
+            <div className="h-[50vh] flex flex-col items-center justify-end pb-20 relative z-10 bg-[#050505]">
+                <p className="text-white/40 text-xs tracking-[0.3em] uppercase animate-pulse">
+                    Scroll to Break
                 </p>
+                <div className="h-12 w-[1px] bg-white/20 mt-4" />
             </div>
 
-            {/* B. The "Tearing/Breaking" Transition Section */}
-            <BreakdownTransition />
+            {/* B. The "Vertical Tear" Transition */}
+            <TearingReveal />
 
-            {/* C. The Core Layout (Sticky Left + Scrollable Right) */}
-            <div className="relative z-10 bg-[#050505]">
-                <section className="max-w-[1920px] mx-auto px-6 md:px-12 lg:px-20 py-20 lg:py-40">
+            {/* C. The Main FAQ Content (Sticky Left + Scroll Right) */}
+            <div className="relative z-20 bg-[#050505] min-h-screen">
+                <section className="max-w-[1920px] mx-auto px-6 md:px-12 lg:px-20 py-32">
                     <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-24">
-                        
-                        {/* sticky wrapper */}
+
+                        {/* Sticky Header Column */}
                         <div className="lg:col-span-5 relative">
-                             <div className="sticky top-32 lg:h-[calc(100vh-8rem)] flex flex-col justify-start">
-                                 <StickyHeader />
-                             </div>
+                            <div className="sticky top-32 h-fit flex flex-col justify-start">
+                                <FAQHeader />
+                            </div>
                         </div>
 
-                        {/* scrollable list */}
+                        {/* Scrollable Questions Column */}
                         <div className="lg:col-span-7 pt-12 lg:pt-32">
-                             <FAQList />
+                            <FAQList />
                         </div>
 
                     </div>
@@ -127,187 +124,162 @@ export default function FAQ() {
 }
 
 // ----------------------------------------------------------------------
-// 3. TEARING / BREAKDOWN TRANSITION COMPONENT
+// 3. TEARING / BREAKING TRANSITION
 // ----------------------------------------------------------------------
-// This component implements the "glitch/cut" effect where the page splits.
+// Implements the "Cut in Half" effect revealing the green section behind.
 
-function BreakdownTransition() {
-    const containerRef = useRef<HTMLDivElement>(null);
+function TearingReveal() {
+    const targetRef = useRef<HTMLDivElement>(null);
     const { scrollYProgress } = useScroll({
-        target: containerRef,
-        offset: ["start end", "end start"]
+        target: targetRef,
+        offset: ["start start", "end start"]
     });
 
-    // We create Two layers to simulate the "Tear"
-    // 1. The Top Layer (Black) that pulls away
-    // 2. The Reveal Layer (Green) that expands
-    
-    // Parallax speed for the gltich effect
-    const yMovement = useTransform(scrollYProgress, [0, 1], [0, -100]);
-    
-    // The "Cut" Clip Paths - Using Polygon to create a sharp diagonal tearing edge
-    // Start: Closed (Top covers bottom)
-    // End: Open (Top reveals bottom)
-    
-    // Primary Cut: Top Left to Bottom Right
-    const cutProgress = useTransform(scrollYProgress, [0.3, 0.7], [0, 100]);
-    
-    // Using simple scaling for robustness, complex clip-paths can flicker on some browsers
-    // We will use a mask-like approach with two overlapping divs
-    
-    const scaleY = useTransform(scrollYProgress, [0.2, 0.6], [0, 1]);
-    const originY = "bottom";
+    // We pin the container for a moment to let the tear happen
+    // The "Tear" splits the black screen into Top and Bottom halves
+
+    // Smooth progress
+    const smoothProgress = useSpring(scrollYProgress, { stiffness: 100, damping: 30, restDelta: 0.001 });
+
+    // Top Half moves UP (-100%)
+    const topY = useTransform(smoothProgress, [0, 1], ["0%", "-100%"]);
+
+    // Bottom Half moves DOWN (100%)
+    const bottomY = useTransform(smoothProgress, [0, 1], ["0%", "100%"]);
+
+    // Opacity fade for the black shutters as they exit, to blend smoother
+    // const shutterOpacity = useTransform(smoothProgress, [0.8, 1], [1, 0]);
 
     return (
-        <section ref={containerRef} className="relative h-[80vh] md:h-[100vh] w-full flex items-center justify-center overflow-hidden bg-[#050505]">
-            
-            {/* The Green "Inside" Layer */}
-            <motion.div 
-                style={{ scaleY, transformOrigin: "bottom" }}
-                className="absolute inset-0 z-10 bg-[#a8ffc4] w-full h-full flex items-center justify-center origin-bottom"
-            >
-                <div className="relative w-full max-w-[1800px] px-6 lg:px-20 h-full flex flex-col justify-center items-start">
-                    
-                    {/* Visual noise/grain overlay for "glitch" feel */}
-                    <div className="absolute inset-0 opacity-10 pointer-events-none bg-[url('https://grainy-gradients.vercel.app/noise.svg')]" />
-                    
-                    {/* Floating Glitch Text */}
-                    <motion.div 
-                        initial={{ opacity: 0, x: -50 }}
-                        whileInView={{ opacity: 1, x: 0 }}
-                        transition={{ duration: 0.5, delay: 0.1 }}
-                        className="relative z-20 mix-blend-multiply"
-                    >
-                         <h2 className={`${playfair.className} text-black text-[12vw] md:text-[8vw] font-bold leading-[0.85] tracking-tighter`}>
-                             Let&#39;s Break<br />It Down.
-                         </h2>
-                         <div className="h-2 w-40 bg-black mt-8" />
-                         <p className="mt-6 text-black/80 font-mono text-sm tracking-widest uppercase">
-                             / Transparency Protocol
-                         </p>
-                    </motion.div>
+        <section ref={targetRef} className="relative h-[200vh]">
 
-                    {/* Decorative Diagonal Line */}
-                    <motion.div 
-                        style={{ scaleX: scrollYProgress }}
-                        className="absolute right-0 bottom-40 w-[60%] h-[1px] bg-black origin-right"
-                    />
+            {/* The Sticky Container that holds the animation layers */}
+            <div className="sticky top-0 h-screen w-full overflow-hidden">
+
+                {/* LAYER 1: The REVEALED Content (Green Background) */}
+                {/* This stays fixed at the back. As the shutters open, we see this. */}
+                <div className="absolute inset-0 bg-[#a8ffc4] flex items-center justify-center z-0">
+                    <div className="flex flex-col items-center justify-center text-center px-6">
+                        {/* "Let's Break It Down" Text */}
+                        <motion.h2
+                            style={{
+                                scale: useTransform(smoothProgress, [0.2, 0.8], [0.8, 1]),
+                                opacity: useTransform(smoothProgress, [0.1, 0.4], [0, 1])
+                            }}
+                            className={`${playfair.className} text-[15vw] lg:text-[12vw] leading-none font-bold text-black tracking-tighter`}
+                        >
+                            Let&#39;s Break<br />It Down.
+                        </motion.h2>
+
+                        <motion.div
+                            style={{ opacity: useTransform(smoothProgress, [0.4, 0.8], [0, 1]) }}
+                            className="mt-8 flex items-center gap-4"
+                        >
+                            <span className="h-[1px] w-20 bg-black" />
+                            <span className="text-black font-mono uppercase tracking-widest text-sm font-medium">The Details</span>
+                            <span className="h-[1px] w-20 bg-black" />
+                        </motion.div>
+                    </div>
                 </div>
-            </motion.div>
 
-            {/* The "Tear" Edge - A jagged SVG separator if we wanted, or just the sharp cut of the div above */}
-            {/* Simulating a secondary "shard" for the glitch effect */}
-            <motion.div 
-                style={{ 
-                    scaleY: useTransform(scrollYProgress, [0.25, 0.65], [0, 1]),
-                    opacity: useTransform(scrollYProgress, [0.25, 0.3], [0, 0.5]) 
-                }}
-                className="absolute inset-0 z-0 bg-white/20 mix-blend-overlay origin-bottom pointer-events-none"
-            />
-            
+                {/* LAYER 2: The TEARING Shutters (Black Foreground) */}
+                {/* Top Half */}
+                <motion.div
+                    style={{ y: topY }}
+                    className="absolute top-0 left-0 w-full h-[50vh] bg-[#050505] z-10 flex items-end justify-center"
+                >
+                    {/* Jagged Edge Bottom */}
+                    <div
+                        className="absolute bottom-[-1px] left-0 w-full h-[40px] bg-[#050505] translate-y-full"
+                        style={{
+                            clipPath: "polygon(0% 0%, 5% 100%, 10% 0%, 15% 100%, 20% 0%, 25% 100%, 30% 0%, 35% 100%, 40% 0%, 45% 100%, 50% 0%, 55% 100%, 60% 0%, 65% 100%, 70% 0%, 75% 100%, 80% 0%, 85% 100%, 90% 0%, 95% 100%, 100% 0%)"
+                        }}
+                    />
+                </motion.div>
+
+                {/* Bottom Half */}
+                <motion.div
+                    style={{ y: bottomY }}
+                    className="absolute bottom-0 left-0 w-full h-[50vh] bg-[#050505] z-10 flex items-start justify-center"
+                >
+                    {/* Jagged Edge Top */}
+                    <div
+                        className="absolute top-[-1px] left-0 w-full h-[40px] bg-[#050505] -translate-y-full"
+                        style={{
+                            clipPath: "polygon(0% 100%, 5% 0%, 10% 100%, 15% 0%, 20% 100%, 25% 0%, 30% 100%, 35% 0%, 40% 100%, 45% 0%, 50% 100%, 55% 0%, 60% 100%, 65% 0%, 70% 100%, 75% 0%, 80% 100%, 85% 0%, 90% 100%, 95% 0%, 100% 100%)"
+                        }}
+                    />
+                </motion.div>
+
+            </div>
         </section>
     );
 }
 
+
 // ----------------------------------------------------------------------
-// 4. STICKY HEADER COMPONENT
+// 4. HEADER CONTENT (Left Column)
 // ----------------------------------------------------------------------
 
-function StickyHeader() {
+function FAQHeader() {
     return (
-        <div className="flex flex-col h-full justify-between pb-10">
-            <div>
-                {/* Floating Label */}
-                <motion.div 
-                    initial={{ opacity: 0, y: 20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    className="flex items-center gap-3 mb-8"
-                >
-                    <span className="h-2 w-2 rounded-full bg-[#a8ffc4] animate-pulse" />
-                    <span className="text-[#a8ffc4] text-xs font-bold tracking-[0.2em] uppercase">
-                        Knowledge Base
-                    </span>
-                </motion.div>
+        <div className="flex flex-col gap-8">
+            <motion.h1
+                initial={{ opacity: 0, x: -50 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+                className={`${playfair.className} text-[20vw] lg:text-[14vw] leading-[0.8] text-white tracking-tighter`}
+            >
+                FAQ
+            </motion.h1>
 
-                {/* Massive Title */}
-                <motion.h1 
-                    initial={{ opacity: 0, y: 50 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-                    className={`${playfair.className} text-[22vw] lg:text-[14vw] leading-[0.75] font-medium text-white tracking-tighter ml-[-0.05em]`}
-                >
-                    FAQ
-                </motion.h1>
-
-                {/* Subtitle */}
-                <motion.h3 
-                    initial={{ opacity: 0 }}
-                    whileInView={{ opacity: 1 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 0.8, delay: 0.3 }}
-                    className="mt-12 text-2xl md:text-3xl text-white/90 font-light leading-snug max-w-md"
-                >
+            <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.8, delay: 0.2 }}
+                className="max-w-md"
+            >
+                <div className="w-12 h-1 bg-[#a8ffc4] mb-8" />
+                <h3 className="text-2xl md:text-3xl text-white/90 font-light leading-snug">
                     Got questions? We&#39;ve gathered the most common ones here — along with simple, helpful answers to guide you through.
-                </motion.h3>
-            </div>
+                </h3>
+            </motion.div>
 
-            {/* CTA Actions */}
-            <motion.div 
+            <motion.div
                 initial={{ opacity: 0 }}
                 whileInView={{ opacity: 1 }}
                 viewport={{ once: true }}
-                transition={{ duration: 0.8, delay: 0.5 }}
-                className="mt-12 flex flex-col sm:flex-row gap-6"
+                transition={{ duration: 0.8, delay: 0.4 }}
+                className="flex flex-wrap gap-4 mt-8"
             >
-                <Link 
-                    href="/contact" 
-                    className="group relative px-8 py-4 bg-[#a8ffc4] rounded-full overflow-hidden flex items-center justify-center gap-3"
-                >
-                    <div className="absolute inset-0 bg-white translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-in-out" />
-                    <span className="relative z-10 text-black font-bold text-lg group-hover:tracking-wider transition-all duration-300">
-                        Contact Us
-                    </span>
-                    <ArrowUpRight className="relative z-10 w-5 h-5 text-black group-hover:rotate-45 transition-transform duration-300" />
+                <Link href="/contact" className="px-8 py-4 bg-[#a8ffc4] rounded-full text-black font-bold flex items-center gap-2 hover:bg-white transition-colors">
+                    Contact Us <ArrowUpRight className="w-5 h-5" />
                 </Link>
-
-                <Link 
-                    href="/services" 
-                    className="group px-8 py-4 border border-white/20 rounded-full flex items-center justify-center gap-3 hover:bg-white/5 transition-colors duration-300"
-                >
-                    <span className="text-white font-medium text-lg">
-                        View Services
-                    </span>
+                <Link href="/services" className="px-8 py-4 border border-white/20 rounded-full text-white hover:bg-white/5 transition-colors">
+                    Our Services
                 </Link>
             </motion.div>
         </div>
-    );
+    )
 }
 
 // ----------------------------------------------------------------------
-// 5. LIST & ACCORDION COMPONENT
+// 5. ACCORDION LIST (Right Column)
 // ----------------------------------------------------------------------
 
 function FAQList() {
-    // We explicitly type the state to allow singular open items (accordion style)
     const [openId, setOpenId] = useState<string | null>(null);
 
-    const handleToggle = (id: string) => {
-        setOpenId(prev => prev === id ? null : id);
-    };
-
     return (
-        <div className="flex flex-col w-full">
-            {/* Top Border */}
-            <div className="w-full h-[1px] bg-white/20 mb-0" />
-
+        <div>
             {faqData.map((item, index) => (
-                <AccordionItem 
-                    key={item.id} 
-                    item={item} 
-                    isOpen={openId === item.id} 
-                    onToggle={() => handleToggle(item.id)}
+                <AccordionItem
+                    key={item.id}
+                    item={item}
+                    isOpen={openId === item.id}
+                    onClick={() => setOpenId(openId === item.id ? null : item.id)}
                     index={index}
                 />
             ))}
@@ -315,89 +287,64 @@ function FAQList() {
     );
 }
 
-function AccordionItem({ 
-    item, 
-    isOpen, 
-    onToggle,
-    index 
-}: { 
-    item: typeof faqData[0], 
-    isOpen: boolean, 
-    onToggle: () => void,
-    index: number 
+function AccordionItem({
+    item,
+    isOpen,
+    onClick,
+    index
+}: {
+    item: typeof faqData[0],
+    isOpen: boolean,
+    onClick: () => void,
+    index: number
 }) {
     return (
-        <motion.div 
+        <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-50px" }}
+            viewport={{ once: true, margin: "-10% 0px -10% 0px" }}
             transition={{ duration: 0.5, delay: index * 0.05 }}
             className="border-b border-white/10"
         >
-            <button 
-                onClick={onToggle}
-                className="group w-full py-10 md:py-12 flex items-start text-left cursor-pointer outline-none focus-visible:ring-2 focus-visible:ring-[#a8ffc4]"
+            <button
+                onClick={onClick}
+                className="w-full py-10 md:py-12 flex items-start text-left group"
             >
-                {/* ID Number */}
-                <div className="hidden md:block w-24 pt-2 shrink-0">
-                    <span className={`font-mono text-sm tracking-widest transition-colors duration-300 ${isOpen ? 'text-[#a8ffc4]' : 'text-white/40'}`}>
-                        /{item.id}
-                    </span>
-                </div>
+                {/* Number */}
+                <span className={`font-mono text-sm tracking-widest w-16 pt-2 transition-colors ${isOpen ? "text-[#a8ffc4]" : "text-white/30"}`}>
+                    /{item.id}
+                </span>
 
                 {/* Question */}
-                <div className="flex-grow pr-8 md:pr-12">
-                    <h3 className={`text-2xl md:text-4xl font-light transition-all duration-300 ease-out ${isOpen ? 'text-[#a8ffc4] translate-x-4' : 'text-white group-hover:text-white/80'}`}>
-                        {item.question}
-                    </h3>
-                </div>
+                <h3 className={`flex-1 text-2xl md:text-3xl font-light pr-8 transition-colors duration-300 ${isOpen ? "text-[#a8ffc4]" : "text-white group-hover:text-white/80"}`}>
+                    {item.question}
+                </h3>
 
-                {/* Interactive Icon */}
-                <div className="shrink-0 pt-2">
-                    <div className={`relative w-12 h-12 rounded-full border border-white/20 flex items-center justify-center transition-all duration-500 overflow-hidden ${isOpen ? 'bg-[#a8ffc4] border-[#a8ffc4]' : 'bg-transparent group-hover:border-white'}`}>
-                        {/* Wrapper for the rotation */}
-                        <motion.div
-                            animate={{ rotate: isOpen ? 180 : 0 }}
-                            transition={{ duration: 0.5, ease: [0.4, 0, 0.2, 1] }}
-                            className="relative"
-                        >
-                            {isOpen ? (
-                                <X className="w-5 h-5 text-black" />
-                            ) : (
-                                <Plus className="w-5 h-5 text-white" />
-                            )}
-                        </motion.div>
+                {/* Icon */}
+                <div className={`shrink-0 w-10 h-10 rounded-full border flex items-center justify-center transition-all duration-300 ${isOpen ? "border-[#a8ffc4] bg-[#a8ffc4]" : "border-white/20 bg-transparent group-hover:border-white"}`}>
+                    <div className={`transition-transform duration-500 ${isOpen ? "rotate-180" : "rotate-0"}`}>
+                        {isOpen ? <X className="text-black w-5 h-5" /> : <Plus className="text-white w-5 h-5" />}
                     </div>
                 </div>
             </button>
 
-            {/* Answer Reveal */}
             <AnimatePresence>
                 {isOpen && (
                     <motion.div
                         initial={{ height: 0, opacity: 0 }}
                         animate={{ height: "auto", opacity: 1 }}
                         exit={{ height: 0, opacity: 0 }}
-                        transition={{ 
-                            height: { duration: 0.5, ease: [0.04, 0.62, 0.23, 0.98] },
-                            opacity: { duration: 0.3, delay: 0.1 } 
-                        }}
+                        transition={{ duration: 0.4, ease: [0.04, 0.62, 0.23, 0.98] }}
                         className="overflow-hidden"
                     >
-                        <div className="pb-12 md:pl-24 max-w-4xl">
-                            <p className="text-lg md:text-xl text-white/70 font-light leading-relaxed">
+                        <div className="pl-16 pr-12 pb-12">
+                            <p className="text-lg text-white/60 leading-relaxed font-light">
                                 {item.answer}
                             </p>
-                            
-                            {/* Decorative tiny footer in answer */}
-                            <div className="mt-8 flex items-center gap-2 opacity-30">
-                                <div className="h-[1px] w-12 bg-white" />
-                                <span className="text-[10px] uppercase tracking-widest">End of Answer</span>
-                            </div>
                         </div>
                     </motion.div>
                 )}
             </AnimatePresence>
         </motion.div>
-    );
+    )
 }
