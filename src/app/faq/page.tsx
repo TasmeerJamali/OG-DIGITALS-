@@ -9,7 +9,7 @@ import { Playfair_Display, Space_Grotesk } from "next/font/google";
 import Link from "next/link";
 
 // ----------------------------------------------------------------------
-// 1. FONTS & DATA
+// 1. CONFIGURATION
 // ----------------------------------------------------------------------
 
 const playfair = Playfair_Display({
@@ -78,7 +78,7 @@ const faqData = [
 ];
 
 // ----------------------------------------------------------------------
-// 2. MAIN PAGE LAYOUT
+// 2. MAIN PAGE
 // ----------------------------------------------------------------------
 
 export default function FAQ() {
@@ -86,19 +86,19 @@ export default function FAQ() {
         <main className={`min-h-screen bg-[#050505] text-white selection:bg-[#a8ffc4] selection:text-black ${spaceGrotesk.className} overflow-x-hidden`}>
             <Navigation />
 
-            {/* A. Hero / Scroll Prompt */}
-            <div className="h-[50vh] flex flex-col items-center justify-end pb-20 relative z-10 bg-[#050505]">
-                <p className="text-white/40 text-xs tracking-[0.3em] uppercase animate-pulse">
-                    Scroll to Break
-                </p>
-                <div className="h-12 w-[1px] bg-white/20 mt-4" />
+            {/* 1. SCROLL TRIGGER CONTAINER */}
+            {/* We make this extra tall so the user scrolls "through" the tear */}
+            <div className="relative h-[250vh]">
+
+                {/* 2. STICKY INTERFACE */}
+                <div className="sticky top-0 h-screen w-full overflow-hidden">
+                    <TearingInterface />
+                </div>
+
             </div>
 
-            {/* B. The "Vertical Tear" Transition */}
-            <TearingReveal />
-
-            {/* C. The Main FAQ Content (Sticky Left + Scroll Right) */}
-            <div className="relative z-20 bg-[#050505] min-h-screen">
+            {/* 3. CONTENT BELOW */}
+            <div className="relative z-20 bg-[#050505] border-t border-white/10">
                 <section className="max-w-[1920px] mx-auto px-6 md:px-12 lg:px-20 py-32">
                     <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-24">
 
@@ -124,115 +124,132 @@ export default function FAQ() {
 }
 
 // ----------------------------------------------------------------------
-// 3. TEARING / BREAKING TRANSITION
+// 3. TEARING INTERFACE (The Core Effect)
 // ----------------------------------------------------------------------
-// Implements the "Cut in Half" effect revealing the green section behind.
 
-function TearingReveal() {
-    const targetRef = useRef<HTMLDivElement>(null);
+function TearingInterface() {
+    // We bind the scroll of the PARENT container to this animation
+    const containerRef = useRef(null);
+
+    // We want the tear to happen immediately as the user starts scrolling
     const { scrollYProgress } = useScroll({
-        target: targetRef,
-        offset: ["start start", "end start"]
+        target: containerRef,
+        offset: ["start start", "end end"] // Covers the whole 250vh
     });
 
-    // We pin the container for a moment to let the tear happen
-    // The "Tear" splits the black screen into Top and Bottom halves
+    // Smooth physics for the tear
+    const smoothProgress = useSpring(scrollYProgress, { stiffness: 60, damping: 20 });
 
-    // Smooth progress
-    const smoothProgress = useSpring(scrollYProgress, { stiffness: 100, damping: 30, restDelta: 0.001 });
+    // The Reveal Layer (Green) - Stays fixed behind? No, it's revealed.
+    // We add parallax to the green layer so it feels deep.
+    const greenScale = useTransform(smoothProgress, [0, 0.4], [0.8, 1]);
+    const greenOpacity = useTransform(smoothProgress, [0, 0.1], [0, 1]);
 
-    // Top Half moves UP (-100%)
-    const topY = useTransform(smoothProgress, [0, 1], ["0%", "-100%"]);
-
-    // Bottom Half moves DOWN (100%)
-    const bottomY = useTransform(smoothProgress, [0, 1], ["0%", "100%"]);
-
-    // Opacity fade for the black shutters as they exit, to blend smoother
-    // const shutterOpacity = useTransform(smoothProgress, [0.8, 1], [1, 0]);
+    // The Shutters (Black)
+    // They start touching. As we scroll (0 -> 0.4), they pull apart completely.
+    const topY = useTransform(smoothProgress, [0, 0.4], ["0%", "-105%"]);
+    const bottomY = useTransform(smoothProgress, [0, 0.4], ["0%", "105%"]);
 
     return (
-        <section ref={targetRef} className="relative h-[200vh]">
+        <div ref={containerRef} className="absolute inset-0 w-full h-full flex flex-col">
 
-            {/* The Sticky Container that holds the animation layers */}
-            <div className="sticky top-0 h-screen w-full overflow-hidden">
+            {/* A. THE REVEAL LAYER (Green) */}
+            <div className="absolute inset-0 z-0 flex items-center justify-center bg-[#a8ffc4] overflow-hidden">
 
-                {/* LAYER 1: The REVEALED Content (Green Background) */}
-                {/* This stays fixed at the back. As the shutters open, we see this. */}
-                <div className="absolute inset-0 bg-[#a8ffc4] flex items-center justify-center z-0">
-                    <div className="flex flex-col items-center justify-center text-center px-6">
-                        {/* "Let's Break It Down" Text */}
-                        <motion.h2
-                            style={{
-                                scale: useTransform(smoothProgress, [0.2, 0.8], [0.8, 1]),
-                                opacity: useTransform(smoothProgress, [0.1, 0.4], [0, 1])
-                            }}
-                            className={`${playfair.className} text-[15vw] lg:text-[12vw] leading-none font-bold text-black tracking-tighter`}
-                        >
-                            Let&#39;s Break<br />It Down.
-                        </motion.h2>
+                {/* Noise Texture for Premium Feel */}
+                <div className="absolute inset-0 opacity-[0.15] bg-[url('https://grainy-gradients.vercel.app/noise.svg')]" />
 
-                        <motion.div
-                            style={{ opacity: useTransform(smoothProgress, [0.4, 0.8], [0, 1]) }}
-                            className="mt-8 flex items-center gap-4"
-                        >
-                            <span className="h-[1px] w-20 bg-black" />
-                            <span className="text-black font-mono uppercase tracking-widest text-sm font-medium">The Details</span>
-                            <span className="h-[1px] w-20 bg-black" />
-                        </motion.div>
+                {/* Vignette / Inner Shadow */}
+                <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_0%,rgba(0,0,0,0.1)_100%)]" />
+
+                <motion.div
+                    style={{ scale: greenScale, opacity: greenOpacity }}
+                    className="relative z-10 text-center"
+                >
+                    <h2 className={`${playfair.className} text-[15vw] md:text-[12vw] leading-[0.85] font-black text-black tracking-tighter mix-blend-multiply`}>
+                        Let&#39;s Break<br />It Down.
+                    </h2>
+
+                    <div className="flex items-center justify-center gap-6 mt-12 mix-blend-multiply opacity-80">
+                        <div className="h-[2px] w-12 md:w-32 bg-black" />
+                        <span className={`${spaceGrotesk.className} text-black font-bold uppercase tracking-[0.3em] text-sm md:text-base`}>
+                            Transparency Protocol
+                        </span>
+                        <div className="h-[2px] w-12 md:w-32 bg-black" />
                     </div>
+                </motion.div>
+            </div>
+
+            {/* B. THE SHUTTERS (Black) */}
+
+            {/* TOP SHUTTER */}
+            <motion.div
+                style={{ y: topY }}
+                className="absolute top-0 left-0 w-full h-[50%] bg-[#050505] z-20 flex items-end justify-center drop-shadow-2xl"
+            >
+                {/* Initial Hero Content (Visible before scrolling) */}
+                <div className="absolute top-0 inset-x-0 h-full flex flex-col items-center justify-center pb-20">
+                    <h1 className={`${playfair.className} text-[8vw] text-white/10 font-black tracking-tighter`}>
+                        OG DIGITALS
+                    </h1>
                 </div>
 
-                {/* LAYER 2: The TEARING Shutters (Black Foreground) */}
-                {/* Top Half */}
-                <motion.div
-                    style={{ y: topY }}
-                    className="absolute top-0 left-0 w-full h-[50vh] bg-[#050505] z-10 flex items-end justify-center"
-                >
-                    {/* Jagged Edge Bottom */}
-                    <div
-                        className="absolute bottom-[-1px] left-0 w-full h-[40px] bg-[#050505] translate-y-full"
-                        style={{
-                            clipPath: "polygon(0% 0%, 5% 100%, 10% 0%, 15% 100%, 20% 0%, 25% 100%, 30% 0%, 35% 100%, 40% 0%, 45% 100%, 50% 0%, 55% 100%, 60% 0%, 65% 100%, 70% 0%, 75% 100%, 80% 0%, 85% 100%, 90% 0%, 95% 100%, 100% 0%)"
-                        }}
-                    />
-                </motion.div>
+                {/* Jagged Edge - Custom jagged polygon */}
+                <div
+                    className="absolute bottom-[-1px] left-0 w-full h-[6vh] bg-[#050505] translate-y-full origin-top"
+                    style={{
+                        clipPath: "polygon(0 0, 10% 100%, 20% 0, 30% 100%, 40% 0, 50% 100%, 60% 0, 70% 100%, 80% 0, 90% 100%, 100% 0)"
+                    }}
+                />
+            </motion.div>
 
-                {/* Bottom Half */}
-                <motion.div
-                    style={{ y: bottomY }}
-                    className="absolute bottom-0 left-0 w-full h-[50vh] bg-[#050505] z-10 flex items-start justify-center"
-                >
-                    {/* Jagged Edge Top */}
-                    <div
-                        className="absolute top-[-1px] left-0 w-full h-[40px] bg-[#050505] -translate-y-full"
-                        style={{
-                            clipPath: "polygon(0% 100%, 5% 0%, 10% 100%, 15% 0%, 20% 100%, 25% 0%, 30% 100%, 35% 0%, 40% 100%, 45% 0%, 50% 100%, 55% 0%, 60% 100%, 65% 0%, 70% 100%, 75% 0%, 80% 100%, 85% 0%, 90% 100%, 95% 0%, 100% 100%)"
-                        }}
-                    />
-                </motion.div>
+            {/* BOTTOM SHUTTER */}
+            <motion.div
+                style={{ y: bottomY }}
+                className="absolute bottom-0 left-0 w-full h-[50%] bg-[#050505] z-20 flex items-start justify-center drop-shadow-2xl"
+            >
+                <div className="absolute bottom-0 inset-x-0 h-full flex flex-col items-center justify-center pt-20">
+                    <p className="text-white/20 text-sm uppercase tracking-[0.5em] animate-pulse">
+                        Scroll to Reveal
+                    </p>
+                </div>
 
-            </div>
-        </section>
-    );
+                {/* Jagged Edge */}
+                <div
+                    className="absolute top-[-1px] left-0 w-full h-[6vh] bg-[#050505] -translate-y-full origin-bottom"
+                    style={{
+                        clipPath: "polygon(0 100%, 10% 0, 20% 100%, 30% 0, 40% 100%, 50% 0, 60% 100%, 70% 0, 80% 100%, 90% 0, 100% 100%)"
+                    }}
+                />
+            </motion.div>
+
+        </div>
+    )
 }
 
-
 // ----------------------------------------------------------------------
-// 4. HEADER CONTENT (Left Column)
+// 4. CONTENT COMPONENTS
 // ----------------------------------------------------------------------
 
 function FAQHeader() {
     return (
         <div className="flex flex-col gap-8">
-            <motion.h1
+            <motion.div
                 initial={{ opacity: 0, x: -50 }}
                 whileInView={{ opacity: 1, x: 0 }}
                 viewport={{ once: true }}
-                transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-                className={`${playfair.className} text-[20vw] lg:text-[14vw] leading-[0.8] text-white tracking-tighter`}
+                transition={{ duration: 0.8 }}
             >
-                FAQ
-            </motion.h1>
+                <div className="flex items-center gap-3 mb-6">
+                    <span className="w-3 h-3 bg-[#a8ffc4] rounded-full animate-ping" />
+                    <span className="text-[#a8ffc4] font-mono text-xs uppercase tracking-widest">
+                        Knowledge Base
+                    </span>
+                </div>
+                <h1 className={`${playfair.className} text-[20vw] lg:text-[14vw] leading-[0.8] text-white tracking-tighter`}>
+                    FAQ
+                </h1>
+            </motion.div>
 
             <motion.div
                 initial={{ opacity: 0, y: 20 }}
@@ -242,7 +259,7 @@ function FAQHeader() {
                 className="max-w-md"
             >
                 <div className="w-12 h-1 bg-[#a8ffc4] mb-8" />
-                <h3 className="text-2xl md:text-3xl text-white/90 font-light leading-snug">
+                <h3 className="text-xl md:text-2xl text-white/80 font-light leading-relaxed">
                     Got questions? We&#39;ve gathered the most common ones here — along with simple, helpful answers to guide you through.
                 </h3>
             </motion.div>
@@ -254,10 +271,10 @@ function FAQHeader() {
                 transition={{ duration: 0.8, delay: 0.4 }}
                 className="flex flex-wrap gap-4 mt-8"
             >
-                <Link href="/contact" className="px-8 py-4 bg-[#a8ffc4] rounded-full text-black font-bold flex items-center gap-2 hover:bg-white transition-colors">
+                <Link href="/contact" className="px-8 py-4 bg-[#a8ffc4] rounded-full text-black font-bold flex items-center gap-2 hover:bg-white hover:scale-105 transition-all duration-300">
                     Contact Us <ArrowUpRight className="w-5 h-5" />
                 </Link>
-                <Link href="/services" className="px-8 py-4 border border-white/20 rounded-full text-white hover:bg-white/5 transition-colors">
+                <Link href="/services" className="px-8 py-4 border border-white/20 rounded-full text-white hover:bg-white/5 hover:border-white/40 transition-all duration-300">
                     Our Services
                 </Link>
             </motion.div>
@@ -265,15 +282,11 @@ function FAQHeader() {
     )
 }
 
-// ----------------------------------------------------------------------
-// 5. ACCORDION LIST (Right Column)
-// ----------------------------------------------------------------------
-
 function FAQList() {
     const [openId, setOpenId] = useState<string | null>(null);
 
     return (
-        <div>
+        <div className="flex flex-col relative">
             {faqData.map((item, index) => (
                 <AccordionItem
                     key={item.id}
@@ -300,30 +313,41 @@ function AccordionItem({
 }) {
     return (
         <motion.div
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-10% 0px -10% 0px" }}
-            transition={{ duration: 0.5, delay: index * 0.05 }}
-            className="border-b border-white/10"
+            viewport={{ once: true, margin: "-10%" }}
+            transition={{ duration: 0.6, delay: index * 0.05 }}
+            className="border-b border-white/10 group"
         >
             <button
                 onClick={onClick}
-                className="w-full py-10 md:py-12 flex items-start text-left group"
+                className="w-full py-10 md:py-14 flex items-start text-left relative z-10"
             >
-                {/* Number */}
-                <span className={`font-mono text-sm tracking-widest w-16 pt-2 transition-colors ${isOpen ? "text-[#a8ffc4]" : "text-white/30"}`}>
-                    /{item.id}
+                {/* ID Background Effect */}
+                <span className="absolute -top-6 -left-6 text-[100px] font-black text-white/[0.02] pointer-events-none select-none">
+                    {item.id}
                 </span>
 
-                {/* Question */}
-                <h3 className={`flex-1 text-2xl md:text-3xl font-light pr-8 transition-colors duration-300 ${isOpen ? "text-[#a8ffc4]" : "text-white group-hover:text-white/80"}`}>
-                    {item.question}
-                </h3>
+                <div className="hidden md:flex flex-col w-24 shrink-0 pt-3">
+                    <span className={`font-mono text-xs tracking-widest transition-colors ${isOpen ? "text-[#a8ffc4]" : "text-white/40"}`}>
+                        /{item.id}
+                    </span>
+                </div>
 
-                {/* Icon */}
-                <div className={`shrink-0 w-10 h-10 rounded-full border flex items-center justify-center transition-all duration-300 ${isOpen ? "border-[#a8ffc4] bg-[#a8ffc4]" : "border-white/20 bg-transparent group-hover:border-white"}`}>
-                    <div className={`transition-transform duration-500 ${isOpen ? "rotate-180" : "rotate-0"}`}>
-                        {isOpen ? <X className="text-black w-5 h-5" /> : <Plus className="text-white w-5 h-5" />}
+                <div className="flex-1 pr-12">
+                    <h3 className={`text-2xl md:text-4xl font-light transition-all duration-300 ${isOpen ? "text-[#a8ffc4] translate-x-2" : "text-white group-hover:text-white/80"}`}>
+                        {item.question}
+                    </h3>
+                </div>
+
+                <div className={`shrink-0 w-12 h-12 rounded-full border flex items-center justify-center transition-all duration-500 overflow-hidden relative ${isOpen ? "border-[#a8ffc4]" : "border-white/20 group-hover:border-white"}`}>
+                    <div className={`absolute inset-0 bg-[#a8ffc4] transition-transform duration-500 origin-center ${isOpen ? "scale-100" : "scale-0"}`} />
+                    <div className="relative z-10">
+                        {isOpen ? (
+                            <X className="text-black w-5 h-5 transition-transform duration-500 rotate-90" />
+                        ) : (
+                            <Plus className="text-white w-5 h-5 transition-transform duration-500" />
+                        )}
                     </div>
                 </div>
             </button>
@@ -334,11 +358,11 @@ function AccordionItem({
                         initial={{ height: 0, opacity: 0 }}
                         animate={{ height: "auto", opacity: 1 }}
                         exit={{ height: 0, opacity: 0 }}
-                        transition={{ duration: 0.4, ease: [0.04, 0.62, 0.23, 0.98] }}
+                        transition={{ duration: 0.5, ease: [0.04, 0.62, 0.23, 0.98] }}
                         className="overflow-hidden"
                     >
-                        <div className="pl-16 pr-12 pb-12">
-                            <p className="text-lg text-white/60 leading-relaxed font-light">
+                        <div className="pl-0 md:pl-24 pr-8 md:pr-24 pb-14">
+                            <p className="text-lg md:text-xl text-white/70 leading-relaxed font-light">
                                 {item.answer}
                             </p>
                         </div>
