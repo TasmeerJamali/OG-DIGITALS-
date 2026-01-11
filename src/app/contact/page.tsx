@@ -93,6 +93,7 @@ export default function ContactPage() {
         name: "",
         email: "",
         company: "",
+        services: "",
         budget: "",
         message: "",
     });
@@ -333,192 +334,125 @@ export default function ContactPage() {
                                 </motion.div>
                             ) : (
                                 <BrowserWindow>
-                                    <form ref={formRef} onSubmit={handleSubmit} className="space-y-20">
+                                    <form ref={formRef} onSubmit={handleSubmit} className="space-y-12 font-mono text-sm md:text-base">
                                         {/* 01. Name */}
-                                        <motion.div
-                                            initial={{ opacity: 0, y: 30 }}
-                                            whileInView={{ opacity: 1, y: 0 }}
-                                            transition={{ duration: 0.6 }}
-                                            viewport={{ once: true }}
-                                            className="group"
-                                        >
-                                            <div className="flex items-center gap-4 mb-4">
-                                                <span className="text-[#a8ffc4] font-mono text-xs tracking-widest border border-[#a8ffc4]/30 px-2 py-1 rounded-full">01</span>
-                                                <label className="text-xl md:text-2xl text-white/70 font-light">What&apos;s your name?</label>
+                                        <div className="flex gap-4 md:gap-8 group">
+                                            <span className="text-white/20 shrink-0 select-none pt-4">01</span>
+                                            <div className="flex-1 border-b border-white/10 group-focus-within:border-[#a8ffc4] transition-colors pb-8">
+                                                <label className="block text-[#a8ffc4]/50 mb-2">// What&apos;s your name?</label>
+                                                <input
+                                                    type="text"
+                                                    required
+                                                    value={formState.name}
+                                                    onChange={(e) => setFormState({ ...formState, name: e.target.value })}
+                                                    className="w-full bg-transparent text-xl md:text-3xl text-[#a8ffc4] focus:outline-none placeholder:text-white/10"
+                                                    placeholder="John_Doe"
+                                                />
                                             </div>
-                                            <input
-                                                type="text"
-                                                required
-                                                value={formState.name}
-                                                onChange={(e) => setFormState({ ...formState, name: e.target.value })}
-                                                onFocus={() => setFocusedField("name")}
-                                                onBlur={() => setFocusedField(null)}
-                                                className="w-full bg-transparent border-b border-white/20 py-4 text-3xl md:text-5xl font-bold text-white focus:border-[#a8ffc4] focus:outline-none transition-all placeholder:text-white/10"
-                                                placeholder="John Doe"
-                                            />
-                                        </motion.div>
+                                        </div>
 
                                         {/* 02. Email */}
-                                        <motion.div
-                                            initial={{ opacity: 0, y: 30 }}
-                                            whileInView={{ opacity: 1, y: 0 }}
-                                            transition={{ duration: 0.6, delay: 0.1 }}
-                                            viewport={{ once: true }}
-                                            className="group"
-                                        >
-                                            <div className="flex items-center gap-4 mb-4">
-                                                <span className="text-[#a8ffc4] font-mono text-xs tracking-widest border border-[#a8ffc4]/30 px-2 py-1 rounded-full">02</span>
-                                                <label className="text-xl md:text-2xl text-white/70 font-light">What&apos;s your email?</label>
+                                        <div className="flex gap-4 md:gap-8 group">
+                                            <span className="text-white/20 shrink-0 select-none pt-4">02</span>
+                                            <div className="flex-1 border-b border-white/10 group-focus-within:border-[#a8ffc4] transition-colors pb-8">
+                                                <label className="block text-[#a8ffc4]/50 mb-2">// Your email address</label>
+                                                <input
+                                                    type="email"
+                                                    required
+                                                    value={formState.email}
+                                                    onChange={(e) => setFormState({ ...formState, email: e.target.value })}
+                                                    className="w-full bg-transparent text-xl md:text-3xl text-[#a8ffc4] focus:outline-none placeholder:text-white/10"
+                                                    placeholder="john@company.com"
+                                                />
                                             </div>
-                                            <input
-                                                type="email"
-                                                required
-                                                value={formState.email}
-                                                onChange={(e) => setFormState({ ...formState, email: e.target.value })}
-                                                onFocus={() => setFocusedField("email")}
-                                                onBlur={() => setFocusedField(null)}
-                                                className="w-full bg-transparent border-b border-white/20 py-4 text-3xl md:text-5xl font-bold text-white focus:border-[#a8ffc4] focus:outline-none transition-all placeholder:text-white/10"
-                                                placeholder="john@company.com"
-                                            />
-                                        </motion.div>
+                                        </div>
 
                                         {/* 03. Company */}
-                                        <motion.div
-                                            initial={{ opacity: 0, y: 30 }}
-                                            whileInView={{ opacity: 1, y: 0 }}
-                                            transition={{ duration: 0.6, delay: 0.2 }}
-                                            viewport={{ once: true }}
-                                            className="group"
-                                        >
-                                            <div className="flex items-center gap-4 mb-4">
-                                                <span className="text-[#a8ffc4] font-mono text-xs tracking-widest border border-[#a8ffc4]/30 px-2 py-1 rounded-full">03</span>
-                                                <label className="text-xl md:text-2xl text-white/70 font-light">Organization name?</label>
+                                        <div className="flex gap-4 md:gap-8 group">
+                                            <span className="text-white/20 shrink-0 select-none pt-4">03</span>
+                                            <div className="flex-1 border-b border-white/10 group-focus-within:border-[#a8ffc4] transition-colors pb-8">
+                                                <label className="block text-[#a8ffc4]/50 mb-2">// Organization name</label>
+                                                <input
+                                                    type="text"
+                                                    value={formState.company}
+                                                    onChange={(e) => setFormState({ ...formState, company: e.target.value })}
+                                                    className="w-full bg-transparent text-xl md:text-3xl text-[#a8ffc4] focus:outline-none placeholder:text-white/10"
+                                                    placeholder="Acme_Inc"
+                                                />
                                             </div>
-                                            <input
-                                                type="text"
-                                                value={formState.company}
-                                                onChange={(e) => setFormState({ ...formState, company: e.target.value })}
-                                                onFocus={() => setFocusedField("company")}
-                                                onBlur={() => setFocusedField(null)}
-                                                className="w-full bg-transparent border-b border-white/20 py-4 text-3xl md:text-5xl font-bold text-white focus:border-[#a8ffc4] focus:outline-none transition-all placeholder:text-white/10"
-                                                placeholder="Acme Inc."
-                                            />
-                                        </motion.div>
+                                        </div>
 
-                                        {/* 04. Services (New) */}
-                                        <motion.div
-                                            initial={{ opacity: 0, y: 30 }}
-                                            whileInView={{ opacity: 1, y: 0 }}
-                                            transition={{ duration: 0.6, delay: 0.3 }}
-                                            viewport={{ once: true }}
-                                        >
-                                            <div className="flex items-center gap-4 mb-8">
-                                                <span className="text-[#a8ffc4] font-mono text-xs tracking-widest border border-[#a8ffc4]/30 px-2 py-1 rounded-full">04</span>
-                                                <label className="text-xl md:text-2xl text-white/70 font-light">What services are you looking for?</label>
+                                        {/* 04. Services (Textarea) */}
+                                        <div className="flex gap-4 md:gap-8 group">
+                                            <span className="text-white/20 shrink-0 select-none pt-4">04</span>
+                                            <div className="flex-1 border-b border-white/10 group-focus-within:border-[#a8ffc4] transition-colors pb-8">
+                                                <label className="block text-[#a8ffc4]/50 mb-2">// What services do you need? (Explain locally)</label>
+                                                <textarea
+                                                    rows={3}
+                                                    value={formState.services}
+                                                    onChange={(e) => setFormState({ ...formState, services: e.target.value })}
+                                                    className="w-full bg-transparent text-xl md:text-2xl text-[#a8ffc4] focus:outline-none placeholder:text-white/10 resize-none leading-relaxed"
+                                                    placeholder="I need a website refresh and some SEO work..."
+                                                />
                                             </div>
-                                            <div className="flex flex-wrap gap-3">
-                                                {["Web Design", "Development", "SEO", "Social Media", "Content", "Other"].map((service) => (
-                                                    <button
-                                                        key={service}
-                                                        type="button"
-                                                        onClick={(e) => {
-                                                            e.preventDefault();
-                                                        }}
-                                                        className="px-6 py-3 rounded-full border border-white/10 bg-white/5 text-white/70 hover:bg-[#a8ffc4] hover:text-black hover:border-transparent transition-all duration-300 text-lg md:text-xl"
-                                                    >
-                                                        {service}
-                                                    </button>
-                                                ))}
-                                            </div>
-                                        </motion.div>
+                                        </div>
 
-                                        {/* 05. Budget Chips */}
-                                        <motion.div
-                                            initial={{ opacity: 0, y: 30 }}
-                                            whileInView={{ opacity: 1, y: 0 }}
-                                            transition={{ duration: 0.6, delay: 0.4 }}
-                                            viewport={{ once: true }}
-                                        >
-                                            <div className="flex items-center gap-4 mb-8">
-                                                <span className="text-[#a8ffc4] font-mono text-xs tracking-widest border border-[#a8ffc4]/30 px-2 py-1 rounded-full">05</span>
-                                                <label className="text-xl md:text-2xl text-white/70 font-light">Project budget?</label>
+                                        {/* 05. Budget Chips (Styled as Code Selection) */}
+                                        <div className="flex gap-4 md:gap-8 group">
+                                            <span className="text-white/20 shrink-0 select-none pt-4">05</span>
+                                            <div className="flex-1 border-b border-white/10 group-focus-within:border-[#a8ffc4] transition-colors pb-8">
+                                                <label className="block text-[#a8ffc4]/50 mb-2">// const budget = ...</label>
+                                                <div className="flex flex-wrap gap-2">
+                                                    {["< 10k", "10k-20k", "20k-50k", "50k+"].map((option) => (
+                                                        <button
+                                                            key={option}
+                                                            type="button"
+                                                            onClick={() => setFormState({ ...formState, budget: option })}
+                                                            className={`px-4 py-2 text-sm md:text-base transition-all duration-300 font-mono ${formState.budget === option
+                                                                ? "bg-[#a8ffc4] text-black"
+                                                                : "bg-white/5 text-white/50 hover:bg-white/10 hover:text-white"
+                                                                }`}
+                                                        >
+                                                            {option}
+                                                        </button>
+                                                    ))}
+                                                </div>
                                             </div>
-                                            <div className="flex flex-wrap gap-4">
-                                                {["< $10k", "$10k - 20k", "$20k - 50k", "$50k +"].map((option) => (
-                                                    <button
-                                                        key={option}
-                                                        type="button"
-                                                        onClick={() => setFormState({ ...formState, budget: option })}
-                                                        className={`px-8 py-4 rounded-full text-lg md:text-xl transition-all duration-300 border ${formState.budget === option
-                                                            ? "bg-[#a8ffc4] text-black border-[#a8ffc4] font-semibold"
-                                                            : "bg-white/5 text-white/60 border-white/10 hover:bg-white/10 hover:text-white"
-                                                            }`}
-                                                    >
-                                                        {option}
-                                                    </button>
-                                                ))}
-                                            </div>
-                                        </motion.div>
+                                        </div>
 
                                         {/* 06. Message */}
-                                        <motion.div
-                                            initial={{ opacity: 0, y: 30 }}
-                                            whileInView={{ opacity: 1, y: 0 }}
-                                            transition={{ duration: 0.6, delay: 0.5 }}
-                                            viewport={{ once: true }}
-                                        >
-                                            <div className="flex items-center gap-4 mb-4">
-                                                <span className="text-[#a8ffc4] font-mono text-xs tracking-widest border border-[#a8ffc4]/30 px-2 py-1 rounded-full">06</span>
-                                                <label className="text-xl md:text-2xl text-white/70 font-light">Tell us about your project</label>
+                                        <div className="flex gap-4 md:gap-8 group">
+                                            <span className="text-white/20 shrink-0 select-none pt-4">06</span>
+                                            <div className="flex-1 border-b border-white/10 group-focus-within:border-[#a8ffc4] transition-colors pb-8">
+                                                <label className="block text-[#a8ffc4]/50 mb-2">// Additional details</label>
+                                                <textarea
+                                                    required
+                                                    rows={3}
+                                                    value={formState.message}
+                                                    onChange={(e) => setFormState({ ...formState, message: e.target.value })}
+                                                    className="w-full bg-transparent text-xl md:text-2xl text-[#a8ffc4] focus:outline-none placeholder:text-white/10 resize-none leading-relaxed"
+                                                    placeholder="Tell us about your timeline and goals..."
+                                                />
                                             </div>
-                                            <textarea
-                                                required
-                                                rows={1}
-                                                value={formState.message}
-                                                onChange={(e) => setFormState({ ...formState, message: e.target.value })}
-                                                onFocus={() => setFocusedField("message")}
-                                                onBlur={() => setFocusedField(null)}
-                                                className="w-full bg-transparent border-b border-white/20 py-4 text-3xl md:text-5xl font-bold text-white focus:border-[#a8ffc4] focus:outline-none transition-all resize-none placeholder:text-white/10 leading-tight"
-                                                placeholder="I need help with..."
-                                            />
-                                        </motion.div>
-
+                                        </div>
 
                                         {/* Submit Button */}
-                                        <motion.div
-                                            initial={{ opacity: 0, y: 30 }}
-                                            whileInView={{ opacity: 1, y: 0 }}
-                                            transition={{ duration: 0.6, delay: 0.6 }}
-                                            viewport={{ once: true }}
-                                            className="pt-12"
-                                        >
+                                        <div className="pl-12 md:pl-16 pt-4">
                                             <MagneticButton className="w-full md:w-auto">
                                                 <motion.button
                                                     type="submit"
                                                     disabled={isSubmitting}
-                                                    className="group relative w-full md:w-auto px-12 py-6 rounded-full overflow-hidden bg-[#a8ffc4] text-black"
+                                                    className="group relative w-full md:w-auto px-8 py-4 bg-[#a8ffc4] text-black hover:bg-white transition-colors"
                                                     whileHover={{ scale: 1.02 }}
                                                     whileTap={{ scale: 0.98 }}
                                                 >
-                                                    <span className="relative flex items-center justify-center gap-4 font-bold text-xl tracking-wide uppercase">
-                                                        {isSubmitting ? (
-                                                            "Sending..."
-                                                        ) : (
-                                                            <>
-                                                                Send Message
-                                                                <motion.span
-                                                                    className="inline-block"
-                                                                    whileHover={{ x: 5 }}
-                                                                    transition={{ type: "spring", stiffness: 400 }}
-                                                                >
-                                                                    →
-                                                                </motion.span>
-                                                            </>
-                                                        )}
+                                                    <span className="flex items-center justify-center gap-3 font-bold font-mono uppercase tracking-widest text-sm">
+                                                        {isSubmitting ? "Running..." : "Run_Project.exe"}
+                                                        <span className="text-xs opacity-50 block md:hidden">↳</span>
                                                     </span>
                                                 </motion.button>
                                             </MagneticButton>
-                                        </motion.div>
+                                        </div>
                                     </form>
                                 </BrowserWindow>
                             )}
