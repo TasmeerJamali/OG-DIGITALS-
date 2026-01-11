@@ -412,7 +412,7 @@ export default function WorkPage() {
             <EcosystemGrid />
 
             {/* Glassmorphic Spotlight CTA - At the Very Bottom */}
-            <section className="py-20 px-6 flex flex-col items-center justify-center w-full">
+            <section className="pb-20 pt-0 px-6 flex flex-col items-center justify-center w-full">
                 <motion.div
                     className="relative max-w-4xl w-full"
                     initial={{ opacity: 0, y: 50 }}

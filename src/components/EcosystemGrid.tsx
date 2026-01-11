@@ -41,7 +41,7 @@ const partners = [
 
 export default function EcosystemGrid() {
     return (
-        <section className="py-6 relative z-10 px-6 w-full flex flex-col items-center">
+        <section className="pt-6 pb-0 relative z-10 px-6 w-full flex flex-col items-center">
             {/* Header */}
             <div className="text-center mb-8">
                 <h2 className="text-4xl md:text-6xl font-black text-white tracking-widest uppercase mb-4 opacity-50">
