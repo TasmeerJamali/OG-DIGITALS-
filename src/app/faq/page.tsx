@@ -88,18 +88,24 @@ export default function FAQ() {
         offset: ["start start", "end end"]
     });
 
-    // Increased scroll distance mapping to ensure the pinning is felt strongly.
-    const tearProgress = useTransform(scrollYProgress, [0, 0.9], [0, 1]);
+    // THE 3-STAGE TEAR:
+    // 1. [0.0 - 0.3]: The "Zipper" - A horizontal tear line travels across screen
+    // 2. [0.3 - 0.8]: The "Split" - The shutters pull apart vertically
+    // 3. [0.8 - 1.0]: Release
 
-    // Shutters Move Apart
-    // We add a slight rotation to make it feel more like a physical rip
-    // Top rotates slightly counter-clockwise, Bottom slight clockwise
-    const topY = useTransform(tearProgress, [0, 1], ["0%", "-105%"]);
-    const bottomY = useTransform(tearProgress, [0, 1], ["0%", "105%"]);
+    // Stage 1: Horizontal Unzip Width (0% -> 100%)
+    const zipperProgress = useTransform(scrollYProgress, [0, 0.4], ["0%", "100%"]);
 
-    // Green Layer Parallax
-    const greenScale = useTransform(tearProgress, [0, 1], [0.95, 1]);
-    const greenOpacity = useTransform(tearProgress, [0, 0.1], [0, 1]);
+    // Stage 2: Vertical Separation (Shutters moving up/down)
+    // Starts only after zipper is mostly done
+    const splitProgress = useTransform(scrollYProgress, [0.3, 0.9], [0, 1]);
+
+    const topY = useTransform(splitProgress, [0, 1], ["0%", "-105%"]);
+    const bottomY = useTransform(splitProgress, [0, 1], ["0%", "105%"]);
+
+    // Reveal Layer
+    const greenScale = useTransform(splitProgress, [0, 1], [0.95, 1]);
+    const greenOpacity = useTransform(splitProgress, [0, 0.2], [0, 1]);
 
     return (
         <main className={`min-h-screen bg-[#050505] text-white selection:bg-[#a8ffc4] selection:text-black ${spaceGrotesk.className}`}>
@@ -111,15 +117,20 @@ export default function FAQ() {
                 {/* 2. STICKY VIEWPORT (100vh) */}
                 <div className="sticky top-0 h-screen w-full overflow-hidden flex flex-col justify-center items-center">
 
-                    {/* A. REVEAL LAYER (Green) */}
-                    {/* Split Layout: Left vs Right */}
+                    {/* A. REVEAL LAYER (Green) - Staggered Layout */}
                     <div className="absolute inset-0 z-0 flex items-center justify-center bg-[#a8ffc4] overflow-hidden">
 
                         {/* Improved Noise & Texture */}
                         <div className="absolute inset-0 opacity-[0.12] bg-[url('https://grainy-gradients.vercel.app/noise.svg')]" />
 
+                        {/* We use the zipperProgress to 'reveal' this layer horizontally first */}
                         <motion.div
-                            style={{ scale: greenScale, opacity: greenOpacity }}
+                            style={{
+                                scale: greenScale,
+                                opacity: greenOpacity,
+                                // This clip-path creates the horizontal "unzipping" reveal effect
+                                clipPath: useTransform(zipperProgress, (val) => `inset(0 ${100 - parseFloat(val)}% 0 0)`)
+                            }}
                             className="relative z-10 w-full max-w-[1800px] px-6 md:px-12 grid grid-cols-1 md:grid-cols-2 gap-12 items-center"
                         >
                             {/* LEFT SIDE: Let's Break It Down */}
@@ -148,58 +159,67 @@ export default function FAQ() {
                     </div>
 
                     {/* B. SHUTTERS (Black) */}
+                    {/* FIX: Ensuring correct SVG orientation and connection */}
 
                     {/* TOP SHUTTER */}
                     <motion.div
                         style={{ y: topY }}
-                        className="absolute top-0 left-0 w-full h-[50%] bg-[#050505] z-20 flex items-end justify-center drop-shadow-[0_20px_50px_rgba(0,0,0,0.5)]"
+                        className="absolute top-0 left-0 w-full h-[50%] bg-[#050505] z-20 flex items-end justify-center drop-shadow-[0_20px_50px_rgba(0,0,0,0.8)]"
                     >
-                        {/* Realistic SVG Tear Edge */}
-                        {/* We use a repeating SVG pattern to create a truly jagged/torn paper edge */}
-                        <div className="absolute bottom-0 left-0 w-full h-[60px] translate-y-[58px] z-30">
-                            <svg
-                                viewBox="0 0 1440 60"
-                                className="w-full h-full text-[#050505] fill-current"
-                                preserveAspectRatio="none"
-                            >
-                                <path d="M0,0 L1440,0 L1440,60 L0,60 L0,0 Z M0,60 L48,22 L105,53 L166,12 L221,48 L278,16 L332,55 L391,18 L440,49 L498,13 L554,46 L609,15 L666,51 L719,19 L775,47 L834,11 L891,52 L942,15 L1002,48 L1055,14 L1113,54 L1170,18 L1225,48 L1282,12 L1336,55 L1395,19 L1440,58 L1440,0 L0,0 Z" />
-                            </svg>
-                        </div>
-
-                        {/* Shadow gradient for depth on the edge */}
-                        <div className="absolute bottom-0 w-full h-20 bg-gradient-to-t from-black/50 to-transparent pointer-events-none" />
-
-                        <div className="absolute top-0 inset-x-0 h-full flex flex-col items-center justify-center pb-20">
+                        {/* Intro Text (Fades out as we unzip) */}
+                        <div className="absolute top-0 inset-x-0 h-full flex flex-col items-center justify-center pb-20 pointer-events-none">
                             <h1 className={`${playfair.className} text-[8vw] text-white/5 font-black tracking-tighter`}>
                                 OG DIGITALS
                             </h1>
+                        </div>
+
+                        {/* SVG Tear Edge (Pointing DOWN) */}
+                        {/* We translate nearly 99% down to hang off the edge */}
+                        <div className="absolute bottom-[-1px] left-0 w-full h-[50px] translate-y-full z-30">
+                            <svg
+                                viewBox="0 0 1440 50"
+                                className="w-full h-full text-[#050505] fill-current"
+                                preserveAspectRatio="none"
+                            >
+                                {/* A jagged path that closes UP to 0 to be solid */}
+                                <path d="M0,0 L1440,0 L1440,50 L0,50 Z M0,0 L50,40 L100,10 L150,45 L200,5 L250,35 L300,10 L350,45 L400,0 L450,40 L500,10 L550,45 L600,0 L650,35 L700,5 L750,40 L800,10 L850,45 L900,0 L950,40 L1000,10 L1050,45 L1100,0 L1150,35 L1200,10 L1250,45 L1300,0 L1350,40 L1400,10 L1440,45 L1440,0Z" />
+                            </svg>
                         </div>
                     </motion.div>
 
                     {/* BOTTOM SHUTTER */}
                     <motion.div
                         style={{ y: bottomY }}
-                        className="absolute bottom-0 left-0 w-full h-[50%] bg-[#050505] z-20 flex items-start justify-center drop-shadow-[0_-20px_50px_rgba(0,0,0,0.5)]"
+                        className="absolute bottom-0 left-0 w-full h-[50%] bg-[#050505] z-20 flex items-start justify-center drop-shadow-[0_-20px_50px_rgba(0,0,0,0.8)]"
                     >
-                        {/* Realistic SVG Tear Edge (Inverted) */}
-                        <div className="absolute top-0 left-0 w-full h-[60px] -translate-y-[58px] z-30 transform rotate-180">
+                        <div className="absolute bottom-0 inset-x-0 h-full flex flex-col items-center justify-center pt-20 pointer-events-none">
+                            <p className="text-white/20 text-sm uppercase tracking-[0.4em] animate-pulse">
+                                Scroll to Tear
+                            </p>
+                        </div>
+
+                        {/* SVG Tear Edge (Pointing UP) */}
+                        <div className="absolute top-[-1px] left-0 w-full h-[50px] -translate-y-full z-30">
                             <svg
-                                viewBox="0 0 1440 60"
+                                viewBox="0 0 1440 50"
                                 className="w-full h-full text-[#050505] fill-current"
                                 preserveAspectRatio="none"
                             >
-                                <path d="M0,0 L1440,0 L1440,60 L0,60 L0,0 Z M0,60 L48,22 L105,53 L166,12 L221,48 L278,16 L332,55 L391,18 L440,49 L498,13 L554,46 L609,15 L666,51 L719,19 L775,47 L834,11 L891,52 L942,15 L1002,48 L1055,14 L1113,54 L1170,18 L1225,48 L1282,12 L1336,55 L1395,19 L1440,58 L1440,0 L0,0 Z" />
+                                {/* Inverted jagged path */}
+                                <path d="M0,50 L1440,50 L1440,0 L0,0 Z M0,50 L50,10 L100,40 L150,5 L200,45 L250,15 L300,40 L350,5 L400,50 L450,10 L500,40 L550,5 L600,50 L650,15 L700,45 L750,10 L800,40 L850,5 L900,50 L950,10 L1000,40 L1050,5 L1100,50 L1150,15 L1200,40 L1250,5 L1300,50 L1350,10 L1400,40 L1440,5 L1440,50Z" />
                             </svg>
                         </div>
-
-                        <div className="absolute top-0 w-full h-20 bg-gradient-to-b from-black/50 to-transparent pointer-events-none" />
-
-                        <div className="absolute bottom-0 inset-x-0 h-full flex flex-col items-center justify-center pt-20">
-                            <p className="text-white/20 text-sm uppercase tracking-[0.4em] animate-pulse">
-                                Scroll to Break
-                            </p>
-                        </div>
                     </motion.div>
+
+                    {/* THE ZIPPER LINE (Visual cue for the cut during Phase 1) */}
+                    {/* This yellow laser line travels with the zipperProgress */}
+                    <motion.div
+                        style={{
+                            left: zipperProgress,
+                            opacity: useTransform(splitProgress, [0, 0.1], [1, 0]) // Hides once split starts
+                        }}
+                        className="absolute h-full w-[2px] bg-[#a8ffc4] z-40 top-0 shadow-[0_0_20px_#a8ffc4] mix-blend-screen"
+                    />
 
                 </div>
             </div>
