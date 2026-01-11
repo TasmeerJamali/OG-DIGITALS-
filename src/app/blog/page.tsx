@@ -55,17 +55,12 @@ export default function Blog() {
             <Navigation />
 
             {/* 1. HERO SECTION (Editorial Style) */}
-            {/* FORCE padding to be massive (45vh) to clear the navbar completely */}
-            <section className="relative pt-[45vh] pb-20 px-6 md:px-12 border-b border-white/5 bg-[#0a0a0a]">
+            {/* FORCE massive padding (500px fixed) to guarantee clearance on all screens */}
+            <section className="relative pt-[500px] pb-20 px-6 md:px-12 border-b border-white/5 bg-[#0a0a0a]">
                 <div className="max-w-[1800px] mx-auto">
 
                     {/* Tiny Label - Push down slightly */}
-                    <motion.div
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        transition={{ duration: 1, delay: 0.5 }}
-                        className="mb-8 overflow-hidden"
-                    >
+                    <div className="mb-8 overflow-hidden mt-10">
                         <span className="text-xs font-medium tracking-[0.3em] text-[#a8ffc4] uppercase">
                             ( The Journal )
                         </span>
@@ -125,7 +120,10 @@ function ArticleRow({ article, index }: { article: any, index: number }) {
     const y = useTransform(scrollYProgress, [0, 1], [0, -50]);
     const opacity = useTransform(scrollYProgress, [0, 0.5], [0, 1]);
 
-    const isEven = index % 2 === 0;
+    // Inverted logic to match User Request:
+    // 1st Item (Index 0): Image Left, Text Right
+    // 2nd Item (Index 1): Image Right, Text Left
+    const isEven = index % 2 !== 0;
 
     return (
         <motion.div
