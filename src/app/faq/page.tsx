@@ -7,6 +7,9 @@ import Footer from "@/components/Footer";
 import { Plus, X, ArrowUpRight } from "lucide-react";
 import { Playfair_Display, Space_Grotesk } from "next/font/google";
 import Link from "next/link";
+import dynamic from "next/dynamic";
+
+const IcyText3D = dynamic(() => import("@/components/IcyText3D"), { ssr: false });
 
 // ----------------------------------------------------------------------
 // 1. CONFIGURATION
@@ -176,29 +179,18 @@ export default function FAQ() {
                             </h1>
                         </div>
 
-                        {/* LIGHT-UP LAYER tied to Zipper */}
-                        <div className="absolute top-0 inset-x-0 h-full flex flex-col items-center justify-center pb-20 pointer-events-none">
-                            <motion.h1
+                        {/* 3D ICY TEXT LAYER tied to Zipper */}
+                        {/* We use the same clipPath logic to 'reveal' the 3D text as the zipper moves */}
+                        <div className="absolute top-0 inset-x-0 h-full flex flex-col items-center justify-center pb-20 pointer-events-none z-50">
+                            <motion.div
                                 style={{
+                                    width: '100%',
+                                    height: '30vh', // Adjust height to fit the text containment
                                     clipPath: useTransform(unzipProgress, (val) => `inset(0 ${100 - val}% 0 0)`)
                                 }}
-                                animate={{
-                                    textShadow: [
-                                        "0 0 5px #fff, 0 0 10px #fff, 0 0 20px #a8ffc4, 0 0 35px #a8ffc4, 0 0 40px #00ff88, 0 0 50px #00ff88, 0 0 75px #00ff88",
-                                        "0 0 2px #fff, 0 0 5px #fff, 0 0 15px #a8ffc4, 0 0 25px #a8ffc4, 0 0 30px #00ff88, 0 0 40px #00ff88, 0 0 60px #00ff88",
-                                        "0 0 5px #fff, 0 0 10px #fff, 0 0 20px #a8ffc4, 0 0 35px #a8ffc4, 0 0 40px #00ff88, 0 0 50px #00ff88, 0 0 75px #00ff88"
-                                    ]
-                                }}
-                                transition={{
-                                    duration: 2,
-                                    repeat: Infinity,
-                                    repeatType: "reverse",
-                                    ease: "easeInOut"
-                                }}
-                                className={`${playfair.className} text-[8vw] text-white font-black tracking-tighter`}
                             >
-                                OG DIGITALS
-                            </motion.h1>
+                                <IcyText3D />
+                            </motion.div>
                         </div>
 
                         {/* SVG TEETH (Pointing DOWN) */}
