@@ -114,7 +114,7 @@ export default function About() {
         <section
             id="culture"
             ref={containerRef}
-            className="relative min-h-screen bg-black py-32 md:py-40 px-6 md:px-16 overflow-hidden"
+            className="relative min-h-screen bg-black py-20 md:py-24 px-6 md:px-16 overflow-hidden"
         >
             {/* Background decorative elements */}
             <div className="absolute inset-0 pointer-events-none overflow-hidden">
@@ -216,7 +216,7 @@ export default function About() {
                 </div>
 
                 {/* Stats Grid - Premium Cards */}
-                <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 max-w-5xl mx-auto mb-20 md:mb-32">
+                <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 max-w-5xl mx-auto">
                     {stats.map((stat, index) => (
                         <motion.div
                             key={stat.label}
