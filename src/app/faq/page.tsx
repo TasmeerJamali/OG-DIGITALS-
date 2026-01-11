@@ -182,7 +182,20 @@ export default function FAQ() {
                                 style={{
                                     clipPath: useTransform(unzipProgress, (val) => `inset(0 ${100 - val}% 0 0)`)
                                 }}
-                                className={`${playfair.className} text-[8vw] text-transparent bg-clip-text bg-gradient-to-b from-white via-[#a8ffc4] to-[#00ff88] font-black tracking-tighter drop-shadow-[0_0_30px_rgba(168,255,196,0.8)] sm:drop-shadow-[0_0_50px_rgba(168,255,196,0.6)]`}
+                                animate={{
+                                    textShadow: [
+                                        "0 0 5px #fff, 0 0 10px #fff, 0 0 20px #a8ffc4, 0 0 35px #a8ffc4, 0 0 40px #00ff88, 0 0 50px #00ff88, 0 0 75px #00ff88",
+                                        "0 0 2px #fff, 0 0 5px #fff, 0 0 15px #a8ffc4, 0 0 25px #a8ffc4, 0 0 30px #00ff88, 0 0 40px #00ff88, 0 0 60px #00ff88",
+                                        "0 0 5px #fff, 0 0 10px #fff, 0 0 20px #a8ffc4, 0 0 35px #a8ffc4, 0 0 40px #00ff88, 0 0 50px #00ff88, 0 0 75px #00ff88"
+                                    ]
+                                }}
+                                transition={{
+                                    duration: 2,
+                                    repeat: Infinity,
+                                    repeatType: "reverse",
+                                    ease: "easeInOut"
+                                }}
+                                className={`${playfair.className} text-[8vw] text-white font-black tracking-tighter`}
                             >
                                 OG DIGITALS
                             </motion.h1>
