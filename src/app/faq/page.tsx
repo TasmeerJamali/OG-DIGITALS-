@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef } from "react";
+import { useState, useRef, useMemo } from "react";
 import { motion, AnimatePresence, useScroll, useTransform, useSpring } from "framer-motion";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
@@ -78,7 +78,53 @@ const faqData = [
 ];
 
 // ----------------------------------------------------------------------
-// 2. MAIN PAGE COMPONENT
+// 2. HELPER: SVG PATH GENERATOR
+// ----------------------------------------------------------------------
+// Generates a perfect sawtooth wave string for the 'd' attribute.
+const generateSawtooth = (width: number, height: number, teethCount: number, invert: boolean = false) => {
+    // Width of one full tooth cycle (Up and Down) = toothWidth * 2? 
+    // No, standard sawtooth: / \ / \
+    // Let's say one 'spike' is width/teethCount.
+    const spikeWidth = width / teethCount;
+
+    let d = "";
+
+    if (!invert) {
+        // TOP SHUTTER (Teeth point DOWN)
+        // Start top-left
+        d += `M 0 0 L ${width} 0 L ${width} ${height} `;
+
+        // Zigzag back from Right to Left along the bottom
+        for (let i = teethCount; i > 0; i--) {
+            // The bottom point is at y = height + amplitude? No, we want the teeth sticking OUT.
+            // Let's assume 'height' is the solid block height, and we add teeth below?
+            // Or 'height' is total height.
+            // Let's make the function simplest:
+            // It draws a rectangle with a jagged bottom edge.
+            // The jagged edge oscillates between y=height and y=height - amplitude.
+
+            // X goes from Width -> 0
+            const xRight = i * spikeWidth;
+            const xLeft = (i - 1) * spikeWidth;
+            const xMid = xRight - (spikeWidth / 2);
+
+            // L x y
+            // We want points DOWN.
+            // So the 'base' is at y=0 (relative to edge?).
+            // Let's define the shape explicitely:
+            // Solid block is 0 to 'baseY'.
+            // Teeth extend from 'baseY' to 'baseY + toothDepth'.
+
+            // Re-think: We construct specific strings in the component for clarity.
+            // This helper is complicating things. Removing for inline logic.
+        }
+    }
+    return d;
+};
+
+
+// ----------------------------------------------------------------------
+// 3. MAIN PAGE COMPONENT
 // ----------------------------------------------------------------------
 
 export default function FAQ() {
@@ -88,24 +134,24 @@ export default function FAQ() {
         offset: ["start start", "end end"]
     });
 
-    // THE 3-STAGE TEAR:
-    // 1. [0.0 - 0.3]: The "Zipper" - A horizontal tear line travels across screen
-    // 2. [0.3 - 0.8]: The "Split" - The shutters pull apart vertically
-    // 3. [0.8 - 1.0]: Release
+    // SCROLL PHYSICS (400vh total)
+    // 0.0 - 0.6 : Unzip (Horizontal)
+    // 0.6 - 1.0 : Vertical Separation
 
-    // Stage 1: Horizontal Unzip Width (0% -> 100%)
-    const zipperProgress = useTransform(scrollYProgress, [0, 0.4], ["0%", "100%"]);
+    const unzipProgress = useTransform(scrollYProgress, [0, 0.55], ["0%", "100%"]);
 
-    // Stage 2: Vertical Separation (Shutters moving up/down)
-    // Starts only after zipper is mostly done
-    const splitProgress = useTransform(scrollYProgress, [0.3, 0.9], [0, 1]);
+    // We create a "V" shape opening or just simple vertical opening AFTER unzip
+    const verticalOpen = useTransform(scrollYProgress, [0.5, 0.9], ["0%", "100%"]);
 
-    const topY = useTransform(splitProgress, [0, 1], ["0%", "-105%"]);
-    const bottomY = useTransform(splitProgress, [0, 1], ["0%", "105%"]);
+    const topY = useTransform(verticalOpen, [0, 1], ["0%", "-105%"]);
+    const bottomY = useTransform(verticalOpen, [0, 1], ["0%", "105%"]);
 
-    // Reveal Layer
-    const greenScale = useTransform(splitProgress, [0, 1], [0.95, 1]);
-    const greenOpacity = useTransform(splitProgress, [0, 0.2], [0, 1]);
+    // The Green Line visibility
+    const lineOpacity = useTransform(scrollYProgress, [0, 0.05, 0.55, 0.6], [0, 1, 1, 0]);
+
+    // Green Reveal Layer Visuals
+    const greenOpacity = useTransform(scrollYProgress, [0, 0.1], [0, 1]);
+    const greenScale = useTransform(scrollYProgress, [0, 0.9], [0.98, 1]);
 
     return (
         <main className={`min-h-screen bg-[#050505] text-white selection:bg-[#a8ffc4] selection:text-black ${spaceGrotesk.className}`}>
@@ -117,23 +163,26 @@ export default function FAQ() {
                 {/* 2. STICKY VIEWPORT (100vh) */}
                 <div className="sticky top-0 h-screen w-full overflow-hidden flex flex-col justify-center items-center">
 
-                    {/* A. REVEAL LAYER (Green) - Staggered Layout */}
+                    {/* A. REVEAL LAYER (Green) */}
+                    {/* Revealed by the clip-path of the black shutters? 
+                         OR we can mask THIS layer to reveal L->R?
+                         It's better to mask this layer so it appears "inside" the cut.
+                     */}
                     <div className="absolute inset-0 z-0 flex items-center justify-center bg-[#a8ffc4] overflow-hidden">
 
-                        {/* Improved Noise & Texture */}
                         <div className="absolute inset-0 opacity-[0.12] bg-[url('https://grainy-gradients.vercel.app/noise.svg')]" />
 
-                        {/* We use the zipperProgress to 'reveal' this layer horizontally first */}
+                        {/* Progressive Reveal Mask */}
+                        {/* This ensures the green content is only visible where we have 'unzipped' */}
                         <motion.div
                             style={{
                                 scale: greenScale,
                                 opacity: greenOpacity,
-                                // This clip-path creates the horizontal "unzipping" reveal effect
-                                clipPath: useTransform(zipperProgress, (val) => `inset(0 ${100 - parseFloat(val)}% 0 0)`)
+                                clipPath: useTransform(unzipProgress, (val) => `inset(0 ${100 - parseFloat(val)}% 0 0)`)
                             }}
                             className="relative z-10 w-full max-w-[1800px] px-6 md:px-12 grid grid-cols-1 md:grid-cols-2 gap-12 items-center"
                         >
-                            {/* LEFT SIDE: Let's Break It Down */}
+                            {/* Left Content */}
                             <div className="flex flex-col items-start text-left">
                                 <h2 className={`${playfair.className} text-[12vw] md:text-[8vw] leading-[0.85] font-black text-black tracking-tighter mix-blend-multiply`}>
                                     Let&#39;s Break<br />It Down.
@@ -146,7 +195,7 @@ export default function FAQ() {
                                 </div>
                             </div>
 
-                            {/* RIGHT SIDE: Got Questions? */}
+                            {/* Right Content */}
                             <div className="flex flex-col items-end text-right">
                                 <h2 className={`${playfair.className} text-[10vw] md:text-[6vw] leading-[0.9] font-bold text-black/80 tracking-tighter mix-blend-multiply`}>
                                     Got<br />Questions?
@@ -159,30 +208,30 @@ export default function FAQ() {
                     </div>
 
                     {/* B. SHUTTERS (Black) */}
-                    {/* FIX: Ensuring correct SVG orientation and connection */}
-
                     {/* TOP SHUTTER */}
                     <motion.div
                         style={{ y: topY }}
                         className="absolute top-0 left-0 w-full h-[50%] bg-[#050505] z-20 flex items-end justify-center drop-shadow-[0_20px_50px_rgba(0,0,0,0.8)]"
                     >
-                        {/* Intro Text (Fades out as we unzip) */}
                         <div className="absolute top-0 inset-x-0 h-full flex flex-col items-center justify-center pb-20 pointer-events-none">
                             <h1 className={`${playfair.className} text-[8vw] text-white/5 font-black tracking-tighter`}>
                                 OG DIGITALS
                             </h1>
                         </div>
 
-                        {/* SVG Tear Edge (Pointing DOWN) */}
-                        {/* We translate nearly 99% down to hang off the edge */}
-                        <div className="absolute bottom-[-1px] left-0 w-full h-[50px] translate-y-full z-30">
+                        {/* SVG TEETH (Pointing DOWN) */}
+                        {/* We position this to hang BELOW the 50% line */}
+                        <div className="absolute bottom-0 left-0 w-full h-[60px] translate-y-[99%] z-30">
                             <svg
-                                viewBox="0 0 1440 50"
+                                viewBox="0 0 100 20"
                                 className="w-full h-full text-[#050505] fill-current"
                                 preserveAspectRatio="none"
                             >
-                                {/* A jagged path that closes UP to 0 to be solid */}
-                                <path d="M0,0 L1440,0 L1440,50 L0,50 Z M0,0 L50,40 L100,10 L150,45 L200,5 L250,35 L300,10 L350,45 L400,0 L450,40 L500,10 L550,45 L600,0 L650,35 L700,5 L750,40 L800,10 L850,45 L900,0 L950,40 L1000,10 L1050,45 L1100,0 L1150,35 L1200,10 L1250,45 L1300,0 L1350,40 L1400,10 L1440,45 L1440,0Z" />
+                                {/* 
+                                     A simple sawtooth pattern repeating.
+                                     0,0 -> 10,20 -> 20,0 -> 30,20 ...
+                                 */}
+                                <path d="M0,0 L10,20 L20,0 L30,20 L40,0 L50,20 L60,0 L70,20 L80,0 L90,20 L100,0 L100,0 L0,0 Z" vectorEffect="non-scaling-stroke" />
                             </svg>
                         </div>
                     </motion.div>
@@ -198,28 +247,79 @@ export default function FAQ() {
                             </p>
                         </div>
 
-                        {/* SVG Tear Edge (Pointing UP) */}
-                        <div className="absolute top-[-1px] left-0 w-full h-[50px] -translate-y-full z-30">
+                        {/* SVG TEETH (Pointing UP) */}
+                        {/* We position this to stand ABOVE the 50% line */}
+                        {/* It must perfectly INTERLOCK with the Top Teeth (which are 10,20 points) */}
+                        {/* So Bottom Teeth must be valleys at 10,0? No. */}
+                        {/* Top: VVV (Points at x=10, 30, 50...) */}
+                        {/* Bottom: ^^^ (Points at x=0, 20, 40...) */}
+                        {/* Let's verify interlocking:
+                             Top: (0,0) -> (10,20) -> (20,0) ...
+                             Bottom Needs: (0,20) -> (10,0) -> (20,20) ...
+                             Wait, Top (10,20) is a low point (down). Bottom needs a low point (down? no up) at 10 to receive it.
+                             If Bottom is (10,0), then at x=10, top is at y=20 (down), bottom is at y=0 (up relative to its box?).
+                             Let's use absolute coords in the h=60 box.
+                             Top Box: y=0 is flush with shutter. y=20 is tip.
+                             Bottom Box: y=20 is flush with shutter. y=0 is tip.
+                             At x=10: Top is y=20. Bottom is y=0. They don't touch?
+                             Ideally they share the same zig zag line.
+                             Line: (0,0) -> (10,20) -> (20,0).
+                             Top Shutter fills EVERYTHING ABOVE this line.
+                             Bottom Shutter fills EVERYTHING BELOW this line.
+                             YES.
+                             
+                             Top SVG: Path = (0,0) -> (10,20) -> (20,0) ... -> Close with Top Rect.
+                             Bottom SVG: Path = (0,0) -> (10,20) -> (20,0) ... -> Close with Bottom Rect.
+                             
+                             So they literally use the SAME path logic for the interface line?
+                             
+                             Top SVG (Hanging Down):
+                             Rect from -100 to 0. Plus Teeth 0 to 20.
+                             Path: M0,0 L10,20 L20,0 ... L100,0 L100,-10 L0,-10 Z.
+                             
+                             Bottom SVG (Standing Up):
+                             Rect from 20 to 100.
+                             Path: M0,0 L10,20 L20,0 ... L100,0 L100,20 L0,20 Z.
+                             Wait, if Bottom fills below line, it needs to fill from line to y=infinity.
+                             The line is y(x) = sawtooth.
+                             Bottom fills y > sawtooth.
+                             Top fills y < sawtooth.
+                             
+                             Implementation:
+                             Top SVG is h=20. Path: M0,0 L10,20 L20,0 ... L100,0 Z. (Triangles pointing down). Gaps are transparent.
+                             Bottom SVG is h=20. Path: M0,0 L10,20 L20,0 ... L100,20 L0,20 Z. (Triangles pointing up? No, this fills the valleys).
+                             Let's trace:
+                             Top: (0,0)-(10,20)-(20,0). Triangle 1. Fills space 0-10.
+                             Bottom: (0,0)-(10,20)-(20,0)-(20,20)-(0,20).
+                                 Segment (0,0) to (10,20) to (20,0). This is the 'roof'.
+                                 (20,20) to (0,20) is the floor.
+                                 So it is a block with V-notches cut out of the top.
+                         */}
+                        <div className="absolute top-0 left-0 w-full h-[60px] -translate-y-[99%] z-30">
                             <svg
-                                viewBox="0 0 1440 50"
+                                viewBox="0 0 100 20"
                                 className="w-full h-full text-[#050505] fill-current"
                                 preserveAspectRatio="none"
                             >
-                                {/* Inverted jagged path */}
-                                <path d="M0,50 L1440,50 L1440,0 L0,0 Z M0,50 L50,10 L100,40 L150,5 L200,45 L250,15 L300,40 L350,5 L400,50 L450,10 L500,40 L550,5 L600,50 L650,15 L700,45 L750,10 L800,40 L850,5 L900,50 L950,10 L1000,40 L1050,5 L1100,50 L1150,15 L1200,40 L1250,5 L1300,50 L1350,10 L1400,40 L1440,5 L1440,50Z" />
+                                {/* Block with V-notches at top matching Top Shutter's V-spikes */}
+                                {/* Line: 0,0 -> 10,20 -> 20,0 ... */}
+                                {/* We want to fill BELOW this line. */}
+                                {/* So: M0,0 L10,20 L20,0 ... L100,0 L100,20 L0,20 Z */}
+                                <path d="M0,0 L10,20 L20,0 L30,20 L40,0 L50,20 L60,0 L70,20 L80,0 L90,20 L100,0 L100,20 L0,20 Z" vectorEffect="non-scaling-stroke" />
                             </svg>
                         </div>
                     </motion.div>
 
-                    {/* THE ZIPPER LINE (Visual cue for the cut during Phase 1) */}
-                    {/* This yellow laser line travels with the zipperProgress */}
+                    {/* ZIPPER LINE */}
                     <motion.div
                         style={{
-                            left: zipperProgress,
-                            opacity: useTransform(splitProgress, [0, 0.1], [1, 0]) // Hides once split starts
+                            left: unzipProgress,
+                            opacity: lineOpacity
                         }}
                         className="absolute h-full w-[2px] bg-[#a8ffc4] z-40 top-0 shadow-[0_0_20px_#a8ffc4] mix-blend-screen"
-                    />
+                    >
+                        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-4 h-[20vh] bg-gradient-to-b from-transparent via-[#a8ffc4] to-transparent opacity-50 blur-md" />
+                    </motion.div>
 
                 </div>
             </div>
