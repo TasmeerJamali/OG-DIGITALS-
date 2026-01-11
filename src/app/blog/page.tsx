@@ -1,141 +1,178 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { motion, useScroll, useTransform } from "framer-motion";
 import Link from "next/link";
+import Image from "next/image";
 import Navigation from "@/components/Navigation";
-import Footer from "@/components/Footer";
+import FooterCTA from "@/components/FooterCTA"; // Using the new premium footer
+import { Playfair_Display, Space_Grotesk } from "next/font/google";
+import { ArrowUpRight } from "lucide-react";
+import { useRef } from "react";
 
-// Placeholder data for the blog page
+// Fonts
+const playfair = Playfair_Display({ subsets: ["latin"], weight: ["400", "700"] });
+const spaceGrotesk = Space_Grotesk({ subsets: ["latin"], weight: ["300", "400", "500"] });
+
+// Mock Data
 const articles = [
     {
         id: 1,
-        title: "The Future of AI Marketing",
-        category: "Artificial Intelligence",
-        date: "Oct 12, 2024",
-        excerpt: "How generative AI is reshaping the landscape of digital advertising and content creation.",
-        image: "/assets/web-dev.mp4", // Using existing asset as placeholder or I should use a gradient
-        readTime: "5 min read"
+        title: "The Silent Revolution: AI in Creative Workflows",
+        category: "( ARTIFICIAL INTELLIGENCE )",
+        date: "OCT 12, 2024",
+        image: "https://images.unsplash.com/photo-1620712943543-bcc4688e7485?q=80&w=1965&auto=format&fit=crop",
+        excerpt: "Generative AI isn't replacing creativity; it's expanding the canvas. We explore how agencies are adapting to the new era of synthetic media."
     },
     {
         id: 2,
-        title: "Why SEO is Non-Negotiable",
-        category: "SEO Strategy",
-        date: "Sep 28, 2024",
-        excerpt: "In a world of infinite content, visibility is the only currency that matters. Here is why.",
-        image: "/assets/seo.mp4",
-        readTime: "7 min read"
+        title: "Minimalism is Dead. Long Live Maximalism.",
+        category: "( DESIGN TRENDS )",
+        date: "SEP 28, 2024",
+        image: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=1964&auto=format&fit=crop",
+        excerpt: "Why the era of 'clean corporate memphis' is ending, and why chaotic, raw, and text-heavy designs are taking over the digital landscape."
     },
     {
         id: 3,
-        title: "The Power of Branding",
-        category: "Brand Identity",
-        date: "Sep 15, 2024",
-        excerpt: "Your brand is not just a logo. It’s the silent ambassador of your business.",
-        image: "/assets/uiux-design.mp4",
-        readTime: "4 min read"
+        title: "Web 3.0: A Ghost Town or a Sleeping Giant?",
+        category: "( TECHNOLOGY )",
+        date: "AUG 05, 2024",
+        image: "https://images.unsplash.com/photo-1639762681485-074b7f938ba0?q=80&w=2832&auto=format&fit=crop",
+        excerpt: "Decentralization promised freedom, but delivered complexity. Is there still a future for the blockchain in consumer applications?"
     },
     {
         id: 4,
-        title: "Web 3.0: The Next Frontier",
-        category: "Technology",
-        date: "Aug 05, 2024",
-        excerpt: "Decentralized web experiences are coming. Are you ready for the shift?",
-        image: "/assets/video.mp4",
-        readTime: "6 min read"
+        title: "The Psychology of Dark Mode",
+        category: "( UX RESEARCH )",
+        date: "JUL 15, 2024",
+        image: "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?q=80&w=2070&auto=format&fit=crop",
+        excerpt: "It's not just an aesthetic choice. It's a physiological preference. How contrasting interfaces affect retention and readability."
     }
 ];
 
 export default function Blog() {
     return (
-        <main className="min-h-screen bg-black text-white selection:bg-[#a8ffc4] selection:text-black">
+        <main className={`min-h-screen bg-[#0a0a0a] text-white selection:bg-[#a8ffc4] selection:text-black ${spaceGrotesk.className}`}>
             <Navigation />
 
-            {/* Header Section */}
-            <section className="pt-40 pb-20 px-6 md:px-20 relative overflow-hidden">
-                <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_0%,rgba(168,255,196,0.1),transparent_50%)]" />
+            {/* 1. HERO SECTION (Editorial Style) */}
+            <section className="relative pt-40 pb-20 px-6 md:px-12 border-b border-white/5">
+                <div className="max-w-[1800px] mx-auto">
 
-                <div className="max-w-7xl mx-auto text-center relative z-10">
-                    <motion.h1
-                        initial={{ opacity: 0, y: 30 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.8 }}
-                        className="text-5xl md:text-7xl font-bold bg-clip-text text-transparent bg-gradient-to-b from-white to-white/60 mb-6"
+                    {/* Tiny Label */}
+                    <motion.div
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        transition={{ duration: 1, delay: 0.5 }}
+                        className="mb-8 overflow-hidden"
                     >
-                        Insights & Thoughts
-                    </motion.h1>
-                    <motion.p
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.8, delay: 0.2 }}
-                        className="text-lg md:text-xl text-white/60 max-w-2xl mx-auto"
-                    >
-                        Exploring the intersections of design, technology, and culture.
-                    </motion.p>
+                        <span className="text-xs font-medium tracking-[0.3em] text-[#a8ffc4] uppercase">
+                            ( The Journal )
+                        </span>
+                    </motion.div>
+
+                    {/* Massive Title */}
+                    <div className="overflow-hidden">
+                        <motion.h1
+                            initial={{ y: "100%" }}
+                            animate={{ y: 0 }}
+                            transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
+                            className={`${playfair.className} text-[15vw] leading-[0.8] text-white mix-blend-difference opacity-90`}
+                        >
+                            INSIGHTS.
+                        </motion.h1>
+                    </div>
+
+                    {/* Subtext Grid */}
+                    <div className="grid grid-cols-1 md:grid-cols-12 mt-12 md:mt-24 gap-8">
+                        <div className="md:col-span-4 md:col-start-9">
+                            <motion.p
+                                initial={{ opacity: 0, y: 20 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                transition={{ duration: 1, delay: 0.8 }}
+                                className="text-xl md:text-2xl font-light text-white/50 leading-relaxed"
+                            >
+                                Exploring the bleeding edge of <span className="text-white">design</span>, <span className="text-white">code</span>, and <span className="text-white">digital culture</span>.
+                            </motion.p>
+                        </div>
+                    </div>
                 </div>
             </section>
 
-            {/* Articles Grid */}
-            <section className="pb-32 px-6 md:px-20">
-                <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {/* 2. ARTICLE LIST (Magazine Layout) */}
+            <section className="px-6 md:px-12 py-20 bg-black">
+                <div className="max-w-[1800px] mx-auto flex flex-col gap-20 md:gap-40">
                     {articles.map((article, index) => (
-                        <motion.div
-                            key={article.id}
-                            initial={{ opacity: 0, y: 30 }}
-                            whileInView={{ opacity: 1, y: 0 }}
-                            viewport={{ once: true }}
-                            transition={{ duration: 0.5, delay: index * 0.1 }}
-                            whileHover={{ y: -10 }}
-                            className="group relative bg-white/5 border border-white/10 rounded-2xl overflow-hidden hover:border-[#a8ffc4]/50 transition-colors duration-300"
-                        >
-                            {/* Image Area - Simulated with Gradient or Video */}
-                            <div className="h-64 md:h-72 w-full relative overflow-hidden bg-[#111]">
-                                <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent z-10" />
-                                {/* Video/Image Placeholder */}
-                                <video
-                                    src={article.image}
-                                    autoPlay
-                                    muted
-                                    loop
-                                    playsInline
-                                    className="w-full h-full object-cover opacity-60 group-hover:scale-105 transition-transform duration-700"
-                                />
-
-                                <div className="absolute top-4 left-4 z-20">
-                                    <span className="px-3 py-1 text-xs font-semibold bg-[#a8ffc4] text-black rounded-full uppercase tracking-wider">
-                                        {article.category}
-                                    </span>
-                                </div>
-                            </div>
-
-                            {/* Content */}
-                            <div className="p-8">
-                                <div className="flex items-center gap-4 text-xs text-white/40 mb-4 uppercase tracking-widest font-medium">
-                                    <span>{article.date}</span>
-                                    <span className="w-1 h-1 rounded-full bg-white/40" />
-                                    <span>{article.readTime}</span>
-                                </div>
-
-                                <h3 className="text-2xl font-bold mb-3 group-hover:text-[#a8ffc4] transition-colors duration-300">
-                                    {article.title}
-                                </h3>
-                                <p className="text-white/60 line-clamp-3 mb-6">
-                                    {article.excerpt}
-                                </p>
-
-                                <Link
-                                    href="#"
-                                    className="inline-flex items-center gap-2 text-sm font-semibold uppercase tracking-wider hover:gap-3 transition-all duration-300"
-                                >
-                                    Read Article
-                                    <span className="text-[#a8ffc4]">→</span>
-                                </Link>
-                            </div>
-                        </motion.div>
+                        <ArticleRow key={article.id} article={article} index={index} />
                     ))}
                 </div>
             </section>
 
-            <Footer />
+            <FooterCTA />
         </main>
     );
+}
+
+// Sub-component for animation logic per row
+function ArticleRow({ article, index }: { article: any, index: number }) {
+    const ref = useRef(null);
+    const { scrollYProgress } = useScroll({
+        target: ref,
+        offset: ["start end", "end center"]
+    });
+
+    // Parallax Effect for Image
+    const y = useTransform(scrollYProgress, [0, 1], [0, -50]);
+    const opacity = useTransform(scrollYProgress, [0, 0.5], [0, 1]);
+
+    const isEven = index % 2 === 0;
+
+    return (
+        <motion.div
+            ref={ref}
+            style={{ opacity }}
+            className={`grid grid-cols-1 md:grid-cols-12 gap-8 md:gap-20 items-center group cursor-pointer ${!isEven ? 'md:flex-row-reverse' : ''}`}
+        >
+            {/* Text Side */}
+            <div className={`md:col-span-5 flex flex-col justify-center ${!isEven ? 'md:col-start-8' : ''}`}>
+                <div className="mb-6 flex items-center gap-4">
+                    <span className="text-xs font-medium tracking-[0.2em] text-[#a8ffc4] uppercase">
+                        {article.category}
+                    </span>
+                    <span className="w-8 h-[1px] bg-white/20" />
+                    <span className="text-xs font-medium tracking-[0.1em] text-white/40 uppercase">
+                        {article.date}
+                    </span>
+                </div>
+
+                <h2 className={`${playfair.className} text-4xl md:text-6xl text-white mb-6 leading-[1.1] transition-colors duration-500 group-hover:text-[#a8ffc4]`}>
+                    {article.title}
+                </h2>
+
+                <p className="text-lg text-white/40 font-light leading-relaxed mb-8 max-w-md">
+                    {article.excerpt}
+                </p>
+
+                <div className="flex items-center gap-2 text-sm uppercase tracking-widest text-white group-hover:gap-4 transition-all duration-300">
+                    Read Story <ArrowUpRight className="w-4 h-4 text-[#a8ffc4]" />
+                </div>
+            </div>
+
+            {/* Image Side (Parallax) */}
+            <div className={`md:col-span-6 ${!isEven ? 'md:col-start-1 md:row-start-1' : 'md:col-start-7'}`}>
+                <div className="relative overflow-hidden aspect-[4/3] w-full">
+                    {/* Mask Overlay */}
+                    <div className="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors duration-500 z-10" />
+
+                    <motion.div style={{ y }} className="w-full h-[120%] -mt-[10%]">
+                        <Image
+                            src={article.image}
+                            alt={article.title}
+                            fill
+                            className="object-cover grayscale group-hover:grayscale-0 transition-all duration-700"
+                        />
+                    </motion.div>
+                </div>
+            </div>
+        </motion.div>
+    )
 }
