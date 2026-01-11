@@ -50,13 +50,13 @@ export default function EcosystemGrid() {
                 <div className="w-full max-w-md mx-auto h-[1px] bg-gradient-to-r from-transparent via-white/20 to-transparent" />
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 max-w-4xl">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 max-w-4xl w-full">
                 {partners.map((partner, index) => (
                     <Link
                         key={partner.name}
                         href={partner.url}
                         target="_blank"
-                        className="group relative h-[280px] w-full max-w-[400px] block overflow-hidden rounded-xl bg-black border border-white/5 transition-all duration-300 hover:border-white/30 hover:shadow-[0_0_30px_rgba(255,255,255,0.1)] mx-auto"
+                        className="group relative h-[280px] w-full max-w-[400px] block overflow-hidden rounded-xl bg-white/5 border border-white/10 transition-all duration-300 hover:border-white/40 hover:bg-white/10 hover:shadow-[0_0_30px_rgba(255,255,255,0.1)] mx-auto"
                     >
                         {/* 1. BACKGROUND CODING ANIMATIONS */}
                         <div className="absolute inset-0 opacity-20 group-hover:opacity-10 transition-opacity duration-500">
