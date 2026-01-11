@@ -417,28 +417,47 @@ export default function WorkPage() {
             {/* Spacer */}
             <div className="h-32" />
 
-            {/* Minimalist Grid CTA */}
-            <section className="pb-20 pt-10 px-6 w-full max-w-7xl mx-auto">
-                <div className="border-t border-white/10 pt-20">
-                    <div className="flex flex-col md:flex-row items-start md:items-end justify-between gap-10">
+            {/* Premium 'Search-Style' Footer CTA */}
+            <section className="py-32 px-6 w-full max-w-5xl mx-auto">
+                <div className="flex flex-col items-center justify-center text-center">
 
-                        {/* Left: Big Typography */}
-                        <div className="text-left">
-                            <h2 className="text-5xl md:text-8xl font-black text-white tracking-tighter leading-[0.9] mb-4">
-                                HAVE AN<br />
-                                <span className="text-white/20">IDEA?</span>
-                            </h2>
-                        </div>
-
-                        {/* Right: Interactive Button */}
-                        <Link
-                            href="/#contact"
-                            className="group relative flex items-center justify-center w-32 h-32 md:w-40 md:h-40 rounded-full bg-white text-black transition-transform duration-500 hover:scale-110"
+                    {/* 1. Giant Typography */}
+                    <div className="overflow-hidden mb-12">
+                        <motion.h2
+                            initial={{ y: "100%" }}
+                            whileInView={{ y: 0 }}
+                            transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }} // GSAP Power3.out
+                            viewport={{ once: true }}
+                            className="text-6xl md:text-9xl font-black text-white tracking-tighter leading-none"
                         >
-                            <div className="absolute inset-0 rounded-full bg-[#a8ffc4] opacity-0 group-hover:opacity-100 transition-opacity duration-500 blur-xl" />
-                            <ArrowUpRight className="relative z-10 w-12 h-12 md:w-16 md:h-16 transition-transform duration-500 group-hover:rotate-45" strokeWidth={1.5} />
-                        </Link>
+                            HAVE AN <span className="text-[#a8ffc4]">IDEA?</span>
+                        </motion.h2>
                     </div>
+
+                    {/* 2. 'Search Bar' Style CTA Button */}
+                    <Link href="/#contact" className="group relative w-full max-w-2xl">
+                        <div className="relative flex items-center justify-between w-full p-4 pl-8 bg-white/5 border border-white/10 rounded-full backdrop-blur-md transition-all duration-500 group-hover:bg-white/10 group-hover:border-[#a8ffc4]/50 group-hover:shadow-[0_0_50px_rgba(168,255,196,0.15)]">
+
+                            {/* Fake Input Text */}
+                            <span className="text-xl md:text-2xl text-white/40 font-light group-hover:text-white/80 transition-colors duration-300">
+                                Tell us about your project...
+                            </span>
+
+                            {/* Magnetic-style Circular Button */}
+                            <div className="relative flex items-center justify-center w-16 h-16 md:w-20 md:h-20 bg-[#a8ffc4] rounded-full transition-all duration-500 group-hover:scale-110 group-hover:rotate-45">
+                                <ArrowUpRight className="w-8 h-8 text-black" strokeWidth={2} />
+                            </div>
+
+                        </div>
+                    </Link>
+
+                    {/* 3. Footer Links / Copyright (Minimal) */}
+                    <div className="flex gap-8 mt-20 text-sm text-white/30 font-light uppercase tracking-widest">
+                        <span>© 2025 THE OG DIGITALS</span>
+                        <span className="hidden md:inline">•</span>
+                        <span>KARACHI, PK</span>
+                    </div>
+
                 </div>
             </section>
         </main>
