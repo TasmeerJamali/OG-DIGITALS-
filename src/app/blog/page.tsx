@@ -64,7 +64,7 @@ export default function Blog() {
                         <span className="text-xs font-medium tracking-[0.3em] text-[#a8ffc4] uppercase">
                             ( The Journal )
                         </span>
-                    </motion.div>
+                    </div>
 
                     {/* Massive Title - Reduced vw slightly to prevent overflow */}
                     <div className="overflow-hidden">
@@ -120,10 +120,8 @@ function ArticleRow({ article, index }: { article: any, index: number }) {
     const y = useTransform(scrollYProgress, [0, 1], [0, -50]);
     const opacity = useTransform(scrollYProgress, [0, 0.5], [0, 1]);
 
-    // Inverted logic to match User Request:
-    // 1st Item (Index 0): Image Left, Text Right
-    // 2nd Item (Index 1): Image Right, Text Left
-    const isEven = index % 2 !== 0;
+    // Grid Logic
+    const isEven = index % 2 === 0;
 
     return (
         <motion.div
