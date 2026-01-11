@@ -19,7 +19,7 @@ const articles = [
         id: 1,
         title: "The Silent Revolution: AI in Creative Workflows",
         category: "( ARTIFICIAL INTELLIGENCE )",
-        date: "OCT 12, 2024",
+        date: "JAN 12, 2026",
         image: "https://images.unsplash.com/photo-1620712943543-bcc4688e7485?q=80&w=1965&auto=format&fit=crop",
         excerpt: "Generative AI isn't replacing creativity; it's expanding the canvas. We explore how agencies are adapting to the new era of synthetic media."
     },
@@ -27,7 +27,7 @@ const articles = [
         id: 2,
         title: "Minimalism is Dead. Long Live Maximalism.",
         category: "( DESIGN TRENDS )",
-        date: "SEP 28, 2024",
+        date: "DEC 28, 2026",
         image: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=1964&auto=format&fit=crop",
         excerpt: "Why the era of 'clean corporate memphis' is ending, and why chaotic, raw, and text-heavy designs are taking over the digital landscape."
     },
@@ -35,7 +35,7 @@ const articles = [
         id: 3,
         title: "Web 3.0: A Ghost Town or a Sleeping Giant?",
         category: "( TECHNOLOGY )",
-        date: "AUG 05, 2024",
+        date: "NOV 05, 2026",
         image: "https://images.unsplash.com/photo-1639762681485-074b7f938ba0?q=80&w=2832&auto=format&fit=crop",
         excerpt: "Decentralization promised freedom, but delivered complexity. Is there still a future for the blockchain in consumer applications?"
     },
@@ -43,7 +43,7 @@ const articles = [
         id: 4,
         title: "The Psychology of Dark Mode",
         category: "( UX RESEARCH )",
-        date: "JUL 15, 2024",
+        date: "OCT 15, 2026",
         image: "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?q=80&w=2070&auto=format&fit=crop",
         excerpt: "It's not just an aesthetic choice. It's a physiological preference. How contrasting interfaces affect retention and readability."
     }
@@ -56,7 +56,7 @@ export default function Blog() {
 
             {/* 1. HERO SECTION (Editorial Style) */}
             {/* FORCE massive padding (500px fixed) to guarantee clearance on all screens */}
-            <section className="relative pt-48 pb-20 px-6 md:px-12 border-b border-white/5 bg-[#0a0a0a]">
+            <section className="relative pt-32 md:pt-48 pb-20 px-6 md:px-12 border-b border-white/5 bg-[#0a0a0a]">
                 <div className="max-w-[1800px] mx-auto">
 
                     {/* Tiny Label - Push down slightly */}

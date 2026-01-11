@@ -103,7 +103,7 @@ export default function Hero() {
                     style={{ marginTop: "40px" }}
                 >
                     <Link
-                        href="#contact"
+                        href="/contact"
                         className="group relative inline-flex items-center justify-center rounded-full"
                         style={{
                             padding: "14px 28px",

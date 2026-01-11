@@ -900,7 +900,7 @@ export default function AboutPage() {
                             </p>
 
                             {/* Button */}
-                            <Link href="/#contact" className="group inline-block">
+                            <Link href="/contact" className="group inline-block">
                                 <motion.div
                                     className="relative px-12 py-6 rounded-full overflow-hidden"
                                     style={{

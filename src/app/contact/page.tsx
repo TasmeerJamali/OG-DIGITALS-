@@ -79,7 +79,7 @@ function BrowserWindow({ children }: { children: React.ReactNode }) {
             </div>
 
             {/* Content Area */}
-            <div className="p-8 md:p-12 lg:p-16 max-h-[80vh] overflow-y-auto custom-scrollbar">
+            <div className="p-5 md:p-12 lg:p-16 md:max-h-[80vh] md:overflow-y-auto custom-scrollbar">
                 {children}
             </div>
         </motion.div>

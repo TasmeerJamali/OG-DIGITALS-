@@ -88,7 +88,7 @@ export default function FooterCTA() {
                 </motion.div>
 
                 {/* 4. Giant Magnetic Interaction Button */}
-                <Link href="/#contact" className="inline-block relative group">
+                <Link href="/contact" className="inline-block relative group">
                     <motion.div
                         ref={buttonRef}
                         onMouseMove={handleMouseMove}

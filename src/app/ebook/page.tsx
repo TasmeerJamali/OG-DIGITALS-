@@ -118,7 +118,7 @@ function CheckList({ items }: { items: string[] }) {
 // 1. HERO (Refined)
 function Hero() {
     return (
-        <section className="relative min-h-screen flex flex-col justify-center pt-48 pb-20 overflow-hidden bg-[#050505]">
+        <section className="relative min-h-screen flex flex-col justify-center pt-32 md:pt-48 pb-20 overflow-hidden bg-[#050505]">
             {/* Background Image */}
             <div className="absolute inset-0 z-0">
                 <img
@@ -264,12 +264,12 @@ function WhyChooseComponents() {
         <section className="py-22 bg-black relative overflow-hidden">
             {/* Ambient Background */}
             <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-[#a8ffc4]/10 via-black to-black opacity-40" />
-            
+
             <div className="container mx-auto px-6 relative z-10">
-                <motion.div 
-                    initial={{ opacity: 0, y: 30 }} 
-                    whileInView={{ opacity: 1, y: 0 }} 
-                    viewport={{ once: true }} 
+                <motion.div
+                    initial={{ opacity: 0, y: 30 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
                     className="text-center mb-24"
                 >
                     <span className="inline-block px-6 py-2 mb-8 text-sm font-mono tracking-[0.2em] text-[#a8ffc4] bg-[#a8ffc4]/5 rounded-full border border-[#a8ffc4]/20 shadow-[0_0_15px_rgba(168,255,196,0.1)]">
@@ -297,7 +297,7 @@ function WhyChooseComponents() {
                             <div className="relative h-full p-1 bg-gradient-to-br from-white/10 to-white/0 rounded-[30px] overflow-hidden backdrop-blur-sm group-hover:from-[#a8ffc4]/40 group-hover:to-[#a8ffc4]/0 transition-all duration-500">
                                 {/* Inner Card content */}
                                 <div className="relative h-full bg-[#050505]/90 rounded-[28px] p-8 md:p-10 flex flex-col justify-between overflow-hidden">
-                                    
+
                                     {/* Hover Grid overlay */}
                                     <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-10 mix-blend-overlay group-hover:opacity-20 transition-opacity duration-500" />
                                     <div className="absolute -right-20 -top-20 w-64 h-64 bg-[#a8ffc4]/20 rounded-full blur-[80px] group-hover:bg-[#a8ffc4]/30 transition-all duration-500 group-hover:scale-150" />
@@ -498,7 +498,7 @@ function ServicePackages() {
     ];
 
     return (
-        <section ref={containerRef} className="relative h-[400vh] bg-[#050505]">
+        <section ref={containerRef} className="relative h-[250vh] md:h-[400vh] bg-[#050505]">
             {/* Sticky container */}
             <div className="sticky top-0 h-screen overflow-hidden">
                 {/* Background effects */}
@@ -728,7 +728,7 @@ function HowItWorks() {
     const lineProgress = useTransform(scrollYProgress, [0, 1], ["0%", "100%"]);
 
     return (
-        <section ref={containerRef} className="relative h-[500vh] bg-black">
+        <section ref={containerRef} className="relative h-[300vh] md:h-[500vh] bg-black">
             {/* Fixed container */}
             <div className="sticky top-0 h-screen overflow-hidden">
 
@@ -1231,10 +1231,10 @@ function BottomCTA() {
         <section className="py-24 bg-black relative overflow-hidden flex flex-col items-center justify-center border-t border-white/5">
             {/* Singularity Core */}
             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[1000px] h-[1000px] bg-[#a8ffc4]/5 rounded-full blur-[120px] animate-pulse pointer-events-none" />
-            
+
             {/* Event Horizon */}
             <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20 brightness-150 mix-blend-overlay pointer-events-none" />
-            
+
             <div className="container mx-auto px-6 relative z-10 text-center w-full flex flex-col items-center">
                 <motion.div
                     initial={{ opacity: 0, scale: 0.9 }}
@@ -1245,14 +1245,14 @@ function BottomCTA() {
                     <span className="inline-block px-8 py-3 mb-10 text-base font-mono tracking-widest text-[#a8ffc4] bg-[#a8ffc4]/5 rounded-full border border-[#a8ffc4]/30 shadow-[0_0_20px_rgba(168,255,196,0.1)]">
                         SYSTEM READY
                     </span>
-                    
+
                     <h2 className="text-6xl md:text-9xl font-bold text-white tracking-tighter mb-16 leading-tight">
                         Launch Your <br />
                         <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#a8ffc4] via-emerald-400 to-[#a8ffc4] animate-text-shimmer bg-[length:200%_auto]">
                             Legacy Today.
                         </span>
                     </h2>
-                    
+
                     <p className="text-2xl md:text-3xl text-white/60 max-w-4xl mx-auto mb-20 leading-relaxed font-light">
                         Don't let your knowledge vanish into the void. Turn your expertise into an enduring digital asset.
                     </p>
@@ -1268,7 +1268,7 @@ function BottomCTA() {
                                 Initialize Project <Zap className="w-6 h-6 fill-current" />
                             </span>
                         </motion.button>
-                        
+
                         <motion.button
                             whileHover={{ scale: 1.05 }}
                             whileTap={{ scale: 0.95 }}
@@ -1320,17 +1320,17 @@ function FAQSection() {
                             viewport={{ once: true }}
                             transition={{ delay: i * 0.1 }}
                             className={`group border rounded-3xl overflow-hidden backdrop-blur-sm transition-all duration-500 relative
-                                ${openIndex === i 
-                                    ? "bg-[#a8ffc4]/[0.02] border-[#a8ffc4]/50 shadow-[0_0_50px_-20px_rgba(168,255,196,0.3)]" 
+                                ${openIndex === i
+                                    ? "bg-[#a8ffc4]/[0.02] border-[#a8ffc4]/50 shadow-[0_0_50px_-20px_rgba(168,255,196,0.3)]"
                                     : "bg-white/[0.03] border-white/10 hover:border-white/30 hover:bg-white/[0.05]"
                                 }`
                             }
                         >
                             {/* Animated Left Glow Line for Active State */}
                             {openIndex === i && (
-                                <motion.div 
+                                <motion.div
                                     layoutId="active-glow"
-                                    className="absolute left-0 top-0 bottom-0 w-1 bg-[#a8ffc4] box-shadow-[0_0_20px_#a8ffc4]" 
+                                    className="absolute left-0 top-0 bottom-0 w-1 bg-[#a8ffc4] box-shadow-[0_0_20px_#a8ffc4]"
                                     initial={{ opacity: 0 }}
                                     animate={{ opacity: 1 }}
                                 />
@@ -1344,15 +1344,14 @@ function FAQSection() {
                                     }`}>
                                     {faq.q}
                                 </span>
-                                <div className={`p-4 rounded-full border transition-all duration-300 ${
-                                    openIndex === i 
-                                        ? "bg-[#a8ffc4] border-[#a8ffc4] text-black rotate-180" 
-                                        : "border-white/20 text-white group-hover:border-white group-hover:bg-white group-hover:text-black"
-                                }`}>
+                                <div className={`p-4 rounded-full border transition-all duration-300 ${openIndex === i
+                                    ? "bg-[#a8ffc4] border-[#a8ffc4] text-black rotate-180"
+                                    : "border-white/20 text-white group-hover:border-white group-hover:bg-white group-hover:text-black"
+                                    }`}>
                                     <ChevronDown className="w-8 h-8" />
                                 </div>
                             </button>
-                            
+
                             <AnimatePresence>
                                 {openIndex === i && (
                                     <motion.div
@@ -1397,7 +1396,7 @@ export default function EbookServicesPage() {
 
             <footer className="py-24 bg-black text-center border-t border-white/5">
                 <p className="text-white/20 text-base font-mono">
-                    THE OG DIGITALS © 2024
+                    THE OG DIGITALS © 2026
                 </p>
             </footer>
         </main>

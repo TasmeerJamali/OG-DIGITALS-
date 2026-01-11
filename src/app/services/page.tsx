@@ -14,7 +14,7 @@ const services = [
         capabilities: ["React & Next.js", "E-Commerce Platforms", "Custom CMS", "API Development", "Performance Optimization"],
         accent: "#a8ffc4",
         bgElements: ["<div>", "</div>", "const", "function", "=>", "import", "export", "async", "await", "return", "{}", "[]", "npm", "git", "API", "fetch", "useState", "useEffect", "props", "component"],
-        href: "/#contact"
+        href: "/contact"
     },
     {
         id: 2,
@@ -24,7 +24,7 @@ const services = [
         capabilities: ["Logo Systems", "Visual Identity", "Brand Guidelines", "Packaging Design", "Brand Strategy"],
         accent: "#fbbf24",
         bgElements: ["✦", "◆", "○", "□", "△", "Aa", "Bb", "RGB", "CMYK", "#HEX", "Font", "Type", "Grid", "Logo", "Color", "Vision", "Brand", "Style", "Identity", "Design"],
-        href: "/#contact"
+        href: "/contact"
     },
     {
         id: 3,
@@ -34,7 +34,7 @@ const services = [
         capabilities: ["Custom AI Agents", "Workflow Automation", "LLM Integration", "Chatbots", "Process Optimization"],
         accent: "#60a5fa",
         bgElements: ["AI", "ML", "LLM", "Bot", "Neural", "Data", "Flow", "Auto", "Agent", "Train", "Model", "GPT", "Token", "Prompt", "Logic", "Scale", "Smart", "Auto", "Loop", "Task"],
-        href: "/#contact"
+        href: "/contact"
     },
     {
         id: 4,
@@ -44,7 +44,7 @@ const services = [
         capabilities: ["Content Strategy", "Community Management", "Viral Campaigns", "Reels & TikTok", "Influencer Marketing"],
         accent: "#c084fc",
         bgElements: ["Viral", "Like", "Share", "Post", "Reel", "Trend", "Feed", "Story", "Grow", "Reach", "Engage", "Fans", "Brand", "Social", "Media", "Click", "View", "Tag", "Hash", "Live"],
-        href: "/#contact"
+        href: "/contact"
     },
     {
         id: 5,
@@ -54,7 +54,7 @@ const services = [
         capabilities: ["Meta Ads", "Google Ads", "Conversion Rate Opt", "Analytics & Tracking", "Retargeting"],
         accent: "#ff7171",
         bgElements: ["ROI", "ROAS", "CPC", "CTR", "Ads", "Sales", "Data", "Scale", "Pixel", "Track", "Meta", "Google", "Target", "Funnel", "Lead", "Cost", "Bid", "Click", "Buy", "Win"],
-        href: "/#contact"
+        href: "/contact"
     },
     {
         id: 6,
@@ -650,7 +650,7 @@ export default function ServicesPage() {
                             />
 
                             {/* Button container */}
-                            <Link href="/#contact" className="relative block">
+                            <Link href="/contact" className="relative block">
                                 <motion.div
                                     className="relative px-12 py-6 rounded-full overflow-hidden cursor-pointer"
                                     style={{

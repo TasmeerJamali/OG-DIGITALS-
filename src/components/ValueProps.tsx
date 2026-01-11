@@ -9,10 +9,11 @@ const cards = [
         title: "Strategic Brand Voice",
         description: "We don't guess; we engineer your online persona. Our deep-dive audit frames your brand to dominate the feed.",
         link: "Our Strategy",
+        href: "/services",
         visual: (
             <div className="relative w-full h-full bg-gradient-to-b from-[#1a1a1a] to-black flex items-center justify-center overflow-hidden group-hover:from-[#2a2a2a] group-hover:to-black transition-colors duration-500">
                 {/* Visual: Cursor Switching Tabs */}
-                <div className="relative w-64 h-40 bg-[#0F0F0F] rounded-lg border border-white/10 overflow-hidden flex flex-col p-4 shadow-2xl skew-x-1 group-hover:skew-x-0 transition-transform duration-500">
+                <div className="relative w-64 h-40 bg-[#0F0F0F] rounded-lg border border-white/10 overflow-hidden flex flex-col p-4 shadow-2xl skew-x-1 group-hover:skew-x-0 transition-transform duration-500 scale-75 md:scale-100">
                     {/* Fake Browser Tabs */}
                     <div className="flex gap-2 mb-4 border-b border-white/5 pb-2 justify-center">
                         {[0, 1, 2].map((i) => (
@@ -80,10 +81,11 @@ const cards = [
         title: "Viral Content Engine",
         description: "Built for speed and engagement. Our rapid-production workflow ensures you catch every trend without compromising quality.",
         link: "How we create",
+        href: "/services",
         visual: (
             <div className="relative w-full h-full bg-gradient-to-b from-[#1a1a1a] to-black flex items-center justify-center overflow-hidden group-hover:from-[#2a2a2a] group-hover:to-black transition-colors duration-500">
                 {/* Visual: VERTICAL Moving Feed + Popping Dollars */}
-                <div className="relative w-full h-full flex flex-col items-center justify-center">
+                <div className="relative w-full h-full flex flex-col items-center justify-center scale-90 md:scale-100">
 
                     {/* Vertical Scrolling Feed */}
                     <div className="relative w-48 h-full overflow-hidden mask-linear-fade">
@@ -132,10 +134,11 @@ const cards = [
         title: "Community Growth",
         description: "Followers are vanity; community is sanity. We integrate data-driven loops to turn viewers into loyal advocates.",
         link: "See results",
+        href: "/work",
         visual: (
             <div className="relative w-full h-full bg-gradient-to-b from-[#1a1a1a] to-black flex items-center justify-center overflow-hidden group-hover:from-[#2a2a2a] group-hover:to-black transition-colors duration-500">
                 {/* Visual: Solar System */}
-                <div className="relative w-64 h-64 flex items-center justify-center">
+                <div className="relative w-64 h-64 flex items-center justify-center scale-75 md:scale-100">
                     {/* Sun */}
                     <motion.div
                         className="absolute w-16 h-16 bg-gradient-to-br from-[#a8ffc4] to-[#00ffff] rounded-full shadow-[0_0_50px_rgba(168,255,196,0.5)] z-10"
@@ -177,7 +180,7 @@ const cards = [
 
 export default function ValueProps() {
     return (
-        <section className="relative w-full left-0 right-0 mx-auto py-32 px-6 md:px-12 bg-black overflow-hidden flex flex-col items-center">
+        <section className="relative w-full left-0 right-0 mx-auto py-20 md:py-32 px-6 md:px-12 bg-black overflow-hidden flex flex-col items-center">
             <div className="max-w-7xl mx-auto">
                 <motion.div
                     initial={{ opacity: 0, y: 20 }}
@@ -201,22 +204,22 @@ export default function ValueProps() {
                             whileInView={{ opacity: 1, y: 0 }}
                             transition={{ delay: index * 0.1, duration: 0.5 }}
                             viewport={{ once: true }}
-                            className="group relative h-[520px] rounded-3xl bg-[#0F0F0F] border border-white/5 overflow-hidden transition-all duration-500 hover:border-[#a8ffc4]/30 hover:-translate-y-2 hover:shadow-[0_10px_40px_rgba(0,0,0,0.5)]"
+                            className="group relative h-auto md:h-[520px] rounded-3xl bg-[#0F0F0F] border border-white/5 overflow-hidden transition-all duration-500 hover:border-[#a8ffc4]/30 hover:-translate-y-2 hover:shadow-[0_10px_40px_rgba(0,0,0,0.5)] flex flex-col"
                         >
                             {/* Spotlight Effect */}
                             <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none">
                                 <div className="absolute inset-0 bg-gradient-to-b from-[#a8ffc4]/5 to-transparent" />
                             </div>
 
-                            {/* Visual Area (Top 60%) */}
-                            <div className="h-[60%] w-full border-b border-white/5 relative bg-[#0a0a0a] group-hover:bg-[#111] transition-colors overflow-hidden">
+                            {/* Visual Area (Top 60% on desktop, fixed height on mobile) */}
+                            <div className="h-64 md:h-[60%] w-full border-b border-white/5 relative bg-[#0a0a0a] group-hover:bg-[#111] transition-colors overflow-hidden flex-shrink-0">
                                 {card.visual}
                                 {/* Top Gradient Overlay */}
                                 <div className="absolute inset-x-0 top-0 h-32 bg-gradient-to-b from-[#0F0F0F] via-transparent to-transparent opacity-80" />
                             </div>
 
-                            {/* Content Area (Bottom 40%) */}
-                            <div className="h-[40%] p-8 flex flex-col items-center text-center justify-between bg-gradient-to-b from-[#0F0F0F] to-[#050505] relative z-10">
+                            {/* Content Area (Bottom 40% on desktop, auto on mobile) */}
+                            <div className="flex-grow md:h-[40%] p-6 md:p-8 flex flex-col items-center text-center justify-between bg-gradient-to-b from-[#0F0F0F] to-[#050505] relative z-10">
                                 <div>
                                     <h3 className="text-2xl font-bold text-white mb-3 tracking-tight group-hover:text-[#a8ffc4] transition-colors">
                                         {card.title}
@@ -227,7 +230,7 @@ export default function ValueProps() {
                                 </div>
 
                                 <Link
-                                    href="/services"
+                                    href={card.href}
                                     className="flex items-center justify-center gap-2 text-xs font-mono uppercase tracking-[0.2em] text-white/40 group-hover:text-[#a8ffc4] transition-colors mt-4 w-full"
                                 >
                                     {card.link}

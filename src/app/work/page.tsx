@@ -14,7 +14,7 @@ const projects = [
         id: 1,
         title: "Organimo",
         category: "E-Commerce",
-        year: "2024",
+        year: "2026",
         link: "https://organimo.com",
         color: "#4ADE80",
         image: "/assets/projects/organimo.png",
@@ -23,7 +23,7 @@ const projects = [
         id: 2,
         title: "Pak Soorty Dates",
         category: "Corporate",
-        year: "2024",
+        year: "2026",
         link: "https://paksoortydates.com",
         color: "#F59E0B",
         image: "/assets/projects/paksoorty.png",
@@ -32,7 +32,7 @@ const projects = [
         id: 3,
         title: "Universal Book Store",
         category: "E-Commerce",
-        year: "2024",
+        year: "2026",
         link: "https://universalbookstore.pk",
         color: "#3B82F6",
         image: "/assets/projects/bookstore.png",
@@ -41,7 +41,7 @@ const projects = [
         id: 4,
         title: "DHA City Karachi",
         category: "Real Estate",
-        year: "2024",
+        year: "2026",
         link: "https://indushills.dhacitykarachi.org.pk",
         color: "#8B5CF6",
         image: "/assets/projects/dha.png",
@@ -119,23 +119,29 @@ function ProjectItem({
 
                     {/* Right side - Category and Year */}
                     <motion.div
-                        className="hidden md:flex items-center gap-12"
+                        className="flex items-center gap-4 md:gap-12 ml-auto"
                         animate={{
                             opacity: isActive ? 1 : 0.3,
                             x: isActive ? 0 : 20,
                         }}
                         transition={{ duration: 0.4 }}
                     >
-                        <span className="text-sm uppercase tracking-widest text-white/50">
+                        <span className="hidden md:block text-sm uppercase tracking-widest text-white/50">
                             {project.category}
                         </span>
-                        <span className="text-sm tabular-nums text-white/30">
+                        <span className="hidden md:block text-sm tabular-nums text-white/30">
                             {project.year}
+                        </span>
+
+                        {/* Mobile Category (Small) */}
+                        <span className="md:hidden text-xs uppercase tracking-wider text-white/40 text-right">
+                            {project.category}<br />
+                            <span className="text-white/20">{project.year}</span>
                         </span>
 
                         {/* Arrow */}
                         <motion.div
-                            className="w-12 h-12 rounded-full border flex items-center justify-center"
+                            className="w-8 h-8 md:w-12 md:h-12 rounded-full border flex items-center justify-center shrink-0"
                             animate={{
                                 borderColor: isActive ? project.color : "rgba(255,255,255,0.1)",
                                 scale: isActive ? 1 : 0.8,
@@ -330,7 +336,7 @@ export default function WorkPage() {
             {/* Content */}
             <div className="relative z-10 px-6 md:px-16 lg:px-24">
                 {/* Header - with space for navbar */}
-                <header className="pt-40 pb-20">
+                <header className="pt-24 md:pt-40 pb-12 md:pb-20">
                     <motion.div
                         initial={{ opacity: 0, y: 30 }}
                         animate={{ opacity: 1, y: 0 }}
@@ -390,7 +396,7 @@ export default function WorkPage() {
                         {[
                             { value: "04", label: "Projects" },
                             { value: "100%", label: "Satisfaction" },
-                            { value: "2024", label: "Year" },
+                            { value: "2026", label: "Year" },
                             { value: "∞", label: "Possibilities" },
                         ].map((stat) => (
                             <div key={stat.label} className="text-center">

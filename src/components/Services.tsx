@@ -13,7 +13,7 @@ const services = [
         subtitle: "Architecture · Scale",
         description: "Lightning-fast, scalable web apps. From complex e-commerce to custom SaaS solutions.",
         video: "/assets/web-dev.mp4",
-        href: "/#contact"
+        href: "/contact"
     },
     {
         id: "02",
@@ -21,7 +21,7 @@ const services = [
         subtitle: "Strategy · Visuals",
         description: "Distinctive identities that capture essence. Every touchpoint considered.",
         video: "/assets/brand-identity.mp4",
-        href: "/#contact"
+        href: "/contact"
     },
     {
         id: "03",
@@ -29,7 +29,7 @@ const services = [
         subtitle: "Efficiency · Scale",
         description: "Intelligent agents and custom AI solutions that work autonomously.",
         video: "/assets/web-dev.mp4", // Placeholder
-        href: "/#contact"
+        href: "/contact"
     },
     {
         id: "04",
@@ -37,7 +37,7 @@ const services = [
         subtitle: "Community · Growth",
         description: "Strategic content that turns passive followers into loyal brand advocates.",
         video: "/assets/seo.mp4",
-        href: "/#contact"
+        href: "/contact"
     },
     {
         id: "05",
@@ -45,7 +45,7 @@ const services = [
         subtitle: "Ads · ROI",
         description: "Data-driven campaigns. We dominate neural pathways with precision targeting.",
         video: "/assets/seo.mp4", // Placeholder
-        href: "/#contact"
+        href: "/contact"
     },
     {
         id: "06",
@@ -213,7 +213,7 @@ function ServiceCard({ service, index }: { service: typeof services[0]; index: n
             </div>
 
             {/* Arrow button */}
-            <Link href={service.href || "/#contact"}>
+            <Link href={service.href || "/contact"}>
                 <motion.div
                     className="absolute bottom-8 right-8 md:bottom-10 md:right-10 w-14 h-14 rounded-full flex items-center justify-center"
                     style={{

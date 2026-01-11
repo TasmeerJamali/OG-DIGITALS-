@@ -297,7 +297,7 @@ export default function Navigation() {
 
                         {/* CTA Button - Mint Green Arrow */}
                         <Link
-                            href="#contact"
+                            href="/contact"
                             className="relative flex items-center justify-center rounded-full hover:scale-110 active:scale-95 transition-all duration-300 group"
                             style={{
                                 width: "48px", // Match logo size

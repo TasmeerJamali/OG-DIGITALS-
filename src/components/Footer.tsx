@@ -402,21 +402,26 @@ export default function Footer() {
 
                     {/* Links */}
                     <div className="flex flex-wrap justify-center gap-10">
-                        {["Work", "Services", "Culture", "Contact"].map((link, i) => (
+                        {[
+                            { name: "Work", href: "/work" },
+                            { name: "Services", href: "/services" },
+                            { name: "About", href: "/about" },
+                            { name: "Contact", href: "/contact" }
+                        ].map((item, i) => (
                             <motion.div
-                                key={link}
+                                key={item.name}
                                 initial={{ opacity: 0, y: 20 }}
                                 whileInView={{ opacity: 1, y: 0 }}
                                 transition={{ delay: i * 0.1 }}
                                 viewport={{ once: true }}
                             >
                                 <Link
-                                    href={`#${link.toLowerCase()}`}
+                                    href={item.href}
                                     className="relative text-sm uppercase tracking-[0.15em] transition-colors duration-300 group"
                                     style={{ color: "rgba(255,255,255,0.4)" }}
                                 >
                                     <span className="relative z-10 group-hover:text-white transition-colors">
-                                        {link}
+                                        {item.name}
                                     </span>
                                     <motion.span
                                         className="absolute -bottom-1 left-0 h-[1px] bg-[#a8ffc4]"
