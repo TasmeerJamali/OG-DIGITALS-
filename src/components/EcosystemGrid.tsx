@@ -44,8 +44,8 @@ export default function EcosystemGrid() {
         <section className="pt-6 pb-0 relative z-10 px-6 w-full flex flex-col items-center">
             {/* Header */}
             <div className="text-center mb-8">
-                <h2 className="text-4xl md:text-6xl font-black text-white tracking-widest uppercase mb-4 opacity-50">
-                    &lt; SYSTEM_ALLIANCE /&gt;
+                <h2 className="text-3xl md:text-5xl font-bold text-white tracking-tight mb-4">
+                    Our Clients
                 </h2>
                 <div className="w-full max-w-md mx-auto h-[1px] bg-gradient-to-r from-transparent via-white/20 to-transparent" />
             </div>
