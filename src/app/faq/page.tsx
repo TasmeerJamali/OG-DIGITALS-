@@ -256,7 +256,7 @@ export default function FAQ() {
 
             {/* 3. MAIN CONTENT (FAQs) */}
             <div className="relative z-30 bg-[#050505] min-h-screen">
-                <section className="max-w-[1920px] mx-auto px-6 md:px-12 lg:px-20 pt-40 pb-64">
+                <section className="max-w-[1920px] mx-auto px-6 md:px-12 lg:px-20 pt-40 pb-20">
                     <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-24">
                         <div className="lg:col-span-5 relative">
                             <div className="sticky top-32 h-fit flex flex-col justify-start">
@@ -269,8 +269,8 @@ export default function FAQ() {
                     </div>
                 </section>
 
-                {/* EXPLICT SPACER to guarantee gap before Footer */}
-                <div className="w-full h-64 md:h-96 bg-[#050505]" />
+                {/* EXPLICT SPACER to guarantee gap before Footer (Reduced) */}
+                <div className="w-full h-32 md:h-48 bg-[#050505]" />
 
                 <Footer />
             </div>
@@ -370,8 +370,8 @@ function AccordionItem({
         >
             <button
                 onClick={onClick}
-                // 2. Increased visual size: py-12 md:py-16
-                className="w-full py-12 md:py-16 flex items-start text-left relative z-10"
+                // 2. INCREASED SIZE AGAIN: py-14 md:py-20
+                className="w-full py-14 md:py-20 flex items-start text-left relative z-10"
             >
                 <span className="absolute -top-6 -left-6 text-[100px] font-black text-white/[0.02] pointer-events-none select-none">
                     {item.id}
