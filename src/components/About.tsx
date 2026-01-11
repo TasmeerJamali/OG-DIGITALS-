@@ -3,7 +3,6 @@
 import { useRef, useState, useEffect } from "react";
 import { motion, useScroll, useTransform, useInView, useSpring } from "framer-motion";
 import HexagonGrid from "./HexagonGrid";
-import GrowthGraph from "./GrowthGraph";
 
 // Animated counter component
 function AnimatedCounter({ value, suffix = "", duration = 2 }: { value: number; suffix?: string; duration?: number }) {
@@ -306,10 +305,7 @@ export default function About() {
                     ))}
                 </div>
 
-                {/* Growth Graph Animation - Filling Blank Space */}
-                <div className="w-full flex justify-center mt-20 md:mt-32 mb-10">
-                    <GrowthGraph />
-                </div>
+                {/* Growth Graph Removed by User Request */}
             </motion.div>
         </section>
     );
