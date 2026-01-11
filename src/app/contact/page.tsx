@@ -6,7 +6,7 @@ import Navigation from "@/components/Navigation";
 import { MagneticButton } from "@/components/MagneticButton";
 
 // GSAP-like Easing
-const KINETIC_EASE = [0.65, 0, 0.35, 1]; // cubic-bezier
+const KINETIC_EASE: [number, number, number, number] = [0.65, 0, 0.35, 1]; // cubic-bezier
 
 interface FormState {
     name: string;
