@@ -55,7 +55,7 @@ export default function Blog() {
             <Navigation />
 
             {/* 1. HERO SECTION (Editorial Style) */}
-            <section className="relative pt-64 pb-20 px-6 md:px-12 border-b border-white/5">
+            <section className="relative pt-96 pb-20 px-6 md:px-12 border-b border-white/5">
                 <div className="max-w-[1800px] mx-auto">
 
                     {/* Tiny Label */}
@@ -171,8 +171,17 @@ function ArticleRow({ article, index }: { article: any, index: number }) {
             {/* Image Side (Parallax) */}
             <div className={`md:col-span-6 ${!isEven ? 'md:col-start-1 md:row-start-1' : 'md:col-start-7'}`}>
                 <div className="relative overflow-hidden aspect-[4/3] w-full">
-                    {/* Mask Overlay */}
-                    <div className="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors duration-500 z-10" />
+                    {/* Curtain Reveal Mask */}
+                    <motion.div
+                        initial={{ scaleY: 1 }}
+                        whileInView={{ scaleY: 0 }}
+                        viewport={{ once: true }}
+                        transition={{ duration: 1.2, ease: [0.83, 0, 0.17, 1] }} // Heavy editorial ease
+                        className="absolute inset-0 bg-[#a8ffc4] z-20 origin-bottom"
+                    />
+
+                    {/* Dark Overlay for Text Readability if needed, though this is side-by-side */}
+                    <div className="absolute inset-0 bg-black/10 group-hover:bg-transparent transition-colors duration-500 z-10" />
 
                     <motion.div style={{ y }} className="w-full h-[120%] -mt-[10%]">
                         <Image
