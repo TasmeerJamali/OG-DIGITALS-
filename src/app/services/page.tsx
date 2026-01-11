@@ -14,6 +14,7 @@ const services = [
         capabilities: ["React & Next.js", "E-Commerce Platforms", "Custom CMS", "API Development", "Performance Optimization"],
         accent: "#a8ffc4",
         bgElements: ["<div>", "</div>", "const", "function", "=>", "import", "export", "async", "await", "return", "{}", "[]", "npm", "git", "API", "fetch", "useState", "useEffect", "props", "component"],
+        href: "/#contact"
     },
     {
         id: 2,
@@ -23,24 +24,47 @@ const services = [
         capabilities: ["Logo Systems", "Visual Identity", "Brand Guidelines", "Packaging Design", "Brand Strategy"],
         accent: "#fbbf24",
         bgElements: ["✦", "◆", "○", "□", "△", "Aa", "Bb", "RGB", "CMYK", "#HEX", "Font", "Type", "Grid", "Logo", "Color", "Vision", "Brand", "Style", "Identity", "Design"],
+        href: "/#contact"
     },
     {
         id: 3,
         number: "03",
-        title: "UI/UX\nDesign",
-        description: "We design intuitive digital experiences that users love. Research-driven, pixel-perfect interfaces that convert.",
-        capabilities: ["User Research", "Interaction Design", "Design Systems", "Prototyping", "Usability Testing"],
+        title: "AI\nAutomation",
+        description: "We streamline complex workflows with intelligent agents and custom AI solutions that work autonomously to scale your operations.",
+        capabilities: ["Custom AI Agents", "Workflow Automation", "LLM Integration", "Chatbots", "Process Optimization"],
         accent: "#60a5fa",
-        bgElements: ["◻", "▣", "⊞", "≡", "⊟", "↗", "↖", "↙", "↘", "Figma", "Sketch", "Proto", "Wire", "Flow", "User", "Click", "Hover", "Touch", "Scroll", "Modal"],
+        bgElements: ["AI", "ML", "LLM", "Bot", "Neural", "Data", "Flow", "Auto", "Agent", "Train", "Model", "GPT", "Token", "Prompt", "Logic", "Scale", "Smart", "Auto", "Loop", "Task"],
+        href: "/#contact"
     },
     {
         id: 4,
         number: "04",
-        title: "Digital\nMarketing",
-        description: "We amplify your digital presence with data-driven strategies. From SEO to social, we make sure you're found.",
-        capabilities: ["SEO Optimization", "Content Strategy", "Social Media", "Analytics & Insights", "Performance Marketing"],
+        title: "Social Media\nMarketing",
+        description: "We build communities and drive conversations. Strategic content that turns passive followers into loyal brand advocates.",
+        capabilities: ["Content Strategy", "Community Management", "Viral Campaigns", "Reels & TikTok", "Influencer Marketing"],
         accent: "#c084fc",
-        bgElements: ["SEO", "CTR", "ROI", "KPI", "CPC", "↑", "↗", "📈", "★", "#1", "Top", "Rank", "Lead", "Click", "View", "Share", "Like", "Post", "Trend", "Viral"],
+        bgElements: ["Viral", "Like", "Share", "Post", "Reel", "Trend", "Feed", "Story", "Grow", "Reach", "Engage", "Fans", "Brand", "Social", "Media", "Click", "View", "Tag", "Hash", "Live"],
+        href: "/#contact"
+    },
+    {
+        id: 5,
+        number: "05",
+        title: "Performance\nMarketing",
+        description: "Data-driven campaigns that maximize ROI. We dominate the neural pathways of your audience with precision targeting.",
+        capabilities: ["Meta Ads", "Google Ads", "Conversion Rate Opt", "Analytics & Tracking", "Retargeting"],
+        accent: "#ff7171",
+        bgElements: ["ROI", "ROAS", "CPC", "CTR", "Ads", "Sales", "Data", "Scale", "Pixel", "Track", "Meta", "Google", "Target", "Funnel", "Lead", "Cost", "Bid", "Click", "Buy", "Win"],
+        href: "/#contact"
+    },
+    {
+        id: 6,
+        number: "06",
+        title: "E-book\nWriting",
+        description: "Authoritative, long-form content that establishes you as an industry thought leader. Deep-dive knowledge packaged beautifully.",
+        capabilities: ["Ghostwriting", "Research", "Design & Layout", "Lead Magnets", "Content Strategy"],
+        accent: "#fb923c",
+        bgElements: ["Book", "Read", "Write", "Text", "Page", "Cover", "Author", "Title", "Draft", "Edit", "Print", "PDF", "Guide", "Learn", "Story", "Word", "Chapter", "Paper", "Ink", "Idea"],
+        href: "/ebook"
     },
 ];
 
@@ -220,7 +244,7 @@ function ServiceCard({ service, index }: { service: typeof services[0]; index: n
                             transition={{ duration: 0.8, delay: 0.6 }}
                         >
                             <Link
-                                href="/#contact"
+                                href={service.href}
                                 className="group inline-flex items-center gap-4"
                                 onMouseEnter={() => setIsHovered(true)}
                                 onMouseLeave={() => setIsHovered(false)}

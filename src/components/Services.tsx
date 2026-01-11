@@ -4,56 +4,56 @@
 import { useRef, useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ArrowLeft, ArrowRight } from "lucide-react";
+import Link from "next/link";
 
 const services = [
     {
         id: "01",
-        title: "AI Automation",
-        subtitle: "Operations · Efficiency",
-        description: "Streamlining complex workflows with intelligent, autonomous systems that work while you sleep.",
-        video: "/assets/web-dev.mp4", // Placeholder
+        title: "Web Development",
+        subtitle: "Architecture · Scale",
+        description: "Lightning-fast, scalable web apps. From complex e-commerce to custom SaaS solutions.",
+        video: "/assets/web-dev.mp4",
+        href: "/#contact"
     },
     {
         id: "02",
-        title: "Social Media Marketing",
-        subtitle: "Growth · Engagement",
-        description: "Building communities and driving conversations that turn followers into brand advocates.",
-        video: "/assets/seo.mp4", // Placeholder
+        title: "Brand Identity",
+        subtitle: "Strategy · Visuals",
+        description: "Distinctive identities that capture essence. Every touchpoint considered.",
+        video: "/assets/brand-identity.mp4",
+        href: "/#contact"
     },
     {
         id: "03",
-        title: "Web Design & Dev",
-        subtitle: "UX/UI · Engineering",
-        description: "Architecting digital organisms that live and breathe in the modern web ecosystem.",
-        video: "/assets/web-dev.mp4",
+        title: "AI Automation",
+        subtitle: "Efficiency · Scale",
+        description: "Intelligent agents and custom AI solutions that work autonomously.",
+        video: "/assets/web-dev.mp4", // Placeholder
+        href: "/#contact"
     },
     {
         id: "04",
-        title: "Performance Marketing",
-        subtitle: "Ads · Analytics",
-        description: "Data-driven campaigns that maximize ROI and dominate the neural pathways of your audience.",
+        title: "Social Media Marketing",
+        subtitle: "Community · Growth",
+        description: "Strategic content that turns passive followers into loyal brand advocates.",
         video: "/assets/seo.mp4",
+        href: "/#contact"
     },
     {
         id: "05",
-        title: "Brand Identity",
-        subtitle: "Strategy · Visuals",
-        description: "Forging visual legacies that burn into the collective consciousness.",
-        video: "/assets/brand-identity.mp4",
+        title: "Performance Marketing",
+        subtitle: "Ads · ROI",
+        description: "Data-driven campaigns. We dominate neural pathways with precision targeting.",
+        video: "/assets/seo.mp4", // Placeholder
+        href: "/#contact"
     },
     {
         id: "06",
-        title: "Logo Design",
-        subtitle: "Symbolism · Impact",
-        description: "Distilling your essence into a singular, powerful mark of distinction.",
-        video: "/assets/uiux-design.mp4",
-    },
-    {
-        id: "07",
         title: "E-book Writing",
         subtitle: "Authority · Content",
-        description: "Detailed, authoritative content that positions you as the thought leader in your industry.",
-        video: "/assets/video.mp4",
+        description: "Authoritative, long-form content that establishes industry thought leadership.",
+        video: "/assets/video.mp4", // Placeholder
+        href: "/ebook"
     },
 ];
 
@@ -213,30 +213,32 @@ function ServiceCard({ service, index }: { service: typeof services[0]; index: n
             </div>
 
             {/* Arrow button */}
-            <motion.div
-                className="absolute bottom-8 right-8 md:bottom-10 md:right-10 w-14 h-14 rounded-full flex items-center justify-center"
-                style={{
-                    border: "1px solid rgba(255,255,255,0.1)",
-                    background: "rgba(255,255,255,0.03)",
-                }}
-                animate={{
-                    borderColor: isHovered ? "rgba(168,255,196,0.5)" : "rgba(255,255,255,0.1)",
-                    background: isHovered ? "rgba(168,255,196,0.1)" : "rgba(255,255,255,0.03)",
-                    scale: isHovered ? 1.1 : 1,
-                    rotate: isHovered ? 45 : 0,
-                }}
-                transition={{ duration: 0.4 }}
-            >
-                <svg
-                    className="w-5 h-5"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke={isHovered ? "#a8ffc4" : "white"}
-                    strokeWidth={1.5}
+            <Link href={service.href || "/#contact"}>
+                <motion.div
+                    className="absolute bottom-8 right-8 md:bottom-10 md:right-10 w-14 h-14 rounded-full flex items-center justify-center"
+                    style={{
+                        border: "1px solid rgba(255,255,255,0.1)",
+                        background: "rgba(255,255,255,0.03)",
+                    }}
+                    animate={{
+                        borderColor: isHovered ? "rgba(168,255,196,0.5)" : "rgba(255,255,255,0.1)",
+                        background: isHovered ? "rgba(168,255,196,0.1)" : "rgba(255,255,255,0.03)",
+                        scale: isHovered ? 1.1 : 1,
+                        rotate: isHovered ? 45 : 0,
+                    }}
+                    transition={{ duration: 0.4 }}
                 >
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M7 17L17 7M17 7H7M17 7V17" />
-                </svg>
-            </motion.div>
+                    <svg
+                        className="w-5 h-5"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke={isHovered ? "#a8ffc4" : "white"}
+                        strokeWidth={1.5}
+                    >
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M7 17L17 7M17 7H7M17 7V17" />
+                    </svg>
+                </motion.div>
+            </Link>
         </motion.div>
     );
 }
