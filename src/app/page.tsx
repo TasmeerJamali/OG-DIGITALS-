@@ -6,6 +6,7 @@ import Preloader from "@/components/Preloader";
 import Hero from "@/components/Hero";
 import Services from "@/components/Services";
 import About from "@/components/About";
+import ValueProps from "@/components/ValueProps";
 
 import Footer from "@/components/Footer";
 
@@ -29,6 +30,7 @@ export default function Home() {
         <Hero />
         <Services />
         <About />
+        <ValueProps />
 
         <Footer />
       </motion.div>
