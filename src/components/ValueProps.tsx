@@ -109,12 +109,12 @@ export default function ValueProps() {
                     initial={{ opacity: 0, y: 20 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
-                    className="mb-16 md:mb-24 text-center md:text-left"
+                    className="mb-20 text-center max-w-3xl mx-auto"
                 >
-                    <h2 className="text-3xl md:text-5xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-white to-white/60 mb-6">
+                    <h2 className="text-4xl md:text-6xl font-bold text-white mb-6 tracking-tight">
                         Dominate the <span className="text-[#a8ffc4]">Feed.</span>
                     </h2>
-                    <p className="text-white/40 text-lg max-w-2xl">
+                    <p className="text-white/40 text-lg md:text-xl leading-relaxed">
                         With multiple ways to interact, we adapt to your workflow. Whether you need a full-scale platform or a strategic pivot, we have the tools.
                     </p>
                 </motion.div>
@@ -127,32 +127,37 @@ export default function ValueProps() {
                             whileInView={{ opacity: 1, y: 0 }}
                             transition={{ delay: index * 0.1, duration: 0.5 }}
                             viewport={{ once: true }}
-                            className="group relative h-[480px] rounded-3xl bg-[#0F0F0F] border border-white/5 overflow-hidden hover:border-white/10 transition-colors duration-500 flex flex-col"
+                            className="group relative h-[520px] rounded-3xl bg-[#0F0F0F] border border-white/5 overflow-hidden transition-all duration-500 hover:border-[#a8ffc4]/30"
                         >
-                            {/* Visual Area (Top 55%) */}
-                            <div className="h-[55%] w-full border-b border-white/5 relative group-hover:bg-white/[0.02] transition-colors">
-                                {card.visual}
-                                {/* Top Gradient Overlay */}
-                                <div className="absolute inset-x-0 top-0 h-24 bg-gradient-to-b from-[#0F0F0F] to-transparent opacity-50" />
+                            {/* Spotlight Effect */}
+                            <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none">
+                                <div className="absolute inset-0 bg-gradient-to-b from-[#a8ffc4]/5 to-transparent" />
                             </div>
 
-                            {/* Content Area (Bottom 45%) */}
-                            <div className="h-[45%] p-8 flex flex-col items-start justify-between bg-gradient-to-b from-[#0F0F0F] to-black">
+                            {/* Visual Area (Top 60%) */}
+                            <div className="h-[60%] w-full border-b border-white/5 relative group-hover:bg-white/[0.02] transition-colors overflow-hidden">
+                                {card.visual}
+                                {/* Top Gradient Overlay */}
+                                <div className="absolute inset-x-0 top-0 h-32 bg-gradient-to-b from-[#0F0F0F] via-[#0F0F0F]/50 to-transparent opacity-80" />
+                            </div>
+
+                            {/* Content Area (Bottom 40%) */}
+                            <div className="h-[40%] p-8 flex flex-col items-start justify-between bg-[#0F0F0F] relative z-10">
                                 <div>
-                                    <h3 className="text-2xl font-bold text-white mb-3">
+                                    <h3 className="text-2xl font-bold text-white mb-3 tracking-tight group-hover:text-[#a8ffc4] transition-colors">
                                         {card.title}
                                     </h3>
-                                    <p className="text-white/50 text-sm leading-relaxed line-clamp-3">
+                                    <p className="text-white/50 text-sm leading-relaxed line-clamp-3 font-light">
                                         {card.description}
                                     </p>
                                 </div>
 
                                 <Link
                                     href="/services"
-                                    className="flex items-center gap-2 text-sm font-medium text-white/70 hover:text-[#a8ffc4] transition-colors mt-4"
+                                    className="flex items-center gap-2 text-xs font-mono uppercase tracking-widest text-white/40 group-hover:text-[#a8ffc4] transition-colors mt-4"
                                 >
                                     {card.link}
-                                    <ArrowUpRight className="w-4 h-4" />
+                                    <ArrowUpRight className="w-3 h-3 transition-transform group-hover:translate-x-1 group-hover:-translate-y-1" />
                                 </Link>
                             </div>
                         </motion.div>
