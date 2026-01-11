@@ -271,10 +271,16 @@ export default function ContactPage() {
                                 <div>
                                     <div className="text-sm text-white/30 mb-4">Follow us</div>
                                     <div className="flex gap-6">
-                                        {["Instagram", "LinkedIn", "Twitter", "Behance"].map((social, i) => (
+                                        {[
+                                            { name: "Instagram", href: "https://www.instagram.com/theogdigitals/" },
+                                            { name: "LinkedIn", href: "https://pk.linkedin.com/company/the-og-digitals" },
+                                            { name: "Facebook", href: "https://www.facebook.com/profile.php?id=61575381958438" }
+                                        ].map((social, i) => (
                                             <motion.a
-                                                key={social}
-                                                href="#"
+                                                key={social.name}
+                                                href={social.href}
+                                                target="_blank"
+                                                rel="noopener noreferrer"
                                                 className="text-white/40 hover:text-[#a8ffc4] transition-colors text-sm font-medium"
                                                 initial={{ opacity: 0, y: 20 }}
                                                 whileInView={{ opacity: 1, y: 0 }}
@@ -282,7 +288,7 @@ export default function ContactPage() {
                                                 viewport={{ once: true }}
                                                 whileHover={{ y: -2 }}
                                             >
-                                                {social}
+                                                {social.name}
                                             </motion.a>
                                         ))}
                                     </div>

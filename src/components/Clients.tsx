@@ -12,10 +12,9 @@ const clients = [
 ];
 
 const socials = [
-    { name: "Instagram", icon: Instagram, href: "#", color: "#E1306C" },
-    { name: "LinkedIn", icon: Linkedin, href: "#", color: "#0077B5" },
-    { name: "Twitter", icon: Twitter, href: "#", color: "#1DA1F2" },
-    { name: "Facebook", icon: Facebook, href: "#", color: "#4267B2" },
+    { name: "Instagram", icon: Instagram, href: "https://www.instagram.com/theogdigitals/", color: "#E1306C" },
+    { name: "LinkedIn", icon: Linkedin, href: "https://pk.linkedin.com/company/the-og-digitals", color: "#0077B5" },
+    { name: "Facebook", icon: Facebook, href: "https://www.facebook.com/profile.php?id=61575381958438", color: "#4267B2" },
 ];
 
 export default function Clients() {

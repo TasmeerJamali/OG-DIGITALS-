@@ -139,9 +139,9 @@ export default function FooterCTA() {
                         <span>Karachi, Pakistan</span>
                     </div>
                     <div className="flex gap-8 mt-8 md:mt-0">
-                        <a href="#" className="hover:text-[#a8ffc4] transition-colors">Instagram</a>
-                        <a href="#" className="hover:text-[#a8ffc4] transition-colors">LinkedIn</a>
-                        <a href="#" className="hover:text-[#a8ffc4] transition-colors">Twitter</a>
+                        <a href="https://www.instagram.com/theogdigitals/" target="_blank" rel="noopener noreferrer" className="hover:text-[#a8ffc4] transition-colors">Instagram</a>
+                        <a href="https://pk.linkedin.com/company/the-og-digitals" target="_blank" rel="noopener noreferrer" className="hover:text-[#a8ffc4] transition-colors">LinkedIn</a>
+                        <a href="https://www.facebook.com/profile.php?id=61575381958438" target="_blank" rel="noopener noreferrer" className="hover:text-[#a8ffc4] transition-colors">Facebook</a>
                     </div>
                 </div>
 
