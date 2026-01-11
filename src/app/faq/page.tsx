@@ -89,103 +89,122 @@ export default function FAQ() {
     });
 
     // Increased scroll distance mapping to ensure the pinning is felt strongly.
-    // 0.0 -> 0.9 means the tear animation maps to almost the entire 400vh scroll.
     const tearProgress = useTransform(scrollYProgress, [0, 0.9], [0, 1]);
 
     // Shutters Move Apart
-    const topY = useTransform(tearProgress, [0, 1], ["0%", "-100%"]);
-    const bottomY = useTransform(tearProgress, [0, 1], ["0%", "100%"]);
+    // We add a slight rotation to make it feel more like a physical rip
+    // Top rotates slightly counter-clockwise, Bottom slight clockwise
+    const topY = useTransform(tearProgress, [0, 1], ["0%", "-105%"]);
+    const bottomY = useTransform(tearProgress, [0, 1], ["0%", "105%"]);
 
     // Green Layer Parallax
-    const greenScale = useTransform(tearProgress, [0, 1], [0.85, 1]);
-    const greenOpacity = useTransform(tearProgress, [0, 0.2], [0, 1]);
+    const greenScale = useTransform(tearProgress, [0, 1], [0.95, 1]);
+    const greenOpacity = useTransform(tearProgress, [0, 0.1], [0, 1]);
 
-    // Removal of overflow-hidden on main to prevent Sticky breakage
     return (
         <main className={`min-h-screen bg-[#050505] text-white selection:bg-[#a8ffc4] selection:text-black ${spaceGrotesk.className}`}>
             <Navigation />
 
             {/* 1. SCROLL TRIGGER CONTAINER (400vh) */}
-            {/* Increased height to make the pin duration longer */}
             <div ref={containerRef} className="relative h-[400vh] bg-[#050505]">
 
                 {/* 2. STICKY VIEWPORT (100vh) */}
-                {/* This element STICKS to top:0 while we scroll through the 400vh parent */}
                 <div className="sticky top-0 h-screen w-full overflow-hidden flex flex-col justify-center items-center">
 
                     {/* A. REVEAL LAYER (Green) */}
+                    {/* Split Layout: Left vs Right */}
                     <div className="absolute inset-0 z-0 flex items-center justify-center bg-[#a8ffc4] overflow-hidden">
 
-                        {/* Noise & Vignette Overlay */}
-                        <div className="absolute inset-0 opacity-[0.14] bg-[url('https://grainy-gradients.vercel.app/noise.svg')]" />
-                        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_0%,rgba(0,0,0,0.15)_100%)]" />
+                        {/* Improved Noise & Texture */}
+                        <div className="absolute inset-0 opacity-[0.12] bg-[url('https://grainy-gradients.vercel.app/noise.svg')]" />
 
                         <motion.div
                             style={{ scale: greenScale, opacity: greenOpacity }}
-                            className="relative z-10 text-center"
+                            className="relative z-10 w-full max-w-[1800px] px-6 md:px-12 grid grid-cols-1 md:grid-cols-2 gap-12 items-center"
                         >
-                            <h2 className={`${playfair.className} text-[15vw] md:text-[12vw] leading-[0.85] font-black text-black tracking-tighter mix-blend-multiply`}>
-                                Let&#39;s Break<br />It Down.
-                            </h2>
-                            <div className="flex items-center justify-center gap-6 mt-12 mix-blend-multiply opacity-80">
-                                <div className="h-[2px] w-12 md:w-32 bg-black" />
-                                <span className={`${spaceGrotesk.className} text-black font-bold uppercase tracking-[0.3em] text-sm md:text-base`}>
-                                    Transparency Protocol
-                                </span>
-                                <div className="h-[2px] w-12 md:w-32 bg-black" />
+                            {/* LEFT SIDE: Let's Break It Down */}
+                            <div className="flex flex-col items-start text-left">
+                                <h2 className={`${playfair.className} text-[12vw] md:text-[8vw] leading-[0.85] font-black text-black tracking-tighter mix-blend-multiply`}>
+                                    Let&#39;s Break<br />It Down.
+                                </h2>
+                                <div className="mt-8 flex items-center gap-4 mix-blend-multiply opacity-80">
+                                    <div className="h-[2px] w-20 bg-black" />
+                                    <span className={`${spaceGrotesk.className} text-black font-bold uppercase tracking-[0.2em] text-sm`}>
+                                        Detail Oriented
+                                    </span>
+                                </div>
+                            </div>
+
+                            {/* RIGHT SIDE: Got Questions? */}
+                            <div className="flex flex-col items-end text-right">
+                                <h2 className={`${playfair.className} text-[10vw] md:text-[6vw] leading-[0.9] font-bold text-black/80 tracking-tighter mix-blend-multiply`}>
+                                    Got<br />Questions?
+                                </h2>
+                                <p className="mt-6 max-w-md text-black/70 font-medium text-lg leading-relaxed mix-blend-multiply">
+                                    We believe in radical transparency. Here is everything you need to know about how we work, build, and deliver.
+                                </p>
                             </div>
                         </motion.div>
                     </div>
 
                     {/* B. SHUTTERS (Black) */}
-                    {/* These sit ON TOP of the Green Layer and pull apart */}
 
                     {/* TOP SHUTTER */}
                     <motion.div
                         style={{ y: topY }}
-                        className="absolute top-0 left-0 w-full h-[50.5%] bg-[#050505] z-20 flex items-end justify-center drop-shadow-2xl"
+                        className="absolute top-0 left-0 w-full h-[50%] bg-[#050505] z-20 flex items-end justify-center drop-shadow-[0_20px_50px_rgba(0,0,0,0.5)]"
                     >
-                        {/* Intro Text */}
+                        {/* Realistic SVG Tear Edge */}
+                        {/* We use a repeating SVG pattern to create a truly jagged/torn paper edge */}
+                        <div className="absolute bottom-0 left-0 w-full h-[60px] translate-y-[58px] z-30">
+                            <svg
+                                viewBox="0 0 1440 60"
+                                className="w-full h-full text-[#050505] fill-current"
+                                preserveAspectRatio="none"
+                            >
+                                <path d="M0,0 L1440,0 L1440,60 L0,60 L0,0 Z M0,60 L48,22 L105,53 L166,12 L221,48 L278,16 L332,55 L391,18 L440,49 L498,13 L554,46 L609,15 L666,51 L719,19 L775,47 L834,11 L891,52 L942,15 L1002,48 L1055,14 L1113,54 L1170,18 L1225,48 L1282,12 L1336,55 L1395,19 L1440,58 L1440,0 L0,0 Z" />
+                            </svg>
+                        </div>
+
+                        {/* Shadow gradient for depth on the edge */}
+                        <div className="absolute bottom-0 w-full h-20 bg-gradient-to-t from-black/50 to-transparent pointer-events-none" />
+
                         <div className="absolute top-0 inset-x-0 h-full flex flex-col items-center justify-center pb-20">
                             <h1 className={`${playfair.className} text-[8vw] text-white/5 font-black tracking-tighter`}>
                                 OG DIGITALS
                             </h1>
                         </div>
-
-                        {/* Jagged Edge (Bottom) */}
-                        <div
-                            className="absolute bottom-[-1px] left-0 w-full h-[8vh] bg-[#050505] translate-y-full origin-top"
-                            style={{
-                                clipPath: "polygon(0 0, 5% 100%, 10% 0, 15% 100%, 20% 0, 25% 100%, 30% 0, 35% 100%, 40% 0, 45% 100%, 50% 0, 55% 100%, 60% 0, 65% 100%, 70% 0, 75% 100%, 80% 0, 85% 100%, 90% 0, 95% 100%, 100% 0)"
-                            }}
-                        />
                     </motion.div>
 
                     {/* BOTTOM SHUTTER */}
                     <motion.div
                         style={{ y: bottomY }}
-                        className="absolute bottom-0 left-0 w-full h-[50.5%] bg-[#050505] z-20 flex items-start justify-center drop-shadow-2xl"
+                        className="absolute bottom-0 left-0 w-full h-[50%] bg-[#050505] z-20 flex items-start justify-center drop-shadow-[0_-20px_50px_rgba(0,0,0,0.5)]"
                     >
+                        {/* Realistic SVG Tear Edge (Inverted) */}
+                        <div className="absolute top-0 left-0 w-full h-[60px] -translate-y-[58px] z-30 transform rotate-180">
+                            <svg
+                                viewBox="0 0 1440 60"
+                                className="w-full h-full text-[#050505] fill-current"
+                                preserveAspectRatio="none"
+                            >
+                                <path d="M0,0 L1440,0 L1440,60 L0,60 L0,0 Z M0,60 L48,22 L105,53 L166,12 L221,48 L278,16 L332,55 L391,18 L440,49 L498,13 L554,46 L609,15 L666,51 L719,19 L775,47 L834,11 L891,52 L942,15 L1002,48 L1055,14 L1113,54 L1170,18 L1225,48 L1282,12 L1336,55 L1395,19 L1440,58 L1440,0 L0,0 Z" />
+                            </svg>
+                        </div>
+
+                        <div className="absolute top-0 w-full h-20 bg-gradient-to-b from-black/50 to-transparent pointer-events-none" />
+
                         <div className="absolute bottom-0 inset-x-0 h-full flex flex-col items-center justify-center pt-20">
                             <p className="text-white/20 text-sm uppercase tracking-[0.4em] animate-pulse">
                                 Scroll to Break
                             </p>
                         </div>
-
-                        {/* Jagged Edge (Top) */}
-                        <div
-                            className="absolute top-[-1px] left-0 w-full h-[8vh] bg-[#050505] -translate-y-full origin-bottom"
-                            style={{
-                                clipPath: "polygon(0 100%, 5% 0, 10% 100%, 15% 0, 20% 100%, 25% 0, 30% 100%, 35% 0, 40% 100%, 45% 0, 50% 100%, 55% 0, 60% 100%, 65% 0, 70% 100%, 75% 0, 80% 100%, 85% 0, 90% 100%, 95% 0, 100% 100%)"
-                            }}
-                        />
                     </motion.div>
 
                 </div>
             </div>
 
             {/* 3. MAIN CONTENT (FAQs) */}
-            {/* The margin-top adjustment ensures smooth connection after the 400vh space */}
             <div className="relative z-30 bg-[#050505] min-h-screen">
                 <section className="max-w-[1920px] mx-auto px-6 md:px-12 lg:px-20 py-40">
                     <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-24">
