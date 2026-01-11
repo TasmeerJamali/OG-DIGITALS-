@@ -174,9 +174,10 @@ export default function FAQ() {
                         className="absolute top-0 left-0 w-full h-[50%] bg-[#050505] z-20 flex items-end justify-center drop-shadow-[0_20px_50px_rgba(0,0,0,0.8)]"
                     >
                         <div className="absolute top-0 inset-x-0 h-full flex flex-col items-center justify-center pb-20 pointer-events-none">
-                            <h1 className={`${playfair.className} text-[8vw] text-white/5 font-black tracking-tighter`}>
+                            {/* HIDDEN: Replaced by 3D Text */}
+                            {/* <h1 className={`${playfair.className} text-[8vw] text-white/5 font-black tracking-tighter`}>
                                 OG DIGITALS
-                            </h1>
+                             </h1> */}
                         </div>
 
                         {/* 3D ICY TEXT LAYER tied to Zipper */}
