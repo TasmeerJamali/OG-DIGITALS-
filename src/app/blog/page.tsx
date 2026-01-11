@@ -56,7 +56,7 @@ export default function Blog() {
 
             {/* 1. HERO SECTION (Editorial Style) */}
             {/* FORCE massive padding (500px fixed) to guarantee clearance on all screens */}
-            <section className="relative pt-40 pb-20 px-6 md:px-12 border-b border-white/5 bg-[#0a0a0a]">
+            <section className="relative pt-48 pb-20 px-6 md:px-12 border-b border-white/5 bg-[#0a0a0a]">
                 <div className="max-w-[1800px] mx-auto">
 
                     {/* Tiny Label - Push down slightly */}
@@ -72,7 +72,8 @@ export default function Blog() {
                             initial={{ y: "100%" }}
                             animate={{ y: 0 }}
                             transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
-                            className={`${playfair.className} text-[12vw] leading-[0.8] text-white mix-blend-difference opacity-90 mt-[67px]`}
+                            style={{ marginTop: "67px" }}
+                            className={`${playfair.className} text-[12vw] leading-[0.8] text-white mix-blend-difference opacity-90`}
                         >
                             INSIGHTS.
                         </motion.h1>
