@@ -55,10 +55,11 @@ export default function Blog() {
             <Navigation />
 
             {/* 1. HERO SECTION (Editorial Style) */}
-            <section className="relative pt-[35vh] pb-20 px-6 md:px-12 border-b border-white/5">
+            {/* FORCE padding to be massive (45vh) to clear the navbar completely */}
+            <section className="relative pt-[45vh] pb-20 px-6 md:px-12 border-b border-white/5 bg-[#0a0a0a]">
                 <div className="max-w-[1800px] mx-auto">
 
-                    {/* Tiny Label */}
+                    {/* Tiny Label - Push down slightly */}
                     <motion.div
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
@@ -70,13 +71,13 @@ export default function Blog() {
                         </span>
                     </motion.div>
 
-                    {/* Massive Title */}
+                    {/* Massive Title - Reduced vw slightly to prevent overflow */}
                     <div className="overflow-hidden">
                         <motion.h1
                             initial={{ y: "100%" }}
                             animate={{ y: 0 }}
                             transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
-                            className={`${playfair.className} text-[15vw] leading-[0.8] text-white mix-blend-difference opacity-90`}
+                            className={`${playfair.className} text-[12vw] leading-[0.8] text-white mix-blend-difference opacity-90`}
                         >
                             INSIGHTS.
                         </motion.h1>
