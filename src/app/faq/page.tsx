@@ -88,10 +88,9 @@ export default function FAQ() {
         offset: ["start start", "end end"]
     });
 
-    // 0.0 -> 0.8: The Tear Happens (Pinned)
-    // The animation completes well before the user finishes scrolling the 300vh container,
-    // ensuring the content below is ready to be viewed.
-    const tearProgress = useTransform(scrollYProgress, [0, 0.8], [0, 1]);
+    // Increased scroll distance mapping to ensure the pinning is felt strongly.
+    // 0.0 -> 0.9 means the tear animation maps to almost the entire 400vh scroll.
+    const tearProgress = useTransform(scrollYProgress, [0, 0.9], [0, 1]);
 
     // Shutters Move Apart
     const topY = useTransform(tearProgress, [0, 1], ["0%", "-100%"]);
@@ -101,16 +100,18 @@ export default function FAQ() {
     const greenScale = useTransform(tearProgress, [0, 1], [0.85, 1]);
     const greenOpacity = useTransform(tearProgress, [0, 0.2], [0, 1]);
 
+    // Removal of overflow-hidden on main to prevent Sticky breakage
     return (
-        <main className={`min-h-screen bg-[#050505] text-white selection:bg-[#a8ffc4] selection:text-black ${spaceGrotesk.className} overflow-x-hidden`}>
+        <main className={`min-h-screen bg-[#050505] text-white selection:bg-[#a8ffc4] selection:text-black ${spaceGrotesk.className}`}>
             <Navigation />
 
-            {/* 1. SCROLL TRIGGER CONTAINER (300vh) */}
-            {/* The user scrolls through this tall container, but the visual content is 'sticky' inside it */}
-            <div ref={containerRef} className="relative h-[300vh] bg-[#050505]">
+            {/* 1. SCROLL TRIGGER CONTAINER (400vh) */}
+            {/* Increased height to make the pin duration longer */}
+            <div ref={containerRef} className="relative h-[400vh] bg-[#050505]">
 
                 {/* 2. STICKY VIEWPORT (100vh) */}
-                <div className="sticky top-0 h-screen w-full overflow-hidden">
+                {/* This element STICKS to top:0 while we scroll through the 400vh parent */}
+                <div className="sticky top-0 h-screen w-full overflow-hidden flex flex-col justify-center items-center">
 
                     {/* A. REVEAL LAYER (Green) */}
                     <div className="absolute inset-0 z-0 flex items-center justify-center bg-[#a8ffc4] overflow-hidden">
@@ -137,6 +138,7 @@ export default function FAQ() {
                     </div>
 
                     {/* B. SHUTTERS (Black) */}
+                    {/* These sit ON TOP of the Green Layer and pull apart */}
 
                     {/* TOP SHUTTER */}
                     <motion.div
@@ -183,6 +185,7 @@ export default function FAQ() {
             </div>
 
             {/* 3. MAIN CONTENT (FAQs) */}
+            {/* The margin-top adjustment ensures smooth connection after the 400vh space */}
             <div className="relative z-30 bg-[#050505] min-h-screen">
                 <section className="max-w-[1920px] mx-auto px-6 md:px-12 lg:px-20 py-40">
                     <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-24">
