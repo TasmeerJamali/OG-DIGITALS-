@@ -1,318 +1,516 @@
 "use client";
 
-import React, { useState, useRef, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import Navigation from "@/components/Navigation";
-import { MagneticButton } from "@/components/MagneticButton";
+import { useRef, useState } from "react";
+import { motion, useInView } from "framer-motion";
+import Link from "next/link";
 
-// GSAP-like Easing
-const KINETIC_EASE: [number, number, number, number] = [0.65, 0, 0.35, 1]; // cubic-bezier
+// Animated text reveal component
+function TextReveal({ children, delay = 0 }: { children: string; delay?: number }) {
+    const ref = useRef<HTMLDivElement>(null);
+    const isInView = useInView(ref, { once: true, margin: "-50px" });
 
-interface FormState {
-    name: string;
-    email: string;
-    company: string;
-    services: string[];
-    budget: string;
-    message: string;
+    return (
+        <div ref={ref} className="overflow-hidden">
+            <motion.div
+                initial={{ y: "100%" }}
+                animate={isInView ? { y: 0 } : { y: "100%" }}
+                transition={{ duration: 0.8, delay, ease: [0.25, 1, 0.5, 1] }}
+            >
+                {children}
+            </motion.div>
+        </div>
+    );
 }
 
-const steps = [
-    { id: "intro", label: "Start", question: "Let's build something extraordinary together." },
-    { id: "name", label: "01", question: "What's your name?" },
-    { id: "email", label: "02", question: "Where can we reach you?" },
-    { id: "company", label: "03", question: "What's your organization?" },
-    { id: "services", label: "04", question: "What services do you need?" },
-    { id: "budget", label: "05", question: "What's the investment?" },
-    { id: "message", label: "06", question: "Tell us more about the project." },
-];
+// Magnetic button component
+function MagneticButton({ children, className = "" }: { children: React.ReactNode; className?: string }) {
+    const ref = useRef<HTMLDivElement>(null);
+    const [position, setPosition] = useState({ x: 0, y: 0 });
+
+    const handleMouse = (e: React.MouseEvent) => {
+        const { clientX, clientY } = e;
+        const { left, top, width, height } = ref.current!.getBoundingClientRect();
+        const x = (clientX - left - width / 2) * 0.15;
+        const y = (clientY - top - height / 2) * 0.15;
+        setPosition({ x, y });
+    };
+
+    const reset = () => setPosition({ x: 0, y: 0 });
+
+    return (
+        <motion.div
+            ref={ref}
+            onMouseMove={handleMouse}
+            onMouseLeave={reset}
+            animate={{ x: position.x, y: position.y }}
+            transition={{ type: "spring", stiffness: 150, damping: 15, mass: 0.1 }}
+            className={className}
+        >
+            {children}
+        </motion.div>
+    );
+}
 
 export default function ContactPage() {
-    const [currentStep, setCurrentStep] = useState(0);
-    const [isSubmitting, setIsSubmitting] = useState(false);
-    const [isSuccess, setIsSuccess] = useState(false);
-    const [formState, setFormState] = useState<FormState>({
+    const containerRef = useRef<HTMLDivElement>(null);
+    const formRef = useRef<HTMLFormElement>(null);
+    const [formState, setFormState] = useState({
         name: "",
         email: "",
         company: "",
-        services: [],
         budget: "",
         message: "",
     });
+    const [isSubmitting, setIsSubmitting] = useState(false);
+    const [submitted, setSubmitted] = useState(false);
+    const [focusedField, setFocusedField] = useState<string | null>(null);
 
-    const inputRef = useRef<HTMLInputElement | HTMLTextAreaElement>(null);
-
-    // Auto-focus input when step changes
-    useEffect(() => {
-        setTimeout(() => {
-            if (inputRef.current) {
-                inputRef.current.focus();
-            }
-        }, 500);
-    }, [currentStep]);
-
-    const handleNext = () => {
-        if (!validateCurrentStep()) {
-            // Optional: Add shake animation logic here
-            return;
-        }
-        if (currentStep < steps.length - 1) {
-            setCurrentStep((prev) => prev + 1);
-        } else {
-            handleSubmit();
-        }
-    };
-
-    const validateCurrentStep = () => {
-        const stepId = steps[currentStep].id;
-        if (stepId === "intro") return true;
-        if (stepId === "name" && !formState.name) return false;
-        if (stepId === "email" && !formState.email.includes("@")) return false;
-        if (stepId === "services" && formState.services.length === 0) return false;
-        if (stepId === "budget" && !formState.budget) return false;
-        if (stepId === "message" && !formState.message) return false;
-        return true;
-    };
-
-    const handleSubmit = async (e?: React.FormEvent) => {
-        if (e) e.preventDefault();
+    const handleSubmit = async (e: React.FormEvent) => {
+        e.preventDefault();
         setIsSubmitting(true);
-        // Simulate API call
         await new Promise((resolve) => setTimeout(resolve, 2000));
         setIsSubmitting(false);
-        setIsSuccess(true);
+        setSubmitted(true);
     };
 
-    const handleKeyDown = (e: React.KeyboardEvent) => {
-        if (e.key === "Enter" && !e.shiftKey) {
-            e.preventDefault();
-            handleNext();
-        }
-    };
-
-    const toggleService = (service: string) => {
-        setFormState((prev) => {
-            const exists = prev.services.includes(service);
-            return {
-                ...prev,
-                services: exists
-                    ? prev.services.filter((s) => s !== service)
-                    : [...prev.services, service],
-            };
-        });
-    };
+    const formFields = [
+        { name: "name", label: "What's your name?", type: "text", placeholder: "John Doe", required: true },
+        { name: "email", label: "Your email address?", type: "email", placeholder: "john@company.com", required: true },
+        { name: "company", label: "Company name?", type: "text", placeholder: "Acme Inc.", required: false },
+    ];
 
     return (
-        <main className="min-h-screen bg-black text-white selection:bg-[#a8ffc4] selection:text-black overflow-hidden font-sans">
-            <Navigation />
+        <main ref={containerRef} className="relative bg-black min-h-screen">
+            {/* Background gradient orbs */}
+            <div className="fixed inset-0 overflow-hidden pointer-events-none">
+                <motion.div
+                    className="absolute -top-1/4 -right-1/4 w-[800px] h-[800px] rounded-full"
+                    style={{
+                        background: "radial-gradient(circle, rgba(168,255,196,0.08) 0%, transparent 60%)",
+                        filter: "blur(80px)",
+                    }}
+                    animate={{
+                        scale: [1, 1.2, 1],
+                        x: [0, 50, 0],
+                        y: [0, -30, 0],
+                    }}
+                    transition={{ duration: 15, repeat: Infinity, ease: "linear" }}
+                />
+                <motion.div
+                    className="absolute -bottom-1/4 -left-1/4 w-[600px] h-[600px] rounded-full"
+                    style={{
+                        background: "radial-gradient(circle, rgba(96,165,250,0.06) 0%, transparent 60%)",
+                        filter: "blur(80px)",
+                    }}
+                    animate={{
+                        scale: [1, 1.3, 1],
+                        x: [0, -30, 0],
+                        y: [0, 50, 0],
+                    }}
+                    transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
+                />
+            </div>
 
-            <div className="relative w-full h-screen flex flex-col items-center justify-center p-6 md:p-12 lg:p-24">
-
-                {/* AMBIENT BACKGROUND */}
-                <div className="absolute inset-0 pointer-events-none">
-                    <div className="absolute top-[20%] left-[10%] w-[500px] h-[500px] bg-[#a8ffc4]/5 rounded-full blur-[120px] opacity-50" />
-                    <div className="absolute bottom-[20%] right-[10%] w-[300px] h-[300px] bg-purple-900/10 rounded-full blur-[100px] opacity-30" />
+            {/* ===== HERO SECTION ===== */}
+            <section className="relative min-h-screen flex items-center justify-center pt-24">
+                {/* Video Background */}
+                <div className="absolute inset-0 z-0">
+                    <video
+                        autoPlay
+                        muted
+                        loop
+                        playsInline
+                        className="absolute inset-0 w-full h-full object-cover"
+                    >
+                        <source src="/assets/contact-us.mp4" type="video/mp4" />
+                    </video>
+                    {/* Dark overlay */}
+                    <div className="absolute inset-0 bg-black/70" />
+                    {/* Gradient overlay */}
+                    <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-transparent to-black" />
                 </div>
 
-                {!isSuccess ? (
-                    <div className="w-full max-w-5xl z-10 relative">
-                        {/* PROGRESS INDICATOR */}
-                        <div className="absolute top-0 left-0 md:-top-16 text-[#a8ffc4] font-mono text-sm tracking-widest mb-12">
-                            {steps[currentStep].label !== "Start" && (
+                <div className="relative z-10 w-full px-6 md:px-12 lg:px-24 py-20">
+                    {/* Main headline - full width, dramatic */}
+                    <div className="mb-24">
+                        <motion.div
+                            className="text-xs uppercase tracking-[0.4em] text-[#a8ffc4] mb-8"
+                            initial={{ opacity: 0, x: -30 }}
+                            animate={{ opacity: 1, x: 0 }}
+                            transition={{ delay: 0.2 }}
+                        >
+                            Contact
+                        </motion.div>
+
+                        <h1 className="text-[12vw] md:text-[10vw] lg:text-[8vw] font-bold leading-[0.85] tracking-tight">
+                            <div className="overflow-hidden">
                                 <motion.div
-                                    initial={{ opacity: 0 }}
-                                    animate={{ opacity: 1 }}
-                                    className="flex items-center gap-4"
+                                    initial={{ y: "100%" }}
+                                    animate={{ y: 0 }}
+                                    transition={{ duration: 1, delay: 0.3, ease: [0.25, 1, 0.5, 1] }}
+                                    className="text-white"
                                 >
-                                    <span>STEP {steps[currentStep].label} / 06</span>
-                                    <div className="h-[1px] w-12 bg-[#a8ffc4]/30" />
+                                    Let&apos;s create
                                 </motion.div>
-                            )}
-                        </div>
-
-                        {/* HISTORY STACK (Previous Answers) */}
-                        <div className="mb-8 space-y-4 opacity-40 hidden lg:block select-none pointer-events-none absolute bottom-full left-0 w-full pb-12">
-                            {steps.slice(1, currentStep).map((s) => (
+                            </div>
+                            <div className="overflow-hidden">
                                 <motion.div
-                                    key={s.id}
-                                    initial={{ opacity: 0, y: 20 }}
-                                    animate={{ opacity: 1, y: 0 }}
-                                    className="text-xl"
+                                    initial={{ y: "100%" }}
+                                    animate={{ y: 0 }}
+                                    transition={{ duration: 1, delay: 0.4, ease: [0.25, 1, 0.5, 1] }}
+                                    className="text-white"
                                 >
-                                    <span className="text-[#a8ffc4] mr-4 text-xs font-mono tracking-widest">{s.label}</span>
-                                    <span className="font-light">
-                                        {s.id === "name" && formState.name}
-                                        {s.id === "email" && formState.email}
-                                        {s.id === "company" && formState.company}
-                                        {s.id === "services" && formState.services.join(", ")}
-                                        {s.id === "budget" && formState.budget}
-                                    </span>
+                                    something
                                 </motion.div>
-                            ))}
-                        </div>
-
-                        {/* ACTIVE QUESTION AREA */}
-                        <AnimatePresence mode="wait">
-                            <motion.div
-                                key={currentStep}
-                                initial={{ opacity: 0, y: 60, filter: "blur(10px)" }}
-                                animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-                                exit={{ opacity: 0, y: -60, filter: "blur(10px)" }}
-                                transition={{ duration: 0.8, ease: KINETIC_EASE }}
-                                className="w-full"
-                            >
-                                {/* THE QUESTION */}
-                                <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold leading-tight mb-8 md:mb-12 max-w-4xl">
-                                    {steps[currentStep].id === 'intro' ? (
-                                        <span className="bg-clip-text text-transparent bg-gradient-to-r from-white to-white/60">
-                                            {steps[currentStep].question}
-                                        </span>
-                                    ) : steps[currentStep].id === 'email' && formState.name ? (
-                                        <>
-                                            Where can we reach <span className="text-[#a8ffc4]">{formState.name}?</span>
-                                        </>
-                                    ) : (
-                                        steps[currentStep].question
-                                    )}
-                                </h1>
-
-                                {/* INPUTS */}
-                                <div className="min-h-[120px]">
-                                    {/* INTRO STEP */}
-                                    {steps[currentStep].id === "intro" && (
-                                        <div className="pt-4">
-                                            <MagneticButton>
-                                                <button
-                                                    onClick={handleNext}
-                                                    className="px-10 py-5 bg-[#a8ffc4] text-black rounded-full font-bold text-lg uppercase tracking-widest hover:scale-105 transition-transform"
-                                                >
-                                                    Start The Project
-                                                </button>
-                                            </MagneticButton>
-                                        </div>
-                                    )}
-
-                                    {/* TEXT INPUTS */}
-                                    {(["name", "email", "company"].includes(steps[currentStep].id)) && (
-                                        <input
-                                            ref={inputRef as React.RefObject<HTMLInputElement>}
-                                            type={steps[currentStep].id === "email" ? "email" : "text"}
-                                            value={formState[steps[currentStep].id as keyof FormState] as string}
-                                            onChange={(e) => setFormState({ ...formState, [steps[currentStep].id]: e.target.value })}
-                                            onKeyDown={handleKeyDown}
-                                            placeholder="Type your answer here..."
-                                            className="w-full bg-transparent border-b-2 border-white/20 py-6 text-3xl md:text-5xl lg:text-6xl text-[#a8ffc4] placeholder:text-white/10 focus:outline-none focus:border-[#a8ffc4] transition-colors font-light"
-                                            autoComplete="off"
-                                        />
-                                    )}
-
-                                    {/* SERVICES CHIPS */}
-                                    {steps[currentStep].id === "services" && (
-                                        <div className="flex flex-wrap gap-3 md:gap-4">
-                                            {["Web Design", "Development", "SEO", "Social Media", "Content", "Brand Identity"].map((s) => (
-                                                <button
-                                                    key={s}
-                                                    onClick={() => toggleService(s)}
-                                                    className={`px-6 py-3 md:px-8 md:py-4 rounded-full text-lg md:text-2xl border transition-all duration-300 ${formState.services.includes(s)
-                                                        ? "bg-[#a8ffc4] text-black border-[#a8ffc4]"
-                                                        : "bg-transparent text-white/40 border-white/10 hover:border-white/40 hover:text-white"
-                                                        }`}
-                                                >
-                                                    {s}
-                                                </button>
-                                            ))}
-                                        </div>
-                                    )}
-
-                                    {/* BUDGET CHIPS */}
-                                    {steps[currentStep].id === "budget" && (
-                                        <div className="flex flex-wrap gap-3 md:gap-4">
-                                            {["< $10k", "$10k - 20k", "$20k - 50k", "$50k +"].map((b) => (
-                                                <button
-                                                    key={b}
-                                                    onClick={() => {
-                                                        setFormState({ ...formState, budget: b });
-                                                        setTimeout(handleNext, 250); // Fast auto-advance
-                                                    }}
-                                                    className={`px-6 py-3 md:px-8 md:py-4 rounded-full text-lg md:text-2xl border transition-all duration-300 ${formState.budget === b
-                                                        ? "bg-[#a8ffc4] text-black border-[#a8ffc4]"
-                                                        : "bg-transparent text-white/40 border-white/10 hover:border-white/40 hover:text-white"
-                                                        }`}
-                                                >
-                                                    {b}
-                                                </button>
-                                            ))}
-                                        </div>
-                                    )}
-
-                                    {/* MESSAGE TEXTAREA */}
-                                    {steps[currentStep].id === "message" && (
-                                        <textarea
-                                            ref={inputRef as React.RefObject<HTMLTextAreaElement>}
-                                            rows={2}
-                                            value={formState.message}
-                                            onChange={(e) => setFormState({ ...formState, message: e.target.value })}
-                                            onKeyDown={handleKeyDown}
-                                            placeholder="Tell us about your goals..."
-                                            className="w-full bg-transparent border-b-2 border-white/20 py-6 text-2xl md:text-4xl lg:text-5xl text-[#a8ffc4] placeholder:text-white/10 focus:outline-none focus:border-[#a8ffc4] transition-colors font-light resize-none leading-normal"
-                                        />
-                                    )}
-                                </div>
-
-                                {/* NAVIGATION HINTS */}
-                                <div className="mt-16 flex items-center gap-6 text-sm md:text-base text-white/30 font-mono">
-                                    {steps[currentStep].id !== "intro" && (
-                                        <>
-                                            <button onClick={handleNext} className="flex items-center gap-3 hover:text-[#a8ffc4] transition-colors group">
-                                                <span>PRESS ENTER</span>
-                                                <span className="px-2 py-1 border border-white/20 rounded text-[10px] group-hover:border-[#a8ffc4] bg-white/5">↵</span>
-                                            </button>
-                                            <span className="opacity-50">OR</span>
-                                            <button onClick={handleNext} className="hover:text-white transition-colors border-b border-transparent hover:border-white">
-                                                CLICK HERE
-                                            </button>
-                                        </>
-                                    )}
-                                </div>
-                            </motion.div>
-                        </AnimatePresence>
+                            </div>
+                            <div className="overflow-hidden">
+                                <motion.div
+                                    initial={{ y: "100%" }}
+                                    animate={{ y: 0 }}
+                                    transition={{ duration: 1, delay: 0.5, ease: [0.25, 1, 0.5, 1] }}
+                                    className="text-[#a8ffc4]"
+                                >
+                                    together.
+                                </motion.div>
+                            </div>
+                        </h1>
                     </div>
-                ) : (
-                    /* SUCCESS SCREEN */
+
+                    {/* Scroll indicator */}
                     <motion.div
-                        initial={{ opacity: 0, scale: 0.95 }}
-                        animate={{ opacity: 1, scale: 1 }}
-                        transition={{ duration: 0.8, ease: KINETIC_EASE }}
-                        className="text-center w-full max-w-4xl"
+                        className="absolute bottom-12 left-6 md:left-12 lg:left-24"
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        transition={{ delay: 1.2 }}
                     >
                         <motion.div
-                            initial={{ scale: 0, rotate: -180 }}
-                            animate={{ scale: 1, rotate: 0 }}
-                            transition={{ type: "spring", stiffness: 200, damping: 20, delay: 0.2 }}
-                            className="w-24 h-24 bg-[#a8ffc4] rounded-full flex items-center justify-center mx-auto mb-12 shadow-[0_0_40px_rgba(168,255,196,0.3)]"
+                            animate={{ y: [0, 10, 0] }}
+                            transition={{ duration: 2, repeat: Infinity }}
+                            className="flex items-center gap-4 text-white/30 text-sm"
                         >
-                            <svg className="w-10 h-10 text-black" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
-                            </svg>
+                            <div className="w-[1px] h-16 bg-gradient-to-b from-[#a8ffc4] to-transparent" />
+                            <span className="rotate-90 origin-left translate-x-2">Scroll</span>
                         </motion.div>
-                        <h2 className="text-5xl md:text-8xl font-bold mb-8 text-white tracking-tight">Message Sent.</h2>
-                        <p className="text-xl md:text-2xl text-white/60 font-light max-w-2xl mx-auto leading-relaxed">
-                            We've received your transmission, <span className="text-[#a8ffc4]">{formState.name}</span>.
-                            Our team is already analyzing your request.
-                        </p>
-                        <div className="mt-16">
-                            <MagneticButton>
-                                <button
-                                    onClick={() => window.location.reload()}
-                                    className="px-8 py-4 border border-white/20 hover:bg-white hover:text-black rounded-full text-sm uppercase tracking-widest transition-all duration-300"
-                                >
-                                    Return Home
-                                </button>
-                            </MagneticButton>
-                        </div>
                     </motion.div>
-                )}
-            </div>
-        </main>
+                </div>
+            </section>
+
+            {/* ===== FORM SECTION ===== */}
+            <section className="relative py-32">
+                <div className="w-full px-6 md:px-12 lg:px-24">
+                    <div className="grid lg:grid-cols-12 gap-16 lg:gap-8">
+                        {/* Left side - Contact info */}
+                        <motion.div
+                            className="lg:col-span-4"
+                            initial={{ opacity: 0, y: 50 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 0.8 }}
+                            viewport={{ once: true }}
+                        >
+                            <div className="sticky top-32">
+                                <span className="text-xs uppercase tracking-[0.3em] text-[#a8ffc4] block mb-6">
+                                    Get in Touch
+                                </span>
+                                <h2 className="text-4xl md:text-5xl font-bold text-white leading-tight mb-8">
+                                    Drop us<br />a line.
+                                </h2>
+                                <p className="text-lg text-white/40 mb-12 leading-relaxed">
+                                    We&apos;d love to hear about your project and how we can help bring your vision to life.
+                                </p>
+
+                                {/* Email - featured */}
+                                <motion.a
+                                    href="mailto:hello@theogdigitals.com"
+                                    className="group block mb-12"
+                                    whileHover={{ x: 10 }}
+                                    transition={{ type: "spring", stiffness: 400 }}
+                                >
+                                    <div className="text-sm text-white/30 mb-2">Email</div>
+                                    <div className="text-2xl md:text-3xl text-white font-medium group-hover:text-[#a8ffc4] transition-colors">
+                                        hello@theogdigitals.com
+                                    </div>
+                                </motion.a>
+
+                                {/* Social links */}
+                                <div>
+                                    <div className="text-sm text-white/30 mb-4">Follow us</div>
+                                    <div className="flex gap-6">
+                                        {["Instagram", "LinkedIn", "Twitter", "Behance"].map((social, i) => (
+                                            <motion.a
+                                                key={social}
+                                                href="#"
+                                                className="text-white/40 hover:text-[#a8ffc4] transition-colors text-sm font-medium"
+                                                initial={{ opacity: 0, y: 20 }}
+                                                whileInView={{ opacity: 1, y: 0 }}
+                                                transition={{ delay: i * 0.1 }}
+                                                viewport={{ once: true }}
+                                                whileHover={{ y: -2 }}
+                                            >
+                                                {social}
+                                            </motion.a>
+                                        ))}
+                                    </div>
+                                </div>
+                            </div>
+                        </motion.div>
+
+                        {/* Right side - Form */}
+                        <motion.div
+                            className="lg:col-span-8"
+                            initial={{ opacity: 0, y: 50 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 0.8, delay: 0.2 }}
+                            viewport={{ once: true }}
+                        >
+                            {submitted ? (
+                                <motion.div
+                                    className="min-h-[60vh] flex flex-col items-center justify-center text-center"
+                                    initial={{ opacity: 0, scale: 0.9 }}
+                                    animate={{ opacity: 1, scale: 1 }}
+                                >
+                                    <motion.div
+                                        className="w-24 h-24 rounded-full bg-[#a8ffc4]/10 flex items-center justify-center mb-8"
+                                        initial={{ scale: 0 }}
+                                        animate={{ scale: 1 }}
+                                        transition={{ type: "spring", delay: 0.2 }}
+                                    >
+                                        <motion.svg
+                                            className="w-12 h-12 text-[#a8ffc4]"
+                                            initial={{ pathLength: 0 }}
+                                            animate={{ pathLength: 1 }}
+                                            transition={{ duration: 0.5, delay: 0.4 }}
+                                            viewBox="0 0 24 24"
+                                            fill="none"
+                                            stroke="currentColor"
+                                            strokeWidth={2}
+                                        >
+                                            <motion.path
+                                                d="M5 13l4 4L19 7"
+                                                strokeLinecap="round"
+                                                strokeLinejoin="round"
+                                            />
+                                        </motion.svg>
+                                    </motion.div>
+                                    <h3 className="text-4xl font-bold text-white mb-4">Message Sent!</h3>
+                                    <p className="text-white/50 text-lg max-w-md">
+                                        Thank you for reaching out. We&apos;ll get back to you within 24 hours.
+                                    </p>
+                                </motion.div>
+                            ) : (
+                                <form ref={formRef} onSubmit={handleSubmit} className="space-y-20">
+                                    {/* 01. Name */}
+                                    <motion.div
+                                        initial={{ opacity: 0, y: 30 }}
+                                        whileInView={{ opacity: 1, y: 0 }}
+                                        transition={{ duration: 0.6 }}
+                                        viewport={{ once: true }}
+                                        className="group"
+                                    >
+                                        <div className="flex items-center gap-4 mb-4">
+                                            <span className="text-[#a8ffc4] font-mono text-xs tracking-widest border border-[#a8ffc4]/30 px-2 py-1 rounded-full">01</span>
+                                            <label className="text-xl md:text-2xl text-white/70 font-light">What&apos;s your name?</label>
+                                        </div>
+                                        <input
+                                            type="text"
+                                            required
+                                            value={formState.name}
+                                            onChange={(e) => setFormState({ ...formState, name: e.target.value })}
+                                            onFocus={() => setFocusedField("name")}
+                                            onBlur={() => setFocusedField(null)}
+                                            className="w-full bg-transparent border-b border-white/20 py-4 text-3xl md:text-5xl font-bold text-white focus:border-[#a8ffc4] focus:outline-none transition-all placeholder:text-white/10"
+                                            placeholder="John Doe"
+                                        />
+                                    </motion.div>
+
+                                    {/* 02. Email */}
+                                    <motion.div
+                                        initial={{ opacity: 0, y: 30 }}
+                                        whileInView={{ opacity: 1, y: 0 }}
+                                        transition={{ duration: 0.6, delay: 0.1 }}
+                                        viewport={{ once: true }}
+                                        className="group"
+                                    >
+                                        <div className="flex items-center gap-4 mb-4">
+                                            <span className="text-[#a8ffc4] font-mono text-xs tracking-widest border border-[#a8ffc4]/30 px-2 py-1 rounded-full">02</span>
+                                            <label className="text-xl md:text-2xl text-white/70 font-light">What&apos;s your email?</label>
+                                        </div>
+                                        <input
+                                            type="email"
+                                            required
+                                            value={formState.email}
+                                            onChange={(e) => setFormState({ ...formState, email: e.target.value })}
+                                            onFocus={() => setFocusedField("email")}
+                                            onBlur={() => setFocusedField(null)}
+                                            className="w-full bg-transparent border-b border-white/20 py-4 text-3xl md:text-5xl font-bold text-white focus:border-[#a8ffc4] focus:outline-none transition-all placeholder:text-white/10"
+                                            placeholder="john@company.com"
+                                        />
+                                    </motion.div>
+
+                                    {/* 03. Company */}
+                                    <motion.div
+                                        initial={{ opacity: 0, y: 30 }}
+                                        whileInView={{ opacity: 1, y: 0 }}
+                                        transition={{ duration: 0.6, delay: 0.2 }}
+                                        viewport={{ once: true }}
+                                        className="group"
+                                    >
+                                        <div className="flex items-center gap-4 mb-4">
+                                            <span className="text-[#a8ffc4] font-mono text-xs tracking-widest border border-[#a8ffc4]/30 px-2 py-1 rounded-full">03</span>
+                                            <label className="text-xl md:text-2xl text-white/70 font-light">Organization name?</label>
+                                        </div>
+                                        <input
+                                            type="text"
+                                            value={formState.company}
+                                            onChange={(e) => setFormState({ ...formState, company: e.target.value })}
+                                            onFocus={() => setFocusedField("company")}
+                                            onBlur={() => setFocusedField(null)}
+                                            className="w-full bg-transparent border-b border-white/20 py-4 text-3xl md:text-5xl font-bold text-white focus:border-[#a8ffc4] focus:outline-none transition-all placeholder:text-white/10"
+                                            placeholder="Acme Inc."
+                                        />
+                                    </motion.div>
+
+                                    {/* 04. Services (New) */}
+                                    <motion.div
+                                        initial={{ opacity: 0, y: 30 }}
+                                        whileInView={{ opacity: 1, y: 0 }}
+                                        transition={{ duration: 0.6, delay: 0.3 }}
+                                        viewport={{ once: true }}
+                                    >
+                                        <div className="flex items-center gap-4 mb-8">
+                                            <span className="text-[#a8ffc4] font-mono text-xs tracking-widest border border-[#a8ffc4]/30 px-2 py-1 rounded-full">04</span>
+                                            <label className="text-xl md:text-2xl text-white/70 font-light">What services are you looking for?</label>
+                                        </div>
+                                        <div className="flex flex-wrap gap-3">
+                                            {["Web Design", "Development", "SEO", "Social Media", "Content", "Other"].map((service) => (
+                                                <button
+                                                    key={service}
+                                                    type="button"
+                                                    onClick={(e) => {
+                                                        e.preventDefault();
+                                                    }}
+                                                    className="px-6 py-3 rounded-full border border-white/10 bg-white/5 text-white/70 hover:bg-[#a8ffc4] hover:text-black hover:border-transparent transition-all duration-300 text-lg md:text-xl"
+                                                >
+                                                    {service}
+                                                </button>
+                                            ))}
+                                        </div>
+                                    </motion.div>
+
+                                    {/* 05. Budget Chips */}
+                                    <motion.div
+                                        initial={{ opacity: 0, y: 30 }}
+                                        whileInView={{ opacity: 1, y: 0 }}
+                                        transition={{ duration: 0.6, delay: 0.4 }}
+                                        viewport={{ once: true }}
+                                    >
+                                        <div className="flex items-center gap-4 mb-8">
+                                            <span className="text-[#a8ffc4] font-mono text-xs tracking-widest border border-[#a8ffc4]/30 px-2 py-1 rounded-full">05</span>
+                                            <label className="text-xl md:text-2xl text-white/70 font-light">Project budget?</label>
+                                        </div>
+                                        <div className="flex flex-wrap gap-4">
+                                            {["< $10k", "$10k - 20k", "$20k - 50k", "$50k +"].map((option) => (
+                                                <button
+                                                    key={option}
+                                                    type="button"
+                                                    onClick={() => setFormState({ ...formState, budget: option })}
+                                                    className={`px-8 py-4 rounded-full text-lg md:text-xl transition-all duration-300 border ${formState.budget === option
+                                                        ? "bg-[#a8ffc4] text-black border-[#a8ffc4] font-semibold"
+                                                        : "bg-white/5 text-white/60 border-white/10 hover:bg-white/10 hover:text-white"
+                                                        }`}
+                                                >
+                                                    {option}
+                                                </button>
+                                            ))}
+                                        </div>
+                                    </motion.div>
+
+                                    {/* 06. Message */}
+                                    <motion.div
+                                        initial={{ opacity: 0, y: 30 }}
+                                        whileInView={{ opacity: 1, y: 0 }}
+                                        transition={{ duration: 0.6, delay: 0.5 }}
+                                        viewport={{ once: true }}
+                                    >
+                                        <div className="flex items-center gap-4 mb-4">
+                                            <span className="text-[#a8ffc4] font-mono text-xs tracking-widest border border-[#a8ffc4]/30 px-2 py-1 rounded-full">06</span>
+                                            <label className="text-xl md:text-2xl text-white/70 font-light">Tell us about your project</label>
+                                        </div>
+                                        <textarea
+                                            required
+                                            rows={1}
+                                            value={formState.message}
+                                            onChange={(e) => setFormState({ ...formState, message: e.target.value })}
+                                            onFocus={() => setFocusedField("message")}
+                                            onBlur={() => setFocusedField(null)}
+                                            className="w-full bg-transparent border-b border-white/20 py-4 text-3xl md:text-5xl font-bold text-white focus:border-[#a8ffc4] focus:outline-none transition-all resize-none placeholder:text-white/10 leading-tight"
+                                            placeholder="I need help with..."
+                                        />
+                                    </motion.div>
+
+
+                                    {/* Submit Button */}
+                                    <motion.div
+                                        initial={{ opacity: 0, y: 30 }}
+                                        whileInView={{ opacity: 1, y: 0 }}
+                                        transition={{ duration: 0.6, delay: 0.6 }}
+                                        viewport={{ once: true }}
+                                        className="pt-12"
+                                    >
+                                        <MagneticButton className="w-full md:w-auto">
+                                            <motion.button
+                                                type="submit"
+                                                disabled={isSubmitting}
+                                                className="group relative w-full md:w-auto px-12 py-6 rounded-full overflow-hidden bg-[#a8ffc4] text-black"
+                                                whileHover={{ scale: 1.02 }}
+                                                whileTap={{ scale: 0.98 }}
+                                            >
+                                                <span className="relative flex items-center justify-center gap-4 font-bold text-xl tracking-wide uppercase">
+                                                    {isSubmitting ? (
+                                                        "Sending..."
+                                                    ) : (
+                                                        <>
+                                                            Send Message
+                                                            <motion.span
+                                                                className="inline-block"
+                                                                whileHover={{ x: 5 }}
+                                                                transition={{ type: "spring", stiffness: 400 }}
+                                                            >
+                                                                →
+                                                            </motion.span>
+                                                        </>
+                                                    )}
+                                                </span>
+                                            </motion.button>
+                                        </MagneticButton>
+                                    </motion.div>
+                                </form>
+                            )}
+                        </motion.div>
+                    </div>
+                </div>
+            </section>
+
+            {/* ===== BOTTOM CTA ===== */}
+            <section className="relative py-32 border-t border-white/5">
+                <div className="w-full px-6 md:px-12 lg:px-24">
+                    <motion.div
+                        className="text-center"
+                        initial={{ opacity: 0, y: 40 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.8 }}
+                        viewport={{ once: true }}
+                    >
+                        <p className="text-white/30 text-lg mb-6">Prefer email?</p>
+                        <motion.a
+                            href="mailto:hello@theogdigitals.com"
+                            className="text-4xl md:text-6xl lg:text-7xl font-bold text-white hover:text-[#a8ffc4] transition-colors inline-block"
+                            whileHover={{ scale: 1.02 }}
+                        >
+                            hello@theogdigitals.com
+                        </motion.a>
+                    </motion.div>
+                </div>
+            </section>
+        </main >
     );
 }
