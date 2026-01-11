@@ -11,28 +11,55 @@ const cards = [
         link: "Our Strategy",
         visual: (
             <div className="relative w-full h-full bg-[#0a0a0a] flex items-center justify-center overflow-hidden">
-                {/* Abstract UI: Dashboard Stats */}
-                <div className="absolute inset-x-8 top-12 bottom-0 border-t border-x border-white/10 rounded-t-lg bg-white/5 backdrop-blur-sm p-4">
-                    <div className="flex gap-2 mb-4">
-                        <div className="w-2 h-2 rounded-full bg-red-500/50" />
-                        <div className="w-2 h-2 rounded-full bg-yellow-500/50" />
-                        <div className="w-2 h-2 rounded-full bg-green-500/50" />
-                    </div>
-                    <div className="space-y-3">
-                        <div className="h-2 w-3/4 bg-white/10 rounded-full" />
-                        <div className="h-2 w-1/2 bg-white/10 rounded-full" />
-                        <div className="flex gap-2 mt-4">
-                            <div className="h-16 w-full bg-[#a8ffc4]/10 rounded border border-[#a8ffc4]/20 relative overflow-hidden">
+                {/* Visual: Cursor Switching Tabs */}
+                <div className="relative w-64 h-40 bg-[#1a1a1a] rounded-lg border border-white/10 overflow-hidden flex flex-col p-4 shadow-2xl">
+                    {/* Fake Browser Tabs */}
+                    <div className="flex gap-2 mb-4 border-b border-white/5 pb-2">
+                        {[0, 1, 2].map((i) => (
+                            <motion.div
+                                key={i}
+                                className="h-6 w-16 bg-white/5 rounded-t-md relative"
+                                animate={{
+                                    backgroundColor: ["rgba(255,255,255,0.05)", "rgba(168,255,196,0.1)", "rgba(255,255,255,0.05)"],
+                                }}
+                                transition={{
+                                    duration: 3,
+                                    times: [0, 0.2, 1],
+                                    delay: i * 2,
+                                    repeat: Infinity
+                                }}
+                            >
                                 <motion.div
-                                    className="absolute bottom-0 left-0 right-0 bg-[#a8ffc4]/20"
-                                    initial={{ height: "20%" }}
-                                    whileInView={{ height: "60%" }}
-                                    transition={{ duration: 1.5, ease: "circOut" }}
+                                    className="absolute inset-x-0 bottom-0 h-0.5 bg-[#a8ffc4]"
+                                    animate={{ opacity: [0, 1, 0] }}
+                                    transition={{ duration: 3, delay: i * 2, repeat: Infinity, times: [0, 0.1, 0.9] }}
                                 />
-                            </div>
-                            <div className="h-16 w-full bg-white/5 rounded border border-white/10" />
-                        </div>
+                            </motion.div>
+                        ))}
                     </div>
+                    {/* Content Placeholder */}
+                    <div className="space-y-2">
+                        <motion.div
+                            className="h-2 w-3/4 bg-white/10 rounded-full"
+                            animate={{ width: ["75%", "90%", "75%"] }}
+                            transition={{ duration: 4, repeat: Infinity }}
+                        />
+                        <div className="h-2 w-1/2 bg-white/10 rounded-full" />
+                    </div>
+
+                    {/* Animated Cursor */}
+                    <motion.div
+                        className="absolute z-20"
+                        animate={{
+                            x: [20, 90, 160, 20],
+                            y: [10, 10, 10, 10],
+                        }}
+                        transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
+                    >
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M3 3L10.07 19.97L12.58 12.58L19.97 10.07L3 3Z" fill="#a8ffc4" stroke="black" strokeWidth="2" />
+                        </svg>
+                    </motion.div>
                 </div>
             </div>
         )
@@ -43,35 +70,41 @@ const cards = [
         link: "How we create",
         visual: (
             <div className="relative w-full h-full bg-[#0a0a0a] flex items-center justify-center overflow-hidden">
-                {/* Abstract UI: Feed/Cards */}
-                <div className="absolute inset-0 flex flex-col gap-3 p-6 opacity-80">
+                {/* Visual: Moving Cards + Popping Dollars */}
+                <div className="relative w-full h-full flex items-center justify-center">
+
+                    {/* Moving Ribbon */}
                     <motion.div
-                        initial={{ x: 20, opacity: 0 }}
-                        whileInView={{ x: 0, opacity: 1 }}
-                        transition={{ delay: 0.2 }}
-                        className="h-12 w-full bg-white/5 border border-white/10 rounded-lg flex items-center px-3 gap-3"
+                        className="flex gap-4 absolute"
+                        animate={{ x: [-100, -300] }}
+                        transition={{ duration: 5, repeat: Infinity, ease: "linear" }}
                     >
-                        <div className="w-6 h-6 rounded bg-[#a8ffc4]/20" />
-                        <div className="h-2 w-24 bg-white/10 rounded-full" />
+                        {[1, 2, 3, 4, 5].map((i) => (
+                            <div key={i} className="w-32 h-48 bg-white/5 border border-white/10 rounded-lg flex flex-col p-3 gap-2">
+                                <div className="w-full aspect-video bg-white/5 rounded" />
+                                <div className="h-2 w-3/4 bg-white/5 rounded" />
+                            </div>
+                        ))}
                     </motion.div>
-                    <motion.div
-                        initial={{ x: 20, opacity: 0 }}
-                        whileInView={{ x: 0, opacity: 1 }}
-                        transition={{ delay: 0.3 }}
-                        className="h-12 w-full bg-white/5 border border-white/10 rounded-lg flex items-center px-3 gap-3 ml-4"
-                    >
-                        <div className="w-6 h-6 rounded bg-purple-500/20" />
-                        <div className="h-2 w-20 bg-white/10 rounded-full" />
-                    </motion.div>
-                    <motion.div
-                        initial={{ x: 20, opacity: 0 }}
-                        whileInView={{ x: 0, opacity: 1 }}
-                        transition={{ delay: 0.4 }}
-                        className="h-12 w-full bg-white/5 border border-white/10 rounded-lg flex items-center px-3 gap-3"
-                    >
-                        <div className="w-6 h-6 rounded bg-blue-500/20" />
-                        <div className="h-2 w-16 bg-white/10 rounded-full" />
-                    </motion.div>
+
+                    {/* Floating Dollars */}
+                    {[1, 2, 3].map((i) => (
+                        <motion.div
+                            key={i}
+                            className="absolute z-10 text-[#a8ffc4] font-bold text-xl"
+                            initial={{ opacity: 0, y: 50, scale: 0.5 }}
+                            animate={{ opacity: [0, 1, 0], y: -50, scale: 1.2 }}
+                            transition={{
+                                duration: 2,
+                                repeat: Infinity,
+                                delay: i * 0.7,
+                                ease: "easeOut"
+                            }}
+                            style={{ left: `${40 + i * 10}%` }}
+                        >
+                            $
+                        </motion.div>
+                    ))}
                 </div>
             </div>
         )
@@ -82,20 +115,42 @@ const cards = [
         link: "See results",
         visual: (
             <div className="relative w-full h-full bg-[#0a0a0a] flex items-center justify-center overflow-hidden">
-                {/* Abstract UI: Nodes/Network */}
-                <motion.div
-                    animate={{ rotate: 360 }}
-                    transition={{ duration: 40, repeat: Infinity, ease: "linear" }}
-                    className="relative w-48 h-48 border border-dashed border-white/10 rounded-full flex items-center justify-center"
-                >
-                    <div className="absolute w-2 h-2 bg-[#a8ffc4] rounded-full top-0 left-1/2 -translate-x-1/2 shadow-[0_0_10px_#a8ffc4]" />
-                    <div className="absolute w-2 h-2 bg-white/20 rounded-full bottom-0 left-1/2 -translate-x-1/2" />
-                    <div className="absolute w-2 h-2 bg-white/20 rounded-full top-1/2 right-0 translate-x-1/2" />
+                {/* Visual: Solar System */}
+                <div className="relative w-64 h-64 flex items-center justify-center">
+                    {/* Sun */}
+                    <motion.div
+                        className="absolute w-12 h-12 bg-[#a8ffc4] rounded-full shadow-[0_0_40px_rgba(168,255,196,0.5)] z-10"
+                        animate={{ scale: [1, 1.1, 1] }}
+                        transition={{ duration: 3, repeat: Infinity }}
+                    />
 
-                    <div className="w-32 h-32 border border-white/5 rounded-full flex items-center justify-center">
-                        <div className="w-12 h-12 bg-[#a8ffc4]/10 rounded-full backdrop-blur-md border border-[#a8ffc4]/20" />
-                    </div>
-                </motion.div>
+                    {/* Orbit 1 */}
+                    <motion.div
+                        animate={{ rotate: 360 }}
+                        transition={{ duration: 10, repeat: Infinity, ease: "linear" }}
+                        className="absolute w-32 h-32 border border-white/10 rounded-full"
+                    >
+                        <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 w-3 h-3 bg-white rounded-full shadow-lg" />
+                    </motion.div>
+
+                    {/* Orbit 2 */}
+                    <motion.div
+                        animate={{ rotate: -360 }}
+                        transition={{ duration: 15, repeat: Infinity, ease: "linear" }}
+                        className="absolute w-48 h-48 border border-white/10 rounded-full"
+                    >
+                        <div className="absolute bottom-0 right-1/2 translate-x-1/2 translate-y-1/2 w-4 h-4 bg-purple-400 rounded-full shadow-lg" />
+                    </motion.div>
+
+                    {/* Orbit 3 */}
+                    <motion.div
+                        animate={{ rotate: 360 }}
+                        transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
+                        className="absolute w-64 h-64 border border-white/5 rounded-full"
+                    >
+                        <div className="absolute top-1/2 left-0 -translate-x-1/2 -translate-y-1/2 w-2 h-2 bg-blue-400 rounded-full shadow-lg" />
+                    </motion.div>
+                </div>
             </div>
         )
     }
@@ -142,7 +197,7 @@ export default function ValueProps() {
                             </div>
 
                             {/* Content Area (Bottom 40%) */}
-                            <div className="h-[40%] p-8 flex flex-col items-start justify-between bg-[#0F0F0F] relative z-10">
+                            <div className="h-[40%] p-8 flex flex-col items-center text-center justify-between bg-[#0F0F0F] relative z-10">
                                 <div>
                                     <h3 className="text-2xl font-bold text-white mb-3 tracking-tight group-hover:text-[#a8ffc4] transition-colors">
                                         {card.title}
