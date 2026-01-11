@@ -176,6 +176,18 @@ export default function FAQ() {
                             </h1>
                         </div>
 
+                        {/* LIGHT-UP LAYER tied to Zipper */}
+                        <div className="absolute top-0 inset-x-0 h-full flex flex-col items-center justify-center pb-20 pointer-events-none">
+                            <motion.h1
+                                style={{
+                                    clipPath: useTransform(unzipProgress, (val) => `inset(0 ${100 - val}% 0 0)`)
+                                }}
+                                className={`${playfair.className} text-[8vw] text-[#a8ffc4] font-black tracking-tighter drop-shadow-[0_0_10px_rgba(168,255,196,0.3)]`}
+                            >
+                                OG DIGITALS
+                            </motion.h1>
+                        </div>
+
                         {/* SVG TEETH (Pointing DOWN) */}
                         {/* We position this to hang BELOW the 50% line */}
                         <div className="absolute bottom-0 left-0 w-full h-[60px] translate-y-[99%] z-30">
