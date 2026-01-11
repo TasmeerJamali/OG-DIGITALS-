@@ -55,7 +55,7 @@ export default function Blog() {
             <Navigation />
 
             {/* 1. HERO SECTION (Editorial Style) */}
-            <section className="relative pt-40 pb-20 px-6 md:px-12 border-b border-white/5">
+            <section className="relative pt-64 pb-20 px-6 md:px-12 border-b border-white/5">
                 <div className="max-w-[1800px] mx-auto">
 
                     {/* Tiny Label */}
@@ -133,7 +133,18 @@ function ArticleRow({ article, index }: { article: any, index: number }) {
             className={`grid grid-cols-1 md:grid-cols-12 gap-8 md:gap-20 items-center group cursor-pointer ${!isEven ? 'md:flex-row-reverse' : ''}`}
         >
             {/* Text Side */}
-            <div className={`md:col-span-5 flex flex-col justify-center ${!isEven ? 'md:col-start-8' : ''}`}>
+            <div className={`md:col-span-5 flex flex-col justify-center relative ${!isEven ? 'md:col-start-8' : ''}`}>
+
+                {/* Decorative Abstract Image (Floating) */}
+                <div className={`absolute -z-10 opacity-40 blur-3xl pointer-events-none ${!isEven ? '-right-20 top-0' : '-left-20 bottom-0'} w-[300px] h-[300px]`}>
+                    <Image
+                        src={index % 2 === 0 ? "/assets/blog-decoration-1.png" : "/assets/blog-decoration-2.png"}
+                        alt="Abstract Decoration"
+                        fill
+                        className="object-contain" // Changed to contain to preserve shape
+                    />
+                </div>
+
                 <div className="mb-6 flex items-center gap-4">
                     <span className="text-xs font-medium tracking-[0.2em] text-[#a8ffc4] uppercase">
                         {article.category}
