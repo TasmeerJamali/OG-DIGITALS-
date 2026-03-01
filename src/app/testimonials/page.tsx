@@ -34,6 +34,7 @@ const videoTestimonials = [
         duration: "2:34",
         quote: "The OG Digitals transformed our entire digital presence and helped us 3x our revenue.",
         views: "2.4k",
+        video: "/assets/IMG_2207.MOV",
     },
     {
         id: 2,
@@ -44,6 +45,7 @@ const videoTestimonials = [
         duration: "1:45",
         quote: "Working with them was a game-changer. Our brand has never looked better.",
         views: "1.8k",
+        video: null,
     },
     {
         id: 3,
@@ -54,6 +56,7 @@ const videoTestimonials = [
         duration: "3:12",
         quote: "Their creative approach helped us stand out in a crowded market.",
         views: "3.1k",
+        video: null,
     },
     {
         id: 4,
@@ -64,6 +67,7 @@ const videoTestimonials = [
         duration: "2:08",
         quote: "Attention to detail is absolutely unmatched. Highly recommend!",
         views: "1.5k",
+        video: null,
     },
 ];
 
@@ -474,17 +478,28 @@ export default function TestimonialsPage() {
 
                             {/* Video area */}
                             <div className="w-full h-full flex items-center justify-center bg-[#0a0a0a] relative group">
-                                <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20" />
-
-                                <div className="text-center relative z-10">
-                                    <div className="w-24 h-24 rounded-full border border-[#a8ffc4] flex items-center justify-center mx-auto mb-6 text-[#a8ffc4] animate-pulse">
-                                        <svg className="w-10 h-10 ml-1" fill="currentColor" viewBox="0 0 24 24">
-                                            <path d="M8 5v14l11-7z" />
-                                        </svg>
-                                    </div>
-                                    <h3 className="text-2xl font-bold text-white mb-2">{selectedVideo.name}</h3>
-                                    <p className="text-white/50 text-lg">Video content placeholder</p>
-                                </div>
+                                {selectedVideo.video ? (
+                                    <video
+                                        className="w-full h-full object-contain"
+                                        controls
+                                        autoPlay
+                                        playsInline
+                                        src={selectedVideo.video}
+                                    />
+                                ) : (
+                                    <>
+                                        <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20" />
+                                        <div className="text-center relative z-10">
+                                            <div className="w-24 h-24 rounded-full border border-[#a8ffc4] flex items-center justify-center mx-auto mb-6 text-[#a8ffc4] animate-pulse">
+                                                <svg className="w-10 h-10 ml-1" fill="currentColor" viewBox="0 0 24 24">
+                                                    <path d="M8 5v14l11-7z" />
+                                                </svg>
+                                            </div>
+                                            <h3 className="text-2xl font-bold text-white mb-2">{selectedVideo.name}</h3>
+                                            <p className="text-white/50 text-lg">Coming soon</p>
+                                        </div>
+                                    </>
+                                )}
                             </div>
                         </motion.div>
                     </motion.div>
