@@ -285,11 +285,11 @@ export default function TestimonialsPage() {
             </section>
 
             {/* ===== MARQUEE TESTIMONIALS ===== */}
-            <section className="py-32 lg:py-48 overflow-hidden relative">
+            <section className="pt-32 lg:pt-48 pb-20 lg:pb-28 overflow-hidden relative">
                 {/* Background Accent */}
                 <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.03)_0%,transparent_70%)] pointer-events-none" />
 
-                <div className="mb-24 px-6 md:px-12 lg:px-24 text-center">
+                <div className="mb-16 px-6 md:px-12 lg:px-24 text-center">
                     <motion.div
                         initial={{ opacity: 0, y: 30 }}
                         whileInView={{ opacity: 1, y: 0 }}
@@ -306,7 +306,7 @@ export default function TestimonialsPage() {
                 </div>
 
                 {/* Row 1 - Left to Right */}
-                <div className="mb-16">
+                <div className="mb-10">
                     <Marquee direction="left" speed={60}>
                         {testimonialRowOne.map((t, i) => (
                             <MarqueeCard key={i} testimonial={t} />
@@ -325,7 +325,7 @@ export default function TestimonialsPage() {
             </section>
 
             {/* ===== VIDEO TESTIMONIALS ===== */}
-            <section className="py-32 lg:py-48 border-t border-white/5 bg-[#050505] relative">
+            <section className="py-20 lg:py-28 border-t border-white/5 bg-[#050505] relative">
                 {/* Decorative Elements */}
                 <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-gradient-to-b from-[#a8ffc4]/5 to-transparent blur-[120px] pointer-events-none opacity-50" />
 
