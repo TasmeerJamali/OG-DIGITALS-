@@ -9,36 +9,6 @@ const services = [
     {
         id: 1,
         number: "01",
-        title: "Web\nDevelopment",
-        description: "We build lightning-fast, scalable web applications that drive business growth. From complex e-commerce platforms to custom SaaS solutions.",
-        capabilities: ["React & Next.js", "E-Commerce Platforms", "Custom CMS", "API Development", "Performance Optimization"],
-        accent: "#a8ffc4",
-        bgElements: ["<div>", "</div>", "const", "function", "=>", "import", "export", "async", "await", "return", "{}", "[]", "npm", "git", "API", "fetch", "useState", "useEffect", "props", "component"],
-        href: "/contact"
-    },
-    {
-        id: 2,
-        number: "02",
-        title: "Brand\nIdentity",
-        description: "We create distinctive brand identities that capture your essence and resonate with your audience. Every touchpoint, considered.",
-        capabilities: ["Logo Systems", "Visual Identity", "Brand Guidelines", "Packaging Design", "Brand Strategy"],
-        accent: "#fbbf24",
-        bgElements: ["✦", "◆", "○", "□", "△", "Aa", "Bb", "RGB", "CMYK", "#HEX", "Font", "Type", "Grid", "Logo", "Color", "Vision", "Brand", "Style", "Identity", "Design"],
-        href: "/contact"
-    },
-    {
-        id: 3,
-        number: "03",
-        title: "AI\nAutomation",
-        description: "We streamline complex workflows with intelligent agents and custom AI solutions that work autonomously to scale your operations.",
-        capabilities: ["Custom AI Agents", "Workflow Automation", "LLM Integration", "Chatbots", "Process Optimization"],
-        accent: "#60a5fa",
-        bgElements: ["AI", "ML", "LLM", "Bot", "Neural", "Data", "Flow", "Auto", "Agent", "Train", "Model", "GPT", "Token", "Prompt", "Logic", "Scale", "Smart", "Auto", "Loop", "Task"],
-        href: "/contact"
-    },
-    {
-        id: 4,
-        number: "04",
         title: "Social Media\nMarketing",
         description: "We build communities and drive conversations. Strategic content that turns passive followers into loyal brand advocates.",
         capabilities: ["Content Strategy", "Community Management", "Viral Campaigns", "Reels & TikTok", "Influencer Marketing"],
@@ -47,13 +17,43 @@ const services = [
         href: "/contact"
     },
     {
-        id: 5,
-        number: "05",
+        id: 2,
+        number: "02",
         title: "Performance\nMarketing",
         description: "Data-driven campaigns that maximize ROI. We dominate the neural pathways of your audience with precision targeting.",
         capabilities: ["Meta Ads", "Google Ads", "Conversion Rate Opt", "Analytics & Tracking", "Retargeting"],
         accent: "#ff7171",
         bgElements: ["ROI", "ROAS", "CPC", "CTR", "Ads", "Sales", "Data", "Scale", "Pixel", "Track", "Meta", "Google", "Target", "Funnel", "Lead", "Cost", "Bid", "Click", "Buy", "Win"],
+        href: "/contact"
+    },
+    {
+        id: 3,
+        number: "03",
+        title: "Web\nDevelopment",
+        description: "We build lightning-fast, scalable web applications that drive business growth. From complex e-commerce platforms to custom SaaS solutions.",
+        capabilities: ["React & Next.js", "E-Commerce Platforms", "Custom CMS", "API Development", "Performance Optimization"],
+        accent: "#a8ffc4",
+        bgElements: ["<div>", "</div>", "const", "function", "=>", "import", "export", "async", "await", "return", "{}", "[]", "npm", "git", "API", "fetch", "useState", "useEffect", "props", "component"],
+        href: "/contact"
+    },
+    {
+        id: 4,
+        number: "04",
+        title: "Brand\nIdentity",
+        description: "We create distinctive brand identities that capture your essence and resonate with your audience. Every touchpoint, considered.",
+        capabilities: ["Logo Systems", "Visual Identity", "Brand Guidelines", "Packaging Design", "Brand Strategy"],
+        accent: "#fbbf24",
+        bgElements: ["✦", "◆", "○", "□", "△", "Aa", "Bb", "RGB", "CMYK", "#HEX", "Font", "Type", "Grid", "Logo", "Color", "Vision", "Brand", "Style", "Identity", "Design"],
+        href: "/contact"
+    },
+    {
+        id: 5,
+        number: "05",
+        title: "AI\nAutomation",
+        description: "We streamline complex workflows with intelligent agents and custom AI solutions that work autonomously to scale your operations.",
+        capabilities: ["Custom AI Agents", "Workflow Automation", "LLM Integration", "Chatbots", "Process Optimization"],
+        accent: "#60a5fa",
+        bgElements: ["AI", "ML", "LLM", "Bot", "Neural", "Data", "Flow", "Auto", "Agent", "Train", "Model", "GPT", "Token", "Prompt", "Logic", "Scale", "Smart", "Auto", "Loop", "Task"],
         href: "/contact"
     },
     {
@@ -159,13 +159,13 @@ function ServiceBackground({ service, isInView }: { service: typeof services[0];
 // Service card with reveal animation
 function ServiceCard({ service, index }: { service: typeof services[0]; index: number }) {
     const cardRef = useRef<HTMLDivElement>(null);
-    const isInView = useInView(cardRef, { once: false, margin: "-40%" });
+    const isInView = useInView(cardRef, { once: false, margin: "-20%" });
     const [isHovered, setIsHovered] = useState(false);
 
     return (
         <motion.div
             ref={cardRef}
-            className="relative min-h-[100vh] flex items-center"
+            className="relative min-h-[60vh] flex items-center py-16"
             initial={{ opacity: 0 }}
             animate={isInView ? { opacity: 1 } : { opacity: 0.3 }}
             transition={{ duration: 0.8 }}
@@ -353,7 +353,7 @@ export default function ServicesPage() {
             </div>
 
             {/* Hero */}
-            <section className="min-h-screen flex items-center justify-center relative overflow-hidden pt-32">
+            <section className="min-h-[80vh] flex items-center justify-center relative overflow-hidden pt-32">
                 {/* Animated Hexagon Grid Background */}
                 <div className="absolute inset-0 overflow-hidden pointer-events-none">
                     {/* Hexagon pattern */}
@@ -509,14 +509,14 @@ export default function ServicesPage() {
             </section>
 
             {/* Services */}
-            <section className="py-16">
+            <section className="py-8">
                 {services.map((service, index) => (
                     <ServiceCard key={service.id} service={service} index={index} />
                 ))}
             </section>
 
             {/* CTA Section */}
-            <section className="min-h-[80vh] flex items-center justify-center relative overflow-hidden">
+            <section className="min-h-[60vh] flex items-center justify-center relative overflow-hidden">
                 {/* Animated orbit rings */}
                 <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
                     {/* Outer orbit */}
