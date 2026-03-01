@@ -9,30 +9,6 @@ import Link from "next/link";
 const services = [
     {
         id: "01",
-        title: "Web Development",
-        subtitle: "Architecture · Scale",
-        description: "Lightning-fast, scalable web apps. From complex e-commerce to custom SaaS solutions.",
-        video: "/assets/web-dev.mp4",
-        href: "/contact"
-    },
-    {
-        id: "02",
-        title: "Brand Identity",
-        subtitle: "Strategy · Visuals",
-        description: "Distinctive identities that capture essence. Every touchpoint considered.",
-        video: "/assets/brand-identity.mp4",
-        href: "/contact"
-    },
-    {
-        id: "03",
-        title: "AI Automation",
-        subtitle: "Efficiency · Scale",
-        description: "Intelligent agents and custom AI solutions that work autonomously.",
-        video: "/assets/web-dev.mp4", // Placeholder
-        href: "/contact"
-    },
-    {
-        id: "04",
         title: "Social Media Marketing",
         subtitle: "Community · Growth",
         description: "Strategic content that turns passive followers into loyal brand advocates.",
@@ -40,11 +16,35 @@ const services = [
         href: "/contact"
     },
     {
-        id: "05",
+        id: "02",
         title: "Performance Marketing",
         subtitle: "Ads · ROI",
         description: "Data-driven campaigns. We dominate neural pathways with precision targeting.",
         video: "/assets/seo.mp4", // Placeholder
+        href: "/contact"
+    },
+    {
+        id: "03",
+        title: "Web Development",
+        subtitle: "Architecture · Scale",
+        description: "Lightning-fast, scalable web apps. From complex e-commerce to custom SaaS solutions.",
+        video: "/assets/web-dev.mp4",
+        href: "/contact"
+    },
+    {
+        id: "04",
+        title: "Brand Identity",
+        subtitle: "Strategy · Visuals",
+        description: "Distinctive identities that capture essence. Every touchpoint considered.",
+        video: "/assets/brand-identity.mp4",
+        href: "/contact"
+    },
+    {
+        id: "05",
+        title: "AI Automation",
+        subtitle: "Efficiency · Scale",
+        description: "Intelligent agents and custom AI solutions that work autonomously.",
+        video: "/assets/web-dev.mp4", // Placeholder
         href: "/contact"
     },
     {
