@@ -176,7 +176,7 @@ function FlipCard({ card, index }: { card: typeof cards[0]; index: number }) {
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ delay: index * 0.1, duration: 0.5 }}
             viewport={{ once: true }}
-            className="h-auto md:h-[520px]"
+            className="h-[520px]"
             style={{ perspective: "1200px" }}
             onMouseEnter={() => setIsFlipped(true)}
             onMouseLeave={() => setIsFlipped(false)}
@@ -189,7 +189,7 @@ function FlipCard({ card, index }: { card: typeof cards[0]; index: number }) {
             >
                 {/* FRONT FACE */}
                 <div
-                    className="absolute inset-0 rounded-3xl bg-[#0F0F0F] border border-white/5 overflow-hidden flex flex-col"
+                    className="w-full h-full rounded-3xl bg-[#0F0F0F] border border-white/5 overflow-hidden flex flex-col"
                     style={{ backfaceVisibility: "hidden" }}
                 >
                     {/* Spotlight Effect */}
