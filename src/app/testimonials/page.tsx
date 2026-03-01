@@ -84,7 +84,7 @@ function Marquee({
             <div className="absolute right-0 top-0 bottom-0 w-32 bg-gradient-to-l from-black to-transparent z-20 pointer-events-none" />
 
             <motion.div
-                className="flex gap-12 shrink-0 py-10"
+                className="flex gap-12 shrink-0 py-4"
                 animate={{
                     x: direction === "left" ? ["0%", "-50%"] : ["-50%", "0%"],
                 }}
