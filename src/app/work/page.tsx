@@ -5,7 +5,6 @@ import { motion, useSpring, AnimatePresence } from "framer-motion";
 import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
 import Image from "next/image";
-import EcosystemGrid from "@/components/EcosystemGrid";
 import FooterCTA from "@/components/FooterCTA";
 
 // Project data
@@ -450,12 +449,6 @@ export default function WorkPage() {
                     </div>
                 </motion.section>
             </div>
-
-            {/* Spacer */}
-            <div className="h-32" />
-
-            {/* Extended Bottom Section - Ecosystem Grid */}
-            <EcosystemGrid />
 
             {/* Spacer */}
             <div className="h-32" />
