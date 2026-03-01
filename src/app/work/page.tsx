@@ -46,6 +46,42 @@ const projects = [
         color: "#8B5CF6",
         image: "/assets/projects/dha.png",
     },
+    {
+        id: 5,
+        title: "Malir Industrial Park",
+        category: "Social Media",
+        year: "2026",
+        link: "https://www.facebook.com/malir.industrial.park/",
+        color: "#22D3EE",
+        image: "/assets/projects/malir.png",
+    },
+    {
+        id: 6,
+        title: "Ghandhara Automobiles",
+        category: "Automotive",
+        year: "2026",
+        link: "https://ghandharaautomobiles.com.pk/page-jac",
+        color: "#EF4444",
+        image: "/assets/projects/ghandhara.png",
+    },
+    {
+        id: 7,
+        title: "JAC Motors",
+        category: "Automotive",
+        year: "2026",
+        link: "https://jacen.jac.com.cn/",
+        color: "#F97316",
+        image: "/assets/projects/jac.png",
+    },
+    {
+        id: 8,
+        title: "Prince Automotive",
+        category: "Automotive",
+        year: "2026",
+        link: "#",
+        color: "#A855F7",
+        image: "/assets/projects/prince.png",
+    },
 ];
 
 // Project item with dramatic hover
@@ -394,7 +430,7 @@ export default function WorkPage() {
                 >
                     <div className="grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-12">
                         {[
-                            { value: "04", label: "Projects" },
+                            { value: "08", label: "Projects" },
                             { value: "100%", label: "Satisfaction" },
                             { value: "2026", label: "Year" },
                             { value: "∞", label: "Possibilities" },
