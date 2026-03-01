@@ -84,7 +84,8 @@ function Marquee({
             <div className="absolute right-0 top-0 bottom-0 w-32 bg-gradient-to-l from-black to-transparent z-20 pointer-events-none" />
 
             <motion.div
-                className="flex gap-12 shrink-0 py-4"
+                className="flex shrink-0"
+                style={{ gap: "3rem", paddingTop: "1rem", paddingBottom: "1rem" }}
                 animate={{
                     x: direction === "left" ? ["0%", "-50%"] : ["-50%", "0%"],
                 }}
@@ -107,7 +108,7 @@ function Marquee({
 // PREMIUM Marquee Card
 function MarqueeCard({ testimonial }: { testimonial: typeof testimonialRowOne[0] }) {
     return (
-        <div className="flex-shrink-0 w-[500px] p-10 rounded-[2rem] border border-white/5 bg-[#0a0a0a] hover:bg-[#111] transition-all duration-500 group relative overflow-hidden">
+        <div className="flex-shrink-0 w-[420px] p-8 rounded-[2rem] border border-white/5 bg-[#0a0a0a] hover:bg-[#111] transition-all duration-500 group relative overflow-hidden">
             {/* Glow effect on hover */}
             <div className="absolute top-0 right-0 w-64 h-64 bg-[#a8ffc4]/5 rounded-full blur-[100px] -translate-y-1/2 translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none" />
 
@@ -138,12 +139,12 @@ function MarqueeCard({ testimonial }: { testimonial: typeof testimonialRowOne[0]
                         ))}
                     </div>
 
-                    <p className="text-white/90 text-2xl font-light leading-relaxed font-sans tracking-wide">
+                    <p className="text-white/90 text-xl font-light leading-relaxed font-sans tracking-wide">
                         &quot;{testimonial.quote}&quot;
                     </p>
                 </div>
 
-                <div className="mt-10 flex items-center gap-5 border-t border-white/5 pt-6">
+                <div className="mt-6 flex items-center gap-4 border-t border-white/5 pt-5">
                     <div className="w-14 h-14 rounded-full bg-gradient-to-br from-[#111] to-[#222] border border-white/10 flex items-center justify-center text-[#a8ffc4] font-bold text-xl ring-2 ring-black">
                         {testimonial.name[0]}
                     </div>
@@ -289,7 +290,7 @@ export default function TestimonialsPage() {
                 {/* Background Accent */}
                 <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.03)_0%,transparent_70%)] pointer-events-none" />
 
-                <div className="mb-16 px-6 md:px-12 lg:px-24 text-center">
+                <div className="px-6 md:px-12 lg:px-24 text-center" style={{ marginBottom: "5rem" }}>
                     <motion.div
                         initial={{ opacity: 0, y: 30 }}
                         whileInView={{ opacity: 1, y: 0 }}
@@ -306,7 +307,7 @@ export default function TestimonialsPage() {
                 </div>
 
                 {/* Row 1 - Left to Right */}
-                <div className="mb-10">
+                <div style={{ marginBottom: "3rem" }}>
                     <Marquee direction="left" speed={60}>
                         {testimonialRowOne.map((t, i) => (
                             <MarqueeCard key={i} testimonial={t} />
@@ -325,7 +326,7 @@ export default function TestimonialsPage() {
             </section>
 
             {/* ===== VIDEO TESTIMONIALS ===== */}
-            <section className="py-20 lg:py-28 border-t border-white/5 bg-[#050505] relative">
+            <section className="py-16 lg:py-20 border-t border-white/5 bg-[#050505] relative">
                 {/* Decorative Elements */}
                 <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-gradient-to-b from-[#a8ffc4]/5 to-transparent blur-[120px] pointer-events-none opacity-50" />
 
