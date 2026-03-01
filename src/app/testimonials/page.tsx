@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
 
@@ -84,7 +84,7 @@ function Marquee({
             <div className="absolute right-0 top-0 bottom-0 w-32 bg-gradient-to-l from-black to-transparent z-20 pointer-events-none" />
 
             <motion.div
-                className="flex gap-8 shrink-0 py-10"
+                className="flex gap-12 shrink-0 py-10"
                 animate={{
                     x: direction === "left" ? ["0%", "-50%"] : ["-50%", "0%"],
                 }}
@@ -306,7 +306,7 @@ export default function TestimonialsPage() {
                 </div>
 
                 {/* Row 1 - Left to Right */}
-                <div className="mb-12">
+                <div className="mb-16">
                     <Marquee direction="left" speed={60}>
                         {testimonialRowOne.map((t, i) => (
                             <MarqueeCard key={i} testimonial={t} />
