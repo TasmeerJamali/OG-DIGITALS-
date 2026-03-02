@@ -27,9 +27,9 @@ const testimonialRowTwo = [
 const videoTestimonials = [
     {
         id: 1,
-        name: "Sarah Johnson",
-        role: "CEO",
-        company: "TechStart Inc.",
+        name: "TED",
+        role: "Client of OG Digitals",
+        company: "OG Digitals",
         thumbnail: "/testimonials/thumb-1.jpg",
         duration: "2:34",
         quote: "The OG Digitals transformed our entire digital presence and helped us 3x our revenue.",
@@ -181,10 +181,18 @@ function VideoCard({ video, onClick, index }: { video: typeof videoTestimonials[
                     <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent z-10 opacity-80" />
                     <div className="absolute inset-0 bg-gradient-to-t from-[#a8ffc4]/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 z-10 mix-blend-overlay" />
 
-                    {/* Placeholder Image Gradient */}
-                    <div className="absolute inset-0 bg-gradient-to-br from-[#1a1a1a] to-[#0f0f0f] group-hover:scale-105 transition-transform duration-700 ease-out">
-                        {/* Optional: You could render an actual <img> here if you had one */}
-                    </div>
+                    {/* Thumbnail - video preview or gradient */}
+                    {video.video ? (
+                        <video
+                            className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
+                            src={video.video}
+                            muted
+                            playsInline
+                            preload="metadata"
+                        />
+                    ) : (
+                        <div className="absolute inset-0 bg-gradient-to-br from-[#1a1a1a] to-[#0f0f0f] group-hover:scale-105 transition-transform duration-700 ease-out" />
+                    )}
 
                     {/* Play Button - Magnetic Style */}
                     <div className="absolute inset-0 z-20 flex items-center justify-center">

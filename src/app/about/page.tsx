@@ -3,6 +3,7 @@
 import { useRef, useState, useEffect } from "react";
 import { motion, useScroll, useTransform, useSpring, useInView, Variants } from "framer-motion";
 import Link from "next/link";
+import Image from "next/image";
 import ParticleNet from "@/components/ParticleNet";
 
 // Formatting helper for glitch effect
@@ -53,7 +54,17 @@ const GlitchText = ({ text }: { text: string }) => {
 };
 
 // Team Data
-const team = [
+const team: {
+    name: string;
+    role: string;
+    id: string;
+    keywords: string[];
+    desc: string;
+    color: string;
+    warning: string;
+    success: string;
+    image?: string;
+}[] = [
     {
         name: "OSAMA",
         role: "FOUNDER & CEO",
@@ -72,7 +83,8 @@ const team = [
         desc: "Building the impossible through code and logic.",
         color: "#60a5fa",
         warning: "WARNING: CAFFEINE LEVELS CRITICAL. SPAGHETTI CODE IS FORBIDDEN.",
-        success: "SYSTEM: DEPLOYED TO PRODUCTION ON FRIDAY. 0 BUGS FOUND."
+        success: "SYSTEM: DEPLOYED TO PRODUCTION ON FRIDAY. 0 BUGS FOUND.",
+        image: "/assets/suhaib.jpg"
     },
     {
         name: "MAZHAR",
@@ -449,16 +461,27 @@ function ViralTeamCard({ member, index }: { member: typeof team[0]; index: numbe
                 boxShadow: hovered ? `0 0 30px ${member.color}40` : "none"
             }}
         >
-            {/* 1. Background Chaos */}
+            {/* 1. Background - Image or Chaos */}
             <div className="absolute inset-0 bg-[#050505] transition-colors duration-300 group-hover:bg-black">
-                {/* Random flashing grid */}
-                <div
-                    className="absolute inset-0 opacity-10 group-hover:opacity-30 transition-opacity duration-100"
-                    style={{
-                        backgroundImage: `linear-gradient(${member.color} 1px, transparent 1px), linear-gradient(90deg, ${member.color} 1px, transparent 1px)`,
-                        backgroundSize: hovered ? "20px 20px" : "40px 40px",
-                    }}
-                />
+                {member.image ? (
+                    <>
+                        <Image
+                            src={member.image}
+                            alt={member.name}
+                            fill
+                            className="object-cover object-top opacity-60 group-hover:opacity-80 transition-all duration-500 group-hover:scale-105"
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-t from-black via-black/60 to-transparent" />
+                    </>
+                ) : (
+                    <div
+                        className="absolute inset-0 opacity-10 group-hover:opacity-30 transition-opacity duration-100"
+                        style={{
+                            backgroundImage: `linear-gradient(${member.color} 1px, transparent 1px), linear-gradient(90deg, ${member.color} 1px, transparent 1px)`,
+                            backgroundSize: hovered ? "20px 20px" : "40px 40px",
+                        }}
+                    />
+                )}
             </div>
 
             {/* Corner Brackets */}
