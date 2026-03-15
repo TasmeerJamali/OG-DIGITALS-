@@ -864,7 +864,7 @@ export default function AboutPage() {
             </section>
 
             {/* ===== TEAM SECTION ===== */}
-            <section className="py-40 relative overflow-hidden">
+            <section className="py-40 relative overflow-hidden" style={{ zIndex: 1 }}>
                 <div className="w-full px-6 md:px-12 lg:px-24">
                     {/* Section header - RIGHT aligned for variety */}
                     <motion.div
