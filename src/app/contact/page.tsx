@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 import { motion, useInView } from "framer-motion";
 import Link from "next/link";
 
@@ -48,6 +48,29 @@ function MagneticButton({ children, className = "" }: { children: React.ReactNod
         >
             {children}
         </motion.div>
+    );
+}
+
+// Calendly inline widget component
+function CalendlyEmbed({ url }: { url: string }) {
+    useEffect(() => {
+        const script = document.createElement("script");
+        script.src = "https://assets.calendly.com/assets/external/widget.js";
+        script.async = true;
+        document.body.appendChild(script);
+        return () => {
+            document.body.removeChild(script);
+        };
+    }, []);
+
+    return (
+        <div className="rounded-[2rem] overflow-hidden border border-white/10 bg-white">
+            <div
+                className="calendly-inline-widget"
+                data-url={url + "?hide_gdpr_banner=1&background_color=ffffff&text_color=1a1a1a&primary_color=22c55e"}
+                style={{ minWidth: "320px", height: "750px", width: "100%" }}
+            />
+        </div>
     );
 }
 
@@ -489,17 +512,8 @@ export default function ContactPage() {
                             </p>
                         </div>
 
-                        {/* Calendly Embed */}
-                        <div className="rounded-[2rem] overflow-hidden border border-white/10 bg-white">
-                            <iframe
-                                src="https://calendly.com/suhaibahmed-og/30min"
-                                width="100%"
-                                height="700"
-                                frameBorder="0"
-                                title="Schedule a meeting"
-                                className="w-full"
-                            />
-                        </div>
+                        {/* Calendly Inline Widget */}
+                        <CalendlyEmbed url="https://calendly.com/suhaibahmed-og/30min" />
                     </motion.div>
                 </div>
             </section>
