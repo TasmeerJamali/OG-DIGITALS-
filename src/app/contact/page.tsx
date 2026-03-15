@@ -54,21 +54,20 @@ function MagneticButton({ children, className = "" }: { children: React.ReactNod
 // Calendly embed
 function CalendlyEmbed({ url }: { url: string }) {
     return (
-        <div style={{ display: "flex", justifyContent: "center", width: "100%" }}>
-            <div style={{
-                borderRadius: "2rem",
-                overflow: "hidden",
-                border: "1px solid rgba(255,255,255,0.1)",
-                backgroundColor: "#fff",
-                width: "100%",
-                maxWidth: "1000px",
-            }}>
-                <iframe
-                    src={url + "?hide_gdpr_banner=1&primary_color=22c55e"}
-                    style={{ width: "100%", height: "750px", border: "none", display: "block" }}
-                    title="Schedule a meeting"
-                />
-            </div>
+        <div style={{
+            borderRadius: "2rem",
+            overflow: "hidden",
+            border: "1px solid rgba(255,255,255,0.1)",
+            backgroundColor: "#fff",
+            width: "100%",
+            maxWidth: "660px",
+            margin: "0 auto",
+        }}>
+            <iframe
+                src={url + "?hide_gdpr_banner=1&primary_color=22c55e"}
+                style={{ width: "100%", height: "750px", border: "none", display: "block" }}
+                title="Schedule a meeting"
+            />
         </div>
     );
 }
