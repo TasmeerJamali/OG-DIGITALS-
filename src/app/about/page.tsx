@@ -73,7 +73,8 @@ const team: {
         desc: "Driving the digital evolution with uncompromising vision.",
         color: "#a8ffc4",
         warning: "WARNING: EGO OVERLOAD DETECTED. DO NOT FEED THE VISIONARY.",
-        success: "ALERT: SALARIES DISPENSED 2 WEEKS EARLY. MORALE OVERLOAD."
+        success: "ALERT: SALARIES DISPENSED 2 WEEKS EARLY. MORALE OVERLOAD.",
+        image: "/assets/team/osama.png"
     },
     {
         name: "SUHAIB",
@@ -84,7 +85,7 @@ const team: {
         color: "#60a5fa",
         warning: "WARNING: CAFFEINE LEVELS CRITICAL. SPAGHETTI CODE IS FORBIDDEN.",
         success: "SYSTEM: DEPLOYED TO PRODUCTION ON FRIDAY. 0 BUGS FOUND.",
-        image: "/assets/suhaib.jpg"
+        image: "/assets/team/suhaib.png"
     },
     {
         name: "MAZHAR",
@@ -94,7 +95,8 @@ const team: {
         desc: "Crafting visual narratives that defy convention.",
         color: "#c084fc",
         warning: "WARNING: REALITY DISTORTION FIELD ACTIVE. PIXELS MAY BITE.",
-        success: "VISUALS: PIXEL PERFECTION REACHED. CLIENT IS CRYING TEARS OF JOY."
+        success: "VISUALS: PIXEL PERFECTION REACHED. CLIENT IS CRYING TEARS OF JOY.",
+        image: "/assets/team/mazhar.png"
     },
     {
         name: "WALEED",
@@ -104,7 +106,8 @@ const team: {
         desc: "Turning abstract data into concrete success.",
         color: "#fbbf24",
         warning: "WARNING: DATA SINGULARITY IMMINENT. YOUR ROI IS BELONG TO US.",
-        success: "METRICS: ROI EXCEEDED 500%. MONEY PRINTER GO BRRR."
+        success: "METRICS: ROI EXCEEDED 500%. MONEY PRINTER GO BRRR.",
+        image: "/assets/team/waleed.png"
     }
 ];
 
