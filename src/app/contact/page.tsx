@@ -53,23 +53,44 @@ function MagneticButton({ children, className = "" }: { children: React.ReactNod
 
 // Calendly inline widget component
 function CalendlyEmbed({ url }: { url: string }) {
+    const containerRef = useRef<HTMLDivElement>(null);
+    const [loaded, setLoaded] = useState(false);
+
     useEffect(() => {
         const script = document.createElement("script");
         script.src = "https://assets.calendly.com/assets/external/widget.js";
         script.async = true;
-        document.body.appendChild(script);
+        script.onload = () => setLoaded(true);
+        document.head.appendChild(script);
+
+        const link = document.createElement("link");
+        link.href = "https://assets.calendly.com/assets/external/widget.css";
+        link.rel = "stylesheet";
+        document.head.appendChild(link);
+
         return () => {
-            document.body.removeChild(script);
+            if (document.head.contains(script)) document.head.removeChild(script);
+            if (document.head.contains(link)) document.head.removeChild(link);
         };
     }, []);
 
+    useEffect(() => {
+        if (loaded && containerRef.current && (window as any).Calendly) {
+            (window as any).Calendly.initInlineWidget({
+                url: url + "?hide_gdpr_banner=1&primary_color=22c55e",
+                parentElement: containerRef.current,
+            });
+        }
+    }, [loaded, url]);
+
     return (
-        <div className="rounded-[2rem] overflow-hidden border border-white/10 bg-white">
-            <div
-                className="calendly-inline-widget"
-                data-url={url + "?hide_gdpr_banner=1&background_color=ffffff&text_color=1a1a1a&primary_color=22c55e"}
-                style={{ minWidth: "320px", height: "750px", width: "100%" }}
-            />
+        <div className="flex justify-center">
+            <div className="rounded-[2rem] overflow-hidden border border-white/10 bg-white w-full">
+                <div
+                    ref={containerRef}
+                    style={{ minWidth: "320px", height: "700px", width: "100%" }}
+                />
+            </div>
         </div>
     );
 }
@@ -494,7 +515,7 @@ export default function ContactPage() {
             <section className="relative py-32 border-t border-white/5">
                 <div className="w-full px-6 md:px-12 lg:px-24">
                     <motion.div
-                        className="max-w-4xl mx-auto"
+                        className="max-w-5xl mx-auto"
                         initial={{ opacity: 0, y: 40 }}
                         whileInView={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.8 }}
