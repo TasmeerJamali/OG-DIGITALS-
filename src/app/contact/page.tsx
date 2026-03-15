@@ -51,26 +51,7 @@ function MagneticButton({ children, className = "" }: { children: React.ReactNod
     );
 }
 
-// Calendly embed
-function CalendlyEmbed({ url }: { url: string }) {
-    return (
-        <div style={{
-            borderRadius: "2rem",
-            overflow: "hidden",
-            border: "1px solid rgba(255,255,255,0.1)",
-            backgroundColor: "#fff",
-            width: "100%",
-            maxWidth: "660px",
-            margin: "0 auto",
-        }}>
-            <iframe
-                src={url + "?hide_gdpr_banner=1&primary_color=22c55e"}
-                style={{ width: "100%", height: "750px", border: "none", display: "block" }}
-                title="Schedule a meeting"
-            />
-        </div>
-    );
-}
+// removed CalendlyEmbed component - inlined directly
 
 // PREMIUM BROWSER WINDOW WRAPPER
 function BrowserWindow({ children }: { children: React.ReactNode }) {
@@ -490,30 +471,40 @@ export default function ContactPage() {
 
             {/* ===== CALENDLY BOOKING ===== */}
             <section className="relative py-32 border-t border-white/5">
-                <div className="w-full px-6 md:px-12 lg:px-24">
-                    <motion.div
-                        className="max-w-5xl mx-auto"
-                        initial={{ opacity: 0, y: 40 }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.8 }}
-                        viewport={{ once: true }}
-                    >
-                        <div className="text-center mb-16">
-                            <span className="text-xs uppercase tracking-[0.3em] text-[#a8ffc4] block mb-6">
-                                Book a Meeting
-                            </span>
-                            <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6 tracking-tight">
-                                Schedule a call
-                            </h2>
-                            <p className="text-lg text-white/40 max-w-xl mx-auto">
-                                Pick a time that works for you. Let&apos;s discuss your project over a quick 30-minute call.
-                            </p>
-                        </div>
+                <motion.div
+                    initial={{ opacity: 0, y: 40 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.8 }}
+                    viewport={{ once: true }}
+                    style={{ textAlign: "center" }}
+                >
+                    <span className="text-xs uppercase tracking-[0.3em] text-[#a8ffc4] block mb-6">
+                        Book a Meeting
+                    </span>
+                    <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6 tracking-tight">
+                        Schedule a call
+                    </h2>
+                    <p className="text-lg text-white/40 mb-16" style={{ maxWidth: "540px", margin: "0 auto 4rem auto" }}>
+                        Pick a time that works for you. Let&apos;s discuss your project over a quick 30-minute call.
+                    </p>
 
-                        {/* Calendly Inline Widget */}
-                        <CalendlyEmbed url="https://calendly.com/suhaibahmed-og/30min" />
-                    </motion.div>
-                </div>
+                    {/* Calendly iframe - centered via inline-block + text-align:center on parent */}
+                    <div style={{
+                        display: "inline-block",
+                        width: "100%",
+                        maxWidth: "660px",
+                        borderRadius: "2rem",
+                        overflow: "hidden",
+                        border: "1px solid rgba(255,255,255,0.1)",
+                        backgroundColor: "#ffffff",
+                    }}>
+                        <iframe
+                            src="https://calendly.com/suhaibahmed-og/30min?hide_gdpr_banner=1&primary_color=22c55e"
+                            title="Schedule a meeting"
+                            style={{ width: "100%", height: "750px", border: "none", display: "block" }}
+                        />
+                    </div>
+                </motion.div>
             </section>
 
             {/* ===== BOTTOM CTA ===== */}
