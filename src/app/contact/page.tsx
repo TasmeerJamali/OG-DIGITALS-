@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState, useEffect } from "react";
+import { useRef, useState } from "react";
 import { motion, useInView } from "framer-motion";
 import Link from "next/link";
 
@@ -51,44 +51,22 @@ function MagneticButton({ children, className = "" }: { children: React.ReactNod
     );
 }
 
-// Calendly inline widget component
+// Calendly embed
 function CalendlyEmbed({ url }: { url: string }) {
-    const containerRef = useRef<HTMLDivElement>(null);
-    const [loaded, setLoaded] = useState(false);
-
-    useEffect(() => {
-        const script = document.createElement("script");
-        script.src = "https://assets.calendly.com/assets/external/widget.js";
-        script.async = true;
-        script.onload = () => setLoaded(true);
-        document.head.appendChild(script);
-
-        const link = document.createElement("link");
-        link.href = "https://assets.calendly.com/assets/external/widget.css";
-        link.rel = "stylesheet";
-        document.head.appendChild(link);
-
-        return () => {
-            if (document.head.contains(script)) document.head.removeChild(script);
-            if (document.head.contains(link)) document.head.removeChild(link);
-        };
-    }, []);
-
-    useEffect(() => {
-        if (loaded && containerRef.current && (window as any).Calendly) {
-            (window as any).Calendly.initInlineWidget({
-                url: url + "?hide_gdpr_banner=1&primary_color=22c55e",
-                parentElement: containerRef.current,
-            });
-        }
-    }, [loaded, url]);
-
     return (
-        <div className="flex justify-center">
-            <div className="rounded-[2rem] overflow-hidden border border-white/10 bg-white w-full">
-                <div
-                    ref={containerRef}
-                    style={{ minWidth: "320px", height: "700px", width: "100%" }}
+        <div style={{ display: "flex", justifyContent: "center", width: "100%" }}>
+            <div style={{
+                borderRadius: "2rem",
+                overflow: "hidden",
+                border: "1px solid rgba(255,255,255,0.1)",
+                backgroundColor: "#fff",
+                width: "100%",
+                maxWidth: "1000px",
+            }}>
+                <iframe
+                    src={url + "?hide_gdpr_banner=1&primary_color=22c55e"}
+                    style={{ width: "100%", height: "750px", border: "none", display: "block" }}
+                    title="Schedule a meeting"
                 />
             </div>
         </div>
