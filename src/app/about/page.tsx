@@ -74,18 +74,18 @@ const team: {
         color: "#a8ffc4",
         warning: "WARNING: EGO OVERLOAD DETECTED. DO NOT FEED THE VISIONARY.",
         success: "ALERT: SALARIES DISPENSED 2 WEEKS EARLY. MORALE OVERLOAD.",
-        image: "/assets/team/osama.png"
+        image: "/assets/team/osama.jpg"
     },
     {
         name: "SUHAIB",
         role: "DIR. OPERATIONS & CLIENT RELATIONS",
         id: "02",
-        keywords: ["ARCHITECT", "SYSTEMS", "SCALE"],
-        desc: "Building the impossible through code and logic.",
+        keywords: ["STRATEGY", "CLIENTS", "OPERATIONS"],
+        desc: "Orchestrating seamless operations and client success at scale.",
         color: "#60a5fa",
-        warning: "WARNING: CAFFEINE LEVELS CRITICAL. SPAGHETTI CODE IS FORBIDDEN.",
-        success: "SYSTEM: DEPLOYED TO PRODUCTION ON FRIDAY. 0 BUGS FOUND.",
-        image: "/assets/team/suhaib.png"
+        warning: "WARNING: INBOX OVERLOAD. 47 CLIENTS ALL MARKED PRIORITY.",
+        success: "STATUS: CLIENT SATISFACTION AT 100%. RETENTION RATE: INFINITE.",
+        image: "/assets/team/suhaib.jpg"
     },
     {
         name: "MAZHAR",
@@ -96,7 +96,7 @@ const team: {
         color: "#c084fc",
         warning: "WARNING: REALITY DISTORTION FIELD ACTIVE. PIXELS MAY BITE.",
         success: "VISUALS: PIXEL PERFECTION REACHED. CLIENT IS CRYING TEARS OF JOY.",
-        image: "/assets/team/mazhar.png"
+        image: "/assets/team/mazhar.jpg"
     },
     {
         name: "WALEED",
@@ -107,7 +107,6 @@ const team: {
         color: "#fbbf24",
         warning: "WARNING: DATA SINGULARITY IMMINENT. YOUR ROI IS BELONG TO US.",
         success: "METRICS: ROI EXCEEDED 500%. MONEY PRINTER GO BRRR.",
-        image: "/assets/team/waleed.png"
     }
 ];
 

@@ -405,25 +405,31 @@ export default function ContactPage() {
                                             </div>
                                         </div>
 
-                                        {/* 05. Budget Chips (Styled as Code Selection) */}
+                                        {/* 05. Budget Dropdown */}
                                         <div className="flex gap-4 md:gap-8 group">
                                             <span className="text-white/20 shrink-0 select-none pt-4">05</span>
                                             <div className="flex-1 border-b border-white/10 group-focus-within:border-[#a8ffc4] transition-colors pb-8">
                                                 <label className="block text-[#a8ffc4]/50 mb-2">// const budget = ...</label>
-                                                <div className="flex flex-wrap gap-2">
-                                                    {["< 10k", "10k-20k", "20k-50k", "50k+"].map((option) => (
-                                                        <button
-                                                            key={option}
-                                                            type="button"
-                                                            onClick={() => setFormState({ ...formState, budget: option })}
-                                                            className={`px-4 py-2 text-sm md:text-base transition-all duration-300 font-mono ${formState.budget === option
-                                                                ? "bg-[#a8ffc4] text-black"
-                                                                : "bg-white/5 text-white/50 hover:bg-white/10 hover:text-white"
-                                                                }`}
-                                                        >
-                                                            {option}
-                                                        </button>
-                                                    ))}
+                                                <div className="relative">
+                                                    <select
+                                                        value={formState.budget}
+                                                        onChange={(e) => setFormState({ ...formState, budget: e.target.value })}
+                                                        className="w-full bg-transparent text-xl md:text-3xl text-[#a8ffc4] focus:outline-none font-mono appearance-none cursor-pointer"
+                                                        style={{
+                                                            backgroundColor: "transparent",
+                                                            backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='%23a8ffc4' viewBox='0 0 16 16'%3E%3Cpath d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/%3E%3C/svg%3E")`,
+                                                            backgroundRepeat: "no-repeat",
+                                                            backgroundPosition: "right 0 center",
+                                                            paddingRight: "2rem",
+                                                        }}
+                                                    >
+                                                        <option value="" disabled style={{ backgroundColor: "#0a0a0a", color: "#555" }}>Select budget range...</option>
+                                                        <option value="< 10k" style={{ backgroundColor: "#0a0a0a", color: "#a8ffc4" }}>{'< 10k'}</option>
+                                                        <option value="10k - 20k" style={{ backgroundColor: "#0a0a0a", color: "#a8ffc4" }}>10k - 20k</option>
+                                                        <option value="20k - 50k" style={{ backgroundColor: "#0a0a0a", color: "#a8ffc4" }}>20k - 50k</option>
+                                                        <option value="50k - 100k" style={{ backgroundColor: "#0a0a0a", color: "#a8ffc4" }}>50k - 100k</option>
+                                                        <option value="100k+" style={{ backgroundColor: "#0a0a0a", color: "#a8ffc4" }}>100k+</option>
+                                                    </select>
                                                 </div>
                                             </div>
                                         </div>
