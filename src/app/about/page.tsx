@@ -433,208 +433,144 @@ const ViralOverlay = ({ active, color }: { active: boolean; color: string }) => 
     );
 };
 
-// THE VIRAL CARD COMPONENT
+// THE TEAM CARD COMPONENT
 function ViralTeamCard({ member, index }: { member: typeof team[0]; index: number }) {
     const [hovered, setHovered] = useState(false);
     const corruptionCheck = useCorruption(hovered);
     const hasImage = !!member.image;
 
-    // Different animation variants for photo vs no-photo cards
-    const variants: Variants = hasImage ? {
-        idle: {
-            scale: 1,
-            zIndex: 10,
-        },
-        hover: {
-            scale: 1.05,
-            zIndex: 50,
-            transition: { duration: 0.4, ease: "easeOut" }
-        }
-    } : {
-        idle: {
-            scale: 1,
-            zIndex: 10,
-            filter: "grayscale(100%) blur(0px)",
-        },
-        hover: {
-            scale: 1.15,
-            zIndex: 50,
-            filter: "grayscale(0%) blur(0px)",
-            transition: { duration: 0.3, ease: "circOut" }
-        }
-    };
-
     return (
         <motion.div
-            initial="idle"
-            whileHover="hover"
-            animate={hovered ? "hover" : "idle"}
+            initial={{ opacity: 0, y: 40 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: index * 0.1 }}
+            viewport={{ once: true }}
             onMouseEnter={() => setHovered(true)}
             onMouseLeave={() => setHovered(false)}
-            variants={variants}
-            className={`group relative w-full cursor-pointer bg-black border border-white/10 overflow-hidden ${hasImage ? "h-[500px]" : "h-[400px]"}`}
+            className="group relative w-full cursor-pointer bg-black border border-white/10 overflow-hidden"
             style={{
+                aspectRatio: "3 / 4",
                 borderColor: hovered ? member.color : "rgba(255,255,255,0.1)",
-                boxShadow: hovered ? `0 0 30px ${member.color}40` : "none"
+                boxShadow: hovered ? `0 0 40px ${member.color}30` : "none",
+                transition: "border-color 0.3s, box-shadow 0.3s",
             }}
         >
-            {/* 1. Background - Image or Chaos */}
-            <div className="absolute inset-0 bg-[#050505] transition-colors duration-300 group-hover:bg-black">
-                {member.image ? (
-                    <>
-                        <Image
-                            src={member.image}
-                            alt={member.name}
-                            fill
-                            className="object-cover opacity-80 group-hover:opacity-100 transition-all duration-500 group-hover:scale-105"
-                            style={{ objectPosition: member.imagePosition || "center center" }}
-                        />
-                        <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent" />
-                    </>
-                ) : (
-                    <div
-                        className="absolute inset-0 opacity-10 group-hover:opacity-30 transition-opacity duration-100"
-                        style={{
-                            backgroundImage: `linear-gradient(${member.color} 1px, transparent 1px), linear-gradient(90deg, ${member.color} 1px, transparent 1px)`,
-                            backgroundSize: hovered ? "20px 20px" : "40px 40px",
-                        }}
+            {/* Background */}
+            <div className="absolute inset-0 bg-[#050505]">
+                {hasImage ? (
+                    <Image
+                        src={member.image!}
+                        alt={member.name}
+                        fill
+                        className="object-cover transition-all duration-700 ease-out group-hover:scale-110"
+                        style={{ objectPosition: member.imagePosition || "center center" }}
                     />
+                ) : (
+                    <>
+                        <div
+                            className="absolute inset-0 opacity-10 group-hover:opacity-30 transition-opacity duration-300"
+                            style={{
+                                backgroundImage: `linear-gradient(${member.color} 1px, transparent 1px), linear-gradient(90deg, ${member.color} 1px, transparent 1px)`,
+                                backgroundSize: hovered ? "20px 20px" : "40px 40px",
+                            }}
+                        />
+                        <ViralOverlay active={hovered} color={member.color} />
+                    </>
                 )}
             </div>
+
+            {/* Gradient overlay - stronger at bottom for text */}
+            <div
+                className="absolute inset-0 transition-opacity duration-500"
+                style={{
+                    background: hasImage
+                        ? "linear-gradient(to top, rgba(0,0,0,0.95) 0%, rgba(0,0,0,0.6) 35%, rgba(0,0,0,0.1) 60%, transparent 100%)"
+                        : "linear-gradient(to top, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.3) 40%, transparent 100%)",
+                }}
+            />
 
             {/* Corner Brackets */}
-            <div className="absolute top-0 left-0 w-4 h-4 border-l-2 border-t-2 transition-colors duration-300" style={{ borderColor: hovered ? member.color : "rgba(255,255,255,0.2)" }} />
-            <div className="absolute top-0 right-0 w-4 h-4 border-r-2 border-t-2 transition-colors duration-300" style={{ borderColor: hovered ? member.color : "rgba(255,255,255,0.2)" }} />
-            <div className="absolute bottom-0 left-0 w-4 h-4 border-l-2 border-b-2 transition-colors duration-300" style={{ borderColor: hovered ? member.color : "rgba(255,255,255,0.2)" }} />
-            <div className="absolute bottom-0 right-0 w-4 h-4 border-r-2 border-b-2 transition-colors duration-300" style={{ borderColor: hovered ? member.color : "rgba(255,255,255,0.2)" }} />
+            <div className="absolute top-0 left-0 w-4 h-4 border-l-2 border-t-2 z-10 transition-colors duration-300" style={{ borderColor: hovered ? member.color : "rgba(255,255,255,0.15)" }} />
+            <div className="absolute top-0 right-0 w-4 h-4 border-r-2 border-t-2 z-10 transition-colors duration-300" style={{ borderColor: hovered ? member.color : "rgba(255,255,255,0.15)" }} />
+            <div className="absolute bottom-0 left-0 w-4 h-4 border-l-2 border-b-2 z-10 transition-colors duration-300" style={{ borderColor: hovered ? member.color : "rgba(255,255,255,0.15)" }} />
+            <div className="absolute bottom-0 right-0 w-4 h-4 border-r-2 border-b-2 z-10 transition-colors duration-300" style={{ borderColor: hovered ? member.color : "rgba(255,255,255,0.15)" }} />
 
-            {/* 2. Viral Overlay (Code Rain) - only on cards WITHOUT photos */}
-            {!hasImage && <ViralOverlay active={hovered} color={member.color} />}
-
-            {/* 3. Main Content Container */}
-            <div className="absolute inset-0 flex flex-col justify-between p-8 z-30">
-                {/* Top Bar */}
-                <div className="flex justify-between items-start">
-                    <div className="flex flex-col">
-                        <span className="text-[10px] font-mono text-white/40 mb-1">ID_REF</span>
-                        <span className="text-xl font-bold font-mono text-white">
-                            {hovered && !hasImage ? corruptionCheck.substring(0, 4) : member.id}
-                        </span>
-                    </div>
-                    {/* Status Indicator */}
-                    <div className="flex items-center gap-2">
-                        <span className="text-[10px] uppercase font-mono tracking-widest" style={{ color: hovered ? member.color : "#333" }}>
-                            {hasImage ? (hovered ? "ACTIVE" : "ONLINE") : (hovered ? "INFECTED" : "SECURE")}
-                        </span>
-                        <motion.div
-                            className="w-2 h-2 rounded-full"
-                            style={{ backgroundColor: hovered ? member.color : "#333" }}
-                            animate={{ opacity: [1, 0.2, 1] }}
-                            transition={{ duration: hovered && !hasImage ? 0.1 : 2, repeat: Infinity }}
-                        />
-                    </div>
-                </div>
-
-                {/* Center - Name (clean for photos, glitchy for no-photo) */}
-                {hasImage ? (
-                    <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-                        <motion.div
-                            className="relative z-50 text-center"
-                            animate={hovered ? { scale: 1.05 } : { scale: 1 }}
-                            transition={{ duration: 0.3 }}
-                        >
-                            <h3 className="text-5xl md:text-6xl font-black text-white mb-2 leading-none drop-shadow-[0_2px_20px_rgba(0,0,0,0.8)]">
-                                {member.name}
-                            </h3>
-                            <div className="h-[2px] w-full bg-white/10 mt-4 overflow-hidden mx-auto max-w-[200px]">
-                                <motion.div
-                                    className="h-full mx-auto"
-                                    style={{ backgroundColor: member.color }}
-                                    initial={{ width: "0%" }}
-                                    animate={{ width: hovered ? "100%" : "20%" }}
-                                    transition={{ duration: 0.5, ease: "circIn" }}
-                                />
-                            </div>
-                        </motion.div>
-                    </div>
-                ) : (
-                    <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-                        <motion.div
-                            className="relative z-50 text-center"
-                            animate={hovered ? {
-                                y: [-2, 2, -2],
-                                x: [-1, 1, -1],
-                                rotate: [-1, 1, -1],
-                                scale: 1.1
-                            } : { y: 0, x: 0, rotate: 0, scale: 1 }}
-                            transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
-                        >
-                            {hovered && (
-                                <>
-                                    <div className="absolute top-0 left-1 w-full text-center text-5xl md:text-6xl font-black opacity-50 mix-blend-screen animate-pulse" style={{ color: "red" }}>
-                                        {member.name}
-                                    </div>
-                                    <div className="absolute top-0 -left-1 w-full text-center text-5xl md:text-6xl font-black opacity-50 mix-blend-screen animate-pulse" style={{ color: "blue" }}>
-                                        {member.name}
-                                    </div>
-                                </>
-                            )}
-                            <h3 className="text-5xl md:text-6xl font-black text-white mb-2 relative z-10 leading-none">
-                                <GlitchTextV2 text={member.name} active={hovered} />
-                            </h3>
-                            <div className="h-[2px] w-full bg-white/10 mt-4 overflow-hidden mx-auto max-w-[200px]">
-                                <motion.div
-                                    className="h-full mx-auto"
-                                    style={{ backgroundColor: member.color }}
-                                    initial={{ width: "0%" }}
-                                    animate={{ width: hovered ? "100%" : "20%" }}
-                                    transition={{ duration: 0.5, ease: "circIn" }}
-                                />
-                            </div>
-                        </motion.div>
-                    </div>
-                )}
-
-                {/* Bottom - Role & Desc */}
-                <div className="relative z-40">
-                    <span
-                        className="block text-sm font-mono tracking-[0.2em] uppercase mb-4"
-                        style={{ color: member.color }}
-                    >
-                        {hovered ? `<${member.role} />` : member.role}
-                    </span>
-
-                    <p className="text-white/60 text-sm font-mono leading-relaxed h-[80px] overflow-hidden">
-                        {hovered ? (
-                            <span className="font-bold block" style={{ color: member.color }}>
-                                {member.warning}
-                                <br />
-                                <span className="block mt-2 font-bold animate-pulse" style={{ color: "#ff003c" }}>
-                                    {member.success}
-                                </span>
-                            </span>
-                        ) : (
-                            member.desc
-                        )}
-                    </p>
-                </div>
+            {/* Top - ID tag */}
+            <div className="absolute top-6 left-6 z-20">
+                <span className="text-[10px] font-mono text-white/30 block mb-1">ID_REF</span>
+                <span className="text-lg font-bold font-mono text-white/60">
+                    {hovered && !hasImage ? corruptionCheck.substring(0, 4) : member.id}
+                </span>
             </div>
 
-            {/* 4. "Virus" Spreading Mask - only on cards WITHOUT photos */}
+            {/* Top right - Status */}
+            <div className="absolute top-6 right-6 z-20 flex items-center gap-2">
+                <span className="text-[10px] uppercase font-mono tracking-widest" style={{ color: hovered ? member.color : "rgba(255,255,255,0.2)" }}>
+                    {hasImage ? (hovered ? "ACTIVE" : "ONLINE") : (hovered ? "INFECTED" : "SECURE")}
+                </span>
+                <motion.div
+                    className="w-2 h-2 rounded-full"
+                    style={{ backgroundColor: hovered ? member.color : "rgba(255,255,255,0.2)" }}
+                    animate={{ opacity: [1, 0.3, 1] }}
+                    transition={{ duration: hovered && !hasImage ? 0.1 : 2, repeat: Infinity }}
+                />
+            </div>
+
+            {/* Bottom content - Name, Role, Desc */}
+            <div className="absolute bottom-0 left-0 right-0 p-6 z-20">
+                {/* Name */}
+                <motion.h3
+                    className="text-3xl md:text-4xl font-black text-white leading-none mb-3"
+                    style={{ textShadow: "0 2px 20px rgba(0,0,0,0.8)" }}
+                    animate={hovered && !hasImage ? { x: [-1, 1, -1] } : { x: 0 }}
+                    transition={{ duration: 0.1, repeat: hovered && !hasImage ? Infinity : 0 }}
+                >
+                    {!hasImage && hovered ? <GlitchTextV2 text={member.name} active={hovered} /> : member.name}
+                </motion.h3>
+
+                {/* Accent line */}
+                <motion.div
+                    className="h-[2px] mb-3 origin-left"
+                    style={{ backgroundColor: member.color }}
+                    initial={{ scaleX: 0.3 }}
+                    animate={{ scaleX: hovered ? 1 : 0.3 }}
+                    transition={{ duration: 0.4 }}
+                />
+
+                {/* Role */}
+                <span
+                    className="block text-xs font-mono tracking-[0.15em] uppercase mb-2"
+                    style={{ color: member.color }}
+                >
+                    {member.role}
+                </span>
+
+                {/* Description - slides up on hover */}
+                <motion.div
+                    className="overflow-hidden"
+                    initial={{ height: 0, opacity: 0 }}
+                    animate={{ height: hovered ? "auto" : 0, opacity: hovered ? 1 : 0 }}
+                    transition={{ duration: 0.3 }}
+                >
+                    <p className="text-white/50 text-xs font-mono leading-relaxed pt-1">
+                        {member.desc}
+                    </p>
+                </motion.div>
+            </div>
+
+            {/* Virus mask - only for no-photo cards */}
             {!hasImage && (
                 <motion.div
-                    className="absolute inset-0 z-10 mix-blend-difference pointer-events-none"
+                    className="absolute inset-0 z-[5] mix-blend-difference pointer-events-none"
                     style={{ backgroundColor: member.color }}
                     initial={{ clipPath: "circle(0% at 50% 50%)" }}
-                    animate={{
-                        clipPath: hovered ? "circle(150% at 50% 50%)" : "circle(0% at 50% 50%)",
-                    }}
+                    animate={{ clipPath: hovered ? "circle(150% at 50% 50%)" : "circle(0% at 50% 50%)" }}
                     transition={{ duration: 0.8, ease: "circIn" }}
                 />
             )}
 
-            {/* 5. Scanline overlay - subtle on photo cards */}
-            <div className={`absolute inset-0 pointer-events-none z-40 ${hasImage ? "opacity-10" : "opacity-20"}`}
+            {/* Scanlines - very subtle */}
+            <div className="absolute inset-0 pointer-events-none z-10 opacity-[0.07]"
                 style={{
                     backgroundImage: "linear-gradient(transparent 50%, rgba(0, 0, 0, 0.5) 50%)",
                     backgroundSize: "100% 4px"
@@ -919,8 +855,8 @@ export default function AboutPage() {
                         </h2>
                     </motion.div>
 
-                    {/* Creative Team Grid - VIRAL Style */}
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8 relative perspective-1000">
+                    {/* Team Grid - Portrait Cards */}
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 relative">
                         {team.map((member, index) => (
                             <ViralTeamCard key={member.id} member={member} index={index} />
                         ))}
