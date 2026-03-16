@@ -74,7 +74,7 @@ const team: {
         color: "#a8ffc4",
         warning: "WARNING: EGO OVERLOAD DETECTED. DO NOT FEED THE VISIONARY.",
         success: "ALERT: SALARIES DISPENSED 2 WEEKS EARLY. MORALE OVERLOAD.",
-        image: "/assets/team/osama.png"
+        image: "/assets/team/osama.jpeg"
     },
     {
         name: "SUHAIB",
@@ -85,7 +85,7 @@ const team: {
         color: "#60a5fa",
         warning: "WARNING: INBOX OVERLOAD. 47 CLIENTS ALL MARKED PRIORITY.",
         success: "STATUS: CLIENT SATISFACTION AT 100%. RETENTION RATE: INFINITE.",
-        image: "/assets/team/suhaib.png"
+        image: "/assets/team/suhaib.jpeg"
     },
     {
         name: "MAZHAR",
@@ -96,7 +96,7 @@ const team: {
         color: "#c084fc",
         warning: "WARNING: REALITY DISTORTION FIELD ACTIVE. PIXELS MAY BITE.",
         success: "VISUALS: PIXEL PERFECTION REACHED. CLIENT IS CRYING TEARS OF JOY.",
-        image: "/assets/team/mazhar.png"
+        image: "/assets/team/mazhar.jpeg"
     },
     {
         name: "WALEED",
