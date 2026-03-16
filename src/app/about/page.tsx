@@ -64,6 +64,7 @@ const team: {
     warning: string;
     success: string;
     image?: string;
+    imagePosition?: string;
 }[] = [
     {
         name: "OSAMA",
@@ -74,7 +75,8 @@ const team: {
         color: "#a8ffc4",
         warning: "WARNING: EGO OVERLOAD DETECTED. DO NOT FEED THE VISIONARY.",
         success: "ALERT: SALARIES DISPENSED 2 WEEKS EARLY. MORALE OVERLOAD.",
-        image: "/assets/team/osama.jpeg"
+        image: "/assets/team/osama.jpeg",
+        imagePosition: "center 30%",
     },
     {
         name: "SUHAIB",
@@ -85,7 +87,8 @@ const team: {
         color: "#60a5fa",
         warning: "WARNING: INBOX OVERLOAD. 47 CLIENTS ALL MARKED PRIORITY.",
         success: "STATUS: CLIENT SATISFACTION AT 100%. RETENTION RATE: INFINITE.",
-        image: "/assets/team/suhaib.jpeg"
+        image: "/assets/team/suhaib.jpeg",
+        imagePosition: "center 25%",
     },
     {
         name: "MAZHAR",
@@ -96,7 +99,8 @@ const team: {
         color: "#c084fc",
         warning: "WARNING: REALITY DISTORTION FIELD ACTIVE. PIXELS MAY BITE.",
         success: "VISUALS: PIXEL PERFECTION REACHED. CLIENT IS CRYING TEARS OF JOY.",
-        image: "/assets/team/mazhar.jpeg"
+        image: "/assets/team/mazhar.jpeg",
+        imagePosition: "center 15%",
     },
     {
         name: "WALEED",
@@ -468,7 +472,7 @@ function ViralTeamCard({ member, index }: { member: typeof team[0]; index: numbe
             onMouseEnter={() => setHovered(true)}
             onMouseLeave={() => setHovered(false)}
             variants={variants}
-            className="group relative h-[400px] w-full cursor-pointer bg-black border border-white/10 overflow-hidden"
+            className={`group relative w-full cursor-pointer bg-black border border-white/10 overflow-hidden ${hasImage ? "h-[500px]" : "h-[400px]"}`}
             style={{
                 borderColor: hovered ? member.color : "rgba(255,255,255,0.1)",
                 boxShadow: hovered ? `0 0 30px ${member.color}40` : "none"
@@ -482,7 +486,8 @@ function ViralTeamCard({ member, index }: { member: typeof team[0]; index: numbe
                             src={member.image}
                             alt={member.name}
                             fill
-                            className="object-cover object-top opacity-80 group-hover:opacity-100 transition-all duration-500 group-hover:scale-105"
+                            className="object-cover opacity-80 group-hover:opacity-100 transition-all duration-500 group-hover:scale-105"
+                            style={{ objectPosition: member.imagePosition || "center center" }}
                         />
                         <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent" />
                     </>
