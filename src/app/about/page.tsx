@@ -78,7 +78,7 @@ const team: {
     },
     {
         name: "SUHAIB",
-        role: "HEAD OF DEV",
+        role: "DIR. OPERATIONS & CLIENT RELATIONS",
         id: "02",
         keywords: ["ARCHITECT", "SYSTEMS", "SCALE"],
         desc: "Building the impossible through code and logic.",
@@ -89,7 +89,7 @@ const team: {
     },
     {
         name: "MAZHAR",
-        role: "CREATIVE DIR",
+        role: "HEAD OF CONTENT & BRANDING",
         id: "03",
         keywords: ["AESTHETICS", "DESIGN", "SOUL"],
         desc: "Crafting visual narratives that defy convention.",
@@ -100,7 +100,7 @@ const team: {
     },
     {
         name: "WALEED",
-        role: "LEAD STRATEGIST",
+        role: "HEAD OF MARKETING",
         id: "04",
         keywords: ["GROWTH", "DATA", "IMPACT"],
         desc: "Turning abstract data into concrete success.",
