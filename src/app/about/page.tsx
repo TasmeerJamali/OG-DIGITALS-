@@ -74,7 +74,7 @@ const team: {
         color: "#a8ffc4",
         warning: "WARNING: EGO OVERLOAD DETECTED. DO NOT FEED THE VISIONARY.",
         success: "ALERT: SALARIES DISPENSED 2 WEEKS EARLY. MORALE OVERLOAD.",
-        image: "/assets/team/osama.jpg"
+        image: "/assets/team/osama.png"
     },
     {
         name: "SUHAIB",
@@ -85,7 +85,7 @@ const team: {
         color: "#60a5fa",
         warning: "WARNING: INBOX OVERLOAD. 47 CLIENTS ALL MARKED PRIORITY.",
         success: "STATUS: CLIENT SATISFACTION AT 100%. RETENTION RATE: INFINITE.",
-        image: "/assets/team/suhaib.jpg"
+        image: "/assets/team/suhaib.png"
     },
     {
         name: "MAZHAR",
@@ -96,7 +96,7 @@ const team: {
         color: "#c084fc",
         warning: "WARNING: REALITY DISTORTION FIELD ACTIVE. PIXELS MAY BITE.",
         success: "VISUALS: PIXEL PERFECTION REACHED. CLIENT IS CRYING TEARS OF JOY.",
-        image: "/assets/team/mazhar.jpg"
+        image: "/assets/team/mazhar.png"
     },
     {
         name: "WALEED",
@@ -433,9 +433,20 @@ const ViralOverlay = ({ active, color }: { active: boolean; color: string }) => 
 function ViralTeamCard({ member, index }: { member: typeof team[0]; index: number }) {
     const [hovered, setHovered] = useState(false);
     const corruptionCheck = useCorruption(hovered);
+    const hasImage = !!member.image;
 
-    // Scale up massively on hover
-    const variants: Variants = {
+    // Different animation variants for photo vs no-photo cards
+    const variants: Variants = hasImage ? {
+        idle: {
+            scale: 1,
+            zIndex: 10,
+        },
+        hover: {
+            scale: 1.05,
+            zIndex: 50,
+            transition: { duration: 0.4, ease: "easeOut" }
+        }
+    } : {
         idle: {
             scale: 1,
             zIndex: 10,
@@ -471,9 +482,9 @@ function ViralTeamCard({ member, index }: { member: typeof team[0]; index: numbe
                             src={member.image}
                             alt={member.name}
                             fill
-                            className="object-cover object-top opacity-60 group-hover:opacity-80 transition-all duration-500 group-hover:scale-105"
+                            className="object-cover object-top opacity-80 group-hover:opacity-100 transition-all duration-500 group-hover:scale-105"
                         />
-                        <div className="absolute inset-0 bg-gradient-to-t from-black via-black/60 to-transparent" />
+                        <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent" />
                     </>
                 ) : (
                     <div
@@ -492,8 +503,8 @@ function ViralTeamCard({ member, index }: { member: typeof team[0]; index: numbe
             <div className="absolute bottom-0 left-0 w-4 h-4 border-l-2 border-b-2 transition-colors duration-300" style={{ borderColor: hovered ? member.color : "rgba(255,255,255,0.2)" }} />
             <div className="absolute bottom-0 right-0 w-4 h-4 border-r-2 border-b-2 transition-colors duration-300" style={{ borderColor: hovered ? member.color : "rgba(255,255,255,0.2)" }} />
 
-            {/* 2. Viral Overlay (Code Rain) */}
-            <ViralOverlay active={hovered} color={member.color} />
+            {/* 2. Viral Overlay (Code Rain) - only on cards WITHOUT photos */}
+            {!hasImage && <ViralOverlay active={hovered} color={member.color} />}
 
             {/* 3. Main Content Container */}
             <div className="absolute inset-0 flex flex-col justify-between p-8 z-30">
@@ -502,62 +513,82 @@ function ViralTeamCard({ member, index }: { member: typeof team[0]; index: numbe
                     <div className="flex flex-col">
                         <span className="text-[10px] font-mono text-white/40 mb-1">ID_REF</span>
                         <span className="text-xl font-bold font-mono text-white">
-                            {hovered ? corruptionCheck.substring(0, 4) : member.id}
+                            {hovered && !hasImage ? corruptionCheck.substring(0, 4) : member.id}
                         </span>
                     </div>
-                    {/* Status Indicator - Color Matches Member */}
+                    {/* Status Indicator */}
                     <div className="flex items-center gap-2">
                         <span className="text-[10px] uppercase font-mono tracking-widest" style={{ color: hovered ? member.color : "#333" }}>
-                            {hovered ? "INFECTED" : "SECURE"}
+                            {hasImage ? (hovered ? "ACTIVE" : "ONLINE") : (hovered ? "INFECTED" : "SECURE")}
                         </span>
                         <motion.div
                             className="w-2 h-2 rounded-full"
                             style={{ backgroundColor: hovered ? member.color : "#333" }}
                             animate={{ opacity: [1, 0.2, 1] }}
-                            transition={{ duration: hovered ? 0.1 : 2, repeat: Infinity }}
+                            transition={{ duration: hovered && !hasImage ? 0.1 : 2, repeat: Infinity }}
                         />
                     </div>
                 </div>
 
-                {/* Center - MAIN GLITCH TITLE (FLOATING & CENTERED) */}
-                <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-                    <motion.div
-                        className="relative z-50 text-center"
-                        animate={hovered ? {
-                            y: [-2, 2, -2],
-                            x: [-1, 1, -1],
-                            rotate: [-1, 1, -1],
-                            scale: 1.1
-                        } : { y: 0, x: 0, rotate: 0, scale: 1 }}
-                        transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
-                    >
-                        {/* Ghost text for chromatic aberration effect */}
-                        {hovered && (
-                            <>
-                                <div className="absolute top-0 left-1 w-full text-center text-5xl md:text-6xl font-black opacity-50 mix-blend-screen animate-pulse" style={{ color: "red" }}>
-                                    {member.name}
-                                </div>
-                                <div className="absolute top-0 -left-1 w-full text-center text-5xl md:text-6xl font-black opacity-50 mix-blend-screen animate-pulse" style={{ color: "blue" }}>
-                                    {member.name}
-                                </div>
-                            </>
-                        )}
-
-                        <h3 className="text-5xl md:text-6xl font-black text-white mb-2 relative z-10 leading-none">
-                            <GlitchTextV2 text={member.name} active={hovered} />
-                        </h3>
-
-                        <div className="h-[2px] w-full bg-white/10 mt-4 overflow-hidden mx-auto max-w-[200px]">
-                            <motion.div
-                                className="h-full mx-auto"
-                                style={{ backgroundColor: member.color }}
-                                initial={{ width: "0%" }}
-                                animate={{ width: hovered ? "100%" : "20%" }}
-                                transition={{ duration: 0.5, ease: "circIn" }}
-                            />
-                        </div>
-                    </motion.div>
-                </div>
+                {/* Center - Name (clean for photos, glitchy for no-photo) */}
+                {hasImage ? (
+                    <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+                        <motion.div
+                            className="relative z-50 text-center"
+                            animate={hovered ? { scale: 1.05 } : { scale: 1 }}
+                            transition={{ duration: 0.3 }}
+                        >
+                            <h3 className="text-5xl md:text-6xl font-black text-white mb-2 leading-none drop-shadow-[0_2px_20px_rgba(0,0,0,0.8)]">
+                                {member.name}
+                            </h3>
+                            <div className="h-[2px] w-full bg-white/10 mt-4 overflow-hidden mx-auto max-w-[200px]">
+                                <motion.div
+                                    className="h-full mx-auto"
+                                    style={{ backgroundColor: member.color }}
+                                    initial={{ width: "0%" }}
+                                    animate={{ width: hovered ? "100%" : "20%" }}
+                                    transition={{ duration: 0.5, ease: "circIn" }}
+                                />
+                            </div>
+                        </motion.div>
+                    </div>
+                ) : (
+                    <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+                        <motion.div
+                            className="relative z-50 text-center"
+                            animate={hovered ? {
+                                y: [-2, 2, -2],
+                                x: [-1, 1, -1],
+                                rotate: [-1, 1, -1],
+                                scale: 1.1
+                            } : { y: 0, x: 0, rotate: 0, scale: 1 }}
+                            transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+                        >
+                            {hovered && (
+                                <>
+                                    <div className="absolute top-0 left-1 w-full text-center text-5xl md:text-6xl font-black opacity-50 mix-blend-screen animate-pulse" style={{ color: "red" }}>
+                                        {member.name}
+                                    </div>
+                                    <div className="absolute top-0 -left-1 w-full text-center text-5xl md:text-6xl font-black opacity-50 mix-blend-screen animate-pulse" style={{ color: "blue" }}>
+                                        {member.name}
+                                    </div>
+                                </>
+                            )}
+                            <h3 className="text-5xl md:text-6xl font-black text-white mb-2 relative z-10 leading-none">
+                                <GlitchTextV2 text={member.name} active={hovered} />
+                            </h3>
+                            <div className="h-[2px] w-full bg-white/10 mt-4 overflow-hidden mx-auto max-w-[200px]">
+                                <motion.div
+                                    className="h-full mx-auto"
+                                    style={{ backgroundColor: member.color }}
+                                    initial={{ width: "0%" }}
+                                    animate={{ width: hovered ? "100%" : "20%" }}
+                                    transition={{ duration: 0.5, ease: "circIn" }}
+                                />
+                            </div>
+                        </motion.div>
+                    </div>
+                )}
 
                 {/* Bottom - Role & Desc */}
                 <div className="relative z-40">
@@ -584,19 +615,21 @@ function ViralTeamCard({ member, index }: { member: typeof team[0]; index: numbe
                 </div>
             </div>
 
-            {/* 4. "Virus" Spreading Mask - DYNAMIC COLOR */}
-            <motion.div
-                className="absolute inset-0 z-10 mix-blend-difference pointer-events-none"
-                style={{ backgroundColor: member.color }}
-                initial={{ clipPath: "circle(0% at 50% 50%)" }}
-                animate={{
-                    clipPath: hovered ? "circle(150% at 50% 50%)" : "circle(0% at 50% 50%)",
-                }}
-                transition={{ duration: 0.8, ease: "circIn" }}
-            />
+            {/* 4. "Virus" Spreading Mask - only on cards WITHOUT photos */}
+            {!hasImage && (
+                <motion.div
+                    className="absolute inset-0 z-10 mix-blend-difference pointer-events-none"
+                    style={{ backgroundColor: member.color }}
+                    initial={{ clipPath: "circle(0% at 50% 50%)" }}
+                    animate={{
+                        clipPath: hovered ? "circle(150% at 50% 50%)" : "circle(0% at 50% 50%)",
+                    }}
+                    transition={{ duration: 0.8, ease: "circIn" }}
+                />
+            )}
 
-            {/* 5. Scanline & RGB Split Overlay effects */}
-            <div className="absolute inset-0 pointer-events-none z-40 opacity-20"
+            {/* 5. Scanline overlay - subtle on photo cards */}
+            <div className={`absolute inset-0 pointer-events-none z-40 ${hasImage ? "opacity-10" : "opacity-20"}`}
                 style={{
                     backgroundImage: "linear-gradient(transparent 50%, rgba(0, 0, 0, 0.5) 50%)",
                     backgroundSize: "100% 4px"
