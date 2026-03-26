@@ -111,6 +111,8 @@ const team: {
         color: "#fbbf24",
         warning: "WARNING: DATA SINGULARITY IMMINENT. YOUR ROI IS BELONG TO US.",
         success: "METRICS: ROI EXCEEDED 500%. MONEY PRINTER GO BRRR.",
+        image: "/assets/team/waleed.jpeg",
+        imagePosition: "center 30%",
     }
 ];
 
